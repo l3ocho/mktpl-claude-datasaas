@@ -179,6 +179,13 @@ projman/
 - Defense in depth approach
 - Plugin works with or without CLAUDE.md
 
+**Plugin Development:**
+- Use `claude-plugin-developer` skill for all plugin-related work
+- Reference when creating/updating plugin manifests, commands, agents, hooks, or MCP servers
+- Ensures compliance with Anthropic's security requirements and best practices
+- Provides templates, validation tools, and troubleshooting guidance
+- Critical for proper plugin structure, path safety, and marketplace publication
+
 ## Multi-Project Context (PMO Plugin)
 
 The `pmo` plugin will coordinate interdependent projects:
