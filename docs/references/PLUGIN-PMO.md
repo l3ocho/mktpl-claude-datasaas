@@ -38,6 +38,128 @@ projman-pmo/
 
 ---
 
+## Plugin Manifest
+
+**File:** `projman-pmo/.claude-plugin/plugin.json`
+
+```json
+{
+  "name": "projman-pmo",
+  "version": "0.1.0",
+  "displayName": "Projman PMO - Multi-Project Coordination",
+  "description": "PMO coordination with cross-project visibility, dependency tracking, and resource management",
+  "author": "Hyper Hive Labs",
+  "homepage": "https://gitea.hyperhivelabs.com/hyperhivelabs/claude-plugins/projman-pmo",
+  "repository": {
+    "type": "git",
+    "url": "https://gitea.hyperhivelabs.com/hyperhivelabs/claude-plugins.git"
+  },
+  "license": "MIT",
+  "keywords": [
+    "pmo",
+    "multi-project",
+    "coordination",
+    "dependencies",
+    "resource-management"
+  ],
+  "minimumClaudeVersion": "1.0.0",
+  "main": "commands/",
+  "dependencies": {
+    "projman": ">=0.1.0"
+  },
+  "contributes": {
+    "commands": [
+      {
+        "name": "pmo-status",
+        "title": "PMO Status",
+        "description": "Multi-project status overview",
+        "file": "commands/pmo-status.md"
+      },
+      {
+        "name": "pmo-priorities",
+        "title": "PMO Priorities",
+        "description": "Cross-project priority analysis",
+        "file": "commands/pmo-priorities.md"
+      },
+      {
+        "name": "pmo-dependencies",
+        "title": "PMO Dependencies",
+        "description": "Project dependency visualization",
+        "file": "commands/pmo-dependencies.md"
+      },
+      {
+        "name": "pmo-conflicts",
+        "title": "PMO Resource Conflicts",
+        "description": "Resource conflict detection and resolution",
+        "file": "commands/pmo-conflicts.md"
+      },
+      {
+        "name": "pmo-schedule",
+        "title": "PMO Schedule",
+        "description": "Multi-project deployment scheduling",
+        "file": "commands/pmo-schedule.md"
+      }
+    ],
+    "agents": [
+      {
+        "name": "pmo-coordinator",
+        "title": "PMO Coordinator",
+        "description": "Strategic multi-project coordination and dependency management",
+        "file": "agents/pmo-coordinator.md"
+      }
+    ]
+  },
+  "configuration": {
+    "required": [
+      "GITEA_API_URL",
+      "GITEA_API_TOKEN",
+      "GITEA_OWNER",
+      "WIKIJS_API_URL",
+      "WIKIJS_API_TOKEN",
+      "WIKIJS_BASE_PATH"
+    ],
+    "properties": {
+      "GITEA_API_URL": {
+        "type": "string",
+        "description": "Gitea API base URL (e.g., https://gitea.example.com/api/v1)"
+      },
+      "GITEA_API_TOKEN": {
+        "type": "string",
+        "description": "Gitea API token with organization-level access",
+        "secret": true
+      },
+      "GITEA_OWNER": {
+        "type": "string",
+        "description": "Gitea organization name"
+      },
+      "WIKIJS_API_URL": {
+        "type": "string",
+        "description": "Wiki.js GraphQL API URL (e.g., https://wiki.example.com/graphql)"
+      },
+      "WIKIJS_API_TOKEN": {
+        "type": "string",
+        "description": "Wiki.js API token with company-wide read access",
+        "secret": true
+      },
+      "WIKIJS_BASE_PATH": {
+        "type": "string",
+        "description": "Base path in Wiki.js (e.g., /company-name)"
+      }
+    },
+    "notes": {
+      "company_mode": "PMO plugin operates in company-wide mode. Do NOT set GITEA_REPO or WIKIJS_PROJECT environment variables."
+    }
+  }
+}
+```
+
+**Key Differences from projman:**
+- `dependencies`: Declares dependency on projman plugin
+- No `GITEA_REPO` or `WIKIJS_PROJECT` in configuration (company-wide mode)
+- Focused on coordination, not individual project management
+
+---
+
 ## Configuration
 
 ### Plugin .mcp.json

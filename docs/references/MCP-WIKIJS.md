@@ -144,6 +144,25 @@ WIKIJS_API_TOKEN=your_wikijs_token
 WIKIJS_BASE_PATH=/hyper-hive-labs
 ```
 
+**Generating Wiki.js API Token:**
+
+1. Log into Wiki.js: https://wiki.hyperhivelabs.com
+2. Navigate to: **User Menu (top-right)** → **Administration**
+3. In the sidebar, go to: **API Access**
+4. Click **Create New Token**
+5. Token configuration:
+   - **Name:** `claude-code-mcp`
+   - **Expiration:** Never (or set appropriate expiration)
+   - **Required Permissions:**
+     - ✅ Read pages
+     - ✅ Create pages
+     - ✅ Update pages
+     - ✅ Manage tags
+     - ✅ Search
+6. Click **Generate**
+7. **Important:** Copy the token immediately (shown only once)
+8. Add to configuration file (see setup below)
+
 **Setup:**
 ```bash
 # Create config directory
@@ -152,12 +171,15 @@ mkdir -p ~/.config/claude
 # Create wikijs.env
 cat > ~/.config/claude/wikijs.env << EOF
 WIKIJS_API_URL=https://wiki.hyperhivelabs.com/graphql
-WIKIJS_API_TOKEN=your_token
+WIKIJS_API_TOKEN=your_token_here
 WIKIJS_BASE_PATH=/hyper-hive-labs
 EOF
 
-# Secure the file
+# Secure the file (important!)
 chmod 600 ~/.config/claude/wikijs.env
+
+# Verify setup
+cat ~/.config/claude/wikijs.env
 ```
 
 ### Project-Level Configuration
@@ -294,7 +316,7 @@ mcp-servers/wikijs/
 **File:** `mcp-servers/wikijs/requirements.txt`
 
 ```txt
-anthropic-sdk>=0.18.0    # MCP SDK
+mcp>=0.9.0               # MCP SDK from Anthropic
 python-dotenv>=1.0.0     # Environment variable loading
 gql>=3.4.0               # GraphQL client for Wiki.js
 aiohttp>=3.9.0           # Async HTTP
@@ -302,6 +324,8 @@ pydantic>=2.5.0          # Data validation
 pytest>=7.4.3            # Testing framework
 pytest-asyncio>=0.23.0   # Async testing support
 ```
+
+**Python Version:** 3.10+ required
 
 **Installation:**
 ```bash
@@ -1092,53 +1116,241 @@ pytest tests/test_config.py::test_project_config_path_composition
 
 ### Initial Structure Creation
 
+**Status:** Base structure `/hyper-hive-labs` **does not exist** and needs to be created during Phase 1.1b.
+
+**Setup Script:** Run this script during Phase 1.1b to create the base structure:
+
+**File:** `mcp-servers/wikijs/setup_wiki_structure.py`
+
 ```python
-# setup_wiki_structure.py
+#!/usr/bin/env python3
+"""
+One-time setup script to create base Wiki.js structure.
+Run during Phase 1.1b implementation.
+"""
 import asyncio
+import sys
 from mcp_server.wikijs_client import WikiJSClient
 
-async def initialize_wiki_structure():
-    """One-time setup script to create base Wiki.js structure"""
-    client = WikiJSClient()
 
-    # Base structure
+async def initialize_wiki_structure():
+    """Create base Wiki.js structure for Hyper Hive Labs"""
+
+    print("Initializing Wiki.js base structure...")
+    print("=" * 60)
+
+    try:
+        client = WikiJSClient()
+        print(f"✅ Connected to Wiki.js at {client.api_url}")
+        print(f"   Base path: {client.base_path}")
+        print()
+
+    except Exception as e:
+        print(f"❌ Failed to connect to Wiki.js: {e}")
+        print("   Check your ~/.config/claude/wikijs.env configuration")
+        sys.exit(1)
+
+    # Base structure to create
     base_pages = [
         {
-            'path': '/hyper-hive-labs',
+            'path': 'hyper-hive-labs',
             'title': 'Hyper Hive Labs',
-            'content': '# Hyper Hive Labs Documentation\n\nCompany-wide knowledge base.',
-            'tags': ['company']
+            'content': '''# Hyper Hive Labs Documentation
+
+Welcome to the Hyper Hive Labs knowledge base.
+
+## Organization
+
+- **[Projects](hyper-hive-labs/projects)** - Project-specific documentation and lessons learned
+- **[Company](hyper-hive-labs/company)** - Company-wide processes, standards, and tools
+- **[Shared](hyper-hive-labs/shared)** - Cross-project architecture patterns and best practices
+
+## Purpose
+
+This knowledge base captures:
+- Lessons learned from sprints
+- Architecture patterns and decisions
+- Company processes and standards
+- Best practices and technical guides
+
+All content is searchable and tagged for easy discovery across projects.
+''',
+            'tags': ['company', 'index'],
+            'description': 'Hyper Hive Labs company knowledge base'
         },
         {
-            'path': '/hyper-hive-labs/projects',
+            'path': 'hyper-hive-labs/projects',
             'title': 'Projects',
-            'content': '# Project Documentation\n\nProject-specific documentation and lessons learned.',
-            'tags': ['projects']
+            'content': '''# Project Documentation
+
+Project-specific documentation and lessons learned.
+
+## Active Projects
+
+- **[CuisineFlow](hyper-hive-labs/projects/cuisineflow)** - Main product
+- **[CuisineFlow-Site](hyper-hive-labs/projects/cuisineflow-site)** - Demo and customer gateway
+- **[Intuit-Engine](hyper-hive-labs/projects/intuit-engine)** - API aggregator service
+- **[HHL-Site](hyper-hive-labs/projects/hhl-site)** - Company website
+
+Each project maintains:
+- Lessons learned from sprints
+- Project-specific documentation
+- Architecture decisions
+''',
+            'tags': ['projects', 'index'],
+            'description': 'Index of all project documentation'
         },
         {
-            'path': '/hyper-hive-labs/company',
+            'path': 'hyper-hive-labs/company',
             'title': 'Company',
-            'content': '# Company Documentation\n\nProcesses, standards, and tools.',
-            'tags': ['company', 'processes']
+            'content': '''# Company Documentation
+
+Company-wide processes, standards, and tools.
+
+## Sections
+
+- **[Processes](hyper-hive-labs/company/processes)** - Development workflows, onboarding, deployment
+- **[Standards](hyper-hive-labs/company/standards)** - Code style, API design, security practices
+- **[Tools](hyper-hive-labs/company/tools)** - Gitea, Wiki.js, Claude Code plugin guides
+
+These standards apply to all projects and team members.
+''',
+            'tags': ['company', 'processes', 'index'],
+            'description': 'Company processes and standards'
         },
         {
-            'path': '/hyper-hive-labs/shared',
+            'path': 'hyper-hive-labs/shared',
             'title': 'Shared Resources',
-            'content': '# Shared Resources\n\nArchitecture patterns, best practices, tech stack.',
-            'tags': ['shared', 'resources']
+            'content': '''# Shared Resources
+
+Cross-project architecture patterns, best practices, and technical knowledge.
+
+## Sections
+
+- **[Architecture Patterns](hyper-hive-labs/shared/architecture-patterns)** - Microservices, service extraction, API design
+- **[Best Practices](hyper-hive-labs/shared/best-practices)** - Error handling, logging, testing strategies
+- **[Tech Stack](hyper-hive-labs/shared/tech-stack)** - Python ecosystem, Docker, CI/CD pipelines
+
+These patterns are distilled from lessons learned across all projects.
+''',
+            'tags': ['shared', 'resources', 'index'],
+            'description': 'Cross-project architecture patterns and best practices'
+        },
+        # Project placeholders
+        {
+            'path': 'hyper-hive-labs/projects/cuisineflow',
+            'title': 'CuisineFlow',
+            'content': '''# CuisineFlow
+
+Main product - recipe management and meal planning platform.
+
+## Documentation
+
+- **[Lessons Learned](hyper-hive-labs/projects/cuisineflow/lessons-learned)** - Sprint retrospectives and insights
+- **[Architecture](hyper-hive-labs/projects/cuisineflow/documentation/architecture)** - System architecture
+- **[API](hyper-hive-labs/projects/cuisineflow/documentation/api)** - API documentation
+
+Sprint lessons will be automatically captured here by the projman plugin.
+''',
+            'tags': ['project', 'cuisineflow'],
+            'description': 'CuisineFlow project documentation'
+        },
+        {
+            'path': 'hyper-hive-labs/projects/cuisineflow/lessons-learned',
+            'title': 'CuisineFlow - Lessons Learned',
+            'content': '''# CuisineFlow - Lessons Learned
+
+Sprint retrospectives and insights from CuisineFlow development.
+
+## Organization
+
+- **[Sprints](hyper-hive-labs/projects/cuisineflow/lessons-learned/sprints)** - Sprint-specific lessons
+- **[Patterns](hyper-hive-labs/projects/cuisineflow/lessons-learned/patterns)** - Recurring patterns and solutions
+- **[INDEX](hyper-hive-labs/projects/cuisineflow/lessons-learned/INDEX)** - Complete index with tags
+
+Lessons are automatically captured during sprint close via `/sprint-close` command.
+''',
+            'tags': ['lessons-learned', 'cuisineflow'],
+            'description': 'CuisineFlow lessons learned index'
         }
     ]
 
+    # Create pages
+    created_count = 0
+    failed_count = 0
+
     for page_data in base_pages:
         try:
+            print(f"Creating: /{page_data['path']}")
             result = await client.create_page(**page_data)
-            print(f"Created: {page_data['path']}")
+
+            if result.get('responseResult', {}).get('succeeded'):
+                print(f"   ✅ Created successfully")
+                created_count += 1
+            else:
+                error_msg = result.get('responseResult', {}).get('message', 'Unknown error')
+                print(f"   ⚠️  Warning: {error_msg}")
+                failed_count += 1
+
         except Exception as e:
-            print(f"Error creating {page_data['path']}: {e}")
+            print(f"   ❌ Error: {e}")
+            failed_count += 1
+
+        print()
+
+    # Summary
+    print("=" * 60)
+    print(f"Setup complete!")
+    print(f"   Created: {created_count} pages")
+    if failed_count > 0:
+        print(f"   Failed: {failed_count} pages")
+        print(f"\n⚠️  Some pages failed. Check errors above.")
+        sys.exit(1)
+    else:
+        print(f"\n✅ All pages created successfully!")
+        print(f"\nView at: https://wiki.hyperhivelabs.com/hyper-hive-labs")
+
 
 if __name__ == '__main__':
     asyncio.run(initialize_wiki_structure())
 ```
+
+**Running the setup:**
+```bash
+cd mcp-servers/wikijs
+source .venv/bin/activate
+python setup_wiki_structure.py
+```
+
+**Expected output:**
+```
+Initializing Wiki.js base structure...
+============================================================
+✅ Connected to Wiki.js at https://wiki.hyperhivelabs.com/graphql
+   Base path: /hyper-hive-labs
+
+Creating: /hyper-hive-labs
+   ✅ Created successfully
+
+Creating: /hyper-hive-labs/projects
+   ✅ Created successfully
+
+...
+
+============================================================
+Setup complete!
+   Created: 6 pages
+
+✅ All pages created successfully!
+
+View at: https://wiki.hyperhivelabs.com/hyper-hive-labs
+```
+
+**Post-Setup:**
+After running the script:
+1. Visit https://wiki.hyperhivelabs.com/hyper-hive-labs to verify structure
+2. Add additional project directories as needed
+3. The structure is now ready for projman plugin to use
 
 ---
 

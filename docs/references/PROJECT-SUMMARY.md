@@ -184,12 +184,13 @@ WIKIJS_PROJECT=projects/cuisineflow
 
 ### 2. Python Implementation
 
-**Decision:** Python 3.11+ for MCP servers
+**Decision:** Python 3.10+ for MCP servers
 **Why:**
-- Better suited for configuration management
-- Modular code structure
-- Easier to maintain and extend
-- Good async support
+- Modern async/await improvements
+- Better type hints support
+- Good balance of compatibility vs features
+- Widely available (released Oct 2021)
+- Most production servers have 3.10+ by now
 
 ### 3. Wiki.js for Lessons Learned
 
@@ -298,28 +299,32 @@ Wiki.js: https://wiki.hyperhivelabs.com
 
 ## Label Taxonomy System
 
-### 43-Label System
+### Dynamic Label System (44 labels currently)
 
-**Organization Labels (27):**
+Labels are **fetched dynamically from Gitea** at runtime via the `/labels-sync` command:
+
+**Organization Labels (28):**
 - Agent/2
 - Complexity/3
 - Efforts/5
 - Priority/4
 - Risk/3
 - Source/4
-- Type/6 (includes Type/Refactor)
+- Type/6 (Bug, Feature, Refactor, Documentation, Test, Chore)
 
 **Repository Labels (16):**
-- Component/9
-- Tech/7
+- Component/9 (Backend, Frontend, API, Database, Auth, Deploy, Testing, Docs, Infra)
+- Tech/7 (Python, JavaScript, Docker, PostgreSQL, Redis, Vue, FastAPI)
 
 ### Type/Refactor Label
 
-**New organization-level label** for architectural work:
+**Organization-level label** for architectural work:
 - Service extraction
 - Architecture modifications
 - Code restructuring
 - Technical debt reduction
+
+**Note:** Label count may change. Always sync from Gitea using `/labels-sync` command. When new labels are detected, the command will explain changes and update suggestion logic.
 
 **Reference:** [PLUGIN-PROJMAN.md](./PLUGIN-PROJMAN.md#label-taxonomy-system)
 
@@ -582,6 +587,52 @@ Previous attempts failed due to:
 
 ---
 
+## Implementation Decisions (Pre-Development)
+
+These decisions were finalized before development:
+
+### 1. Python Version: 3.10+
+- **Rationale:** Balance of modern features and wide availability
+- **Benefits:** Modern async, good type hints, widely deployed
+- **Minimum:** Python 3.10.0
+
+### 2. Wiki.js Base Structure: Needs Creation
+- **Status:** `/hyper-hive-labs` structure does NOT exist yet
+- **Action:** Run `setup_wiki_structure.py` during Phase 1.1b
+- **Script:** See MCP-WIKIJS.md for complete setup script
+- **Post-setup:** Verify at https://wiki.hyperhivelabs.com/hyper-hive-labs
+
+### 3. Testing Strategy: Both Mocks and Real APIs
+- **Unit tests:** Use mocks for fast feedback during development
+- **Integration tests:** Use real Gitea/Wiki.js APIs for validation
+- **CI/CD:** Run both test suites
+- **Developers:** Can skip integration tests locally if needed
+- **Markers:** Use pytest markers (`@pytest.mark.integration`)
+
+### 4. Token Permissions: Confirmed
+- **Gitea token:**
+  - `repo` (all) - Read/write repositories, issues, labels
+  - `read:org` - Organization information and labels
+  - `read:user` - User information
+- **Wiki.js token:**
+  - Read/create/update pages
+  - Manage tags
+  - Search access
+
+### 5. Label System: Dynamic (44 labels)
+- **Current count:** 44 labels (28 org + 16 repo)
+- **Approach:** Fetch dynamically via API, never hardcode
+- **Sync:** `/labels-sync` command updates local reference and suggestion logic
+- **New labels:** Command explains changes and asks for confirmation
+
+### 6. Branch Detection: Defense in Depth
+- **Layer 1:** MCP tools check branch and block operations
+- **Layer 2:** Agent prompts check branch and warn users
+- **Layer 3:** CLAUDE.md provides context (third layer)
+- **Rationale:** Multiple layers prevent production accidents
+
+---
+
 ## Important Reminders
 
 1. **Build projman FIRST** - Don't start pmo until projman is validated
@@ -590,6 +641,8 @@ Previous attempts failed due to:
 4. **Test with real work** - Validate with actual sprints, not just unit tests
 5. **Security first** - Branch detection must be 100% reliable
 6. **Keep it simple** - Avoid over-engineering, focus on proven workflow
+7. **Python 3.10+** - Minimum version requirement
+8. **Wiki.js setup** - Must run setup script before projman works
 
 ---
 

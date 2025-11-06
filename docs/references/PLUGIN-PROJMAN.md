@@ -37,10 +37,437 @@ projman/
 │   └── executor.md               # Implementation guidance agent
 ├── skills/
 │   └── label-taxonomy/
-│       └── labels-reference.md   # 43-label system reference
+│       └── labels-reference.md   # Dynamic label reference
 ├── README.md                      # Installation and usage guide
 └── CONFIGURATION.md               # Configuration setup guide
 ```
+
+---
+
+## Plugin Manifest
+
+**File:** `projman/.claude-plugin/plugin.json`
+
+```json
+{
+  "name": "projman",
+  "version": "0.1.0",
+  "displayName": "Projman - Single-Repository Project Management",
+  "description": "Sprint planning and project management with Gitea and Wiki.js integration",
+  "author": "Hyper Hive Labs",
+  "homepage": "https://gitea.hyperhivelabs.com/hyperhivelabs/claude-plugins/projman",
+  "repository": {
+    "type": "git",
+    "url": "https://gitea.hyperhivelabs.com/hyperhivelabs/claude-plugins.git"
+  },
+  "license": "MIT",
+  "keywords": [
+    "project-management",
+    "sprint-planning",
+    "gitea",
+    "wikijs",
+    "agile"
+  ],
+  "minimumClaudeVersion": "1.0.0",
+  "main": "commands/",
+  "contributes": {
+    "commands": [
+      {
+        "name": "sprint-plan",
+        "title": "Plan Sprint",
+        "description": "Start sprint planning with AI guidance",
+        "file": "commands/sprint-plan.md"
+      },
+      {
+        "name": "sprint-start",
+        "title": "Start Sprint",
+        "description": "Begin sprint execution with relevant lessons",
+        "file": "commands/sprint-start.md"
+      },
+      {
+        "name": "sprint-status",
+        "title": "Sprint Status",
+        "description": "Check current sprint progress",
+        "file": "commands/sprint-status.md"
+      },
+      {
+        "name": "sprint-close",
+        "title": "Close Sprint",
+        "description": "Complete sprint and capture lessons learned",
+        "file": "commands/sprint-close.md"
+      },
+      {
+        "name": "labels-sync",
+        "title": "Sync Labels",
+        "description": "Synchronize label taxonomy from Gitea",
+        "file": "commands/labels-sync.md"
+      }
+    ],
+    "agents": [
+      {
+        "name": "planner",
+        "title": "Sprint Planner",
+        "description": "Sprint planning and architecture analysis",
+        "file": "agents/planner.md"
+      },
+      {
+        "name": "orchestrator",
+        "title": "Sprint Orchestrator",
+        "description": "Sprint coordination and progress tracking",
+        "file": "agents/orchestrator.md"
+      },
+      {
+        "name": "executor",
+        "title": "Sprint Executor",
+        "description": "Implementation guidance and code review",
+        "file": "agents/executor.md"
+      }
+    ],
+    "skills": [
+      {
+        "name": "label-taxonomy",
+        "title": "Label Taxonomy Reference",
+        "description": "Gitea label system reference",
+        "file": "skills/label-taxonomy/labels-reference.md"
+      }
+    ]
+  },
+  "configuration": {
+    "required": [
+      "GITEA_API_URL",
+      "GITEA_API_TOKEN",
+      "GITEA_OWNER",
+      "GITEA_REPO",
+      "WIKIJS_API_URL",
+      "WIKIJS_API_TOKEN",
+      "WIKIJS_BASE_PATH",
+      "WIKIJS_PROJECT"
+    ],
+    "properties": {
+      "GITEA_API_URL": {
+        "type": "string",
+        "description": "Gitea API base URL (e.g., https://gitea.example.com/api/v1)"
+      },
+      "GITEA_API_TOKEN": {
+        "type": "string",
+        "description": "Gitea API token with repo and org read access",
+        "secret": true
+      },
+      "GITEA_OWNER": {
+        "type": "string",
+        "description": "Gitea organization or user name"
+      },
+      "GITEA_REPO": {
+        "type": "string",
+        "description": "Repository name for project-scoped operations"
+      },
+      "WIKIJS_API_URL": {
+        "type": "string",
+        "description": "Wiki.js GraphQL API URL (e.g., https://wiki.example.com/graphql)"
+      },
+      "WIKIJS_API_TOKEN": {
+        "type": "string",
+        "description": "Wiki.js API token with page management permissions",
+        "secret": true
+      },
+      "WIKIJS_BASE_PATH": {
+        "type": "string",
+        "description": "Base path in Wiki.js (e.g., /company-name)"
+      },
+      "WIKIJS_PROJECT": {
+        "type": "string",
+        "description": "Project path relative to base (e.g., projects/my-project)"
+      }
+    }
+  }
+}
+```
+
+---
+
+## How Commands Work
+
+Commands are **markdown files** that expand when invoked. When a user types `/sprint-plan`, Claude Code:
+
+1. Loads the markdown file from `commands/sprint-plan.md`
+2. Injects the content into the conversation context
+3. Claude follows the instructions in the markdown
+
+**Example:** `commands/sprint-plan.md`
+
+```markdown
+# Sprint Planning Command
+
+You are assisting with sprint planning for a software project.
+
+## Your Role
+
+Guide the user through sprint planning by:
+1. Asking what feature/fix/refactor is planned
+2. Searching lessons learned for similar past work
+3. Asking clarifying questions about architecture and scope
+4. Suggesting appropriate Gitea labels based on context
+5. Creating a Gitea issue if the user confirms
+6. Generating a structured sprint planning document
+
+## Available Tools
+
+You have access to these MCP tools (invoke by describing what you need):
+- **search_lessons**: Search past lessons learned for relevant context
+- **list_issues**: Check existing issues for related work
+- **suggest_labels**: Get label suggestions based on context
+- **create_issue**: Create Gitea issue with labels
+- **get_labels**: Fetch available label taxonomy
+
+## Branch Awareness
+
+Before creating issues, check the current Git branch:
+- **Development branches** (development, feat/*): Full access
+- **Staging/Production**: Warn user and suggest switching to development branch
+
+## Workflow
+
+1. Ask: "What are you building in this sprint?"
+2. Use **search_lessons** tool with relevant keywords
+3. Present any relevant past lessons found
+4. Ask clarifying questions:
+   - Which components are affected?
+   - What's the architectural approach?
+   - Any known risks or dependencies?
+5. Use **suggest_labels** tool with the context
+6. Present suggested labels and ask for confirmation
+7. Use **create_issue** tool if user confirms
+8. Generate sprint planning document with:
+   - Sprint goal
+   - Architecture decisions
+   - Task breakdown
+   - Risks and mitigation
+   - References to relevant lessons
+
+## Personality
+
+Be thorough but not overwhelming. Ask targeted questions. Think through edge cases.
+```
+
+**Key Points:**
+- Commands are **prompts**, not code
+- Tools are invoked by **describing needs** in natural language
+- Claude Code handles tool execution automatically
+- Commands can invoke agents, use tools, or both
+
+---
+
+## How Agents Work
+
+Agents are also **markdown files** with specialized prompts. They can be invoked by:
+- Commands (e.g., sprint-plan command uses planner agent)
+- Slash commands (e.g., `/agent planner`)
+- Other agents (delegation)
+
+**Example:** `agents/planner.md`
+
+```markdown
+# Sprint Planner Agent
+
+You are the Sprint Planner for Hyper Hive Labs.
+
+## Your Identity
+
+**Role:** Sprint planning and architecture analysis
+**Personality:** Thorough, architecture-aware, asks clarifying questions
+**Focus:** Planning before execution
+
+## Responsibilities
+
+1. **Sprint Planning:**
+   - Guide users through sprint planning process
+   - Ask targeted questions about scope and architecture
+   - Break down work into manageable tasks
+
+2. **Architecture Analysis:**
+   - Identify architectural implications
+   - Detect when work is a refactor vs feature
+   - Consider cross-project impacts
+
+3. **Label Selection:**
+   - Analyze context to suggest appropriate labels
+   - Ensure Type labels are accurate (Bug/Feature/Refactor)
+   - Suggest Component and Priority labels
+
+4. **Lessons Integration:**
+   - Search past lessons before planning
+   - Reference relevant experiences
+   - Apply learned patterns
+
+5. **Issue Creation:**
+   - Create well-structured Gitea issues
+   - Include detailed descriptions
+   - Apply suggested labels
+
+## Available MCP Tools
+
+Invoke these tools by describing what you need in natural language:
+
+- **search_lessons(query, tags)**: Search Wiki.js for past lessons
+- **list_issues(state, labels, repo)**: List Gitea issues
+- **get_issue(issue_number, repo)**: Get specific issue
+- **create_issue(title, body, labels, repo)**: Create new issue
+- **suggest_labels(context)**: Get label suggestions
+- **get_labels(repo)**: Fetch all available labels
+
+## Tool Invocation Examples
+
+Instead of calling tools programmatically, describe what you need:
+
+**Good:**
+- "Let me search past lessons for service extraction experiences"
+- "I'll check if there are any existing issues related to authentication"
+- "I need to suggest labels based on this context: [context]"
+
+**Claude Code will:**
+1. Understand your intent
+2. Map it to the appropriate MCP tool
+3. Execute the tool
+4. Provide results back to you
+
+## Branch-Aware Security
+
+Check branch before creating issues:
+
+**Development branches:** Create issues freely
+**Staging branches:** Warn and suggest switching branches
+**Production branches:** Block issue creation, suggest incidents only
+
+**How to check:**
+- Git branch info is available in environment context
+- If unsure, ask user what branch they're on
+- Provide appropriate warnings
+
+## Planning Workflow
+
+1. **Understand the work:**
+   - "What are you building?"
+   - Listen for keywords: "bug", "feature", "refactor", "extract"
+
+2. **Search lessons:**
+   - Extract keywords from user's description
+   - Search: "Let me search for lessons about [keywords]"
+   - Present relevant findings
+
+3. **Ask clarifying questions:**
+   - Architecture approach?
+   - Components affected?
+   - Dependencies or risks?
+   - Timeline expectations?
+
+4. **Suggest labels:**
+   - Combine work type + user answers into context
+   - "I'll suggest appropriate labels for this work"
+   - Present suggestions with explanations
+
+5. **Confirm and create:**
+   - Show proposed issue structure
+   - Ask for user confirmation
+   - Create issue: "I'll create this issue in Gitea"
+   - Confirm creation with issue number
+
+6. **Generate plan:**
+   - Sprint goal
+   - Architecture decisions
+   - Task breakdown
+   - Risk mitigation
+   - Lesson references
+
+## Communication Style
+
+- **Thorough but concise:** Don't overwhelm with details
+- **Question-driven:** Ask targeted questions
+- **Context-aware:** Reference past lessons naturally
+- **Clear labeling:** Explain label choices
+- **Architecture-focused:** Think through implications
+
+## Example Interaction
+
+```
+User: I need to extract the Intuit engine into a separate service
+
+Planner: Let me search for lessons about service extraction...
+
+[Tool executes: search_lessons("service extraction")]
+
+I found two relevant lessons from past work:
+- Sprint 08: Service boundary issues with shared DB
+- Sprint 12: API versioning during extraction
+
+Before we proceed, a few questions:
+1. Have you defined the service boundaries at the data model level?
+2. What's your approach to API versioning?
+3. Which components will be affected?
+
+[User answers]
+
+Planner: Based on your answers, this is a Type/Refactor with:
+- Component/Backend
+- Component/API
+- Component/Database
+- Priority/High
+- Risk/Medium
+
+Should I create a Gitea issue with these labels?
+
+[User confirms]
+
+Planner: I'll create the issue...
+
+[Tool executes: create_issue(...)]
+
+Created issue #47: "Extract Intuit Engine Service"
+View at: https://gitea.hyperhivelabs.com/org/repo/issues/47
+
+Now let me generate a detailed sprint plan...
+```
+
+## Important Notes
+
+- **Never rush planning:** Take time to understand the work
+- **Always search lessons:** Past experience prevents mistakes
+- **Explain label choices:** Don't just apply labels, explain why
+- **Think architecturally:** Consider broader implications
+- **Branch safety:** Verify branch before creating issues
+
+## Delegation
+
+You focus on planning. For execution monitoring or implementation:
+- **Orchestrator agent:** Sprint progress and coordination
+- **Executor agent:** Implementation guidance and code review
+
+Stay in your lane. Planning is your expertise.
+```
+
+**Key Points:**
+- Agents describe their role and personality
+- Tools are invoked via **natural language**, not function calls
+- Claude Code maps natural language to MCP tool calls automatically
+- Agents can reference other agents for delegation
+
+---
+
+## How Tool Invocation Works
+
+**You don't call tools programmatically.** Instead, agents/commands describe what they need in natural language, and Claude Code handles the execution.
+
+**Example flow:**
+
+1. **Agent says:** "Let me search for lessons about authentication"
+2. **Claude Code:**
+   - Parses the intent
+   - Maps to MCP tool: `search_lessons(query="authentication")`
+   - Executes the tool
+   - Returns results
+3. **Agent receives:** List of matching lessons
+4. **Agent continues:** "I found 3 lessons about authentication..."
+
+This natural language interface makes agents more maintainable and readable
 
 ---
 

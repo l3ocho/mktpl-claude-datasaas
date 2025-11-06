@@ -68,6 +68,21 @@ GITEA_API_TOKEN=your_gitea_token
 GITEA_OWNER=hyperhivelabs
 ```
 
+**Generating Gitea API Token:**
+
+1. Log into Gitea: https://gitea.hyperhivelabs.com
+2. Navigate to: **Settings** → **Applications** → **Manage Access Tokens**
+3. Click **Generate New Token**
+4. Token configuration:
+   - **Token Name:** `claude-code-mcp`
+   - **Required Permissions:**
+     - ✅ `repo` (all) - Read/write access to repositories, issues, labels
+     - ✅ `read:org` - Read organization information and labels
+     - ✅ `read:user` - Read user information
+5. Click **Generate Token**
+6. **Important:** Copy the token immediately (shown only once)
+7. Add to configuration file (see setup below)
+
 **Setup:**
 ```bash
 # Create config directory
@@ -76,12 +91,15 @@ mkdir -p ~/.config/claude
 # Create gitea.env
 cat > ~/.config/claude/gitea.env << EOF
 GITEA_API_URL=https://gitea.hyperhivelabs.com/api/v1
-GITEA_API_TOKEN=your_token
+GITEA_API_TOKEN=your_token_here
 GITEA_OWNER=hyperhivelabs
 EOF
 
-# Secure the file
+# Secure the file (important!)
 chmod 600 ~/.config/claude/gitea.env
+
+# Verify setup
+cat ~/.config/claude/gitea.env
 ```
 
 ### Project-Level Configuration
@@ -210,13 +228,15 @@ mcp-servers/gitea/
 **File:** `mcp-servers/gitea/requirements.txt`
 
 ```txt
-anthropic-sdk>=0.18.0    # MCP SDK
+mcp>=0.9.0               # MCP SDK from Anthropic
 python-dotenv>=1.0.0     # Environment variable loading
 requests>=2.31.0         # HTTP client for Gitea API
 pydantic>=2.5.0          # Data validation
 pytest>=7.4.3            # Testing framework
 pytest-asyncio>=0.23.0   # Async testing support
 ```
+
+**Python Version:** 3.10+ required
 
 **Installation:**
 ```bash
@@ -433,22 +453,439 @@ class GiteaClient:
 
 ---
 
+## MCP Server Implementation
+
+### Overview
+
+The MCP (Model Context Protocol) server exposes Gitea tools to Claude Code via JSON-RPC 2.0 over stdio.
+
+**Communication Flow:**
+```
+Claude Code <--> stdio <--> MCP Server <--> Gitea API
+```
+
+### Server Entry Point
+
+**File:** `mcp-servers/gitea/mcp_server/server.py`
+
+```python
+"""
+MCP Server entry point for Gitea integration.
+"""
+import asyncio
+import logging
+import json
+from mcp.server import Server
+from mcp.server.stdio import stdio_server
+from mcp.types import Tool, TextContent
+
+from .config import GiteaConfig
+from .gitea_client import GiteaClient
+from .tools.issues import IssueTools
+from .tools.labels import LabelTools
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+
+class GiteaMCPServer:
+    """MCP Server for Gitea integration"""
+
+    def __init__(self):
+        self.server = Server("gitea-mcp")
+        self.config = None
+        self.client = None
+        self.issue_tools = None
+        self.label_tools = None
+
+    async def initialize(self):
+        """Initialize server and load configuration"""
+        try:
+            config_loader = GiteaConfig()
+            self.config = config_loader.load()
+
+            self.client = GiteaClient()
+            self.issue_tools = IssueTools(self.client)
+            self.label_tools = LabelTools(self.client)
+
+            logger.info(f"Gitea MCP Server initialized in {self.config['mode']} mode")
+        except Exception as e:
+            logger.error(f"Failed to initialize: {e}")
+            raise
+
+    def setup_tools(self):
+        """Register all available tools with the MCP server"""
+
+        @self.server.list_tools()
+        async def list_tools() -> list[Tool]:
+            """Return list of available tools"""
+            return [
+                Tool(
+                    name="list_issues",
+                    description="List issues from Gitea repository",
+                    inputSchema={
+                        "type": "object",
+                        "properties": {
+                            "state": {
+                                "type": "string",
+                                "enum": ["open", "closed", "all"],
+                                "default": "open"
+                            },
+                            "labels": {
+                                "type": "array",
+                                "items": {"type": "string"}
+                            },
+                            "repo": {"type": "string"}
+                        }
+                    }
+                ),
+                Tool(
+                    name="get_issue",
+                    description="Get specific issue details",
+                    inputSchema={
+                        "type": "object",
+                        "properties": {
+                            "issue_number": {"type": "integer"},
+                            "repo": {"type": "string"}
+                        },
+                        "required": ["issue_number"]
+                    }
+                ),
+                Tool(
+                    name="create_issue",
+                    description="Create a new issue in Gitea",
+                    inputSchema={
+                        "type": "object",
+                        "properties": {
+                            "title": {"type": "string"},
+                            "body": {"type": "string"},
+                            "labels": {
+                                "type": "array",
+                                "items": {"type": "string"}
+                            },
+                            "repo": {"type": "string"}
+                        },
+                        "required": ["title", "body"]
+                    }
+                ),
+                Tool(
+                    name="update_issue",
+                    description="Update existing issue",
+                    inputSchema={
+                        "type": "object",
+                        "properties": {
+                            "issue_number": {"type": "integer"},
+                            "title": {"type": "string"},
+                            "body": {"type": "string"},
+                            "state": {
+                                "type": "string",
+                                "enum": ["open", "closed"]
+                            },
+                            "labels": {
+                                "type": "array",
+                                "items": {"type": "string"}
+                            },
+                            "repo": {"type": "string"}
+                        },
+                        "required": ["issue_number"]
+                    }
+                ),
+                Tool(
+                    name="add_comment",
+                    description="Add comment to issue",
+                    inputSchema={
+                        "type": "object",
+                        "properties": {
+                            "issue_number": {"type": "integer"},
+                            "comment": {"type": "string"},
+                            "repo": {"type": "string"}
+                        },
+                        "required": ["issue_number", "comment"]
+                    }
+                ),
+                Tool(
+                    name="get_labels",
+                    description="Get all available labels (org + repo)",
+                    inputSchema={
+                        "type": "object",
+                        "properties": {
+                            "repo": {"type": "string"}
+                        }
+                    }
+                ),
+                Tool(
+                    name="suggest_labels",
+                    description="Analyze context and suggest appropriate labels",
+                    inputSchema={
+                        "type": "object",
+                        "properties": {
+                            "context": {"type": "string"}
+                        },
+                        "required": ["context"]
+                    }
+                ),
+                Tool(
+                    name="aggregate_issues",
+                    description="Fetch issues across all repositories (PMO mode)",
+                    inputSchema={
+                        "type": "object",
+                        "properties": {
+                            "state": {
+                                "type": "string",
+                                "enum": ["open", "closed", "all"],
+                                "default": "open"
+                            },
+                            "labels": {
+                                "type": "array",
+                                "items": {"type": "string"}
+                            }
+                        }
+                    }
+                )
+            ]
+
+        @self.server.call_tool()
+        async def call_tool(name: str, arguments: dict) -> list[TextContent]:
+            """Handle tool invocation"""
+            try:
+                # Route to appropriate tool handler
+                if name == "list_issues":
+                    result = await self.issue_tools.list_issues(**arguments)
+                elif name == "get_issue":
+                    result = await self.issue_tools.get_issue(**arguments)
+                elif name == "create_issue":
+                    result = await self.issue_tools.create_issue(**arguments)
+                elif name == "update_issue":
+                    result = await self.issue_tools.update_issue(**arguments)
+                elif name == "add_comment":
+                    result = await self.issue_tools.add_comment(**arguments)
+                elif name == "get_labels":
+                    result = await self.label_tools.get_labels(**arguments)
+                elif name == "suggest_labels":
+                    result = await self.label_tools.suggest_labels(**arguments)
+                elif name == "aggregate_issues":
+                    result = await self.issue_tools.aggregate_issues(**arguments)
+                else:
+                    raise ValueError(f"Unknown tool: {name}")
+
+                return [TextContent(
+                    type="text",
+                    text=json.dumps(result, indent=2)
+                )]
+
+            except Exception as e:
+                logger.error(f"Tool {name} failed: {e}")
+                return [TextContent(
+                    type="text",
+                    text=f"Error: {str(e)}"
+                )]
+
+    async def run(self):
+        """Run the MCP server"""
+        await self.initialize()
+        self.setup_tools()
+
+        async with stdio_server() as (read_stream, write_stream):
+            await self.server.run(
+                read_stream,
+                write_stream,
+                self.server.create_initialization_options()
+            )
+
+
+async def main():
+    """Main entry point"""
+    server = GiteaMCPServer()
+    await server.run()
+
+
+if __name__ == "__main__":
+    asyncio.run(main())
+```
+
+### Tool Implementation with Async Wrappers
+
+Since the Gitea client uses `requests` (synchronous), but MCP tools must be async:
+
+```python
+# mcp-servers/gitea/mcp_server/tools/issues.py
+import asyncio
+
+class IssueTools:
+    def __init__(self, gitea_client):
+        self.gitea = gitea_client
+
+    async def list_issues(self, state='open', labels=None, repo=None):
+        """
+        List issues from repository.
+
+        Wraps sync Gitea client method in executor for async compatibility.
+        """
+        loop = asyncio.get_event_loop()
+        return await loop.run_in_executor(
+            None,
+            self.gitea.list_issues,
+            state,
+            labels,
+            repo
+        )
+
+    async def create_issue(self, title, body, labels=None, repo=None):
+        """Create new issue"""
+        loop = asyncio.get_event_loop()
+        return await loop.run_in_executor(
+            None,
+            self.gitea.create_issue,
+            title,
+            body,
+            labels,
+            repo
+        )
+
+    # Other methods follow same pattern
+```
+
+### Branch Detection in MCP Tools
+
+Implement branch-aware security at the MCP level:
+
+```python
+# mcp-servers/gitea/mcp_server/tools/issues.py
+import subprocess
+
+class IssueTools:
+    def _get_current_branch(self) -> str:
+        """Get current git branch"""
+        try:
+            result = subprocess.run(
+                ['git', 'rev-parse', '--abbrev-ref', 'HEAD'],
+                capture_output=True,
+                text=True,
+                check=True
+            )
+            return result.stdout.strip()
+        except subprocess.CalledProcessError:
+            return "unknown"
+
+    def _check_branch_permissions(self, operation: str) -> bool:
+        """Check if operation is allowed on current branch"""
+        branch = self._get_current_branch()
+
+        # Production branches (read-only except incidents)
+        if branch in ['main', 'master'] or branch.startswith('prod/'):
+            return operation in ['list_issues', 'get_issue', 'get_labels']
+
+        # Staging branches (read-only for code)
+        if branch == 'staging' or branch.startswith('stage/'):
+            return operation in ['list_issues', 'get_issue', 'get_labels', 'create_issue']
+
+        # Development branches (full access)
+        if branch in ['development', 'develop'] or branch.startswith(('feat/', 'feature/', 'dev/')):
+            return True
+
+        # Unknown branch - be restrictive
+        return False
+
+    async def create_issue(self, title, body, labels=None, repo=None):
+        """Create issue with branch check"""
+        if not self._check_branch_permissions('create_issue'):
+            branch = self._get_current_branch()
+            raise PermissionError(
+                f"Cannot create issues on branch '{branch}'. "
+                f"Switch to a development branch to create issues."
+            )
+
+        loop = asyncio.get_event_loop()
+        return await loop.run_in_executor(
+            None,
+            self.gitea.create_issue,
+            title,
+            body,
+            labels,
+            repo
+        )
+```
+
+### Testing the MCP Server
+
+**Manual testing:**
+```bash
+cd mcp-servers/gitea
+source .venv/bin/activate
+python -m mcp_server.server
+```
+
+**Unit tests with mocks:**
+```python
+# tests/test_server.py
+import pytest
+from unittest.mock import Mock, patch
+
+@pytest.mark.asyncio
+async def test_server_initialization():
+    """Test server initializes correctly"""
+    from mcp_server.server import GiteaMCPServer
+
+    with patch('mcp_server.server.GiteaClient'):
+        server = GiteaMCPServer()
+        await server.initialize()
+
+        assert server.client is not None
+        assert server.config is not None
+```
+
+**Integration tests with real API:**
+```python
+# tests/test_integration.py
+import pytest
+
+@pytest.mark.integration
+@pytest.mark.asyncio
+async def test_list_issues_real_api():
+    """Test against real Gitea instance"""
+    from mcp_server.server import GiteaMCPServer
+
+    server = GiteaMCPServer()
+    await server.initialize()
+
+    result = await server.issue_tools.list_issues(state='open')
+    assert isinstance(result, list)
+```
+
+**Run tests:**
+```bash
+# Unit tests only (with mocks)
+pytest tests/ -m "not integration"
+
+# Integration tests (requires Gitea access)
+pytest tests/ -m integration
+
+# All tests
+pytest tests/
+```
+
+---
+
 ## Label Taxonomy System
 
-### 43-Label System
+### Dynamic Label System
 
-**Organization Labels (27):**
+The label taxonomy is **fetched dynamically from Gitea** at runtime. The current system has 44 labels:
+
+**Organization Labels (28):**
 - Agent/2
 - Complexity/3
 - Efforts/5
 - Priority/4
 - Risk/3
 - Source/4
-- Type/6 (includes Type/Refactor)
+- Type/6 (includes Type/Bug, Type/Feature, Type/Refactor, Type/Documentation, Type/Test, Type/Chore)
 
 **Repository Labels (16):**
-- Component/9
-- Tech/7
+- Component/9 (Backend, Frontend, API, Database, Auth, Deploy, Testing, Docs, Infra)
+- Tech/7 (Python, JavaScript, Docker, PostgreSQL, Redis, Vue, FastAPI)
+
+**Note:** Label count and composition may change. The `/labels-sync` command fetches the latest labels from Gitea and updates suggestion logic accordingly.
 
 ### Label Suggestion Logic
 
