@@ -1,0 +1,148 @@
+{
+	"folders": [
+		{
+			"path": "."
+		}
+	],
+	"settings": {
+		// ===== Terminal Settings =====
+		"terminal.integrated.defaultLocation": "editor",
+		"terminal.integrated.fontSize": 12,
+		// ===== Python Interpreter & Environment =====
+		"python.defaultInterpreterPath": "${workspaceFolder}/.venv/bin/python",
+		"python.terminal.activateEnvInCurrentTerminal": true,
+		"python.envFile": "${workspaceFolder}/.env",
+		// ===== Python Analysis & Type Checking =====
+		"python.analysis.autoFormatStrings": true,
+		"python.analysis.typeCheckingMode": "standard",
+		"python.analysis.completeFunctionParens": true,
+		"python.analysis.inlayHints.functionReturnTypes": true,
+		"python.analysis.inlayHints.variableTypes": true,
+		"python.analysis.extraPaths": [
+			"${workspaceFolder}/src"
+		],
+		"python.analysis.autoImportCompletions": true,
+		// ===== Python Testing (pytest) =====
+		"python.testing.pytestEnabled": true,
+		"python.testing.unittestEnabled": false,
+		"python.testing.pytestArgs": [
+			"tests",
+			"-v",
+			"--tb=short"
+		],
+		"python.testing.cwd": "${workspaceFolder}",
+		"python.testing.autoTestDiscoverOnSaveEnabled": true,
+		// ===== Editor General Settings =====
+		"editor.colorDecorators": true,
+		"editor.minimap.autohide": "none",
+		"editor.formatOnSave": true,
+		"editor.codeActionsOnSave": {
+			"source.organizeImports": "explicit"
+		},
+		"editor.folding": true,
+		"editor.foldingStrategy": "auto",
+		// ===== Workbench Settings =====
+		"workbench.colorCustomizations": {
+			"statusBar.background": "#028bb4",
+			"statusBar.foreground": "#ffffff",
+			"statusBar.noFolderBackground": "#000000",
+			"statusBar.debuggingBackground": "#028bb4",
+			"statusBar.border": "#028bb4",
+			"statusBarItem.remoteBackground": "#036685"
+		},
+		"workbench.panel.defaultLocation": "right",
+		// ===== File Settings =====
+		"files.trimTrailingWhitespace": true,
+		"files.insertFinalNewline": true,
+		"files.exclude": {
+			"**/__pycache__": true,
+			"**/*.pyc": true,
+			"**/.pytest_cache": true,
+			"**/.mypy_cache": true,
+			"**/.venv": true,
+			"**/.env": false,
+			"**/.vscode": false,
+			"**/.DS_Store": true,
+			"**/.claude": false,
+			"**/.coverage": true,
+			"**/htmlcov": true
+		},
+		// ===== Python-Specific Settings =====
+		"[python]": {
+			"diffEditor.ignoreTrimWhitespace": false,
+			"editor.formatOnType": true,
+			"editor.wordBasedSuggestions": "off",
+			"editor.defaultFormatter": "ms-python.black-formatter",
+			"editor.codeActionsOnSave": {
+				"source.organizeImports": "explicit"
+			}
+		},
+		// ===== Black Formatter Settings =====
+		"black-formatter.args": [
+			"--line-length=88"
+		],
+		// ===== JSON Settings =====
+		"json.format.enable": true,
+		"json.format.keepLines": true,
+		"[json]": {
+			"editor.quickSuggestions": {
+				"strings": true
+			},
+			"editor.suggest.insertMode": "replace",
+			"editor.defaultFormatter": "vscode.json-language-features"
+		},
+		// ===== Favorites Extension Settings =====
+		"favorites.groups": [
+			"Core",
+			"Planning",
+			"Plugins",
+			"MCP",
+			"Skills"
+		],
+		"favorites.currentGroup": "Core",
+		"favorites.resources": [
+			{
+				"filePath": "CLAUDE.md",
+				"group": "Core"
+			},
+			{
+				"filePath": "README.md",
+				"group": "Core"
+			},
+			{
+				"filePath": "hhl-claude-agents.code-workspace",
+				"group": "Core"
+			},
+			{
+				"filePath": ".gitignore",
+				"group": "Core"
+			},
+			{
+				"filePath": "docs/references/projman-pmo/DOCUMENT-INDEX.md",
+				"group": "Planning"
+			},
+			{
+				"filePath": "docs/references/projman-pmo/CORRECT-ARCHITECTURE.md",
+				"group": "Planning"
+			},
+			{
+				"filePath": "docs/references/projman-pmo/projman-implementation-plan-updated.md",
+				"group": "Planning"
+			},
+			{
+				"filePath": "docs/references/projman-pmo/projman-python-quickstart.md",
+				"group": "Planning"
+			},
+			{
+				"filePath": "docs/references/projman-pmo/two-mcp-architecture-guide.md",
+				"group": "Planning"
+			},
+			{
+				"filePath": ".claude-plugins/marketplace.json",
+				"group": "Plugins"
+			}
+		]
+
+
+	}
+}
