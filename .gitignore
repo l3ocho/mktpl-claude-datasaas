@@ -35,7 +35,7 @@ env/
 
 # VS Code
 .vscode/
-*.code-workspace
+# *.code-workspace
 
 # Jupyter Notebook
 .ipynb_checkpoints
