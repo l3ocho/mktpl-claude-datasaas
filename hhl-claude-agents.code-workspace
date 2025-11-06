@@ -41,14 +41,16 @@
 		},
 		"editor.folding": true,
 		"editor.foldingStrategy": "auto",
+		// ===== Workbench Settings =====
 		"workbench.colorCustomizations": {
-			"statusBar.background": "#d16003",
+			"statusBar.background": "#028bb4",
 			"statusBar.foreground": "#ffffff",
 			"statusBar.noFolderBackground": "#000000",
-			"statusBar.debuggingBackground": "#d16003",
-			"statusBar.border": "#d16003",
-			"statusBarItem.remoteBackground": "#aa4f04"
+			"statusBar.debuggingBackground": "#028bb4",
+			"statusBar.border": "#028bb4",
+			"statusBarItem.remoteBackground": "#036685"
 		},
+		"workbench.panel.defaultLocation": "right",
 		// ===== File Settings =====
 		"files.trimTrailingWhitespace": true,
 		"files.insertFinalNewline": true,
@@ -139,8 +141,8 @@
 				"filePath": ".claude-plugins/marketplace.json",
 				"group": "Plugins"
 			}
-		],
-		"workbench.panel.defaultLocation": "right"
+		]
+
 
 	}
 }
