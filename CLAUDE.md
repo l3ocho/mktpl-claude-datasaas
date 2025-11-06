@@ -7,9 +7,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 This repository contains development of two Claude Code plugins for project management:
 
 1. **`projman`** - Single-repository project management plugin (build first)
-2. **`pmo`** - Multi-project PMO coordination plugin (build second)
+2. **`projman-pmo`** - Multi-project PMO coordination plugin (build second)
 
-These plugins transform a proven 15-sprint workflow into reusable, distributable tools for managing software development with Claude Code, Gitea, and agile methodologies.
+These plugins transform a proven 15-sprint workflow into reusable, distributable tools for managing software development with Claude Code, Gitea, Wiki.js, and agile methodologies.
+
+**Status:** Planning phase complete, ready for implementation (Phase 1)
 
 ## Core Architecture
 
@@ -41,9 +43,9 @@ The plugins implement a three-agent architecture that mirrors the proven workflo
 
 ### MCP Server Integration
 
-Both plugins use a Gitea MCP server (`mcp-server/`) to expose Gitea API as tools:
+Both plugins use **two shared MCP servers** at repository root level (`mcp-servers/`):
 
-**Core Tools:**
+**1. Gitea MCP Server** (Python)
 - `list_issues` - Query issues with filters
 - `get_issue` - Fetch single issue details
 - `create_issue` - Create new issue with labels
@@ -52,7 +54,21 @@ Both plugins use a Gitea MCP server (`mcp-server/`) to expose Gitea API as tools
 - `get_labels` - Fetch org + repo label taxonomy
 - `suggest_labels` - Analyze context and suggest appropriate labels
 
-Configuration lives in `.mcp.json` and uses environment variables for Gitea credentials.
+**2. Wiki.js MCP Server** (Python, GraphQL)
+- `search_pages` - Search Wiki.js pages by keywords/tags
+- `get_page` - Fetch specific page content
+- `create_page` - Create new Wiki page
+- `update_page` - Modify existing page
+- `list_pages` - List pages in a path
+- `create_lesson` - Create lessons learned document
+- `search_lessons` - Search past lessons by tags
+- `tag_lesson` - Add tags to lessons learned
+
+**Key Architecture Points:**
+- MCP servers are **shared** by both plugins at `mcp-servers/gitea` and `mcp-servers/wikijs`
+- Each MCP server detects its mode (project-scoped vs company-wide) based on environment variables
+- Configuration uses hybrid approach (system-level + project-level)
+- Both plugins reference `../mcp-servers/` in their `.mcp.json` files
 
 ## Branch-Aware Security Model
 
@@ -100,20 +116,37 @@ The label system includes:
 
 **Critical Feature:** After 15 sprints without lesson capture, repeated mistakes occurred (e.g., Claude Code infinite loops on similar issues 2-3 times).
 
-**Structure:**
+**Wiki.js Structure:**
 ```
-docs/lessons-learned/
-├── INDEX.md                    # Master index with searchable tags
-├── sprints/                    # Per-sprint lessons
-├── patterns/                   # Recurring patterns (deployment, architecture, Claude issues)
-└── templates/                  # Lesson template
+Wiki.js: https://wiki.hyperhivelabs.com
+└── /hyper-hive-labs/
+    ├── projects/                       # Project-specific documentation
+    │   ├── cuisineflow/
+    │   │   ├── lessons-learned/
+    │   │   │   ├── sprints/
+    │   │   │   ├── patterns/
+    │   │   │   └── INDEX.md
+    │   │   └── documentation/
+    │   ├── cuisineflow-site/
+    │   ├── intuit-engine/
+    │   └── hhl-site/
+    ├── company/                        # Company-wide documentation
+    │   ├── processes/
+    │   ├── standards/
+    │   └── tools/
+    └── shared/                         # Cross-project resources
+        ├── architecture-patterns/
+        ├── best-practices/
+        └── tech-stack/
 ```
 
 **Workflow:**
-- Orchestrator captures lessons at sprint close
-- Planner searches relevant lessons at sprint start
-- INDEX.md maintained automatically
+- Orchestrator captures lessons at sprint close via Wiki.js MCP
+- Planner searches relevant lessons at sprint start using GraphQL search
+- INDEX.md maintained automatically via Wiki.js API
+- Tags enable cross-project lesson discovery
 - Focus on preventable repetitions, not every detail
+- Web interface for team review and editing
 
 ## Development Workflow
 
@@ -125,48 +158,93 @@ docs/lessons-learned/
 
 See [docs/reference-material/projman-implementation-plan.md](docs/reference-material/projman-implementation-plan.md) for the complete 12-phase implementation plan.
 
-### Plugin Structure
+### Repository Structure (DEFINITIVE)
+
+⚠️ **See `docs/CORRECT-ARCHITECTURE.md` for the authoritative structure reference**
 
 ```
-projman/
+hyperhivelabs/claude-plugins/
 ├── .claude-plugin/
-│   └── plugin.json           # Plugin manifest
-├── commands/                 # Slash commands (user entry points)
-│   ├── sprint-plan.md
-│   ├── sprint-start.md
-│   ├── sprint-status.md
-│   ├── sprint-close.md
-│   ├── issue-create.md
-│   ├── issue-list.md
-│   ├── labels-sync.md
-│   └── deploy-check.md
-├── agents/                   # Agent personalities and workflows
-│   ├── planner.md
-│   ├── orchestrator.md
-│   └── executor.md
-├── skills/                   # Supporting knowledge (not orchestrators)
-│   ├── gitea-api/
-│   ├── label-taxonomy/
-│   ├── lessons-learned/
-│   ├── agile-pm/
-│   └── branch-strategy/
-├── hooks/                    # Automation (post-task sync, staging guards)
-│   └── hooks.json
-├── .mcp.json                 # MCP server configuration
-├── mcp-server/               # Gitea API integration
-│   ├── package.json
-│   ├── tsconfig.json
-│   └── src/
-└── README.md
+│   └── marketplace.json
+├── mcp-servers/                    # ← SHARED BY BOTH PLUGINS
+│   ├── gitea/
+│   │   ├── .venv/
+│   │   ├── requirements.txt        # Python dependencies
+│   │   ├── mcp_server/
+│   │   │   ├── __init__.py
+│   │   │   ├── server.py
+│   │   │   ├── config.py           # Mode detection (project/company)
+│   │   │   ├── gitea_client.py
+│   │   │   └── tools/
+│   │   │       ├── issues.py
+│   │   │       └── labels.py
+│   │   └── tests/
+│   └── wikijs/
+│       ├── .venv/
+│       ├── requirements.txt        # Python + GraphQL dependencies
+│       ├── mcp_server/
+│       │   ├── __init__.py
+│       │   ├── server.py
+│       │   ├── config.py           # Mode detection (project/company)
+│       │   ├── wikijs_client.py    # GraphQL client
+│       │   └── tools/
+│       │       ├── pages.py
+│       │       ├── lessons_learned.py
+│       │       └── documentation.py
+│       └── tests/
+├── projman/                        # ← PROJECT PLUGIN
+│   ├── .claude-plugin/
+│   │   └── plugin.json
+│   ├── .mcp.json                   # Points to ../mcp-servers/
+│   ├── commands/
+│   │   ├── sprint-plan.md
+│   │   ├── sprint-start.md
+│   │   ├── sprint-status.md
+│   │   ├── sprint-close.md
+│   │   └── labels-sync.md
+│   ├── agents/
+│   │   ├── planner.md
+│   │   ├── orchestrator.md
+│   │   └── executor.md
+│   ├── skills/
+│   │   └── label-taxonomy/
+│   │       └── labels-reference.md
+│   ├── README.md
+│   └── CONFIGURATION.md
+└── projman-pmo/                    # ← PMO PLUGIN
+    ├── .claude-plugin/
+    │   └── plugin.json
+    ├── .mcp.json                   # Points to ../mcp-servers/
+    ├── commands/
+    │   ├── pmo-status.md
+    │   ├── pmo-priorities.md
+    │   ├── pmo-dependencies.md
+    │   └── pmo-schedule.md
+    ├── agents/
+    │   └── pmo-coordinator.md
+    └── README.md
 ```
 
 ### Key Design Decisions
 
-**MCP vs Direct API:**
-- Use MCP Server for Gitea integration
-- Allows agents to use tools naturally in conversation
-- Easier to test independently
-- Future-proof for additional integrations
+**Two MCP Servers (Shared Architecture):**
+- **Gitea MCP**: Issues, labels, repository management
+- **Wiki.js MCP**: Documentation, lessons learned, knowledge base
+- Servers are **shared** between both plugins at repository root
+- Mode detection based on environment variables (project vs company-wide)
+- Benefits: Single source of truth, fix bugs once, professional architecture
+
+**Python Implementation:**
+- Python chosen over Node.js for MCP servers
+- Better suited for configuration management and modular code
+- Easier to maintain and extend
+- Virtual environment (.venv) per MCP server
+
+**Hybrid Configuration:**
+- **System-level**: `~/.config/claude/gitea.env` and `wikijs.env` (credentials)
+- **Project-level**: `project-root/.env` (repository and path specification)
+- Merge strategy: project overrides system
+- Benefits: Single token per service, easy multi-project setup
 
 **Skills as Knowledge, Not Orchestrators:**
 - Skills provide supporting knowledge loaded when relevant
@@ -188,18 +266,24 @@ projman/
 
 ## Multi-Project Context (PMO Plugin)
 
-The `pmo` plugin will coordinate interdependent projects:
+The `projman-pmo` plugin will coordinate interdependent projects:
 - **CuisineFlow** - Main product
 - **CuisineFlow-Site** - Demo sync + customer gateway
 - **Intuit Engine Service** - API aggregator extraction (imminent)
 - **HHL-Site** - Company presence
 
 PMO plugin adds:
-- Cross-project issue aggregation
+- Cross-project issue aggregation (all repos in organization)
 - Dependency tracking and visualization
 - Resource allocation across projects
 - Deployment coordination
 - Multi-project prioritization
+- Company-wide lessons learned search
+
+**Configuration Difference:**
+- PMO operates at company level (no `GITEA_REPO` or `WIKIJS_PROJECT`)
+- Accesses entire `/hyper-hive-labs` Wiki.js namespace
+- Queries all repositories in organization
 
 Build PMO plugin AFTER projman is working and validated.
 
@@ -231,3 +315,43 @@ Test in real CuisineFlow repository with actual Gitea instance before distributi
 - **Lessons learned is critical** - Prevents repeated mistakes (e.g., Claude infinite loops)
 - **Type/Refactor label** - Newly implemented at org level for architectural work
 - **Branch detection must be 100% reliable** - Prevents production accidents
+- **Python for MCP servers** - Use Python 3.8+ with virtual environments
+- **Wiki.js structure** - All HHL content under `/hyper-hive-labs` namespace
+
+## Documentation Index
+
+This repository contains comprehensive planning documentation:
+
+- **`docs/CORRECT-ARCHITECTURE.md`** - ⚠️ DEFINITIVE repository structure reference
+- **`docs/DOCUMENT-INDEX.md`** - Complete guide to all planning documents
+- **`docs/projman-implementation-plan-updated.md`** - Full 12-phase implementation plan
+- **`docs/projman-python-quickstart.md`** - Python-specific implementation guide
+- **`docs/two-mcp-architecture-guide.md`** - Deep dive into two-MCP architecture
+
+**Start with:** `docs/DOCUMENT-INDEX.md` for navigation guidance
+
+## Recent Updates (Updated: 2025-06-11)
+
+### Planning Phase Complete
+- Comprehensive 12-phase implementation plan finalized
+- Architecture decisions documented and validated
+- Two-MCP-server approach confirmed (Gitea + Wiki.js)
+- Python selected for MCP server implementation
+- Hybrid configuration strategy defined (system + project level)
+- Wiki.js structure planned at `/hyper-hive-labs`
+- Repository structure designed with shared MCP servers
+- `claude-plugin-developer` skill added to project
+
+### Key Architectural Decisions Made
+1. **Shared MCP Servers**: Both plugins use the same MCP codebase at `mcp-servers/`
+2. **Mode Detection**: MCP servers detect project vs company-wide mode via environment variables
+3. **Python Implementation**: MCP servers written in Python (not Node.js) for better configuration handling
+4. **Wiki.js Integration**: Lessons learned and documentation moved to Wiki.js for better collaboration
+5. **Hybrid Config**: System-level credentials + project-level paths for flexibility
+
+### Next Steps
+- Begin Phase 1.1a: Gitea MCP Server implementation
+- Set up Python virtual environments
+- Create configuration loaders
+- Implement core Gitea tools (issues, labels)
+- Write integration tests
