@@ -55,10 +55,10 @@ projman/
   "displayName": "Projman - Single-Repository Project Management",
   "description": "Sprint planning and project management with Gitea and Wiki.js integration",
   "author": "Hyper Hive Labs",
-  "homepage": "https://gitea.hyperhivelabs.com/hyperhivelabs/claude-plugins/projman",
+  "homepage": "https://gitea.hotserv.cloud/hhl-infra/claude-code-hhl-toolkit/projman",
   "repository": {
     "type": "git",
-    "url": "https://gitea.hyperhivelabs.com/hyperhivelabs/claude-plugins.git"
+    "url": "https://gitea.hotserv.cloud/hhl-infra/claude-code-hhl-toolkit.git"
   },
   "license": "MIT",
   "keywords": [
@@ -422,7 +422,7 @@ Planner: I'll create the issue...
 [Tool executes: create_issue(...)]
 
 Created issue #47: "Extract Intuit Engine Service"
-View at: https://gitea.hyperhivelabs.com/org/repo/issues/47
+View at: https://gitea.hotserv.cloud/org/repo/issues/47
 
 Now let me generate a detailed sprint plan...
 ```

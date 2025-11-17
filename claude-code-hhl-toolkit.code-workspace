@@ -110,7 +110,7 @@
 				"group": "Core"
 			},
 			{
-				"filePath": "hhl-claude-agents.code-workspace",
+				"filePath": "claude-code-hhl-toolkit.code-workspace",
 				"group": "Core"
 			},
 			{
@@ -141,7 +141,8 @@
 				"filePath": ".claude-plugins/marketplace.json",
 				"group": "Plugins"
 			}
-		]
+		],
+		"chat.disableAIFeatures": true
 
 
 	}

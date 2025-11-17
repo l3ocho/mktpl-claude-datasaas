@@ -163,7 +163,7 @@ See [docs/reference-material/projman-implementation-plan.md](docs/reference-mate
 ⚠️ **See `docs/CORRECT-ARCHITECTURE.md` for the authoritative structure reference**
 
 ```
-hyperhivelabs/claude-plugins/
+hhl-infra/claude-code-hhl-toolkit/
 ├── .claude-plugin/
 │   └── marketplace.json
 ├── mcp-servers/                    # ← SHARED BY BOTH PLUGINS
