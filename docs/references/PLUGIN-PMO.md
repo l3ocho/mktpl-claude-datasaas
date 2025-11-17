@@ -49,10 +49,10 @@ projman-pmo/
   "displayName": "Projman PMO - Multi-Project Coordination",
   "description": "PMO coordination with cross-project visibility, dependency tracking, and resource management",
   "author": "Hyper Hive Labs",
-  "homepage": "https://gitea.hyperhivelabs.com/hyperhivelabs/claude-plugins/projman-pmo",
+  "homepage": "https://gitea.hotserv.cloud/hhl-infra/claude-code-hhl-toolkit/projman-pmo",
   "repository": {
     "type": "git",
-    "url": "https://gitea.hyperhivelabs.com/hyperhivelabs/claude-plugins.git"
+    "url": "https://gitea.hotserv.cloud/hhl-infra/claude-code-hhl-toolkit.git"
   },
   "license": "MIT",
   "keywords": [

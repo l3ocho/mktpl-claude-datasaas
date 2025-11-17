@@ -80,7 +80,7 @@ The MCP servers detect their operating mode based on environment variables:
 ## Repository Structure
 
 ```
-hyperhivelabs/claude-plugins/
+hhl-infra/claude-code-hhl-toolkit/
 ├── mcp-servers/                    # ← SHARED BY BOTH PLUGINS
 │   ├── gitea/                      # Gitea MCP Server
 │   │   ├── .venv/
