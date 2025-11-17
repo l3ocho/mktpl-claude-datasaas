@@ -63,14 +63,14 @@ def load(self):
 **File:** `~/.config/claude/gitea.env`
 
 ```bash
-GITEA_API_URL=https://gitea.hyperhivelabs.com/api/v1
+GITEA_API_URL=https://gitea.hotserv.cloud/api/v1
 GITEA_API_TOKEN=your_gitea_token
-GITEA_OWNER=hyperhivelabs
+GITEA_OWNER=hhl-infra
 ```
 
 **Generating Gitea API Token:**
 
-1. Log into Gitea: https://gitea.hyperhivelabs.com
+1. Log into Gitea: https://gitea.hotserv.cloud
 2. Navigate to: **Settings** → **Applications** → **Manage Access Tokens**
 3. Click **Generate New Token**
 4. Token configuration:
@@ -90,9 +90,9 @@ mkdir -p ~/.config/claude
 
 # Create gitea.env
 cat > ~/.config/claude/gitea.env << EOF
-GITEA_API_URL=https://gitea.hyperhivelabs.com/api/v1
+GITEA_API_URL=https://gitea.hotserv.cloud/api/v1
 GITEA_API_TOKEN=your_token_here
-GITEA_OWNER=hyperhivelabs
+GITEA_OWNER=hhl-infra
 EOF
 
 # Secure the file (important!)

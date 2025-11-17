@@ -184,7 +184,7 @@ mkdir -p ~/.config/claude
 cat > ~/.config/claude/gitea.env << EOF
 GITEA_API_URL=https://gitea.hotserv.cloud/api/v1
 GITEA_API_TOKEN=your_gitea_token_here
-GITEA_OWNER=hyperhivelabs
+GITEA_OWNER=hhl-infra
 EOF
 
 chmod 600 ~/.config/claude/gitea.env
@@ -239,7 +239,7 @@ print(f'Mode: {result[\"mode\"]}')
 Expected output:
 ```
 API URL: https://gitea.hotserv.cloud/api/v1
-Owner: hyperhivelabs
+Owner: hhl-infra
 Repo: test-repo (or None for company mode)
 Mode: project (or company)
 ```
@@ -377,7 +377,7 @@ print('\\n✅ PMO mode tests passed!')
 ```bash
 GITEA_API_URL=https://gitea.hotserv.cloud/api/v1
 GITEA_API_TOKEN=your_token_here
-GITEA_OWNER=hyperhivelabs
+GITEA_OWNER=hhl-infra
 ```
 
 **Project-level** (`.env` in project root):
@@ -445,7 +445,7 @@ mkdir -p ~/.config/claude
 cat > ~/.config/claude/gitea.env << EOF
 GITEA_API_URL=https://gitea.hotserv.cloud/api/v1
 GITEA_API_TOKEN=your_token_here
-GITEA_OWNER=hyperhivelabs
+GITEA_OWNER=hhl-infra
 EOF
 
 chmod 600 ~/.config/claude/gitea.env

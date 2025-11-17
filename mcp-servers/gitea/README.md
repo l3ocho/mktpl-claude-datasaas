@@ -111,7 +111,7 @@ mkdir -p ~/.config/claude
 cat > ~/.config/claude/gitea.env << EOF
 GITEA_API_URL=https://gitea.hotserv.cloud/api/v1
 GITEA_API_TOKEN=your_gitea_token_here
-GITEA_OWNER=hyperhivelabs
+GITEA_OWNER=hhl-infra
 EOF
 
 chmod 600 ~/.config/claude/gitea.env
@@ -137,7 +137,7 @@ For company/PMO mode, omit the `.env` file or don't set `GITEA_REPO`.
 **Required Variables**:
 - `GITEA_API_URL` - Gitea API endpoint (e.g., `https://gitea.hotserv.cloud/api/v1`)
 - `GITEA_API_TOKEN` - Personal access token with repo permissions
-- `GITEA_OWNER` - Organization or user name (e.g., `hyperhivelabs`)
+- `GITEA_OWNER` - Organization or user name (e.g., `hhl-infra`)
 
 ### Project-Level Configuration
 

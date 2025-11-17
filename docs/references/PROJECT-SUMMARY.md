@@ -150,9 +150,9 @@ The plugins use a hybrid configuration approach that balances security and flexi
 **System-Level:**
 ```bash
 # ~/.config/claude/gitea.env
-GITEA_API_URL=https://gitea.hyperhivelabs.com/api/v1
+GITEA_API_URL=https://gitea.hotserv.cloud/api/v1
 GITEA_API_TOKEN=your_token
-GITEA_OWNER=hyperhivelabs
+GITEA_OWNER=hhl-infra
 
 # ~/.config/claude/wikijs.env
 WIKIJS_API_URL=https://wiki.hyperhivelabs.com/graphql
@@ -366,9 +366,9 @@ mkdir -p ~/.config/claude
 
 # Gitea config
 cat > ~/.config/claude/gitea.env << EOF
-GITEA_API_URL=https://gitea.hyperhivelabs.com/api/v1
+GITEA_API_URL=https://gitea.hotserv.cloud/api/v1
 GITEA_API_TOKEN=your_gitea_token
-GITEA_OWNER=hyperhivelabs
+GITEA_OWNER=hhl-infra
 EOF
 
 # Wiki.js config

@@ -422,7 +422,7 @@ Planner: I'll create the issue...
 [Tool executes: create_issue(...)]
 
 Created issue #47: "Extract Intuit Engine Service"
-View at: https://gitea.hyperhivelabs.com/org/repo/issues/47
+View at: https://gitea.hotserv.cloud/org/repo/issues/47
 
 Now let me generate a detailed sprint plan...
 ```
