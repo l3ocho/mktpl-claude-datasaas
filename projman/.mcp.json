@@ -1,0 +1,20 @@
+{
+  "mcpServers": {
+    "gitea": {
+      "command": "python",
+      "args": ["-m", "mcp_server.server"],
+      "cwd": "${CLAUDE_PLUGIN_ROOT}/../mcp-servers/gitea",
+      "env": {
+        "PYTHONPATH": "${CLAUDE_PLUGIN_ROOT}/../mcp-servers/gitea"
+      }
+    },
+    "wikijs": {
+      "command": "python",
+      "args": ["-m", "mcp_server.server"],
+      "cwd": "${CLAUDE_PLUGIN_ROOT}/../mcp-servers/wikijs",
+      "env": {
+        "PYTHONPATH": "${CLAUDE_PLUGIN_ROOT}/../mcp-servers/wikijs"
+      }
+    }
+  }
+}
