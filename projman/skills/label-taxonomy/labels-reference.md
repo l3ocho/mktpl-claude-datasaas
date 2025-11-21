@@ -5,85 +5,84 @@ description: Dynamic reference for Gitea label taxonomy (organization + reposito
 
 # Label Taxonomy Reference
 
-**Status:** Initial template - Run `/labels-sync` to populate with actual labels from Gitea
-
-**Last synced:** Never (please run `/labels-sync`)
-**Source:** Gitea (hhl-infra repository)
+**Status:** ✅ Synced with Gitea
+**Last synced:** 2025-11-21 (via automated testing)
+**Source:** Gitea (hhl-infra/claude-code-hhl-toolkit)
 
 ## Overview
 
 This skill provides the current label taxonomy used for issue classification in Gitea. Labels are **fetched dynamically** from Gitea and should never be hardcoded.
 
-**Current Taxonomy:** ~44 labels (28 organization + 16 repository)
+**Current Taxonomy:** 43 labels (27 organization + 16 repository)
 
-## Organization Labels (~28)
+## Organization Labels (27)
 
 Organization-level labels are shared across all repositories in the `hhl-infra` organization.
 
 ### Agent (2)
-- `Agent/Human` - Work performed by human developers
-- `Agent/Claude` - Work performed by Claude Code or AI assistants
+- `Agent/Human` (#0052cc) - Work performed by human developers
+- `Agent/Claude` (#6554c0) - Work performed by Claude Code or AI assistants
 
 ### Complexity (3)
-- `Complexity/Simple` - Straightforward tasks requiring minimal analysis
-- `Complexity/Medium` - Moderate complexity with some architectural decisions
-- `Complexity/Complex` - High complexity requiring significant planning and analysis
+- `Complexity/Simple` (#c2e0c6) - Straightforward tasks requiring minimal analysis
+- `Complexity/Medium` (#fff4ce) - Moderate complexity with some architectural decisions
+- `Complexity/Complex` (#ffbdad) - High complexity requiring significant planning and analysis
 
 ### Efforts (5)
-- `Efforts/XS` - Extra small effort (< 2 hours)
-- `Efforts/S` - Small effort (2-4 hours)
-- `Efforts/M` - Medium effort (4-8 hours / 1 day)
-- `Efforts/L` - Large effort (1-3 days)
-- `Efforts/XL` - Extra large effort (> 3 days)
+- `Efforts/XS` (#c2e0c6) - Extra small effort (< 2 hours)
+- `Efforts/S` (#d4f1d4) - Small effort (2-4 hours)
+- `Efforts/M` (#fff4ce) - Medium effort (4-8 hours / 1 day)
+- `Efforts/L` (#ffe0b2) - Large effort (1-3 days)
+- `Efforts/XL` (#ffbdad) - Extra large effort (> 3 days)
 
 ### Priority (4)
-- `Priority/Low` - Nice to have, can wait
-- `Priority/Medium` - Should be done this sprint
-- `Priority/High` - Important, do soon
-- `Priority/Critical` - Urgent, blocking other work
+- `Priority/Low` (#d4e157) - Nice to have, can wait
+- `Priority/Medium` (#ffeb3b) - Should be done this sprint
+- `Priority/High` (#ff9800) - Important, do soon
+- `Priority/Critical` (#f44336) - Urgent, blocking other work
 
 ### Risk (3)
-- `Risk/Low` - Low risk of issues or impact
-- `Risk/Medium` - Moderate risk, proceed with caution
-- `Risk/High` - High risk, needs careful planning and testing
+- `Risk/Low` (#c2e0c6) - Low risk of issues or impact
+- `Risk/Medium` (#fff4ce) - Moderate risk, proceed with caution
+- `Risk/High` (#ffbdad) - High risk, needs careful planning and testing
 
 ### Source (4)
-- `Source/Development` - Issue discovered during development
-- `Source/Staging` - Issue found in staging environment
-- `Source/Production` - Issue found in production
-- `Source/Customer` - Issue reported by customer
+- `Source/Development` (#7cb342) - Issue discovered during development
+- `Source/Staging` (#ffb300) - Issue found in staging environment
+- `Source/Production` (#e53935) - Issue found in production
+- `Source/Customer` (#ab47bc) - Issue reported by customer
 
 ### Type (6)
-- `Type/Bug` - Bug fixes and error corrections
-- `Type/Feature` - New features and enhancements
-- `Type/Refactor` - Code restructuring and architectural changes
-- `Type/Documentation` - Documentation updates and improvements
-- `Type/Test` - Testing-related work (unit, integration, e2e)
-- `Type/Chore` - Maintenance, tooling, dependencies, build tasks
+- `Type/Bug` (#d73a4a) - Bug fixes and error corrections
+- `Type/Feature` (#0075ca) - New features and enhancements
+- `Type/Refactor` (#fbca04) - Code restructuring and architectural changes
+- `Type/Documentation` (#0e8a16) - Documentation updates and improvements
+- `Type/Test` (#1d76db) - Testing-related work (unit, integration, e2e)
+- `Type/Chore` (#fef2c0) - Maintenance, tooling, dependencies, build tasks
 
-## Repository Labels (~16)
+## Repository Labels (16)
 
-Repository-level labels are specific to each project.
+Repository-level labels are specific to the claude-code-hhl-toolkit project.
 
 ### Component (9)
-- `Component/Backend` - Backend service code and business logic
-- `Component/Frontend` - User interface and client-side code
-- `Component/API` - API endpoints, contracts, and integration
-- `Component/Database` - Database schemas, migrations, queries
-- `Component/Auth` - Authentication and authorization
-- `Component/Deploy` - Deployment, infrastructure, DevOps
-- `Component/Testing` - Test infrastructure and frameworks
-- `Component/Docs` - Documentation and guides
-- `Component/Infra` - Infrastructure and system configuration
+- `Component/Backend` (#5319e7) - Backend service code and business logic
+- `Component/Frontend` (#1d76db) - User interface and client-side code
+- `Component/API` (#0366d6) - API endpoints, contracts, and integration
+- `Component/Database` (#006b75) - Database schemas, migrations, queries
+- `Component/Auth` (#e99695) - Authentication and authorization
+- `Component/Deploy` (#bfd4f2) - Deployment, infrastructure, DevOps
+- `Component/Testing` (#f9d0c4) - Test infrastructure and frameworks
+- `Component/Docs` (#c5def5) - Documentation and guides
+- `Component/Infra` (#d4c5f9) - Infrastructure and system configuration
 
 ### Tech (7)
-- `Tech/Python` - Python language and libraries
-- `Tech/JavaScript` - JavaScript/Node.js code
-- `Tech/Docker` - Docker containers and compose
-- `Tech/PostgreSQL` - PostgreSQL database
-- `Tech/Redis` - Redis cache and pub/sub
-- `Tech/Vue` - Vue.js frontend framework
-- `Tech/FastAPI` - FastAPI backend framework
+- `Tech/Python` (#3572a5) - Python language and libraries
+- `Tech/JavaScript` (#f1e05a) - JavaScript/Node.js code
+- `Tech/Docker` (#384d54) - Docker containers and compose
+- `Tech/PostgreSQL` (#336791) - PostgreSQL database
+- `Tech/Redis` (#dc382d) - Redis cache and pub/sub
+- `Tech/Vue` (#42b883) - Vue.js frontend framework
+- `Tech/FastAPI` (#009688) - FastAPI backend framework
 
 ## Label Suggestion Logic
 
@@ -242,7 +241,7 @@ The command updates this file with the latest taxonomy from Gitea.
 
 ## Keeping This Updated
 
-**IMPORTANT:** This file is a template. Run `/labels-sync` to:
+**IMPORTANT:** Run `/labels-sync` to:
 1. Fetch actual labels from Gitea
 2. Update this reference file
 3. Ensure suggestion logic matches current taxonomy
