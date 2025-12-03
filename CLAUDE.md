@@ -163,7 +163,7 @@ See [docs/reference-material/projman-implementation-plan.md](docs/reference-mate
 ⚠️ **See `docs/CORRECT-ARCHITECTURE.md` for the authoritative structure reference**
 
 ```
-hyperhivelabs/claude-plugins/
+hhl-infra/claude-code-hhl-toolkit/
 ├── .claude-plugin/
 │   └── marketplace.json
 ├── mcp-servers/                    # ← SHARED BY BOTH PLUGINS
@@ -258,11 +258,22 @@ hyperhivelabs/claude-plugins/
 - Plugin works with or without CLAUDE.md
 
 **Plugin Development:**
-- Use `claude-plugin-developer` skill for all plugin-related work
-- Reference when creating/updating plugin manifests, commands, agents, hooks, or MCP servers
-- Ensures compliance with Anthropic's security requirements and best practices
-- Provides templates, validation tools, and troubleshooting guidance
-- Critical for proper plugin structure, path safety, and marketplace publication
+- **ALWAYS use the `claude-plugin-developer` skill for all plugin-related work**
+- Invoke the skill when:
+  - Creating new plugin manifests (`plugin.json`)
+  - Developing commands, agents, hooks, or MCP servers
+  - Validating plugin structure and security
+  - Troubleshooting plugin loading issues
+  - Publishing to marketplaces
+- The skill provides:
+  - Security best practices and validation
+  - Templates and helper scripts
+  - Complete reference documentation
+  - Path safety requirements (`${CLAUDE_PLUGIN_ROOT}`)
+  - Manifest schema validation
+- **Critical:** Ensures compliance with Anthropic's security requirements
+- Location: `.claude/skills/claude-plugin-developer/`
+- Usage: Invoke via Skill tool when working on plugin components
 
 ## Multi-Project Context (PMO Plugin)
 
@@ -327,6 +338,12 @@ This repository contains comprehensive planning documentation:
 - **`docs/projman-implementation-plan-updated.md`** - Full 12-phase implementation plan
 - **`docs/projman-python-quickstart.md`** - Python-specific implementation guide
 - **`docs/two-mcp-architecture-guide.md`** - Deep dive into two-MCP architecture
+
+**Skills:**
+- **`.claude/skills/claude-plugin-developer/`** - Plugin development guidance and validation tools
+  - Use this skill for all plugin-related work (manifests, commands, agents, hooks, MCP servers)
+  - Includes security validation, templates, and helper scripts
+  - Invoke via Skill tool when working on plugin components
 
 **Start with:** `docs/DOCUMENT-INDEX.md` for navigation guidance
 
