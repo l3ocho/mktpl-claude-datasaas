@@ -1,0 +1,21 @@
+{
+  "name": "projman-test-marketplace",
+  "version": "1.0.0",
+  "displayName": "Projman Test Marketplace",
+  "description": "Local marketplace for testing the Projman plugin",
+  "author": "Hyper Hive Labs",
+  "plugins": [
+    {
+      "name": "projman",
+      "version": "0.1.0",
+      "displayName": "Projman - Project Management",
+      "description": "Sprint planning and project management with Gitea and Wiki.js integration",
+      "source": {
+        "type": "local",
+        "path": "../../projman"
+      },
+      "tags": ["project-management", "sprint-planning", "gitea", "wikijs"],
+      "featured": true
+    }
+  ]
+}

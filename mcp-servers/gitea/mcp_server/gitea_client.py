@@ -116,7 +116,7 @@ class GiteaClient:
         Args:
             title: Issue title
             body: Issue description
-            labels: List of label names
+            labels: List of label names (will be converted to IDs)
             repo: Override configured repo (for PMO multi-repo)
 
         Returns:
@@ -137,12 +137,43 @@ class GiteaClient:
         }
 
         if labels:
-            data['labels'] = labels
+            # Convert label names to IDs (Gitea expects integer IDs, not strings)
+            label_ids = self._resolve_label_ids(labels, target_repo)
+            data['labels'] = label_ids
 
         logger.info(f"Creating issue in {self.owner}/{target_repo}: {title}")
         response = self.session.post(url, json=data)
         response.raise_for_status()
         return response.json()
+
+    def _resolve_label_ids(self, label_names: List[str], repo: str) -> List[int]:
+        """
+        Convert label names to label IDs.
+
+        Args:
+            label_names: List of label names (e.g., ['Type/Feature', 'Priority/High'])
+            repo: Repository name
+
+        Returns:
+            List of label IDs
+        """
+        # Fetch all available labels (org + repo)
+        org_labels = self.get_org_labels()
+        repo_labels = self.get_labels(repo)
+        all_labels = org_labels + repo_labels
+
+        # Build name -> ID mapping
+        label_map = {label['name']: label['id'] for label in all_labels}
+
+        # Resolve IDs
+        label_ids = []
+        for name in label_names:
+            if name in label_map:
+                label_ids.append(label_map[name])
+            else:
+                logger.warning(f"Label '{name}' not found in Gitea, skipping")
+
+        return label_ids
 
     def update_issue(
         self,
