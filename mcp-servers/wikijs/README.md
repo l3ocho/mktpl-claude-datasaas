@@ -131,7 +131,7 @@ For project-scoped operations, create `.env` in project root:
 # In your project directory
 cat > .env << 'EOF'
 # Wiki.js project path
-WIKIJS_PROJECT=projects/cuisineflow
+WIKIJS_PROJECT=projects/your-project-name
 EOF
 
 # Add to .gitignore
@@ -236,15 +236,14 @@ The MCP server is referenced in plugin `.mcp.json`:
 ```
 /hyper-hive-labs/                  # Base path
 ├── projects/                      # Project-specific
-│   ├── cuisineflow/
+│   ├── your-project/
 │   │   ├── lessons-learned/
 │   │   │   ├── sprints/
 │   │   │   ├── patterns/
 │   │   │   └── INDEX.md
 │   │   └── documentation/
-│   ├── cuisineflow-site/
-│   ├── intuit-engine/
-│   └── hhl-site/
+│   ├── another-project/
+│   └── shared-library/
 ├── company/                       # Company-wide
 │   ├── processes/
 │   ├── standards/
@@ -409,6 +408,6 @@ MIT License - See repository root for details
 ## Support
 
 For issues and questions:
-- **Repository**: https://gitea.hotserv.cloud/hhl-infra/claude-code-hhl-toolkit
-- **Issues**: https://gitea.hotserv.cloud/hhl-infra/claude-code-hhl-toolkit/issues
+- **Repository**: `ssh://git@hotserv.tailc9b278.ts.net:2222/bandit/support-claude-mktplace.git`
+- **Issues**: Contact repository maintainer
 - **Documentation**: `/docs/references/MCP-WIKIJS.md`

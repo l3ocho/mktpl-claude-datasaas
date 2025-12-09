@@ -109,9 +109,9 @@ Create `~/.config/claude/gitea.env`:
 mkdir -p ~/.config/claude
 
 cat > ~/.config/claude/gitea.env << EOF
-GITEA_API_URL=https://gitea.hotserv.cloud/api/v1
+GITEA_API_URL=https://gitea.example.com/api/v1
 GITEA_API_TOKEN=your_gitea_token_here
-GITEA_OWNER=hhl-infra
+GITEA_OWNER=bandit
 EOF
 
 chmod 600 ~/.config/claude/gitea.env
@@ -135,9 +135,9 @@ For company/PMO mode, omit the `.env` file or don't set `GITEA_REPO`.
 **File**: `~/.config/claude/gitea.env`
 
 **Required Variables**:
-- `GITEA_API_URL` - Gitea API endpoint (e.g., `https://gitea.hotserv.cloud/api/v1`)
+- `GITEA_API_URL` - Gitea API endpoint (e.g., `https://gitea.example.com/api/v1`)
 - `GITEA_API_TOKEN` - Personal access token with repo permissions
-- `GITEA_OWNER` - Organization or user name (e.g., `hhl-infra`)
+- `GITEA_OWNER` - Organization or user name (e.g., `bandit`)
 
 ### Project-Level Configuration
 
@@ -148,7 +148,7 @@ For company/PMO mode, omit the `.env` file or don't set `GITEA_REPO`.
 
 ### Generating Gitea API Token
 
-1. Log into Gitea: https://gitea.hotserv.cloud
+1. Log into Gitea: https://gitea.example.com
 2. Navigate to: **Settings** → **Applications** → **Manage Access Tokens**
 3. Click **Generate New Token**
 4. Configure token:
@@ -309,7 +309,7 @@ ls -la ~/.config/claude/gitea.env
 ```bash
 # Test token manually
 curl -H "Authorization: token YOUR_TOKEN" \
-  https://gitea.hotserv.cloud/api/v1/user
+  https://gitea.example.com/api/v1/user
 ```
 
 **Permission denied on branch**:
@@ -389,7 +389,7 @@ def list_issues(self, state='open', labels=None, repo=None):
 
 ## License
 
-Part of the HyperHive Labs Claude Code Plugins project.
+Part of the Bandit Labs Claude Code Plugins project.
 
 ## Related Documentation
 
@@ -407,7 +407,7 @@ For issues or questions:
 
 ---
 
-**Built for**: HyperHive Labs Project Management Plugins
+**Built for**: Bandit Labs Project Management Plugins
 **Phase**: 1 (Complete)
 **Status**: ✅ Production Ready
 **Last Updated**: 2025-01-06

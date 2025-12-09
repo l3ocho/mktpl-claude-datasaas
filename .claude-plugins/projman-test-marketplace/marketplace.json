@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "displayName": "Projman Test Marketplace",
   "description": "Local marketplace for testing the Projman plugin",
-  "author": "Hyper Hive Labs",
+  "author": "Bandit Labs",
   "plugins": [
     {
       "name": "projman",

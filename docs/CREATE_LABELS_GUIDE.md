@@ -1,7 +1,7 @@
 # Quick Guide: Creating Label Taxonomy in Gitea
 
 **Estimated Time:** 15-20 minutes
-**Required:** Admin access to hhl-infra organization in Gitea
+**Required:** Admin access to bandit organization in Gitea
 
 ## Why This Is Needed
 
@@ -16,9 +16,9 @@ The Projman plugin depends on a 44-label taxonomy system for:
 
 ## Step 1: Create Organization Labels (28 labels)
 
-**Navigate to:** https://gitea.hotserv.cloud/org/hhl-infra/settings/labels
+**Navigate to:** https://gitea.example.com/org/bandit/settings/labels
 
-These labels will be available to ALL repositories in hhl-infra organization.
+These labels will be available to ALL repositories in bandit organization.
 
 ### Agent (2 labels)
 | Name | Color | Description |
@@ -79,9 +79,9 @@ These labels will be available to ALL repositories in hhl-infra organization.
 
 ## Step 2: Create Repository Labels (16 labels)
 
-**Navigate to:** https://gitea.hotserv.cloud/hhl-infra/claude-code-hhl-toolkit/labels
+**Navigate to:** https://gitea.example.com/bandit/support-claude-mktplace/labels
 
-These labels are specific to the claude-code-hhl-toolkit repository.
+These labels are specific to the support-claude-mktplace repository.
 
 ### Component (9 labels)
 | Name | Color | Description |
@@ -115,11 +115,11 @@ After creating all labels, verify:
 
 ```bash
 # Count organization labels
-curl -s "https://gitea.hotserv.cloud/api/v1/orgs/hhl-infra/labels" \
+curl -s "https://gitea.example.com/api/v1/orgs/bandit/labels" \
   -H "Authorization: token YOUR_TOKEN" | python3 -c "import sys, json; print(len(json.load(sys.stdin)), 'org labels')"
 
 # Count repository labels
-curl -s "https://gitea.hotserv.cloud/api/v1/repos/hhl-infra/claude-code-hhl-toolkit/labels" \
+curl -s "https://gitea.example.com/api/v1/repos/bandit/support-claude-mktplace/labels" \
   -H "Authorization: token YOUR_TOKEN" | python3 -c "import sys, json; print(len(json.load(sys.stdin)), 'repo labels')"
 ```
 
@@ -163,10 +163,10 @@ Batch create Gitea labels via API
 """
 import requests
 
-GITEA_URL = "https://gitea.hotserv.cloud"
+GITEA_URL = "https://gitea.example.com"
 TOKEN = "ae72c63cd7de02e40bd16f66d1e98059c187759b"
-ORG = "hhl-infra"
-REPO = "claude-code-hhl-toolkit"
+ORG = "bandit"
+REPO = "support-claude-mktplace"
 
 headers = {"Authorization": f"token {TOKEN}"}
 

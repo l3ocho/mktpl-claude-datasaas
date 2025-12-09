@@ -294,4 +294,4 @@ logging.basicConfig(level=logging.DEBUG)
 
 ## License
 
-Part of the claude-code-hhl-toolkit project.
+Part of the Bandit Labs Claude Code Plugins project (`support-claude-mktplace`).

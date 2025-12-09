@@ -52,9 +52,9 @@ mkdir -p ~/.config/claude
 
 # Gitea configuration
 cat > ~/.config/claude/gitea.env << EOF
-GITEA_API_URL=https://gitea.hotserv.cloud/api/v1
+GITEA_API_URL=https://gitea.example.com/api/v1
 GITEA_API_TOKEN=your_gitea_token_here
-GITEA_OWNER=hhl-infra
+GITEA_OWNER=bandit
 EOF
 
 # Wiki.js configuration
@@ -322,7 +322,7 @@ See [CONFIGURATION.md](./CONFIGURATION.md) for detailed configuration instructio
 
 ### Cannot connect to Gitea
 - Verify `~/.config/claude/gitea.env` exists and has correct URL and token
-- Test token: `curl -H "Authorization: token YOUR_TOKEN" https://gitea.hotserv.cloud/api/v1/user`
+- Test token: `curl -H "Authorization: token YOUR_TOKEN" https://gitea.example.com/api/v1/user`
 - Check network connectivity
 
 ### Cannot connect to Wiki.js
@@ -410,8 +410,8 @@ projman/
 - [Wiki.js MCP Server](../mcp-servers/wikijs/README.md) - Wiki.js integration details
 
 **Issues:**
-- Report bugs: https://gitea.hotserv.cloud/hhl-infra/claude-code-hhl-toolkit/issues
-- Feature requests: Same issue tracker
+- Report bugs: Contact repository maintainer
+- Feature requests: Contact repository maintainer
 - Documentation improvements: Submit PR
 
 ## License
@@ -434,6 +434,6 @@ MIT License - See repository root for details
 
 ---
 
-**Built for:** HyperHive Labs
+**Built for:** Bandit Labs
 **Status:** Phase 2 Complete - Commands ready for testing
 **Next:** Implement agent system (Phase 3)

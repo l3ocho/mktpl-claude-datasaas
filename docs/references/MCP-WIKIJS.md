@@ -1134,7 +1134,7 @@ from mcp_server.wikijs_client import WikiJSClient
 
 
 async def initialize_wiki_structure():
-    """Create base Wiki.js structure for Hyper Hive Labs"""
+    """Create base Wiki.js structure for Bandit Labs"""
 
     print("Initializing Wiki.js base structure...")
     print("=" * 60)
@@ -1154,10 +1154,10 @@ async def initialize_wiki_structure():
     base_pages = [
         {
             'path': 'hyper-hive-labs',
-            'title': 'Hyper Hive Labs',
-            'content': '''# Hyper Hive Labs Documentation
+            'title': 'Bandit Labs',
+            'content': '''# Bandit Labs Documentation
 
-Welcome to the Hyper Hive Labs knowledge base.
+Welcome to the Bandit Labs knowledge base.
 
 ## Organization
 
@@ -1176,7 +1176,7 @@ This knowledge base captures:
 All content is searchable and tagged for easy discovery across projects.
 ''',
             'tags': ['company', 'index'],
-            'description': 'Hyper Hive Labs company knowledge base'
+            'description': 'Bandit Labs company knowledge base'
         },
         {
             'path': 'hyper-hive-labs/projects',

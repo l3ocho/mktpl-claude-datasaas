@@ -22,12 +22,12 @@ Successfully completed comprehensive testing of the Projman plugin. All core fea
 - Network: Tailscale VPN (100.124.47.46)
 
 **Services:**
-- Gitea: https://gitea.hotserv.cloud (online, responsive)
+- Gitea: https://gitea.example.com (online, responsive)
 - Wiki.js: http://localhost:7851/graphql (online, responsive)
 
 **Repository:**
-- Organization: hhl-infra
-- Repository: claude-code-hhl-toolkit
+- Organization: bandit
+- Repository: support-claude-mktplace
 - Branch: feat/projman
 
 ## Tests Performed
@@ -131,14 +131,14 @@ Last Synced: 2025-11-21
 - Labels: 4 labels (Type/Feature, Priority/Medium, Component/Testing, Tech/Python)
 - Method: Direct curl with label IDs
 - Result: ✅ PASS
-- URL: https://gitea.hotserv.cloud/hhl-infra/claude-code-hhl-toolkit/issues/4
+- URL: https://gitea.example.com/bandit/support-claude-mktplace/issues/4
 
 **Issue #5:** Automated test via MCP server (with label resolution fix)
 - Title: "[TEST] Add Comprehensive Testing for Projman MCP Servers"
 - Labels: 11 labels (all automatically resolved from names to IDs)
 - Method: MCP server with automatic label name→ID resolution
 - Result: ✅ PASS
-- URL: https://gitea.hotserv.cloud/hhl-infra/claude-code-hhl-toolkit/issues/5
+- URL: https://gitea.example.com/bandit/support-claude-mktplace/issues/5
 
 **Conclusion:** Issue creation with automatic label resolution working flawlessly.
 

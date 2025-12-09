@@ -80,7 +80,7 @@ The MCP servers detect their operating mode based on environment variables:
 ## Repository Structure
 
 ```
-hhl-infra/claude-code-hhl-toolkit/
+bandit/support-claude-mktplace/
 ├── mcp-servers/                    # ← SHARED BY BOTH PLUGINS
 │   ├── gitea/                      # Gitea MCP Server
 │   │   ├── .venv/
@@ -150,9 +150,9 @@ The plugins use a hybrid configuration approach that balances security and flexi
 **System-Level:**
 ```bash
 # ~/.config/claude/gitea.env
-GITEA_API_URL=https://gitea.hotserv.cloud/api/v1
+GITEA_API_URL=https://gitea.example.com/api/v1
 GITEA_API_TOKEN=your_token
-GITEA_OWNER=hhl-infra
+GITEA_OWNER=bandit
 
 # ~/.config/claude/wikijs.env
 WIKIJS_API_URL=https://wiki.hyperhivelabs.com/graphql
@@ -366,9 +366,9 @@ mkdir -p ~/.config/claude
 
 # Gitea config
 cat > ~/.config/claude/gitea.env << EOF
-GITEA_API_URL=https://gitea.hotserv.cloud/api/v1
+GITEA_API_URL=https://gitea.example.com/api/v1
 GITEA_API_TOKEN=your_gitea_token
-GITEA_OWNER=hhl-infra
+GITEA_OWNER=bandit
 EOF
 
 # Wiki.js config

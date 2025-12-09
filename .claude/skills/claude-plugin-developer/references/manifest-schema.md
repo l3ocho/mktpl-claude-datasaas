@@ -98,7 +98,7 @@ Complete JSON schema reference for `.claude-plugin/plugin.json` files.
   "version": "2.1.0",
   "description": "Automated deployment tools for cloud platforms",
   "author": {
-    "name": "Hyper Hive Labs",
+    "name": "Bandit Labs",
     "email": "plugins@hyperhivelabs.com",
     "url": "https://hyperhivelabs.com"
   },

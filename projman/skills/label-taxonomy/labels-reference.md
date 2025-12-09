@@ -7,7 +7,7 @@ description: Dynamic reference for Gitea label taxonomy (organization + reposito
 
 **Status:** ✅ Synced with Gitea
 **Last synced:** 2025-11-21 (via automated testing)
-**Source:** Gitea (hhl-infra/claude-code-hhl-toolkit)
+**Source:** Gitea (bandit/support-claude-mktplace)
 
 ## Overview
 
@@ -17,7 +17,7 @@ This skill provides the current label taxonomy used for issue classification in 
 
 ## Organization Labels (27)
 
-Organization-level labels are shared across all repositories in the `hhl-infra` organization.
+Organization-level labels are shared across all repositories in the `bandit` organization.
 
 ### Agent (2)
 - `Agent/Human` (#0052cc) - Work performed by human developers
@@ -62,7 +62,7 @@ Organization-level labels are shared across all repositories in the `hhl-infra` 
 
 ## Repository Labels (16)
 
-Repository-level labels are specific to the claude-code-hhl-toolkit project.
+Repository-level labels are specific to each project.
 
 ### Component (9)
 - `Component/Backend` (#5319e7) - Backend service code and business logic

@@ -90,7 +90,7 @@ python -c "from mcp_server import server; print('Wiki.js MCP Server installed su
 
 ### 2.1 Generate Gitea API Token
 
-1. Log into Gitea: https://gitea.hotserv.cloud
+1. Log into Gitea: https://gitea.example.com
 2. Navigate to: **User Icon** (top right) → **Settings**
 3. Click **Applications** tab
 4. Scroll to **Manage Access Tokens**
@@ -145,9 +145,9 @@ mkdir -p ~/.config/claude
 ```bash
 cat > ~/.config/claude/gitea.env << 'EOF'
 # Gitea API Configuration
-GITEA_API_URL=https://gitea.hotserv.cloud/api/v1
+GITEA_API_URL=https://gitea.example.com/api/v1
 GITEA_API_TOKEN=your_gitea_token_here
-GITEA_OWNER=hhl-infra
+GITEA_OWNER=bandit
 EOF
 
 # Secure the file (owner read/write only)
@@ -159,7 +159,7 @@ chmod 600 ~/.config/claude/gitea.env
 **Configuration Variables:**
 - `GITEA_API_URL` - Gitea API endpoint (includes `/api/v1`)
 - `GITEA_API_TOKEN` - Personal access token from Step 2.1
-- `GITEA_OWNER` - Organization or user name (e.g., `hhl-infra`)
+- `GITEA_OWNER` - Organization or user name (e.g., `bandit`)
 
 ### 3.3 Configure Wiki.js
 
@@ -251,7 +251,7 @@ Test that everything is configured correctly:
 ```bash
 # Test with curl
 curl -H "Authorization: token YOUR_GITEA_TOKEN" \
-  https://gitea.hotserv.cloud/api/v1/user
+  https://gitea.example.com/api/v1/user
 
 # Should return your user information in JSON format
 ```
@@ -313,9 +313,9 @@ This will:
 
 **`~/.config/claude/gitea.env`:**
 ```bash
-GITEA_API_URL=https://gitea.hotserv.cloud/api/v1
+GITEA_API_URL=https://gitea.example.com/api/v1
 GITEA_API_TOKEN=glpat-xxxxxxxxxxxxxxxxxxxxx
-GITEA_OWNER=hhl-infra
+GITEA_OWNER=bandit
 ```
 
 **`~/.config/claude/wikijs.env`:**
@@ -417,7 +417,7 @@ ls -la ~/.config/claude/wikijs.env
 ```bash
 # Test Gitea token
 curl -H "Authorization: token YOUR_TOKEN" \
-  https://gitea.hotserv.cloud/api/v1/user
+  https://gitea.example.com/api/v1/user
 
 # Test Wiki.js token
 curl -H "Authorization: Bearer YOUR_TOKEN" \
@@ -515,7 +515,7 @@ After configuration is complete:
 - Review MCP server documentation:
   - [Gitea MCP](../mcp-servers/gitea/README.md)
   - [Wiki.js MCP](../mcp-servers/wikijs/README.md)
-- Open issue: https://gitea.hotserv.cloud/hhl-infra/claude-code-hhl-toolkit/issues
+- Contact repository maintainer for support
 
 **Questions:**
 - Read command documentation: `commands/*.md`

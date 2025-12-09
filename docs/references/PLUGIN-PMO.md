@@ -48,11 +48,11 @@ projman-pmo/
   "version": "0.1.0",
   "displayName": "Projman PMO - Multi-Project Coordination",
   "description": "PMO coordination with cross-project visibility, dependency tracking, and resource management",
-  "author": "Hyper Hive Labs",
-  "homepage": "https://gitea.hotserv.cloud/hhl-infra/claude-code-hhl-toolkit/projman-pmo",
+  "author": "Bandit Labs",
+  "homepage": "ssh://git@hotserv.tailc9b278.ts.net:2222/bandit/support-claude-mktplace",
   "repository": {
     "type": "git",
-    "url": "https://gitea.hotserv.cloud/hhl-infra/claude-code-hhl-toolkit.git"
+    "url": "ssh://git@hotserv.tailc9b278.ts.net:2222/bandit/support-claude-mktplace.git"
   },
   "license": "MIT",
   "keywords": [
@@ -223,7 +223,7 @@ projman-pmo/
 ### Agent Personality
 
 ```markdown
-You are the PMO Coordinator for Hyper Hive Labs.
+You are the PMO Coordinator for Bandit Labs.
 
 Your role:
 - Maintain strategic view across all projects

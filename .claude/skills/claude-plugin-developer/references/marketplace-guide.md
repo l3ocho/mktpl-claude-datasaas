@@ -59,7 +59,7 @@ claude plugin marketplace add https://plugins.example.com
 ### marketplace.json Structure
 ```json
 {
-  "name": "Hyper Hive Labs Plugins",
+  "name": "Bandit Labs Plugins",
   "description": "Restaurant automation and AI tools",
   "version": "1.0.0",
   "plugins": [
@@ -67,7 +67,7 @@ claude plugin marketplace add https://plugins.example.com
       "name": "restaurant-analytics",
       "version": "2.1.0",
       "description": "Analytics dashboard for restaurant data",
-      "author": "Hyper Hive Labs",
+      "author": "Bandit Labs",
       "path": "plugins/restaurant-analytics",
       "tags": ["analytics", "restaurant", "reporting"],
       "requirements": {
@@ -79,7 +79,7 @@ claude plugin marketplace add https://plugins.example.com
       "name": "order-automation",
       "version": "1.5.2",
       "description": "Automated order processing system",
-      "author": "Hyper Hive Labs",
+      "author": "Bandit Labs",
       "path": "plugins/order-automation",
       "featured": true,
       "beta": false

@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 """
-Batch create Gitea labels via API for hhl-infra organization
+Batch create Gitea labels via API for bandit organization
 Creates 28 organization labels + 16 repository labels = 44 total
 """
 import requests
 import sys
 
-GITEA_URL = "https://gitea.hotserv.cloud"
+GITEA_URL = "https://gitea.example.com"
 TOKEN = "ae72c63cd7de02e40bd16f66d1e98059c187759b"
-ORG = "hhl-infra"
-REPO = "claude-code-hhl-toolkit"
+ORG = "bandit"
+REPO = "support-claude-mktplace"
 
 headers = {"Authorization": f"token {TOKEN}", "Content-Type": "application/json"}
 
@@ -196,7 +196,7 @@ def verify_labels():
 def main():
     print(f"\n{'#'*60}")
     print("# Gitea Label Creation Script")
-    print("# Creating 44-label taxonomy for hhl-infra organization")
+    print("# Creating 44-label taxonomy for bandit organization")
     print(f"{'#'*60}")
 
     # Create organization labels
