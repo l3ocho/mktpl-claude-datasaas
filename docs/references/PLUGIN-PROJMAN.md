@@ -54,11 +54,11 @@ projman/
   "version": "0.1.0",
   "displayName": "Projman - Single-Repository Project Management",
   "description": "Sprint planning and project management with Gitea and Wiki.js integration",
-  "author": "Hyper Hive Labs",
-  "homepage": "https://gitea.hotserv.cloud/hhl-infra/claude-code-hhl-toolkit/projman",
+  "author": "Bandit Labs",
+  "homepage": "https://gitea.example.com/bandit/support-claude-mktplace/projman",
   "repository": {
     "type": "git",
-    "url": "https://gitea.hotserv.cloud/hhl-infra/claude-code-hhl-toolkit.git"
+    "url": "https://gitea.example.com/bandit/support-claude-mktplace.git"
   },
   "license": "MIT",
   "keywords": [
@@ -269,7 +269,7 @@ Agents are also **markdown files** with specialized prompts. They can be invoked
 ```markdown
 # Sprint Planner Agent
 
-You are the Sprint Planner for Hyper Hive Labs.
+You are the Sprint Planner for Bandit Labs.
 
 ## Your Identity
 
@@ -422,7 +422,7 @@ Planner: I'll create the issue...
 [Tool executes: create_issue(...)]
 
 Created issue #47: "Extract Intuit Engine Service"
-View at: https://gitea.hotserv.cloud/org/repo/issues/47
+View at: https://gitea.example.com/org/repo/issues/47
 
 Now let me generate a detailed sprint plan...
 ```
@@ -551,7 +551,7 @@ The projman plugin implements a three-agent architecture mirroring the proven wo
 **Example Prompt:**
 
 ```markdown
-You are the Sprint Planner for Hyper Hive Labs.
+You are the Sprint Planner for Bandit Labs.
 
 Your role:
 - Guide users through sprint planning
@@ -609,7 +609,7 @@ Sprint Planning Flow:
 **Example Prompt:**
 
 ```markdown
-You are the Sprint Orchestrator for Hyper Hive Labs.
+You are the Sprint Orchestrator for Bandit Labs.
 
 Your role:
 - Monitor sprint progress
@@ -668,7 +668,7 @@ Status Monitoring:
 **Example Prompt:**
 
 ```markdown
-You are the Sprint Executor for Hyper Hive Labs.
+You are the Sprint Executor for Bandit Labs.
 
 Your role:
 - Provide implementation guidance

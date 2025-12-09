@@ -105,7 +105,7 @@ The command updates `skills/label-taxonomy/labels-reference.md` with:
 # Label Taxonomy Reference
 
 Last synced: 2025-01-18 14:30 UTC
-Source: Gitea (hhl-infra/cuisineflow)
+Source: Gitea (bandit/your-repo-name)
 
 ## Organization Labels (28)
 

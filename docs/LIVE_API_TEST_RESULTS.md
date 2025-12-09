@@ -13,7 +13,7 @@ Successfully connected to both Gitea and Wiki.js instances running on hotport. A
 
 ⚠️ **CRITICAL FINDING: Repository has NO LABELS**
 
-The `claude-code-hhl-toolkit` repository currently has **0 labels** defined. The plugin depends on a 44-label taxonomy system. Labels must be created before full plugin functionality can be tested.
+The `support-claude-mktplace` repository currently has **0 labels** defined. The plugin depends on a 44-label taxonomy system. Labels must be created before full plugin functionality can be tested.
 
 ## Test Results
 
@@ -21,10 +21,10 @@ The `claude-code-hhl-toolkit` repository currently has **0 labels** defined. The
 
 **Configuration:**
 ```
-URL: https://gitea.hotserv.cloud/api/v1
+URL: https://gitea.example.com/api/v1
 Token: ae72c63cd7de02e40bd16f66d1e98059c187759b
-Owner: hhl-infra (organization)
-Repo: claude-code-hhl-toolkit
+Owner: bandit (organization)
+Repo: support-claude-mktplace
 ```
 
 **Authentication Test:**
@@ -37,8 +37,8 @@ Repo: claude-code-hhl-toolkit
 
 **Repository Access:**
 ```
-✅ Found 4 repositories in hhl-infra organization:
-  - claude-code-hhl-toolkit  ← Our test repo
+✅ Found 4 repositories in bandit organization:
+  - support-claude-mktplace  ← Our test repo
   - serv-hotport-apps
   - serv-hhl-home-apps
   - serv-hhl
@@ -46,7 +46,7 @@ Repo: claude-code-hhl-toolkit
 
 **Issue Fetching:**
 ```
-✅ Successfully fetched 2 issues from claude-code-hhl-toolkit:
+✅ Successfully fetched 2 issues from support-claude-mktplace:
   - Open: 0
   - Closed: 2
 
@@ -77,7 +77,7 @@ Label categories expected but missing:
 URL: http://localhost:7851/graphql
 Token: eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9... (JWT)
 Base Path: /hyper-hive-labs
-Project: projects/claude-code-hhl-toolkit
+Project: projects/support-claude-mktplace
 ```
 
 **Connection Test:**
@@ -141,16 +141,16 @@ Tech/Redis, Tech/Vue, Tech/FastAPI
 ```
 
 **How to create:**
-1. Navigate to: https://gitea.hotserv.cloud/org/hhl-infra/settings/labels
+1. Navigate to: https://gitea.example.com/org/bandit/settings/labels
 2. Create organization labels (available to all repos)
-3. Navigate to: https://gitea.hotserv.cloud/hhl-infra/claude-code-hhl-toolkit/labels
+3. Navigate to: https://gitea.example.com/bandit/support-claude-mktplace/labels
 4. Create repository-specific labels
 
 **Option 2: Import from Existing Repo**
 
 If labels exist in another repository (e.g., CuisineFlow):
 1. Export labels from existing repo
-2. Import to claude-code-hhl-toolkit
+2. Import to support-claude-mktplace
 3. Run `/labels-sync` to update plugin
 
 **Option 3: Create Programmatically**
@@ -173,8 +173,8 @@ GITEA_OWNER=claude  # Wrong - user instead of org
 
 **After (Correct):**
 ```bash
-GITEA_API_URL=https://gitea.hotserv.cloud/api/v1  # Public URL
-GITEA_OWNER=hhl-infra  # Correct organization
+GITEA_API_URL=https://gitea.example.com/api/v1  # Public URL
+GITEA_OWNER=bandit  # Correct organization
 GITEA_API_TOKEN=ae72c63cd7de02e40bd16f66d1e98059c187759b  # New token with access
 ```
 
@@ -188,8 +188,8 @@ WIKIJS_BASE_PATH=/hyper-hive-labs
 
 **File: `.env` (in project root)**
 ```bash
-GITEA_REPO=claude-code-hhl-toolkit  # ✅ Correct
-WIKIJS_PROJECT=projects/claude-code-hhl-toolkit  # ✅ Correct
+GITEA_REPO=support-claude-mktplace  # ✅ Correct
+WIKIJS_PROJECT=projects/support-claude-mktplace  # ✅ Correct
 ```
 
 ## What Works Right Now
@@ -239,7 +239,7 @@ WIKIJS_PROJECT=projects/claude-code-hhl-toolkit  # ✅ Correct
 | Test Category | Status | Details |
 |---------------|--------|---------|
 | Gitea Authentication | ✅ PASS | Authenticated as lmiranda (admin) |
-| Gitea Repository Access | ✅ PASS | Access to 4 repos in hhl-infra |
+| Gitea Repository Access | ✅ PASS | Access to 4 repos in bandit |
 | Gitea Issue Fetching | ✅ PASS | Fetched 2 issues successfully |
 | Gitea Label Fetching | ⚠️ PASS | API works, but 0 labels found |
 | WikiJS Authentication | ✅ PASS | JWT token valid |

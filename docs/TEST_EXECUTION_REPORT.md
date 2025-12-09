@@ -43,7 +43,7 @@ Details:
   - System config loads correctly from ~/.config/claude/gitea.env
   - Project config loads correctly from .env
   - Mode detection works (project mode)
-  - Repository correctly identified: claude-code-hhl-toolkit
+  - Repository correctly identified: support-claude-mktplace
   - Owner correctly identified: claude
 ```
 
@@ -54,7 +54,7 @@ Details:
   - System config loads correctly from ~/.config/claude/wikijs.env
   - Project config loads correctly from .env
   - Mode detection works (project mode)
-  - Project correctly identified: projects/claude-code-hhl-toolkit
+  - Project correctly identified: projects/support-claude-mktplace
   - Base path correctly set: /hyper-hive-labs
 ```
 

@@ -170,7 +170,7 @@ Test the MCP server with a real Gitea instance.
 
 ### Prerequisites
 
-1. **Gitea Instance**: Access to https://gitea.hotserv.cloud (or your Gitea instance)
+1. **Gitea Instance**: Access to https://gitea.example.com (or your Gitea instance)
 2. **API Token**: Personal access token with required permissions
 3. **Configuration**: Properly configured system and project configs
 
@@ -182,9 +182,9 @@ Create system-level configuration:
 mkdir -p ~/.config/claude
 
 cat > ~/.config/claude/gitea.env << EOF
-GITEA_API_URL=https://gitea.hotserv.cloud/api/v1
+GITEA_API_URL=https://gitea.example.com/api/v1
 GITEA_API_TOKEN=your_gitea_token_here
-GITEA_OWNER=hhl-infra
+GITEA_OWNER=bandit
 EOF
 
 chmod 600 ~/.config/claude/gitea.env
@@ -205,7 +205,7 @@ echo ".env" >> .gitignore
 
 ### Step 2: Generate Gitea API Token
 
-1. Log into Gitea: https://gitea.hotserv.cloud
+1. Log into Gitea: https://gitea.example.com
 2. Navigate to: **Settings** → **Applications** → **Manage Access Tokens**
 3. Click **Generate New Token**
 4. Token configuration:
@@ -238,8 +238,8 @@ print(f'Mode: {result[\"mode\"]}')
 
 Expected output:
 ```
-API URL: https://gitea.hotserv.cloud/api/v1
-Owner: hhl-infra
+API URL: https://gitea.example.com/api/v1
+Owner: bandit
 Repo: test-repo (or None for company mode)
 Mode: project (or company)
 ```
@@ -375,9 +375,9 @@ print('\\n✅ PMO mode tests passed!')
 
 **System-level** (`~/.config/claude/gitea.env`):
 ```bash
-GITEA_API_URL=https://gitea.hotserv.cloud/api/v1
+GITEA_API_URL=https://gitea.example.com/api/v1
 GITEA_API_TOKEN=your_token_here
-GITEA_OWNER=hhl-infra
+GITEA_OWNER=bandit
 ```
 
 **Project-level** (`.env` in project root):
@@ -443,9 +443,9 @@ FileNotFoundError: System config not found: /home/user/.config/claude/gitea.env
 # Create system config
 mkdir -p ~/.config/claude
 cat > ~/.config/claude/gitea.env << EOF
-GITEA_API_URL=https://gitea.hotserv.cloud/api/v1
+GITEA_API_URL=https://gitea.example.com/api/v1
 GITEA_API_TOKEN=your_token_here
-GITEA_OWNER=hhl-infra
+GITEA_OWNER=bandit
 EOF
 
 chmod 600 ~/.config/claude/gitea.env
@@ -480,7 +480,7 @@ requests.exceptions.HTTPError: 401 Client Error: Unauthorized
 ```bash
 # Test token manually
 curl -H "Authorization: token YOUR_TOKEN" \
-  https://gitea.hotserv.cloud/api/v1/user
+  https://gitea.example.com/api/v1/user
 
 # If fails, regenerate token in Gitea settings
 ```

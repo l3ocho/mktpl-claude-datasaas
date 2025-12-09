@@ -1,0 +1,65 @@
+{
+  "name": "cmdb-assistant",
+  "version": "1.0.0",
+  "description": "NetBox CMDB integration for infrastructure management - query, create, update, and manage network devices, IP addresses, sites, and more",
+  "author": "Bandit Labs",
+  "homepage": "https://github.com/bandit-labs/cmdb-assistant",
+  "license": "MIT",
+  "keywords": [
+    "netbox",
+    "cmdb",
+    "infrastructure",
+    "network",
+    "ipam",
+    "dcim"
+  ],
+  "commands": {
+    "cmdb-search": {
+      "description": "Search NetBox for devices, IPs, sites, or any CMDB object",
+      "file": "commands/cmdb-search.md"
+    },
+    "cmdb-device": {
+      "description": "Manage network devices (create, view, update, delete)",
+      "file": "commands/cmdb-device.md"
+    },
+    "cmdb-ip": {
+      "description": "Manage IP addresses and prefixes",
+      "file": "commands/cmdb-ip.md"
+    },
+    "cmdb-site": {
+      "description": "Manage sites and locations",
+      "file": "commands/cmdb-site.md"
+    }
+  },
+  "agents": {
+    "cmdb-assistant": {
+      "description": "Infrastructure management assistant for NetBox CMDB operations",
+      "file": "agents/cmdb-assistant.md"
+    }
+  },
+  "mcpServers": {
+    "netbox": {
+      "description": "NetBox API integration via MCP",
+      "configFile": ".mcp.json"
+    }
+  },
+  "configuration": {
+    "required": [
+      {
+        "name": "NETBOX_URL",
+        "description": "NetBox instance URL (e.g., https://netbox.example.com)"
+      },
+      {
+        "name": "NETBOX_TOKEN",
+        "description": "NetBox API token for authentication"
+      }
+    ],
+    "optional": [
+      {
+        "name": "NETBOX_VERIFY_SSL",
+        "description": "Verify SSL certificates (default: true)",
+        "default": "true"
+      }
+    ]
+  }
+}

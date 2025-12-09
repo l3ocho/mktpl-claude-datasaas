@@ -3,11 +3,11 @@
   "version": "0.1.0",
   "displayName": "Projman - Project Management for Claude Code",
   "description": "Sprint planning and project management with Gitea and Wiki.js integration. Provides AI-guided sprint planning, issue creation with label taxonomy, and lessons learned capture.",
-  "author": "Hyper Hive Labs",
-  "homepage": "https://gitea.hotserv.cloud/hhl-infra/claude-code-hhl-toolkit",
+  "author": "Bandit Labs",
+  "homepage": "ssh://git@hotserv.tailc9b278.ts.net:2222/bandit/support-claude-mktplace",
   "repository": {
     "type": "git",
-    "url": "https://gitea.hotserv.cloud/hhl-infra/claude-code-hhl-toolkit.git"
+    "url": "ssh://git@hotserv.tailc9b278.ts.net:2222/bandit/support-claude-mktplace.git"
   },
   "license": "MIT",
   "keywords": [

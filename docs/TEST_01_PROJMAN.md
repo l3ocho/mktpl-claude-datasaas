@@ -46,8 +46,8 @@ This document outlines the testing strategy for the Projman plugin, which has co
 ✅ **Project Configuration:**
 - `.env` - Project-specific settings (NOT committed)
   ```bash
-  GITEA_REPO=claude-code-hhl-toolkit
-  WIKIJS_PROJECT=projects/claude-code-hhl-toolkit
+  GITEA_REPO=support-claude-mktplace
+  WIKIJS_PROJECT=projects/support-claude-mktplace
   ```
 
 ✅ **Local Test Marketplace:**
@@ -130,8 +130,8 @@ ls -la ~/.config/claude/*.env
 ```bash
 cat .env
 # Should show:
-# GITEA_REPO=claude-code-hhl-toolkit
-# WIKIJS_PROJECT=projects/claude-code-hhl-toolkit
+# GITEA_REPO=support-claude-mktplace
+# WIKIJS_PROJECT=projects/support-claude-mktplace
 ```
 
 **Verify .env is ignored:**
@@ -355,7 +355,7 @@ Implement the first task (e.g., add command examples to README).
    - Suggests appropriate tags
 4. Saves to Wiki.js:
    - Uses `create_lesson` MCP tool
-   - Creates in `/projects/claude-code-hhl-toolkit/lessons-learned/sprints/`
+   - Creates in `/projects/support-claude-mktplace/lessons-learned/sprints/`
 5. Offers git operations:
    - Commit changes
    - Merge branches
@@ -571,7 +571,7 @@ These are expected at this stage and will be addressed in Phase 4 (Lessons Learn
 
 3. **Prepare for Phase 5: Testing & Validation**
    - Write integration tests
-   - Test with real sprint on CuisineFlow
+   - Test with real sprint on a production project
    - Collect user feedback from team
 
 ### If Tests Fail ❌

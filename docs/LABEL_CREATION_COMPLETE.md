@@ -5,10 +5,10 @@
 
 ## Summary
 
-Successfully created **43 labels** in the hhl-infra organization and claude-code-hhl-toolkit repository:
+Successfully created **43 labels** in the bandit organization and support-claude-mktplace repository:
 
-- ✅ **27 Organization Labels** (available to all hhl-infra repositories)
-- ✅ **16 Repository Labels** (specific to claude-code-hhl-toolkit)
+- ✅ **27 Organization Labels** (available to all bandit repositories)
+- ✅ **16 Repository Labels** (specific to support-claude-mktplace)
 - ✅ **Total: 43 Labels** (100% complete)
 
 ## Label Breakdown
@@ -82,12 +82,12 @@ Successfully created **43 labels** in the hhl-infra organization and claude-code
 
 ```bash
 # Organization labels
-$ curl -s "https://gitea.hotserv.cloud/api/v1/orgs/hhl-infra/labels" \
+$ curl -s "https://hotserv.tailc9b278.ts.net/api/v1/orgs/bandit/labels" \
   -H "Authorization: token ***" | jq 'length'
 27
 
 # Repository labels (shows repo-specific only)
-$ curl -s "https://gitea.hotserv.cloud/api/v1/repos/hhl-infra/claude-code-hhl-toolkit/labels" \
+$ curl -s "https://hotserv.tailc9b278.ts.net/api/v1/repos/bandit/support-claude-mktplace/labels" \
   -H "Authorization: token ***" | jq 'length'
 16
 ```
@@ -98,8 +98,8 @@ $ curl -s "https://gitea.hotserv.cloud/api/v1/repos/hhl-infra/claude-code-hhl-to
 
 The Projman plugin's MCP server fetches labels from **both endpoints**:
 
-1. **Organization Labels:** `GET /api/v1/orgs/hhl-infra/labels` → 27 labels
-2. **Repository Labels:** `GET /api/v1/repos/hhl-infra/claude-code-hhl-toolkit/labels` → 16 labels
+1. **Organization Labels:** `GET /api/v1/orgs/bandit/labels` → 27 labels
+2. **Repository Labels:** `GET /api/v1/repos/bandit/support-claude-mktplace/labels` → 16 labels
 3. **Total Available:** 43 labels for issue tagging
 
 See `mcp-servers/gitea/mcp_server/tools/labels.py:29` for implementation.
@@ -133,9 +133,9 @@ Now that all labels are created:
 
 ## Gitea Configuration
 
-**Organization:** hhl-infra
-**Repository:** claude-code-hhl-toolkit
-**API URL:** https://gitea.hotserv.cloud/api/v1
+**Organization:** bandit
+**Repository:** support-claude-mktplace
+**API URL:** https://hotserv.tailc9b278.ts.net/api/v1
 **Auth:** Token-based (configured in ~/.config/claude/gitea.env)
 
 ## Success Metrics
