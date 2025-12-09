@@ -1,0 +1,21 @@
+{
+  "name": "projman",
+  "version": "0.1.0",
+  "description": "Sprint planning and project management with Gitea and Wiki.js integration",
+  "author": {
+    "name": "Bandit Labs",
+    "email": "dev@banditlabs.io"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://gitea.hotserv.cloud/bandit/support-claude-mktplace"
+  },
+  "keywords": [
+    "project-management",
+    "sprint-planning",
+    "gitea",
+    "wikijs",
+    "agile"
+  ]
+}
