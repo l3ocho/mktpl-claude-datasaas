@@ -50,8 +50,8 @@ This document outlines the testing strategy for the Projman plugin, which has co
   WIKIJS_PROJECT=projects/support-claude-mktplace
   ```
 
-✅ **Local Test Marketplace:**
-- `.claude-plugins/projman-test-marketplace/marketplace.json`
+✅ **Local Marketplace:**
+- `.claude-plugins/projman-marketplace/marketplace.json`
 - Points to `../../projman` for local testing
 
 ### Repository Structure
@@ -60,7 +60,7 @@ This document outlines the testing strategy for the Projman plugin, which has co
 hhl-claude-agents/
 ├── .env                              ✅ Project config (in .gitignore)
 ├── .claude-plugins/
-│   └── projman-test-marketplace/
+│   └── projman-marketplace/
 │       └── marketplace.json          ✅ Local marketplace
 ├── projman/                          ✅ Complete plugin
 │   ├── .claude-plugin/
@@ -510,7 +510,7 @@ These are expected at this stage and will be addressed in Phase 4 (Lessons Learn
 **Symptoms:** `/sprint-plan` returns "command not found"
 
 **Solutions:**
-1. Check marketplace loaded: `ls .claude-plugins/projman-test-marketplace/`
+1. Check marketplace loaded: `ls .claude-plugins/projman-marketplace/`
 2. Verify plugin path in marketplace.json
 3. Restart Claude Code
 
