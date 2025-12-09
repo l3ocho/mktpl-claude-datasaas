@@ -1,8 +1,8 @@
 {
-  "name": "projman-test-marketplace",
+  "name": "projman-marketplace",
   "version": "1.0.0",
-  "displayName": "Projman Test Marketplace",
-  "description": "Local marketplace for testing the Projman plugin",
+  "displayName": "Projman Marketplace",
+  "description": "Marketplace for Projman project management plugins",
   "author": "Bandit Labs",
   "plugins": [
     {

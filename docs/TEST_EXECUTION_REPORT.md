@@ -396,7 +396,7 @@ projman/
 ### Test Infrastructure
 ```
 .claude-plugins/
-└── projman-test-marketplace/
+└── projman-marketplace/
     └── marketplace.json                (New)
 
 .env                                    (New, not committed)
