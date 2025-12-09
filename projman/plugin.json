@@ -7,10 +7,7 @@
     "email": "dev@banditlabs.io"
   },
   "license": "MIT",
-  "repository": {
-    "type": "git",
-    "url": "https://gitea.hotserv.cloud/bandit/support-claude-mktplace"
-  },
+  "repository": "https://gitea.hotserv.cloud/bandit/support-claude-mktplace",
   "keywords": [
     "project-management",
     "sprint-planning",
