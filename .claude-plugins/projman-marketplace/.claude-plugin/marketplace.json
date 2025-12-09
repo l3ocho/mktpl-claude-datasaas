@@ -9,7 +9,7 @@
       "name": "projman",
       "version": "0.1.0",
       "description": "Sprint planning and project management with Gitea and Wiki.js integration",
-      "source": "../../projman"
+      "source": "./../../projman"
     }
   ]
 }
