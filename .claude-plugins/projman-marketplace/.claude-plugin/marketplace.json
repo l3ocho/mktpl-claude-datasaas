@@ -1,21 +1,15 @@
 {
   "name": "projman-marketplace",
-  "version": "1.0.0",
-  "displayName": "Projman Marketplace",
-  "description": "Marketplace for Projman project management plugins",
-  "author": "Bandit Labs",
+  "owner": {
+    "name": "Bandit Labs",
+    "email": "dev@banditlabs.io"
+  },
   "plugins": [
     {
       "name": "projman",
       "version": "0.1.0",
-      "displayName": "Projman - Project Management",
       "description": "Sprint planning and project management with Gitea and Wiki.js integration",
-      "source": {
-        "type": "local",
-        "path": "../../projman"
-      },
-      "tags": ["project-management", "sprint-planning", "gitea", "wikijs"],
-      "featured": true
+      "source": "../../projman"
     }
   ]
 }
