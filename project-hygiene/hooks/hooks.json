@@ -1,0 +1,9 @@
+{
+  "hooks": [
+    {
+      "event": "task-completed",
+      "script": "${CLAUDE_PLUGIN_ROOT}/hooks/cleanup.sh",
+      "description": "Post-task cleanup: remove temp files, warn about unexpected root files, manage orphans"
+    }
+  ]
+}

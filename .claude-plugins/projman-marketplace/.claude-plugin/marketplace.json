@@ -10,6 +10,12 @@
       "version": "0.1.0",
       "description": "Sprint planning and project management with Gitea and Wiki.js integration",
       "source": "./../../projman"
+    },
+    {
+      "name": "project-hygiene",
+      "version": "0.1.0",
+      "description": "Post-task cleanup hook that removes temp files, warns about unexpected root files, and manages orphans",
+      "source": "./../../project-hygiene"
     }
   ]
 }

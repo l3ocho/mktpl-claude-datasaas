@@ -1,0 +1,22 @@
+{
+  "name": "project-hygiene",
+  "version": "0.1.0",
+  "description": "Post-task cleanup hook that removes temp files, warns about unexpected root files, and manages orphaned supporting files",
+  "author": {
+    "name": "Bandit Labs",
+    "email": "dev@banditlabs.io"
+  },
+  "license": "MIT",
+  "keywords": ["cleanup", "hygiene", "automation", "hooks", "maintenance"],
+  "repository": "https://github.com/bandit-labs/project-hygiene",
+  "config": {
+    "default_shell": "bash",
+    "environment": {
+      "PLUGIN_HOME": "${CLAUDE_PLUGIN_ROOT}"
+    }
+  },
+  "permissions": {
+    "file_access": ["read", "write"],
+    "shell_access": true
+  }
+}
