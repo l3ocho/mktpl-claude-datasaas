@@ -8,15 +8,5 @@
   },
   "license": "MIT",
   "keywords": ["cleanup", "hygiene", "automation", "hooks", "maintenance"],
-  "repository": "https://github.com/bandit-labs/project-hygiene",
-  "config": {
-    "default_shell": "bash",
-    "environment": {
-      "PLUGIN_HOME": "${CLAUDE_PLUGIN_ROOT}"
-    }
-  },
-  "permissions": {
-    "file_access": ["read", "write"],
-    "shell_access": true
-  }
+  "repository": "https://github.com/bandit-labs/project-hygiene"
 }
