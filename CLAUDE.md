@@ -329,6 +329,53 @@ Test in real CuisineFlow repository with actual Gitea instance before distributi
 - **Python for MCP servers** - Use Python 3.8+ with virtual environments
 - **Wiki.js structure** - All HHL content under `/hyper-hive-labs` namespace
 
+## CRITICAL: Rules You MUST Follow
+
+### DO NOT MODIFY .gitignore Without Explicit Permission
+- This is a **private repository** - credentials in `.env` files are intentional
+- **NEVER** add `.env` or `.env.*` to .gitignore
+- **NEVER** add venv patterns unless explicitly asked
+- If you think something should be ignored, ASK FIRST
+
+### Plugin Structure Requirements
+- **plugin.json MUST be in `.claude-plugin/` directory** - NOT in plugin root
+- Every plugin in the repo MUST be listed in the marketplace.json
+- After creating/modifying a plugin, VERIFY it's in the marketplace
+
+### Hooks Syntax (Claude Code Official)
+- **Valid events**: `PreToolUse`, `PostToolUse`, `UserPromptSubmit`, `SessionStart`, `SessionEnd`, `Notification`, `Stop`, `SubagentStop`, `PreCompact`
+- **INVALID events**: `task-completed`, `file-changed`, `git-commit-msg-needed` (these DO NOT exist)
+- Hooks schema:
+```json
+{
+  "hooks": {
+    "EventName": [
+      {
+        "matcher": "optional-pattern",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/path/to/script.sh"
+          }
+        ]
+      }
+    ]
+  }
+}
+```
+
+### MCP Server Configuration
+- MCP servers MUST use venv python: `${CLAUDE_PLUGIN_ROOT}/../mcp-servers/NAME/.venv/bin/python`
+- NEVER use bare `python` command - always use venv path
+- Test MCP servers after any config change
+
+### Before Completing Any Plugin Work
+1. Verify plugin.json is in `.claude-plugin/` directory
+2. Verify plugin is listed in marketplace.json
+3. Test MCP server configs load correctly
+4. Verify hooks use valid event types
+5. Check .gitignore wasn't modified inappropriately
+
 ## Documentation Index
 
 This repository contains comprehensive planning documentation:
