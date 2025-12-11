@@ -26,9 +26,7 @@ MANIFEST
 venv/
 ENV/
 env/
-.venv
-.ENV
-.env.local
+.venv/
 
 # PyCharm
 .idea/
@@ -62,10 +60,10 @@ package-lock.json
 dist/
 build/
 
-# Environment variables (IMPORTANT: Contains Gitea credentials)
-.env
-.env.local
-.env.*.local
+# Environment variables - NOT ignored (private repo)
+# .env
+# .env.local
+# .env.*.local
 
 # OS
 .DS_Store

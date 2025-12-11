@@ -6,8 +6,10 @@ Creates 28 organization labels + 16 repository labels = 44 total
 import requests
 import sys
 
-GITEA_URL = "https://gitea.example.com"
-TOKEN = "ae72c63cd7de02e40bd16f66d1e98059c187759b"
+import os
+
+GITEA_URL = os.getenv("GITEA_API_URL", "").rstrip("/api/v1")
+TOKEN = os.getenv("GITEA_API_TOKEN", "")
 ORG = "bandit"
 REPO = "support-claude-mktplace"
 
