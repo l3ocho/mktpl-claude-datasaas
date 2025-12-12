@@ -1,5 +1,4 @@
 ---
-name: sprint-status
 description: Check current sprint progress and identify blockers
 ---
 

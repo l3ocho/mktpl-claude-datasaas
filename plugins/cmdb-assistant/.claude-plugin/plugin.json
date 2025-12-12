@@ -15,7 +15,5 @@
     "network",
     "ipam",
     "dcim"
-  ],
-  "commands": "./commands/",
-  "agents": "./agents/"
+  ]
 }

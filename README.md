@@ -204,12 +204,6 @@ support-claude-mktplace/
 
 ## Development
 
-### Skills
-
-The repository includes a Claude Code skill for plugin development:
-
-- **[claude-plugin-developer](./.claude/skills/claude-plugin-developer/README.md)** - Expert guidance for creating secure, standards-compliant plugins
-
 ### Adding New Plugins
 
 1. Create plugin directory in `plugins/` with `.claude-plugin/plugin.json`

@@ -1,7 +1,5 @@
 ---
-name: initial-setup
 description: Run initial setup for support-claude-mktplace
-arguments: []
 ---
 
 # Initial Setup
