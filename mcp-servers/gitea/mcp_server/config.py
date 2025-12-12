@@ -21,7 +21,6 @@ class GiteaConfig:
     def __init__(self):
         self.api_url: Optional[str] = None
         self.api_token: Optional[str] = None
-        self.owner: Optional[str] = None
         self.repo: Optional[str] = None
         self.mode: str = 'project'
 
@@ -31,7 +30,7 @@ class GiteaConfig:
         Project-level configuration overrides system-level.
 
         Returns:
-            Dict containing api_url, api_token, owner, repo, mode
+            Dict containing api_url, api_token, repo, mode
 
         Raises:
             FileNotFoundError: If system config is missing
@@ -58,8 +57,7 @@ class GiteaConfig:
         # Extract values
         self.api_url = os.getenv('GITEA_API_URL')
         self.api_token = os.getenv('GITEA_API_TOKEN')
-        self.owner = os.getenv('GITEA_OWNER')
-        self.repo = os.getenv('GITEA_REPO')  # Optional for PMO
+        self.repo = os.getenv('GITEA_REPO')  # Optional, must be owner/repo format
 
         # Detect mode
         if self.repo:
@@ -75,7 +73,6 @@ class GiteaConfig:
         return {
             'api_url': self.api_url,
             'api_token': self.api_token,
-            'owner': self.owner,
             'repo': self.repo,
             'mode': self.mode
         }
@@ -89,8 +86,7 @@ class GiteaConfig:
         """
         required = {
             'GITEA_API_URL': self.api_url,
-            'GITEA_API_TOKEN': self.api_token,
-            'GITEA_OWNER': self.owner
+            'GITEA_API_TOKEN': self.api_token
         }
 
         missing = [key for key, value in required.items() if not value]

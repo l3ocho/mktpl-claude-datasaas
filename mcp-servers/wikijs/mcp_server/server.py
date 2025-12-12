@@ -13,7 +13,10 @@ from mcp.types import Tool, TextContent
 from .config import WikiJSConfig
 from .wikijs_client import WikiJSClient
 
+# Suppress noisy MCP validation warnings on stderr
 logging.basicConfig(level=logging.INFO)
+logging.getLogger("root").setLevel(logging.ERROR)
+logging.getLogger("mcp").setLevel(logging.ERROR)
 logger = logging.getLogger(__name__)
 
 

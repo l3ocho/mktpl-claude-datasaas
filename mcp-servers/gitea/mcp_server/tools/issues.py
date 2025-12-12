@@ -245,35 +245,17 @@ class IssueTools:
 
     async def aggregate_issues(
         self,
+        org: str,
         state: str = 'open',
         labels: Optional[List[str]] = None
     ) -> Dict[str, List[Dict]]:
-        """
-        Aggregate issues across all repositories (PMO mode, async wrapper).
-
-        Args:
-            state: Issue state (open, closed, all)
-            labels: Filter by labels
-
-        Returns:
-            Dictionary mapping repository names to issue lists
-
-        Raises:
-            ValueError: If not in company mode
-            PermissionError: If operation not allowed on current branch
-        """
-        if self.gitea.mode != 'company':
-            raise ValueError("aggregate_issues only available in company mode")
-
+        """Aggregate issues across all repositories in org."""
         if not self._check_branch_permissions('aggregate_issues'):
             branch = self._get_current_branch()
-            raise PermissionError(
-                f"Cannot aggregate issues on branch '{branch}'. "
-                f"Switch to a development branch."
-            )
+            raise PermissionError(f"Cannot aggregate issues on branch '{branch}'.")
 
         loop = asyncio.get_event_loop()
         return await loop.run_in_executor(
             None,
-            lambda: self.gitea.aggregate_issues(state, labels)
+            lambda: self.gitea.aggregate_issues(org, state, labels)
         )
