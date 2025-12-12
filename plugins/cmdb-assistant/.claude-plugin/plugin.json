@@ -37,12 +37,6 @@
       "file": "agents/cmdb-assistant.md"
     }
   },
-  "mcpServers": {
-    "netbox": {
-      "description": "NetBox API integration via MCP",
-      "configFile": ".mcp.json"
-    }
-  },
   "configuration": {
     "required": [
       {

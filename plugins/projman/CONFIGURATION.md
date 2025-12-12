@@ -112,7 +112,7 @@ python -c "from mcp_server import server; print('Wiki.js MCP Server installed su
 
 ### 2.2 Generate Wiki.js API Token
 
-1. Log into Wiki.js: https://wiki.hyperhivelabs.com
+1. Log into Wiki.js: https://wiki.your-company.com
 2. Navigate to: **Administration** (top right)
 3. Click **API Access** in the left sidebar
 4. Click **New API Key**
@@ -166,9 +166,9 @@ chmod 600 ~/.config/claude/gitea.env
 ```bash
 cat > ~/.config/claude/wikijs.env << 'EOF'
 # Wiki.js API Configuration
-WIKIJS_API_URL=https://wiki.hyperhivelabs.com/graphql
+WIKIJS_API_URL=https://wiki.your-company.com/graphql
 WIKIJS_API_TOKEN=your_wikijs_token_here
-WIKIJS_BASE_PATH=/hyper-hive-labs
+WIKIJS_BASE_PATH=/your-org
 EOF
 
 # Secure the file (owner read/write only)
@@ -180,7 +180,7 @@ chmod 600 ~/.config/claude/wikijs.env
 **Configuration Variables:**
 - `WIKIJS_API_URL` - Wiki.js GraphQL endpoint (includes `/graphql`)
 - `WIKIJS_API_TOKEN` - API key from Step 2.2 (JWT format)
-- `WIKIJS_BASE_PATH` - Base path in Wiki.js (e.g., `/hyper-hive-labs`)
+- `WIKIJS_BASE_PATH` - Base path in Wiki.js (e.g., `/your-org`)
 
 ### 3.4 Verify System Configuration
 
@@ -263,7 +263,7 @@ curl -H "Authorization: token YOUR_GITEA_TOKEN" \
 curl -H "Authorization: Bearer YOUR_WIKIJS_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{"query": "{ pages { list { id title } } }"}' \
-  https://wiki.hyperhivelabs.com/graphql
+  https://wiki.your-company.com/graphql
 
 # Should return pages data in JSON format
 ```
@@ -320,17 +320,17 @@ GITEA_OWNER=bandit
 
 **`~/.config/claude/wikijs.env`:**
 ```bash
-WIKIJS_API_URL=https://wiki.hyperhivelabs.com/graphql
+WIKIJS_API_URL=https://wiki.your-company.com/graphql
 WIKIJS_API_TOKEN=eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9...
-WIKIJS_BASE_PATH=/hyper-hive-labs
+WIKIJS_BASE_PATH=/your-org
 ```
 
 ### Project-Level Files
 
 **`.env` (in project root):**
 ```bash
-GITEA_REPO=cuisineflow
-WIKIJS_PROJECT=projects/cuisineflow
+GITEA_REPO=your-repo-name
+WIKIJS_PROJECT=projects/your-project-name
 ```
 
 **`.gitignore` (must include):**
@@ -371,25 +371,25 @@ To use Projman with multiple projects:
 1. **System config:** Set up once (already done in Step 3)
 2. **Project config:** Create `.env` in each project root:
 
-**Project 1: CuisineFlow**
+**Project 1: Main App**
 ```bash
-# ~/projects/cuisineflow/.env
-GITEA_REPO=cuisineflow
-WIKIJS_PROJECT=projects/cuisineflow
+# ~/projects/my-app/.env
+GITEA_REPO=my-app
+WIKIJS_PROJECT=projects/my-app
 ```
 
-**Project 2: CuisineFlow-Site**
+**Project 2: App Site**
 ```bash
-# ~/projects/cuisineflow-site/.env
-GITEA_REPO=cuisineflow-site
-WIKIJS_PROJECT=projects/cuisineflow-site
+# ~/projects/my-app-site/.env
+GITEA_REPO=my-app-site
+WIKIJS_PROJECT=projects/my-app-site
 ```
 
-**Project 3: HHL-Site**
+**Project 3: Company Site**
 ```bash
-# ~/projects/hhl-site/.env
-GITEA_REPO=hhl-site
-WIKIJS_PROJECT=projects/hhl-site
+# ~/projects/company-site/.env
+GITEA_REPO=company-site
+WIKIJS_PROJECT=projects/company-site
 ```
 
 Each project operates independently with its own issues and lessons learned.
@@ -421,7 +421,7 @@ curl -H "Authorization: token YOUR_TOKEN" \
 
 # Test Wiki.js token
 curl -H "Authorization: Bearer YOUR_TOKEN" \
-  https://wiki.hyperhivelabs.com/graphql
+  https://wiki.your-company.com/graphql
 
 # If fails, regenerate token (Step 2)
 ```

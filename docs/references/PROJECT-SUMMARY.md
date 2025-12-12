@@ -155,9 +155,9 @@ GITEA_API_TOKEN=your_token
 GITEA_OWNER=bandit
 
 # ~/.config/claude/wikijs.env
-WIKIJS_API_URL=https://wiki.hyperhivelabs.com/graphql
+WIKIJS_API_URL=https://wiki.your-company.com/graphql
 WIKIJS_API_TOKEN=your_token
-WIKIJS_BASE_PATH=/hyper-hive-labs
+WIKIJS_BASE_PATH=/your-org
 ```
 
 **Project-Level:**
@@ -271,18 +271,18 @@ WIKIJS_PROJECT=projects/cuisineflow
 ## Wiki.js Structure
 
 ```
-Wiki.js: https://wiki.hyperhivelabs.com
-└── /hyper-hive-labs/
+Wiki.js: https://wiki.your-company.com
+└── /your-org/
     ├── projects/                       # Project-specific
-    │   ├── cuisineflow/
+    │   ├── project-a/
     │   │   ├── lessons-learned/
     │   │   │   ├── sprints/
     │   │   │   ├── patterns/
     │   │   │   └── INDEX.md
     │   │   └── documentation/
-    │   ├── cuisineflow-site/
-    │   ├── intuit-engine/
-    │   └── hhl-site/
+    │   ├── project-b/
+    │   ├── project-c/
+    │   └── company-site/
     ├── company/                        # Company-wide
     │   ├── processes/
     │   ├── standards/
@@ -373,9 +373,9 @@ EOF
 
 # Wiki.js config
 cat > ~/.config/claude/wikijs.env << EOF
-WIKIJS_API_URL=https://wiki.hyperhivelabs.com/graphql
+WIKIJS_API_URL=https://wiki.your-company.com/graphql
 WIKIJS_API_TOKEN=your_wikijs_token
-WIKIJS_BASE_PATH=/hyper-hive-labs
+WIKIJS_BASE_PATH=/your-org
 EOF
 
 # Secure files
@@ -565,7 +565,7 @@ Previous attempts failed due to:
 ### Immediate Actions
 
 1. **Set up system configuration** (Gitea + Wiki.js tokens)
-2. **Create Wiki.js base structure** at `/hyper-hive-labs`
+2. **Create Wiki.js base structure** at `/your-org`
 3. **Begin Phase 1.1a** - Gitea MCP Server implementation
 4. **Begin Phase 1.1b** - Wiki.js MCP Server implementation
 
@@ -597,10 +597,10 @@ These decisions were finalized before development:
 - **Minimum:** Python 3.10.0
 
 ### 2. Wiki.js Base Structure: Needs Creation
-- **Status:** `/hyper-hive-labs` structure does NOT exist yet
+- **Status:** `/your-org` structure does NOT exist yet
 - **Action:** Run `setup_wiki_structure.py` during Phase 1.1b
 - **Script:** See MCP-WIKIJS.md for complete setup script
-- **Post-setup:** Verify at https://wiki.hyperhivelabs.com/hyper-hive-labs
+- **Post-setup:** Verify at https://wiki.your-company.com/your-org
 
 ### 3. Testing Strategy: Both Mocks and Real APIs
 - **Unit tests:** Use mocks for fast feedback during development

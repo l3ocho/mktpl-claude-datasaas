@@ -212,20 +212,19 @@ The label system includes:
 
 **Critical Feature:** After 15 sprints without lesson capture, repeated mistakes occurred (e.g., Claude Code infinite loops on similar issues 2-3 times).
 
-**Wiki.js Structure:**
+**Wiki.js Structure (Example):**
 ```
-Wiki.js: https://wiki.hyperhivelabs.com
-└── /hyper-hive-labs/
+Wiki.js: https://wiki.your-company.com
+└── /your-org/
     ├── projects/                       # Project-specific documentation
-    │   ├── cuisineflow/
+    │   ├── project-a/
     │   │   ├── lessons-learned/
     │   │   │   ├── sprints/
     │   │   │   ├── patterns/
     │   │   │   └── INDEX.md
     │   │   └── documentation/
-    │   ├── cuisineflow-site/
-    │   ├── intuit-engine/
-    │   └── hhl-site/
+    │   ├── project-b/
+    │   └── project-c/
     ├── company/                        # Company-wide documentation
     │   ├── processes/
     │   ├── standards/
@@ -376,11 +375,11 @@ bandit/support-claude-mktplace/
 
 ## Multi-Project Context (PMO Plugin)
 
-The `projman-pmo` plugin will coordinate interdependent projects:
-- **CuisineFlow** - Main product
-- **CuisineFlow-Site** - Demo sync + customer gateway
-- **Intuit Engine Service** - API aggregator extraction (imminent)
-- **HHL-Site** - Company presence
+The `projman-pmo` plugin coordinates interdependent projects across an organization. Example use cases:
+- Main product repository
+- Marketing/documentation sites
+- Extracted services
+- Supporting tools
 
 PMO plugin adds:
 - Cross-project issue aggregation (all repos in organization)
@@ -392,7 +391,7 @@ PMO plugin adds:
 
 **Configuration Difference:**
 - PMO operates at company level (no `GITEA_REPO` or `WIKIJS_PROJECT`)
-- Accesses entire `/hyper-hive-labs` Wiki.js namespace
+- Accesses entire organization Wiki.js namespace
 - Queries all repositories in organization
 
 Build PMO plugin AFTER projman is working and validated.
@@ -409,7 +408,7 @@ Create local marketplace for plugin development:
 ```
 
 **Integration Testing:**
-Test in real CuisineFlow repository with actual Gitea instance before distribution.
+Test in a real repository with actual Gitea instance before distribution.
 
 **Success Metrics:**
 - Sprint planning time reduced 40%
@@ -426,7 +425,7 @@ Test in real CuisineFlow repository with actual Gitea instance before distributi
 - **Type/Refactor label** - Newly implemented at org level for architectural work
 - **Branch detection must be 100% reliable** - Prevents production accidents
 - **Python for MCP servers** - Use Python 3.8+ with virtual environments
-- **Wiki.js structure** - All HHL content under `/hyper-hive-labs` namespace
+- **Wiki.js structure** - Organization content under configured base namespace
 
 ## CRITICAL: Rules You MUST Follow
 
@@ -501,7 +500,7 @@ This repository contains comprehensive planning documentation:
 - Two-MCP-server approach confirmed (Gitea + Wiki.js)
 - Python selected for MCP server implementation
 - Hybrid configuration strategy defined (system + project level)
-- Wiki.js structure planned at `/hyper-hive-labs`
+- Wiki.js structure planned with configurable base path
 - Repository structure designed with shared MCP servers
 - `claude-plugin-developer` skill added to project
 

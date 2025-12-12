@@ -52,7 +52,7 @@ mkdir -p ~/.config/claude
 cat > ~/.config/claude/wikijs.env << 'EOF'
 WIKIJS_API_URL=http://wikijs.hotport/graphql
 WIKIJS_API_TOKEN=your_real_token_here
-WIKIJS_BASE_PATH=/hyper-hive-labs
+WIKIJS_BASE_PATH=/your-org
 EOF
 
 # Run integration tests
@@ -198,7 +198,7 @@ echo '{
   "success": true,
   "page": {
     "id": 123,
-    "path": "/hyper-hive-labs/projects/test-project/documentation/test-api",
+    "path": "/your-org/projects/test-project/documentation/test-api",
     "title": "Test API Documentation"
   }
 }

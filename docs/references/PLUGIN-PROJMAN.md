@@ -925,13 +925,13 @@ Orchestrator: I'll create a lesson in Wiki.js:
               #service-extraction #api #database #refactoring #claude-code-loops
 
               Creating page in Wiki.js... ✅
-              Path: /hyper-hive-labs/projects/cuisineflow/lessons-learned/sprints/sprint-16-intuit-engine
+              Path: /your-org/projects/my-project/lessons-learned/sprints/sprint-16-intuit-engine
 
               Updating INDEX.md... ✅
 
               Closing sprint issue #47... ✅
 
-              View lesson at: https://wiki.hyperhivelabs.com/hyper-hive-labs/projects/cuisineflow/lessons-learned/sprints/sprint-16-intuit-engine
+              View lesson at: https://wiki.your-company.com/your-org/projects/my-project/lessons-learned/sprints/sprint-16-intuit-engine
 ```
 
 **Success Criteria:**

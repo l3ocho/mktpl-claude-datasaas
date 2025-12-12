@@ -110,7 +110,7 @@ cat > ~/.config/claude/wikijs.env << 'EOF'
 # Wiki.js API Configuration
 WIKIJS_API_URL=http://wikijs.hotport/graphql
 WIKIJS_API_TOKEN=your_api_token_here
-WIKIJS_BASE_PATH=/hyper-hive-labs
+WIKIJS_BASE_PATH=/your-org
 EOF
 
 chmod 600 ~/.config/claude/wikijs.env
@@ -216,7 +216,7 @@ The MCP server is referenced in plugin `.mcp.json`:
 |----------|-------------|---------|
 | `WIKIJS_API_URL` | Wiki.js GraphQL endpoint | `http://wiki.example.com/graphql` |
 | `WIKIJS_API_TOKEN` | API authentication token (JWT) | `eyJhbGciOiJSUzI1...` |
-| `WIKIJS_BASE_PATH` | Base path in Wiki.js | `/hyper-hive-labs` |
+| `WIKIJS_BASE_PATH` | Base path in Wiki.js | `/your-org` |
 
 ### Optional Variables
 
@@ -234,7 +234,7 @@ The MCP server is referenced in plugin `.mcp.json`:
 ### Recommended Organization
 
 ```
-/hyper-hive-labs/                  # Base path
+/your-org/                  # Base path
 ├── projects/                      # Project-specific
 │   ├── your-project/
 │   │   ├── lessons-learned/
