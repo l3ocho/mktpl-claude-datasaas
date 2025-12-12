@@ -15,50 +15,7 @@
     "wikijs",
     "agile"
   ],
-  "commands": {
-    "sprint-plan": {
-      "description": "Plan a new sprint with Gitea issues and Wiki.js documentation",
-      "source": "commands/sprint-plan.md"
-    },
-    "sprint-start": {
-      "description": "Start sprint execution with orchestrator coordination",
-      "source": "commands/sprint-start.md"
-    },
-    "sprint-status": {
-      "description": "Get current sprint status and progress report",
-      "source": "commands/sprint-status.md"
-    },
-    "sprint-close": {
-      "description": "Close sprint and capture lessons learned",
-      "source": "commands/sprint-close.md"
-    },
-    "labels-sync": {
-      "description": "Sync label taxonomy from Gitea organization",
-      "source": "commands/labels-sync.md"
-    },
-    "initial-setup": {
-      "description": "Initialize projman configuration for a new project",
-      "source": "commands/initial-setup.md"
-    }
-  },
-  "agents": {
-    "planner": {
-      "description": "Architecture analysis and sprint planning agent",
-      "source": "agents/planner.md"
-    },
-    "orchestrator": {
-      "description": "Sprint execution coordinator and progress tracker",
-      "source": "agents/orchestrator.md"
-    },
-    "executor": {
-      "description": "Implementation agent that follows execution prompts",
-      "source": "agents/executor.md"
-    }
-  },
-  "skills": {
-    "label-taxonomy": {
-      "description": "Gitea label taxonomy reference for issue classification",
-      "source": "skills/label-taxonomy"
-    }
-  }
+  "commands": "./commands/",
+  "agents": "./agents/",
+  "skills": "./skills/"
 }
