@@ -13,6 +13,60 @@ These plugins transform a proven 15-sprint workflow into reusable, distributable
 
 **Status:** Planning phase complete, ready for implementation (Phase 1)
 
+## File Creation Governance
+
+### Allowed Root Files
+
+Only these files may exist at the repository root:
+
+- `CLAUDE.md` - This file
+- `README.md` - Repository overview
+- `LICENSE` - License file
+- `CHANGELOG.md` - Version history
+- `.gitignore` - Git ignore rules
+- `.env.example` - Environment template (if needed)
+
+### Allowed Root Directories
+
+Only these directories may exist at the repository root:
+
+| Directory | Purpose |
+|-----------|---------|
+| `.claude/` | Claude Code skills |
+| `.claude-plugin/` | Marketplace manifest |
+| `.claude-plugins/` | Local marketplace definitions |
+| `.scratch/` | Transient work (auto-cleaned) |
+| `docs/` | Documentation |
+| `hooks/` | Shared hooks (if any) |
+| `mcp-servers/` | Shared MCP servers |
+| `project-hygiene/` | Cleanup automation plugin |
+| `projman/` | Sprint management plugin |
+| `projman-pmo/` | PMO coordination plugin |
+| `scripts/` | Setup and maintenance scripts |
+
+### File Creation Rules
+
+1. **No new root files** - Do not create files directly in the repository root unless listed above
+2. **No new root directories** - Do not create top-level directories without explicit approval
+3. **Transient work goes in `.scratch/`** - Any temporary files, test outputs, or exploratory work must be created in `.scratch/`
+4. **Clean up after tasks** - Delete files in `.scratch/` when the task is complete
+5. **Documentation location** - All documentation goes in `docs/` with appropriate subdirectory:
+   - `docs/references/` - Reference specifications and summaries
+   - `docs/architecture/` - Architecture diagrams (Draw.io files)
+   - `docs/workflows/` - Workflow documentation
+6. **No output files** - Do not leave generated output, logs, or test results outside designated directories
+
+### Enforcement
+
+Before creating any file, verify:
+
+1. Is this file type allowed in the target location?
+2. If temporary, am I using `.scratch/`?
+3. If documentation, am I using the correct `docs/` subdirectory?
+4. Will this file be cleaned up after the task?
+
+**Violation of these rules creates technical debt and project chaos.**
+
 ## Core Architecture
 
 ### Three-Agent Model

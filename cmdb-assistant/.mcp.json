@@ -1,9 +1,0 @@
-{
-  "mcpServers": {
-    "netbox": {
-      "command": "${CLAUDE_PLUGIN_ROOT}/../mcp-servers/netbox/.venv/bin/python",
-      "args": ["-m", "mcp_server.server"],
-      "cwd": "${CLAUDE_PLUGIN_ROOT}/../mcp-servers/netbox"
-    }
-  }
-}

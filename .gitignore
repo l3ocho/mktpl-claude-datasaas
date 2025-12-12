@@ -1,3 +1,7 @@
+# Scratch directory contents (keep .gitkeep)
+.scratch/*
+!.scratch/.gitkeep
+
 # Python
 *.py[cod]
 *$py.class
