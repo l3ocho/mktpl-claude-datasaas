@@ -7,6 +7,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 
 ### Added
+- `docs/CANONICAL-PATHS.md` - Single source of truth for all file paths
+- Path verification rules in CLAUDE.md (mandatory pre-flight check)
+- Recovery protocol for path issues
 - Installation script (`scripts/setup.sh`) for new users
 - Post-update script (`scripts/post-update.sh`) for updates
 - Update documentation (`docs/UPDATING.md`)
@@ -19,8 +22,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - `docs/workflows/` for workflow documentation
 
 ### Changed
+- Replaced `docs/CORRECT-ARCHITECTURE.md` reference with `docs/CANONICAL-PATHS.md`
+- Added mandatory path verification section to CLAUDE.md
 - Reorganized documentation into `docs/references/`, `docs/architecture/`, `docs/workflows/`
 - Updated CLAUDE.md with file creation governance
+
+### Fixed
+- Removed dead reference to non-existent `docs/CORRECT-ARCHITECTURE.md`
 
 ### Removed
 - Organization/workspace GID variable (no longer needed)
