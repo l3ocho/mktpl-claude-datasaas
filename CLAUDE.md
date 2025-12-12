@@ -39,9 +39,7 @@ Only these directories may exist at the repository root:
 | `docs/` | Documentation |
 | `hooks/` | Shared hooks (if any) |
 | `mcp-servers/` | Shared MCP servers |
-| `project-hygiene/` | Cleanup automation plugin |
-| `projman/` | Sprint management plugin |
-| `projman-pmo/` | PMO coordination plugin |
+| `plugins/` | All plugins (projman, projman-pmo, project-hygiene) |
 | `scripts/` | Setup and maintenance scripts |
 
 ### File Creation Rules
@@ -122,7 +120,7 @@ Both plugins use **two shared MCP servers** at repository root level (`mcp-serve
 - MCP servers are **shared** by both plugins at `mcp-servers/gitea` and `mcp-servers/wikijs`
 - Each MCP server detects its mode (project-scoped vs company-wide) based on environment variables
 - Configuration uses hybrid approach (system-level + project-level)
-- Both plugins reference `../mcp-servers/` in their `.mcp.json` files
+- All plugins reference `../../mcp-servers/` in their `.mcp.json` files (from `plugins/*/`)
 
 ## Branch-Aware Security Model
 
@@ -220,7 +218,7 @@ See [docs/reference-material/projman-implementation-plan.md](docs/reference-mate
 bandit/support-claude-mktplace/
 ├── .claude-plugin/
 │   └── marketplace.json
-├── mcp-servers/                    # ← SHARED BY BOTH PLUGINS
+├── mcp-servers/                    # ← SHARED BY ALL PLUGINS
 │   ├── gitea/
 │   │   ├── .venv/
 │   │   ├── requirements.txt        # Python dependencies
@@ -246,37 +244,40 @@ bandit/support-claude-mktplace/
 │       │       ├── lessons_learned.py
 │       │       └── documentation.py
 │       └── tests/
-├── projman/                        # ← PROJECT PLUGIN
-│   ├── .claude-plugin/
-│   │   └── plugin.json
-│   ├── .mcp.json                   # Points to ../mcp-servers/
-│   ├── commands/
-│   │   ├── sprint-plan.md
-│   │   ├── sprint-start.md
-│   │   ├── sprint-status.md
-│   │   ├── sprint-close.md
-│   │   └── labels-sync.md
-│   ├── agents/
-│   │   ├── planner.md
-│   │   ├── orchestrator.md
-│   │   └── executor.md
-│   ├── skills/
-│   │   └── label-taxonomy/
-│   │       └── labels-reference.md
-│   ├── README.md
-│   └── CONFIGURATION.md
-└── projman-pmo/                    # ← PMO PLUGIN
-    ├── .claude-plugin/
-    │   └── plugin.json
-    ├── .mcp.json                   # Points to ../mcp-servers/
-    ├── commands/
-    │   ├── pmo-status.md
-    │   ├── pmo-priorities.md
-    │   ├── pmo-dependencies.md
-    │   └── pmo-schedule.md
-    ├── agents/
-    │   └── pmo-coordinator.md
-    └── README.md
+└── plugins/                        # ← ALL PLUGINS
+    ├── projman/                    # ← PROJECT PLUGIN
+    │   ├── .claude-plugin/
+    │   │   └── plugin.json
+    │   ├── .mcp.json               # Points to ../../mcp-servers/
+    │   ├── commands/
+    │   │   ├── sprint-plan.md
+    │   │   ├── sprint-start.md
+    │   │   ├── sprint-status.md
+    │   │   ├── sprint-close.md
+    │   │   └── labels-sync.md
+    │   ├── agents/
+    │   │   ├── planner.md
+    │   │   ├── orchestrator.md
+    │   │   └── executor.md
+    │   ├── skills/
+    │   │   └── label-taxonomy/
+    │   │       └── labels-reference.md
+    │   ├── README.md
+    │   └── CONFIGURATION.md
+    ├── projman-pmo/                # ← PMO PLUGIN
+    │   ├── .claude-plugin/
+    │   │   └── plugin.json
+    │   ├── .mcp.json               # Points to ../../mcp-servers/
+    │   ├── commands/
+    │   │   ├── pmo-status.md
+    │   │   ├── pmo-priorities.md
+    │   │   ├── pmo-dependencies.md
+    │   │   └── pmo-schedule.md
+    │   ├── agents/
+    │   │   └── pmo-coordinator.md
+    │   └── README.md
+    └── project-hygiene/            # ← CLEANUP PLUGIN
+        └── ...
 ```
 
 ### Key Design Decisions
@@ -419,7 +420,7 @@ Test in real CuisineFlow repository with actual Gitea instance before distributi
 ```
 
 ### MCP Server Configuration
-- MCP servers MUST use venv python: `${CLAUDE_PLUGIN_ROOT}/../mcp-servers/NAME/.venv/bin/python`
+- MCP servers MUST use venv python: `${CLAUDE_PLUGIN_ROOT}/../../mcp-servers/NAME/.venv/bin/python`
 - NEVER use bare `python` command - always use venv path
 - Test MCP servers after any config change
 
