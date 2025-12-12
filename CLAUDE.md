@@ -39,7 +39,7 @@ Only these directories may exist at the repository root:
 | `docs/` | Documentation |
 | `hooks/` | Shared hooks (if any) |
 | `mcp-servers/` | Shared MCP servers |
-| `plugins/` | All plugins (projman, projman-pmo, project-hygiene) |
+| `plugins/` | All plugins (projman, projman-pmo, project-hygiene, cmdb-assistant) |
 | `scripts/` | Setup and maintenance scripts |
 
 ### File Creation Rules

@@ -9,19 +9,19 @@
       "name": "projman",
       "version": "0.1.0",
       "description": "Sprint planning and project management with Gitea and Wiki.js integration",
-      "source": "./../../projman"
+      "source": "./../../../plugins/projman"
     },
     {
       "name": "project-hygiene",
       "version": "0.1.0",
       "description": "Post-task cleanup hook that removes temp files, warns about unexpected root files, and manages orphans",
-      "source": "./../../project-hygiene"
+      "source": "./../../../plugins/project-hygiene"
     },
     {
       "name": "cmdb-assistant",
       "version": "1.0.0",
       "description": "NetBox CMDB integration for infrastructure management - query, create, update, and manage network devices, IP addresses, sites, and more",
-      "source": "./../../cmdb-assistant"
+      "source": "./../../../plugins/cmdb-assistant"
     }
   ]
 }

@@ -16,7 +16,7 @@ AI-guided sprint planning with Gitea and Wiki.js integration. Transforms a prove
 
 **Commands:** `/sprint-plan`, `/sprint-start`, `/sprint-status`, `/sprint-close`, `/labels-sync`
 
-### cmdb-assistant *(Planned)*
+### [cmdb-assistant](./plugins/cmdb-assistant/README.md)
 **NetBox CMDB Integration**
 
 Full CRUD operations for network infrastructure management directly from Claude Code.
@@ -156,9 +156,13 @@ support-claude-mktplace/
 │   │   ├── .claude-plugin/
 │   │   ├── commands/
 │   │   └── agents/
-│   └── project-hygiene/       # Cleanup automation plugin
+│   ├── project-hygiene/       # Cleanup automation plugin
+│   │   ├── .claude-plugin/
+│   │   └── hooks/
+│   └── cmdb-assistant/        # NetBox CMDB integration
 │       ├── .claude-plugin/
-│       └── hooks/
+│       ├── commands/
+│       └── agents/
 ├── mcp-servers/               # Shared MCP servers
 │   ├── gitea/
 │   ├── wikijs/
