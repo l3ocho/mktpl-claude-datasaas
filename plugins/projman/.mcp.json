@@ -1,19 +1,19 @@
 {
   "mcpServers": {
     "gitea": {
-      "command": "/home/lmiranda/repos/bandit/support-claude-mktplace/mcp-servers/gitea/.venv/bin/python",
+      "command": "${CLAUDE_PLUGIN_ROOT}/../../mcp-servers/gitea/.venv/bin/python",
       "args": ["-m", "mcp_server.server"],
-      "cwd": "/home/lmiranda/repos/bandit/support-claude-mktplace/mcp-servers/gitea",
+      "cwd": "${CLAUDE_PLUGIN_ROOT}/../../mcp-servers/gitea",
       "env": {
-        "PYTHONPATH": "/home/lmiranda/repos/bandit/support-claude-mktplace/mcp-servers/gitea"
+        "PYTHONPATH": "${CLAUDE_PLUGIN_ROOT}/../../mcp-servers/gitea"
       }
     },
     "wikijs": {
-      "command": "/home/lmiranda/repos/bandit/support-claude-mktplace/mcp-servers/wikijs/.venv/bin/python",
+      "command": "${CLAUDE_PLUGIN_ROOT}/../../mcp-servers/wikijs/.venv/bin/python",
       "args": ["-m", "mcp_server.server"],
-      "cwd": "/home/lmiranda/repos/bandit/support-claude-mktplace/mcp-servers/wikijs",
+      "cwd": "${CLAUDE_PLUGIN_ROOT}/../../mcp-servers/wikijs",
       "env": {
-        "PYTHONPATH": "/home/lmiranda/repos/bandit/support-claude-mktplace/mcp-servers/wikijs"
+        "PYTHONPATH": "${CLAUDE_PLUGIN_ROOT}/../../mcp-servers/wikijs"
       }
     }
   }
