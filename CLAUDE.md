@@ -65,6 +65,50 @@ Before creating any file, verify:
 
 **Violation of these rules creates technical debt and project chaos.**
 
+## Path Verification (MANDATORY)
+
+### Before Generating Any Prompt or Creating Any File
+
+**This is non-negotiable. Failure to follow causes structural damage.**
+
+1. **READ `docs/CANONICAL-PATHS.md` FIRST**
+   - This file is the single source of truth
+   - Never infer paths from memory or context
+   - Never assume paths based on conversation history
+
+2. **List All Paths**
+   - Before generating a prompt, list every file path it will create/modify
+   - Show the list to the user
+
+3. **Verify Each Path**
+   - Check each path against `docs/CANONICAL-PATHS.md`
+   - If a path is not in that file, STOP and ask
+
+4. **Show Verification**
+   - Present a verification table to user:
+   ```
+   | Path | Matches CANONICAL-PATHS.md? |
+   |------|----------------------------|
+   | plugins/projman/... | ✅ Yes |
+   ```
+
+5. **Get Confirmation**
+   - User must confirm paths are correct before proceeding
+
+### Relative Path Rules
+
+- Plugin to MCP server: `${CLAUDE_PLUGIN_ROOT}/../../mcp-servers/{server}`
+- Marketplace to plugin: `./../../../plugins/{plugin-name}`
+- **ALWAYS calculate from CANONICAL-PATHS.md, never from memory**
+
+### Recovery Protocol
+
+If you suspect paths are wrong:
+1. Read `docs/CANONICAL-PATHS.md`
+2. Compare actual structure against documented structure
+3. Report discrepancies
+4. Generate corrective prompt if needed
+
 ## Core Architecture
 
 ### Three-Agent Model
@@ -212,7 +256,7 @@ See [docs/reference-material/projman-implementation-plan.md](docs/reference-mate
 
 ### Repository Structure (DEFINITIVE)
 
-⚠️ **See `docs/CORRECT-ARCHITECTURE.md` for the authoritative structure reference**
+⚠️ **See `docs/CANONICAL-PATHS.md` for the authoritative path reference - THIS IS THE SINGLE SOURCE OF TRUTH**
 
 ```
 bandit/support-claude-mktplace/
@@ -435,7 +479,7 @@ Test in real CuisineFlow repository with actual Gitea instance before distributi
 
 This repository contains comprehensive planning documentation:
 
-- **`docs/CORRECT-ARCHITECTURE.md`** - ⚠️ DEFINITIVE repository structure reference
+- **`docs/CANONICAL-PATHS.md`** - ⚠️ SINGLE SOURCE OF TRUTH for all paths (MANDATORY reading before any file operations)
 - **`docs/DOCUMENT-INDEX.md`** - Complete guide to all planning documents
 - **`docs/projman-implementation-plan-updated.md`** - Full 12-phase implementation plan
 - **`docs/projman-python-quickstart.md`** - Python-specific implementation guide
