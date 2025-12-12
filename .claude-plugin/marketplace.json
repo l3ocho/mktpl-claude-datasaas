@@ -1,5 +1,5 @@
 {
-  "name": "projman-marketplace",
+  "name": "bandit-claude-marketplace",
   "version": "1.0.0",
   "description": "Project management plugins with Gitea, Wiki.js, and NetBox integrations",
   "owner": {

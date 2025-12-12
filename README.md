@@ -139,7 +139,10 @@ Comprehensive NetBox REST API integration for infrastructure management.
 
 4. **Add marketplace to Claude Code:**
    ```bash
-   claude plugin add ./.claude-plugins/projman-marketplace
+   claude plugin marketplace add /path/to/support-claude-mktplace
+   claude plugin install projman
+   claude plugin install cmdb-assistant
+   claude plugin install project-hygiene
    ```
 
 ## Repository Structure
@@ -167,12 +170,11 @@ support-claude-mktplace/
 │   ├── gitea/
 │   ├── wikijs/
 │   └── netbox/
-├── .claude-plugins/           # Marketplace definitions
-│   └── projman-marketplace/
+├── .claude-plugin/            # Marketplace manifest (bandit-claude-marketplace)
+│   └── marketplace.json
 ├── docs/                      # Reference documentation
 │   └── references/
-└── .claude/                   # Claude Code skills
-    └── skills/
+└── .claude/                   # Claude Code local settings
 ```
 
 ## Documentation
@@ -209,7 +211,7 @@ support-claude-mktplace/
 1. Create plugin directory in `plugins/` with `.claude-plugin/plugin.json`
 2. Add commands, agents, or hooks as needed
 3. Reference shared MCP servers via `.mcp.json` (use `../../mcp-servers/`)
-4. Add to marketplace in `.claude-plugins/projman-marketplace/`
+4. Add to marketplace in `.claude-plugin/marketplace.json`
 5. Document in plugin `README.md`
 
 ### Testing

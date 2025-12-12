@@ -10,12 +10,9 @@ Last Updated: 2025-12-12
 
 ```
 support-claude-mktplace/
-├── .claude/                    # Claude Code skills
-├── .claude-plugin/             # Root marketplace manifest (if any)
-├── .claude-plugins/            # Local marketplace definitions
-│   └── projman-marketplace/
-│       └── .claude-plugin/
-│           └── marketplace.json
+├── .claude/                    # Claude Code local settings
+├── .claude-plugin/             # Marketplace manifest (bandit-claude-marketplace)
+│   └── marketplace.json
 ├── .scratch/                   # Transient work (auto-cleaned)
 ├── docs/                       # All documentation
 │   ├── architecture/           # Draw.io diagrams and specs
@@ -66,7 +63,7 @@ support-claude-mktplace/
 | From | To | Pattern |
 |------|----|---------|
 | Plugin .mcp.json | MCP server | `${CLAUDE_PLUGIN_ROOT}/../../mcp-servers/{server}` |
-| marketplace.json | Plugin | `./../../../plugins/{plugin-name}` |
+| marketplace.json | Plugin | `./plugins/{plugin-name}` |
 
 ### Documentation Paths
 
@@ -107,16 +104,13 @@ Result: ../../mcp-servers/gitea/
 With variable: ${CLAUDE_PLUGIN_ROOT}/../../mcp-servers/gitea/
 ```
 
-From `.claude-plugins/projman-marketplace/.claude-plugin/marketplace.json` to `plugins/projman/`:
+From `.claude-plugin/marketplace.json` to `plugins/projman/`:
 ```
-.claude-plugins/projman-marketplace/.claude-plugin/marketplace.json
-  ↑ go up to .claude-plugin/              (../)
-  ↑ go up to projman-marketplace/         (../)
-  ↑ go up to .claude-plugins/             (../)
-  ↑ go up to root/                        (../)
-  → go down to plugins/projman/           (plugins/projman/)
+.claude-plugin/marketplace.json
+  ↑ marketplace.json is at repo root level
+  → go down to plugins/projman/           (./plugins/projman/)
 
-Result: ./../../../plugins/projman
+Result: ./plugins/projman
 ```
 
 ---
@@ -127,7 +121,7 @@ Result: ./../../../plugins/projman
 |-------|-----|---------|
 | `projman/` at root | Plugins go in `plugins/` | `plugins/projman/` |
 | `../mcp-servers/` from plugin | Missing one level | `../../mcp-servers/` |
-| `./projman` in marketplace | Wrong depth | `./../../../plugins/projman` |
+| `./../../../plugins/projman` in marketplace | Wrong (old nested structure) | `./plugins/projman` |
 | Creating `docs/CORRECT-ARCHITECTURE.md` | This file replaces it | Use `docs/CANONICAL-PATHS.md` |
 
 ---
