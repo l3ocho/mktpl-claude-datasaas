@@ -1,9 +1,12 @@
 {
   "mcpServers": {
     "netbox": {
-      "command": "${CLAUDE_PLUGIN_ROOT}/../../mcp-servers/netbox/.venv/bin/python",
+      "command": "/home/lmiranda/repos/bandit/support-claude-mktplace/mcp-servers/netbox/.venv/bin/python",
       "args": ["-m", "mcp_server.server"],
-      "cwd": "${CLAUDE_PLUGIN_ROOT}/../../mcp-servers/netbox"
+      "cwd": "/home/lmiranda/repos/bandit/support-claude-mktplace/mcp-servers/netbox",
+      "env": {
+        "PYTHONPATH": "/home/lmiranda/repos/bandit/support-claude-mktplace/mcp-servers/netbox"
+      }
     }
   }
 }

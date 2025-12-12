@@ -15,7 +15,10 @@ from .gitea_client import GiteaClient
 from .tools.issues import IssueTools
 from .tools.labels import LabelTools
 
+# Suppress noisy MCP validation warnings on stderr
 logging.basicConfig(level=logging.INFO)
+logging.getLogger("root").setLevel(logging.ERROR)
+logging.getLogger("mcp").setLevel(logging.ERROR)
 logger = logging.getLogger(__name__)
 
 
@@ -216,6 +219,10 @@ class GiteaMCPServer:
                     inputSchema={
                         "type": "object",
                         "properties": {
+                            "org": {
+                                "type": "string",
+                                "description": "Organization name (e.g. 'bandit')"
+                            },
                             "state": {
                                 "type": "string",
                                 "enum": ["open", "closed", "all"],
@@ -227,7 +234,8 @@ class GiteaMCPServer:
                                 "items": {"type": "string"},
                                 "description": "Filter by labels"
                             }
-                        }
+                        },
+                        "required": ["org"]
                     }
                 )
             ]

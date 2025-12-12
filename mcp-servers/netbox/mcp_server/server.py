@@ -23,7 +23,10 @@ from .tools.vpn import VPNTools
 from .tools.wireless import WirelessTools
 from .tools.extras import ExtrasTools
 
+# Suppress noisy MCP validation warnings on stderr
 logging.basicConfig(level=logging.INFO)
+logging.getLogger("root").setLevel(logging.ERROR)
+logging.getLogger("mcp").setLevel(logging.ERROR)
 logger = logging.getLogger(__name__)
 
 

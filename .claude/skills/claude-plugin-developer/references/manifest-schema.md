@@ -98,19 +98,19 @@ Complete JSON schema reference for `.claude-plugin/plugin.json` files.
   "version": "2.1.0",
   "description": "Automated deployment tools for cloud platforms",
   "author": {
-    "name": "Bandit Labs",
-    "email": "plugins@hyperhivelabs.com",
-    "url": "https://hyperhivelabs.com"
+    "name": "Your Name",
+    "email": "plugins@example.com",
+    "url": "https://example.com"
   },
   "license": "MIT",
   "keywords": ["deployment", "automation", "cloud", "devops"],
-  "homepage": "https://github.com/hyperhivelabs/deploy-automation",
+  "homepage": "https://github.com/yourorg/deploy-automation",
   "repository": {
     "type": "git",
-    "url": "https://github.com/hyperhivelabs/deploy-automation.git"
+    "url": "https://github.com/yourorg/deploy-automation.git"
   },
   "bugs": {
-    "url": "https://github.com/hyperhivelabs/deploy-automation/issues"
+    "url": "https://github.com/yourorg/deploy-automation/issues"
   },
   "dependencies": {
     "node": ">=18.0.0",

@@ -25,12 +25,12 @@ The MCP server operates in two modes based on environment variables:
 
 **Project Mode (projman):**
 - When `WIKIJS_PROJECT` is present
-- Operates within project path: `/hyper-hive-labs/projects/cuisineflow`
+- Operates within project path: `/your-org/projects/my-project`
 - Used by projman plugin
 
 **Company Mode (pmo):**
 - When `WIKIJS_PROJECT` is absent
-- Operates on entire namespace: `/hyper-hive-labs`
+- Operates on entire namespace: `/your-org`
 - Used by projman-pmo plugin
 
 ```python
@@ -38,8 +38,8 @@ The MCP server operates in two modes based on environment variables:
 def load(self):
     # ... load configs ...
 
-    self.base_path = os.getenv('WIKIJS_BASE_PATH')  # /hyper-hive-labs
-    self.project_path = os.getenv('WIKIJS_PROJECT')  # projects/cuisineflow (optional)
+    self.base_path = os.getenv('WIKIJS_BASE_PATH')  # /your-org
+    self.project_path = os.getenv('WIKIJS_PROJECT')  # projects/my-project (optional)
 
     # Compose full path
     if self.project_path:
@@ -66,10 +66,10 @@ def load(self):
 ### Company-Wide Organization
 
 ```
-Wiki.js: https://wiki.hyperhivelabs.com
-└── /hyper-hive-labs/                  # Base path
+Wiki.js: https://wiki.your-company.com
+└── /your-org/                  # Base path
     ├── projects/                       # Project-specific documentation
-    │   ├── cuisineflow/
+    │   ├── my-project/
     │   │   ├── lessons-learned/
     │   │   │   ├── sprints/
     │   │   │   │   ├── sprint-01-auth.md
@@ -83,13 +83,13 @@ Wiki.js: https://wiki.hyperhivelabs.com
     │   │       ├── architecture/
     │   │       ├── api/
     │   │       └── deployment/
-    │   ├── cuisineflow-site/
+    │   ├── my-project-site/
     │   │   ├── lessons-learned/
     │   │   └── documentation/
     │   ├── intuit-engine/
     │   │   ├── lessons-learned/
     │   │   └── documentation/
-    │   └── hhl-site/
+    │   └── company-site/
     │       ├── lessons-learned/
     │       └── documentation/
     ├── company/                        # Company-wide documentation
@@ -124,11 +124,11 @@ Wiki.js: https://wiki.hyperhivelabs.com
 
 **Project Mode (projman):**
 - Full path = `{WIKIJS_BASE_PATH}/{WIKIJS_PROJECT}`
-- Example: `/hyper-hive-labs/projects/cuisineflow`
+- Example: `/your-org/projects/my-project`
 
 **Company Mode (pmo):**
 - Full path = `{WIKIJS_BASE_PATH}`
-- Example: `/hyper-hive-labs`
+- Example: `/your-org`
 
 ---
 
@@ -139,14 +139,14 @@ Wiki.js: https://wiki.hyperhivelabs.com
 **File:** `~/.config/claude/wikijs.env`
 
 ```bash
-WIKIJS_API_URL=https://wiki.hyperhivelabs.com/graphql
+WIKIJS_API_URL=https://wiki.your-company.com/graphql
 WIKIJS_API_TOKEN=your_wikijs_token
-WIKIJS_BASE_PATH=/hyper-hive-labs
+WIKIJS_BASE_PATH=/your-org
 ```
 
 **Generating Wiki.js API Token:**
 
-1. Log into Wiki.js: https://wiki.hyperhivelabs.com
+1. Log into Wiki.js: https://wiki.your-company.com
 2. Navigate to: **User Menu (top-right)** → **Administration**
 3. In the sidebar, go to: **API Access**
 4. Click **Create New Token**
@@ -170,9 +170,9 @@ mkdir -p ~/.config/claude
 
 # Create wikijs.env
 cat > ~/.config/claude/wikijs.env << EOF
-WIKIJS_API_URL=https://wiki.hyperhivelabs.com/graphql
+WIKIJS_API_URL=https://wiki.your-company.com/graphql
 WIKIJS_API_TOKEN=your_token_here
-WIKIJS_BASE_PATH=/hyper-hive-labs
+WIKIJS_BASE_PATH=/your-org
 EOF
 
 # Secure the file (important!)
@@ -188,13 +188,13 @@ cat ~/.config/claude/wikijs.env
 
 ```bash
 # Wiki.js project path (relative to base path)
-WIKIJS_PROJECT=projects/cuisineflow
+WIKIJS_PROJECT=projects/my-project
 ```
 
 **Setup:**
 ```bash
 # In each project root
-echo "WIKIJS_PROJECT=projects/cuisineflow" >> .env
+echo "WIKIJS_PROJECT=projects/my-project" >> .env
 
 # Add to .gitignore (if not already)
 echo ".env" >> .gitignore
@@ -243,8 +243,8 @@ class WikiJSConfig:
         # Extract values
         self.api_url = os.getenv('WIKIJS_API_URL')
         self.api_token = os.getenv('WIKIJS_API_TOKEN')
-        self.base_path = os.getenv('WIKIJS_BASE_PATH')  # /hyper-hive-labs
-        self.project_path = os.getenv('WIKIJS_PROJECT')  # projects/cuisineflow (optional)
+        self.base_path = os.getenv('WIKIJS_BASE_PATH')  # /your-org
+        self.project_path = os.getenv('WIKIJS_PROJECT')  # projects/my-project (optional)
 
         # Compose full path
         if self.project_path:
@@ -691,7 +691,7 @@ class WikiJSClient:
         by_project = {}
         for result in results:
             # Extract project name from path
-            # e.g., "/hyper-hive-labs/projects/cuisineflow/..." -> "cuisineflow"
+            # e.g., "/your-org/projects/my-project/..." -> "my-project"
             path_parts = result['path'].split('/')
             if len(path_parts) >= 4:
                 project = path_parts[3]
@@ -957,7 +957,7 @@ Agent: Any architectural insights for similar future work?
 User: [Response]
 
 Agent: I'll create a lesson in Wiki.js:
-       Path: /hyper-hive-labs/projects/cuisineflow/lessons-learned/sprints/sprint-16-intuit-engine
+       Path: /your-org/projects/my-project/lessons-learned/sprints/sprint-16-intuit-engine
 
        Tags detected:
        #service-extraction #api #refactoring #claude-code-loops
@@ -965,7 +965,7 @@ Agent: I'll create a lesson in Wiki.js:
        Creating page in Wiki.js... ✅
        Updating INDEX.md... ✅
 
-       View at: https://wiki.hyperhivelabs.com/hyper-hive-labs/projects/cuisineflow/lessons-learned/sprints/sprint-16-intuit-engine
+       View at: https://wiki.your-company.com/your-org/projects/my-project/lessons-learned/sprints/sprint-16-intuit-engine
 ```
 
 ---
@@ -1011,14 +1011,14 @@ def test_project_config_path_composition(tmp_path, monkeypatch):
     system_config.write_text(
         "WIKIJS_API_URL=https://wiki.test.com/graphql\n"
         "WIKIJS_API_TOKEN=test_token\n"
-        "WIKIJS_BASE_PATH=/hyper-hive-labs\n"
+        "WIKIJS_BASE_PATH=/your-org\n"
     )
 
     project_dir = tmp_path / 'project'
     project_dir.mkdir()
 
     project_config = project_dir / '.env'
-    project_config.write_text("WIKIJS_PROJECT=projects/cuisineflow\n")
+    project_config.write_text("WIKIJS_PROJECT=projects/my-project\n")
 
     monkeypatch.setenv('HOME', str(tmp_path))
     monkeypatch.chdir(project_dir)
@@ -1026,8 +1026,8 @@ def test_project_config_path_composition(tmp_path, monkeypatch):
     config = WikiJSConfig()
     result = config.load()
 
-    assert result['project_path'] == 'projects/cuisineflow'
-    assert result['full_path'] == '/hyper-hive-labs/projects/cuisineflow'
+    assert result['project_path'] == 'projects/my-project'
+    assert result['full_path'] == '/your-org/projects/my-project'
     assert result['mode'] == 'project'
 ```
 
@@ -1116,7 +1116,7 @@ pytest tests/test_config.py::test_project_config_path_composition
 
 ### Initial Structure Creation
 
-**Status:** Base structure `/hyper-hive-labs` **does not exist** and needs to be created during Phase 1.1b.
+**Status:** Base structure `/your-org` **does not exist** and needs to be created during Phase 1.1b.
 
 **Setup Script:** Run this script during Phase 1.1b to create the base structure:
 
@@ -1134,7 +1134,7 @@ from mcp_server.wikijs_client import WikiJSClient
 
 
 async def initialize_wiki_structure():
-    """Create base Wiki.js structure for Bandit Labs"""
+    """Create base Wiki.js structure for Your Organization"""
 
     print("Initializing Wiki.js base structure...")
     print("=" * 60)
@@ -1153,17 +1153,17 @@ async def initialize_wiki_structure():
     # Base structure to create
     base_pages = [
         {
-            'path': 'hyper-hive-labs',
-            'title': 'Bandit Labs',
-            'content': '''# Bandit Labs Documentation
+            'path': 'your-org',
+            'title': 'Your Organization',
+            'content': '''# Your Organization Documentation
 
-Welcome to the Bandit Labs knowledge base.
+Welcome to the Your Organization knowledge base.
 
 ## Organization
 
-- **[Projects](hyper-hive-labs/projects)** - Project-specific documentation and lessons learned
-- **[Company](hyper-hive-labs/company)** - Company-wide processes, standards, and tools
-- **[Shared](hyper-hive-labs/shared)** - Cross-project architecture patterns and best practices
+- **[Projects](your-org/projects)** - Project-specific documentation and lessons learned
+- **[Company](your-org/company)** - Company-wide processes, standards, and tools
+- **[Shared](your-org/shared)** - Cross-project architecture patterns and best practices
 
 ## Purpose
 
@@ -1176,10 +1176,10 @@ This knowledge base captures:
 All content is searchable and tagged for easy discovery across projects.
 ''',
             'tags': ['company', 'index'],
-            'description': 'Bandit Labs company knowledge base'
+            'description': 'Your Organization company knowledge base'
         },
         {
-            'path': 'hyper-hive-labs/projects',
+            'path': 'your-org/projects',
             'title': 'Projects',
             'content': '''# Project Documentation
 
@@ -1187,10 +1187,10 @@ Project-specific documentation and lessons learned.
 
 ## Active Projects
 
-- **[CuisineFlow](hyper-hive-labs/projects/cuisineflow)** - Main product
-- **[CuisineFlow-Site](hyper-hive-labs/projects/cuisineflow-site)** - Demo and customer gateway
-- **[Intuit-Engine](hyper-hive-labs/projects/intuit-engine)** - API aggregator service
-- **[HHL-Site](hyper-hive-labs/projects/hhl-site)** - Company website
+- **[My-Project](your-org/projects/my-project)** - Main product
+- **[My-Project-Site](your-org/projects/my-project-site)** - Demo and customer gateway
+- **[Intuit-Engine](your-org/projects/intuit-engine)** - API aggregator service
+- **[Company-Site](your-org/projects/company-site)** - Company website
 
 Each project maintains:
 - Lessons learned from sprints
@@ -1201,7 +1201,7 @@ Each project maintains:
             'description': 'Index of all project documentation'
         },
         {
-            'path': 'hyper-hive-labs/company',
+            'path': 'your-org/company',
             'title': 'Company',
             'content': '''# Company Documentation
 
@@ -1209,9 +1209,9 @@ Company-wide processes, standards, and tools.
 
 ## Sections
 
-- **[Processes](hyper-hive-labs/company/processes)** - Development workflows, onboarding, deployment
-- **[Standards](hyper-hive-labs/company/standards)** - Code style, API design, security practices
-- **[Tools](hyper-hive-labs/company/tools)** - Gitea, Wiki.js, Claude Code plugin guides
+- **[Processes](your-org/company/processes)** - Development workflows, onboarding, deployment
+- **[Standards](your-org/company/standards)** - Code style, API design, security practices
+- **[Tools](your-org/company/tools)** - Gitea, Wiki.js, Claude Code plugin guides
 
 These standards apply to all projects and team members.
 ''',
@@ -1219,7 +1219,7 @@ These standards apply to all projects and team members.
             'description': 'Company processes and standards'
         },
         {
-            'path': 'hyper-hive-labs/shared',
+            'path': 'your-org/shared',
             'title': 'Shared Resources',
             'content': '''# Shared Resources
 
@@ -1227,9 +1227,9 @@ Cross-project architecture patterns, best practices, and technical knowledge.
 
 ## Sections
 
-- **[Architecture Patterns](hyper-hive-labs/shared/architecture-patterns)** - Microservices, service extraction, API design
-- **[Best Practices](hyper-hive-labs/shared/best-practices)** - Error handling, logging, testing strategies
-- **[Tech Stack](hyper-hive-labs/shared/tech-stack)** - Python ecosystem, Docker, CI/CD pipelines
+- **[Architecture Patterns](your-org/shared/architecture-patterns)** - Microservices, service extraction, API design
+- **[Best Practices](your-org/shared/best-practices)** - Error handling, logging, testing strategies
+- **[Tech Stack](your-org/shared/tech-stack)** - Python ecosystem, Docker, CI/CD pipelines
 
 These patterns are distilled from lessons learned across all projects.
 ''',
@@ -1238,40 +1238,40 @@ These patterns are distilled from lessons learned across all projects.
         },
         # Project placeholders
         {
-            'path': 'hyper-hive-labs/projects/cuisineflow',
-            'title': 'CuisineFlow',
-            'content': '''# CuisineFlow
+            'path': 'your-org/projects/my-project',
+            'title': 'My-Project',
+            'content': '''# My-Project
 
 Main product - recipe management and meal planning platform.
 
 ## Documentation
 
-- **[Lessons Learned](hyper-hive-labs/projects/cuisineflow/lessons-learned)** - Sprint retrospectives and insights
-- **[Architecture](hyper-hive-labs/projects/cuisineflow/documentation/architecture)** - System architecture
-- **[API](hyper-hive-labs/projects/cuisineflow/documentation/api)** - API documentation
+- **[Lessons Learned](your-org/projects/my-project/lessons-learned)** - Sprint retrospectives and insights
+- **[Architecture](your-org/projects/my-project/documentation/architecture)** - System architecture
+- **[API](your-org/projects/my-project/documentation/api)** - API documentation
 
 Sprint lessons will be automatically captured here by the projman plugin.
 ''',
-            'tags': ['project', 'cuisineflow'],
-            'description': 'CuisineFlow project documentation'
+            'tags': ['project', 'my-project'],
+            'description': 'My-Project project documentation'
         },
         {
-            'path': 'hyper-hive-labs/projects/cuisineflow/lessons-learned',
-            'title': 'CuisineFlow - Lessons Learned',
-            'content': '''# CuisineFlow - Lessons Learned
+            'path': 'your-org/projects/my-project/lessons-learned',
+            'title': 'My-Project - Lessons Learned',
+            'content': '''# My-Project - Lessons Learned
 
-Sprint retrospectives and insights from CuisineFlow development.
+Sprint retrospectives and insights from My-Project development.
 
 ## Organization
 
-- **[Sprints](hyper-hive-labs/projects/cuisineflow/lessons-learned/sprints)** - Sprint-specific lessons
-- **[Patterns](hyper-hive-labs/projects/cuisineflow/lessons-learned/patterns)** - Recurring patterns and solutions
-- **[INDEX](hyper-hive-labs/projects/cuisineflow/lessons-learned/INDEX)** - Complete index with tags
+- **[Sprints](your-org/projects/my-project/lessons-learned/sprints)** - Sprint-specific lessons
+- **[Patterns](your-org/projects/my-project/lessons-learned/patterns)** - Recurring patterns and solutions
+- **[INDEX](your-org/projects/my-project/lessons-learned/INDEX)** - Complete index with tags
 
 Lessons are automatically captured during sprint close via `/sprint-close` command.
 ''',
-            'tags': ['lessons-learned', 'cuisineflow'],
-            'description': 'CuisineFlow lessons learned index'
+            'tags': ['lessons-learned', 'my-project'],
+            'description': 'My-Project lessons learned index'
         }
     ]
 
@@ -1308,7 +1308,7 @@ Lessons are automatically captured during sprint close via `/sprint-close` comma
         sys.exit(1)
     else:
         print(f"\n✅ All pages created successfully!")
-        print(f"\nView at: https://wiki.hyperhivelabs.com/hyper-hive-labs")
+        print(f"\nView at: https://wiki.your-company.com/your-org")
 
 
 if __name__ == '__main__':
@@ -1326,13 +1326,13 @@ python setup_wiki_structure.py
 ```
 Initializing Wiki.js base structure...
 ============================================================
-✅ Connected to Wiki.js at https://wiki.hyperhivelabs.com/graphql
-   Base path: /hyper-hive-labs
+✅ Connected to Wiki.js at https://wiki.your-company.com/graphql
+   Base path: /your-org
 
-Creating: /hyper-hive-labs
+Creating: /your-org
    ✅ Created successfully
 
-Creating: /hyper-hive-labs/projects
+Creating: /your-org/projects
    ✅ Created successfully
 
 ...
@@ -1343,12 +1343,12 @@ Setup complete!
 
 ✅ All pages created successfully!
 
-View at: https://wiki.hyperhivelabs.com/hyper-hive-labs
+View at: https://wiki.your-company.com/your-org
 ```
 
 **Post-Setup:**
 After running the script:
-1. Visit https://wiki.hyperhivelabs.com/hyper-hive-labs to verify structure
+1. Visit https://wiki.your-company.com/your-org to verify structure
 2. Add additional project directories as needed
 3. The structure is now ready for projman plugin to use
 
@@ -1451,13 +1451,13 @@ if __name__ == '__main__':
 curl -H "Authorization: Bearer YOUR_TOKEN" \
   -H "Content-Type: application/json" \
   -d '{"query":"{ pages { list { id title } } }"}' \
-  https://wiki.hyperhivelabs.com/graphql
+  https://wiki.your-company.com/graphql
 ```
 
 **Issue:** Path not found
 ```bash
 # Solution: Verify base structure exists
-# Check in Wiki.js web interface that /hyper-hive-labs path exists
+# Check in Wiki.js web interface that /your-org path exists
 ```
 
 **Issue:** Tags not working

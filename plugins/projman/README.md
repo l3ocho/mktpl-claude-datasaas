@@ -59,9 +59,9 @@ EOF
 
 # Wiki.js configuration
 cat > ~/.config/claude/wikijs.env << EOF
-WIKIJS_API_URL=https://wiki.hyperhivelabs.com/graphql
+WIKIJS_API_URL=https://wiki.your-company.com/graphql
 WIKIJS_API_TOKEN=your_wikijs_token_here
-WIKIJS_BASE_PATH=/hyper-hive-labs
+WIKIJS_BASE_PATH=/your-org
 EOF
 
 # Secure the files
@@ -327,7 +327,7 @@ See [CONFIGURATION.md](./CONFIGURATION.md) for detailed configuration instructio
 
 ### Cannot connect to Wiki.js
 - Verify `~/.config/claude/wikijs.env` exists and has correct URL and token
-- Check Wiki.js GraphQL endpoint: `https://wiki.hyperhivelabs.com/graphql`
+- Check Wiki.js GraphQL endpoint: `https://wiki.your-company.com/graphql`
 - Verify API token has pages read/write permissions
 
 ### Labels not syncing

@@ -21,8 +21,8 @@ class WikiJSClient:
         Args:
             api_url: Wiki.js GraphQL API URL (e.g., http://wiki.example.com/graphql)
             api_token: Wiki.js API token
-            base_path: Base path in Wiki.js (e.g., /hyper-hive-labs)
-            project: Project path (e.g., projects/cuisineflow) for project mode
+            base_path: Base path in Wiki.js (e.g., /your-org)
+            project: Project path (e.g., projects/my-project) for project mode
         """
         self.api_url = api_url
         self.api_token = api_token

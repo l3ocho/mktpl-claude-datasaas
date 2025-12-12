@@ -197,7 +197,7 @@ projman-pmo/
 
 **Critical Differences from projman:**
 - **NO** `GITEA_REPO` → operates on all repositories
-- **NO** `WIKIJS_PROJECT` → operates on entire `/hyper-hive-labs` namespace
+- **NO** `WIKIJS_PROJECT` → operates on entire `/your-org` namespace
 - Same shared MCP servers at `../mcp-servers/`
 
 ### Environment Variables
@@ -282,10 +282,10 @@ User: /pmo-status
 
 PMO: Projects Overview:
 
-     CuisineFlow: Sprint in progress, 60% complete
-     └─ Blocking: CuisineFlow-Site deployment
+     Main-App: Sprint in progress, 60% complete
+     └─ Blocking: Main-App-Site deployment
 
-     I notice CuisineFlow-Site is waiting on API changes.
+     I notice Main-App-Site is waiting on API changes.
      Use projman in the cuisineflow-site repo to plan the sync work.
 ```
 
@@ -309,7 +309,7 @@ User: /pmo-status
 PMO: Projects Overview
      ================
 
-     CuisineFlow (main product)
+     Main-App (main product)
      ├── Sprint: Intuit Engine Extraction
      ├── Status: In Progress (60%)
      ├── Issue: #47
@@ -317,13 +317,13 @@ PMO: Projects Overview
      ├── Next: API testing
      └── Timeline: On track (1 week remaining)
 
-     CuisineFlow-Site (demo)
+     Main-App-Site (demo)
      ├── Sprint: Dashboard Updates
      ├── Status: Waiting on dependencies
      ├── Issue: #12
-     ├── Blockers: Depends on CuisineFlow #47 (API changes)
+     ├── Blockers: Depends on Main-App #47 (API changes)
      ├── Next: Deploy when API ready
-     └── Timeline: Blocked (waiting on CuisineFlow)
+     └── Timeline: Blocked (waiting on Main-App)
 
      Intuit-Engine (service)
      ├── Sprint: Initial Setup
@@ -333,7 +333,7 @@ PMO: Projects Overview
      ├── Next: Service boundary definition
      └── Timeline: Not started
 
-     HHL-Site (marketing)
+     Company-Site (marketing)
      ├── Sprint: Content Updates
      ├── Status: Complete
      ├── Issue: #8 (closed)
@@ -342,14 +342,14 @@ PMO: Projects Overview
      └── Timeline: Ready for deployment
 
      Cross-Project Insights:
-     - CuisineFlow-Site blocked by CuisineFlow #47
+     - Main-App-Site blocked by Main-App #47
      - Intuit-Engine needs architectural guidance
-     - HHL-Site ready for deployment
+     - Company-Site ready for deployment
 
      Suggested Actions:
-     1. Prioritize CuisineFlow #47 completion (unblocks Site)
+     1. Prioritize Main-App #47 completion (unblocks Site)
      2. Schedule architecture review for Intuit-Engine
-     3. Deploy HHL-Site content updates
+     3. Deploy Company-Site content updates
 ```
 
 **Success Criteria:**
@@ -375,15 +375,15 @@ PMO: Priority Analysis Across Projects
      =================================
 
      Critical (Blocks launches):
-     1. CuisineFlow #47 - Intuit Engine Extraction
-        → Blocks: CuisineFlow v2.0 launch (Nov 15)
-        → Blocks: CuisineFlow-Site deployment
+     1. Main-App #47 - Intuit Engine Extraction
+        → Blocks: Main-App v2.0 launch (Nov 15)
+        → Blocks: Main-App-Site deployment
         → Status: 60% complete, 1 week remaining
         → Recommendation: Maintain focus
 
      High (Important features):
-     2. CuisineFlow-Site #12 - Dashboard Updates
-        → Depends on: CuisineFlow #47
+     2. Main-App-Site #12 - Dashboard Updates
+        → Depends on: Main-App #47
         → Status: Waiting
         → Recommendation: Begin planning, wait for #47
 
@@ -393,14 +393,14 @@ PMO: Priority Analysis Across Projects
         → Recommendation: Schedule architecture review
 
      Medium (Enhancements):
-     4. HHL-Site #8 - Content Updates
+     4. Company-Site #8 - Content Updates
         → Status: Complete, ready to deploy
         → Recommendation: Deploy this week
 
      Resource Analysis:
      Leo (primary developer):
-     - Working on: CuisineFlow #47 (Critical)
-     - Next: CuisineFlow-Site #12 (High)
+     - Working on: Main-App #47 (Critical)
+     - Next: Main-App-Site #12 (High)
      - Later: Intuit-Engine #3 (High)
 
      ⚠️ Potential Conflict:
@@ -438,27 +438,27 @@ PMO: Project Dependencies
 
      Intuit-Engine (service)
          ↓ (must complete before)
-     CuisineFlow (main)
+     Main-App (main)
          ↓ (API changes required by)
-     CuisineFlow-Site (demo)
+     Main-App-Site (demo)
          ↓ (deploy together)
      Customer VPS (deployments)
 
      Detailed Dependencies:
 
-     1. CuisineFlow → Intuit-Engine
+     1. Main-App → Intuit-Engine
         Type: Service extraction
         Status: In progress
         Blocker: Must complete #47 before v2.0 launch
         Impact: High (blocks launch)
 
-     2. CuisineFlow → CuisineFlow-Site
+     2. Main-App → Main-App-Site
         Type: Feature sync
         Status: Waiting
         Blocker: Dashboard updates need API changes from #47
         Impact: Medium (demo consistency)
 
-     3. CuisineFlow → Customer VPS
+     3. Main-App → Customer VPS
         Type: Deployment
         Status: Pending
         Blocker: v2.0 launch must complete before customer updates
@@ -466,16 +466,16 @@ PMO: Project Dependencies
 
      Deployment Order:
      1. Complete Intuit-Engine service extraction
-     2. Deploy CuisineFlow v2.0 to production
-     3. Sync CuisineFlow-Site demo
+     2. Deploy Main-App v2.0 to production
+     3. Sync Main-App-Site demo
      4. Update customer VPS instances
 
      Critical Path:
-     Intuit-Engine (#3) → CuisineFlow (#47) → Site (#12) → Customer VPS
+     Intuit-Engine (#3) → Main-App (#47) → Site (#12) → Customer VPS
      Estimated timeline: 3 weeks total
 
      Risks:
-     - CuisineFlow #47 delay would cascade to all downstream
+     - Main-App #47 delay would cascade to all downstream
      - Customer VPS updates have Nov 20 deadline
 ```
 
@@ -505,9 +505,9 @@ PMO: Resource Conflict Analysis
 
      Leo (Developer):
      Assigned to:
-     - CuisineFlow #47: Intuit Engine extraction (Priority: Critical)
-     - CuisineFlow-Site #12: Dashboard redesign (Priority: High)
-     - HHL-Site #8: Content update (Priority: Medium)
+     - Main-App #47: Intuit Engine extraction (Priority: Critical)
+     - Main-App-Site #12: Dashboard redesign (Priority: High)
+     - Company-Site #8: Content update (Priority: Medium)
      - Intuit-Engine #3: Service setup (Priority: High)
 
      Conflict Analysis:
@@ -517,15 +517,15 @@ PMO: Resource Conflict Analysis
      - Timeline: 2 weeks available
 
      Recommendations:
-     1. FOCUS: CuisineFlow #47 (Critical, blocks launch)
+     1. FOCUS: Main-App #47 (Critical, blocks launch)
         → Keep as primary focus
         → Estimated completion: 1 week
 
-     2. QUEUE: CuisineFlow-Site #12 (High, depends on #47)
+     2. QUEUE: Main-App-Site #12 (High, depends on #47)
         → Start after #47 completes
         → Natural sequencing
 
-     3. DELEGATE: HHL-Site #8 (Medium, content work)
+     3. DELEGATE: Company-Site #8 (Medium, content work)
         → Can be handled by marketing team
         → Low technical complexity
 
@@ -536,14 +536,14 @@ PMO: Resource Conflict Analysis
      Timeline Conflict:
 
      Without changes:
-     Week 1-2: CuisineFlow #47
+     Week 1-2: Main-App #47
      Week 3-4: Site #12 + Engine #3 (CONFLICT)
 
      With recommendations:
-     Week 1-2: CuisineFlow #47 (FOCUS)
-     Week 3: CuisineFlow-Site #12 (QUEUE)
+     Week 1-2: Main-App #47 (FOCUS)
+     Week 3: Main-App-Site #12 (QUEUE)
      Week 4: Intuit-Engine #3 (SCHEDULE)
-     HHL-Site #8: Marketing (DELEGATE)
+     Company-Site #8: Marketing (DELEGATE)
 
      Apply recommendations?
 ```
@@ -571,18 +571,18 @@ PMO: Deployment Schedule
      ===================
 
      Week of Nov 6:
-     - CuisineFlow: Continue Sprint #47 (Intuit Engine)
-     - HHL-Site: Deploy content updates (#8) ✅
+     - Main-App: Continue Sprint #47 (Intuit Engine)
+     - Company-Site: Deploy content updates (#8) ✅
 
      Week of Nov 13:
-     - CuisineFlow: Complete Sprint #47 ⚠️
+     - Main-App: Complete Sprint #47 ⚠️
        → Critical: Must complete by Nov 15 for launch
-     - CuisineFlow-Site: Begin Dashboard updates (#12)
+     - Main-App-Site: Begin Dashboard updates (#12)
 
      Week of Nov 20:
-     - CuisineFlow: Deploy v2.0 to production 🚀
+     - Main-App: Deploy v2.0 to production 🚀
        → Deployment window: Nov 20-22
-     - CuisineFlow-Site: Sync demo with v2.0
+     - Main-App-Site: Sync demo with v2.0
      - Customer VPS: Begin rollout (Deadline: Nov 20)
 
      Week of Nov 27:
@@ -590,19 +590,19 @@ PMO: Deployment Schedule
      - Intuit-Engine: Begin service implementation (#3)
 
      Critical Dates:
-     - Nov 15: CuisineFlow v2.0 feature freeze
+     - Nov 15: Main-App v2.0 feature freeze
      - Nov 20: Production deployment
      - Nov 20: Customer VPS deadline
      - Nov 22: Demo site sync
 
      Dependencies:
      ✅ Intuit-Engine service boundaries defined
-     🔄 CuisineFlow #47 in progress (60%)
-     ⏳ CuisineFlow-Site #12 waiting
+     🔄 Main-App #47 in progress (60%)
+     ⏳ Main-App-Site #12 waiting
      ⏳ Customer VPS rollout pending
 
      Risks:
-     ⚠️ CuisineFlow #47 delay would impact:
+     ⚠️ Main-App #47 delay would impact:
         - v2.0 launch date (Nov 20)
         - Customer VPS deadline (Nov 20)
         - Demo site sync (Nov 22)
@@ -632,7 +632,7 @@ PMO: Searching lessons across all projects...
 
      Found 5 relevant lessons:
 
-     CuisineFlow:
+     Main-App:
      - Sprint 08: Service boundary issues with shared DB
        Tags: #service-extraction #database #refactoring
        Key: Define boundaries at data model level first
@@ -646,13 +646,13 @@ PMO: Searching lessons across all projects...
        Tags: #service-extraction #dependencies
        Key: Watch for import cycles
 
-     CuisineFlow-Site:
+     Main-App-Site:
      - Sprint 05: Sync issues during backend refactor
        Tags: #sync #refactoring
        Key: Coordinate deployments during major changes
 
      Shared Patterns:
-     - /hyper-hive-labs/shared/architecture-patterns/service-extraction
+     - /your-org/shared/architecture-patterns/service-extraction
        Key: Service Extraction Playbook
 
      Common Themes:
@@ -672,15 +672,15 @@ User: /pmo-status
 PMO: [Shows status]
 
      Resource Analysis:
-     - Leo: 3 active projects (CuisineFlow, Site, Engine)
-     - Marketing: 1 project (HHL-Site)
+     - Leo: 3 active projects (Main-App, Site, Engine)
+     - Marketing: 1 project (Company-Site)
 
      Bottleneck detected: Leo is on critical path for all technical work
 
      Recommendations:
      1. Prioritize work that unblocks others
      2. Consider hiring/contracting for parallel work
-     3. Delegate non-critical work (HHL-Site content)
+     3. Delegate non-critical work (Company-Site content)
 
      Would you like a detailed resource allocation report?
 ```
@@ -690,18 +690,18 @@ PMO: [Shows status]
 ```
 User: Plan the v2.0 release across all affected projects
 
-PMO: Release Coordination: CuisineFlow v2.0
+PMO: Release Coordination: Main-App v2.0
      ======================================
 
      Affected Projects:
-     1. CuisineFlow (main product)
+     1. Main-App (main product)
      2. Intuit-Engine (new service)
-     3. CuisineFlow-Site (demo)
+     3. Main-App-Site (demo)
      4. Customer VPS instances
 
      Pre-Release Checklist:
      ✅ Intuit-Engine service deployed
-     🔄 CuisineFlow #47 complete (60%)
+     🔄 Main-App #47 complete (60%)
      ⏳ Integration tests pending
      ⏳ Demo site updates pending
      ⏳ Customer migration scripts ready
@@ -712,12 +712,12 @@ PMO: Release Coordination: CuisineFlow v2.0
         → Duration: 2 hours
         → Rollback plan: Ready
 
-     2. Deploy CuisineFlow v2.0 (main app)
+     2. Deploy Main-App v2.0 (main app)
         → Date: Nov 20
         → Duration: 4 hours
         → Rollback plan: Ready
 
-     3. Sync CuisineFlow-Site (demo)
+     3. Sync Main-App-Site (demo)
         → Date: Nov 22
         → Duration: 1 hour
         → Dependencies: Step 2 complete
@@ -767,11 +767,11 @@ shared_patterns = await wikijs.get_shared_docs("architecture-patterns")
 User: Create a shared pattern document for service extraction
 
 PMO: I'll create a pattern document based on lessons from:
-     - CuisineFlow Sprint 08
-     - CuisineFlow Sprint 12
+     - Main-App Sprint 08
+     - Main-App Sprint 12
      - Intuit-Engine Sprint 02
 
-     Creating: /hyper-hive-labs/shared/architecture-patterns/service-extraction
+     Creating: /your-org/shared/architecture-patterns/service-extraction
 
      Service Extraction Pattern
      =========================
@@ -855,7 +855,7 @@ PMO: I'll create a pattern document based on lessons from:
 **Deliverable:** Validated PMO plugin integrated with projman
 
 **Tasks:**
-1. Test with multiple projects (CuisineFlow, Site, Engine, HHL-Site)
+1. Test with multiple projects (Main-App, Site, Engine, Company-Site)
 2. Simulate deployment coordination scenarios
 3. Test priority conflict resolution
 4. Validate dependency tracking
@@ -911,10 +911,10 @@ PMO: I'll create a pattern document based on lessons from:
 ```
 User: /pmo-status
 
-PMO: CuisineFlow-Site: Waiting on dependencies
-     Blocked by: CuisineFlow #47 (API changes)
+PMO: Main-App-Site: Waiting on dependencies
+     Blocked by: Main-App #47 (API changes)
 
-     Recommendation: Focus resources on CuisineFlow #47 to unblock Site work
+     Recommendation: Focus resources on Main-App #47 to unblock Site work
 ```
 
 ### Example 2: Resource Conflict Resolution
@@ -926,8 +926,8 @@ PMO: Leo assigned to 4 tasks across 3 projects
      Estimated: 4 weeks work in 2 weeks timeline
 
      Recommendations:
-     - Maintain focus on Critical priority (CuisineFlow #47)
-     - Delegate content work (HHL-Site #8) to marketing
+     - Maintain focus on Critical priority (Main-App #47)
+     - Delegate content work (Company-Site #8) to marketing
      - Schedule architectural review (Intuit-Engine #3) as team session
 ```
 
@@ -936,13 +936,13 @@ PMO: Leo assigned to 4 tasks across 3 projects
 ```
 User: /pmo-schedule
 
-PMO: Critical Path: Engine → CuisineFlow → Site → Customer VPS
+PMO: Critical Path: Engine → Main-App → Site → Customer VPS
      Deadline: Nov 20 (Customer VPS commitment)
 
      Current: Week 1 of 3
      Status: On track
 
-     Risk: If CuisineFlow #47 delayed, entire timeline at risk
+     Risk: If Main-App #47 delayed, entire timeline at risk
      Mitigation: Daily progress monitoring
 ```
 
