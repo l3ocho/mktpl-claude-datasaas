@@ -1,5 +1,4 @@
 ---
-name: labels-sync
 description: Synchronize label taxonomy from Gitea and update suggestion logic
 ---
 

@@ -15,29 +15,5 @@
     "network",
     "ipam",
     "dcim"
-  ],
-  "commands": {
-    "cmdb-search": {
-      "description": "Search NetBox for devices, IPs, sites, or any CMDB object",
-      "source": "commands/cmdb-search.md"
-    },
-    "cmdb-device": {
-      "description": "Manage network devices (create, view, update, delete)",
-      "source": "commands/cmdb-device.md"
-    },
-    "cmdb-ip": {
-      "description": "Manage IP addresses and prefixes",
-      "source": "commands/cmdb-ip.md"
-    },
-    "cmdb-site": {
-      "description": "Manage sites and locations",
-      "source": "commands/cmdb-site.md"
-    }
-  },
-  "agents": {
-    "cmdb-assistant": {
-      "description": "Infrastructure management assistant for NetBox CMDB operations",
-      "source": "agents/cmdb-assistant.md"
-    }
-  }
+  ]
 }

@@ -1,0 +1,29 @@
+{
+  "name": "bandit-claude-marketplace",
+  "version": "1.0.0",
+  "description": "Project management plugins with Gitea, Wiki.js, and NetBox integrations",
+  "owner": {
+    "name": "Bandit Labs",
+    "email": "dev@banditlabs.io"
+  },
+  "plugins": [
+    {
+      "name": "projman",
+      "version": "0.1.0",
+      "description": "Sprint planning and project management with Gitea and Wiki.js integration",
+      "source": "./plugins/projman"
+    },
+    {
+      "name": "project-hygiene",
+      "version": "0.1.0",
+      "description": "Post-task cleanup hook that removes temp files and manages orphaned files",
+      "source": "./plugins/project-hygiene"
+    },
+    {
+      "name": "cmdb-assistant",
+      "version": "1.0.0",
+      "description": "NetBox CMDB integration for infrastructure management",
+      "source": "./plugins/cmdb-assistant"
+    }
+  ]
+}

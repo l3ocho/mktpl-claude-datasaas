@@ -32,7 +32,7 @@ Only these directories may exist at the repository root:
 
 | Directory | Purpose |
 |-----------|---------|
-| `.claude/` | Claude Code skills |
+| `.claude/` | Claude Code local settings |
 | `.claude-plugin/` | Marketplace manifest |
 | `.claude-plugins/` | Local marketplace definitions |
 | `.scratch/` | Transient work (auto-cleaned) |
@@ -355,24 +355,6 @@ bandit/support-claude-mktplace/
 - Defense in depth approach
 - Plugin works with or without CLAUDE.md
 
-**Plugin Development:**
-- **ALWAYS use the `claude-plugin-developer` skill for all plugin-related work**
-- Invoke the skill when:
-  - Creating new plugin manifests (`plugin.json`)
-  - Developing commands, agents, hooks, or MCP servers
-  - Validating plugin structure and security
-  - Troubleshooting plugin loading issues
-  - Publishing to marketplaces
-- The skill provides:
-  - Security best practices and validation
-  - Templates and helper scripts
-  - Complete reference documentation
-  - Path safety requirements (`${CLAUDE_PLUGIN_ROOT}`)
-  - Manifest schema validation
-- **Critical:** Ensures compliance with Anthropic's security requirements
-- Location: `.claude/skills/claude-plugin-developer/`
-- Usage: Invoke via Skill tool when working on plugin components
-
 ## Multi-Project Context (PMO Plugin)
 
 The `projman-pmo` plugin coordinates interdependent projects across an organization. Example use cases:
@@ -484,12 +466,6 @@ This repository contains comprehensive planning documentation:
 - **`docs/projman-python-quickstart.md`** - Python-specific implementation guide
 - **`docs/two-mcp-architecture-guide.md`** - Deep dive into two-MCP architecture
 
-**Skills:**
-- **`.claude/skills/claude-plugin-developer/`** - Plugin development guidance and validation tools
-  - Use this skill for all plugin-related work (manifests, commands, agents, hooks, MCP servers)
-  - Includes security validation, templates, and helper scripts
-  - Invoke via Skill tool when working on plugin components
-
 **Start with:** `docs/DOCUMENT-INDEX.md` for navigation guidance
 
 ## Recent Updates (Updated: 2025-06-11)
@@ -502,7 +478,6 @@ This repository contains comprehensive planning documentation:
 - Hybrid configuration strategy defined (system + project level)
 - Wiki.js structure planned with configurable base path
 - Repository structure designed with shared MCP servers
-- `claude-plugin-developer` skill added to project
 
 ### Key Architectural Decisions Made
 1. **Shared MCP Servers**: Both plugins use the same MCP codebase at `mcp-servers/`

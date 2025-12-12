@@ -1,7 +1,5 @@
 ---
-name: sprint-close
 description: Complete sprint and capture lessons learned to Wiki.js
-agent: orchestrator
 ---
 
 # Close Sprint and Capture Lessons Learned

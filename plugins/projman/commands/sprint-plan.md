@@ -1,7 +1,5 @@
 ---
-name: sprint-plan
 description: Start sprint planning with AI-guided architecture analysis and issue creation
-agent: planner
 ---
 
 # Sprint Planning
