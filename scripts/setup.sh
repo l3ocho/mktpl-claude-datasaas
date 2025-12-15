@@ -171,7 +171,7 @@ setup_wikijs_structure() {
 setup_labels() {
     log_info "Checking label taxonomy..."
 
-    local labels_file="$REPO_ROOT/projman/skills/label-taxonomy/labels-reference.md"
+    local labels_file="$REPO_ROOT/plugins/projman/skills/label-taxonomy/labels-reference.md"
 
     if [[ -f "$labels_file" ]]; then
         log_success "Label reference file exists"
