@@ -161,10 +161,11 @@ Both plugins use **two shared MCP servers** at repository root level (`mcp-serve
 - `tag_lesson` - Add tags to lessons learned
 
 **Key Architecture Points:**
-- MCP servers are **shared** by both plugins at `mcp-servers/gitea` and `mcp-servers/wikijs`
+- MCP servers are **bundled inside each plugin** at `plugins/{plugin}/mcp-servers/`
+- This ensures plugins work when cached by Claude Code (only plugin directory is cached)
 - Each MCP server detects its mode (project-scoped vs company-wide) based on environment variables
 - Configuration uses hybrid approach (system-level + project-level)
-- All plugins reference `../../mcp-servers/` in their `.mcp.json` files (from `plugins/*/`)
+- All plugins reference `${CLAUDE_PLUGIN_ROOT}/mcp-servers/` in their `.mcp.json` files
 
 ## Branch-Aware Security Model
 
@@ -261,76 +262,73 @@ See [docs/reference-material/projman-implementation-plan.md](docs/reference-mate
 bandit/support-claude-mktplace/
 ├── .claude-plugin/
 │   └── marketplace.json
-├── mcp-servers/                    # ← SHARED BY ALL PLUGINS
-│   ├── gitea/
-│   │   ├── .venv/
-│   │   ├── requirements.txt        # Python dependencies
-│   │   ├── mcp_server/
-│   │   │   ├── __init__.py
-│   │   │   ├── server.py
-│   │   │   ├── config.py           # Mode detection (project/company)
-│   │   │   ├── gitea_client.py
-│   │   │   └── tools/
-│   │   │       ├── issues.py
-│   │   │       └── labels.py
-│   │   └── tests/
-│   └── wikijs/
-│       ├── .venv/
-│       ├── requirements.txt        # Python + GraphQL dependencies
-│       ├── mcp_server/
-│       │   ├── __init__.py
-│       │   ├── server.py
-│       │   ├── config.py           # Mode detection (project/company)
-│       │   ├── wikijs_client.py    # GraphQL client
-│       │   └── tools/
-│       │       ├── pages.py
-│       │       ├── lessons_learned.py
-│       │       └── documentation.py
-│       └── tests/
-└── plugins/                        # ← ALL PLUGINS
-    ├── projman/                    # ← PROJECT PLUGIN
-    │   ├── .claude-plugin/
-    │   │   └── plugin.json
-    │   ├── .mcp.json               # Points to ../../mcp-servers/
-    │   ├── commands/
-    │   │   ├── sprint-plan.md
-    │   │   ├── sprint-start.md
-    │   │   ├── sprint-status.md
-    │   │   ├── sprint-close.md
-    │   │   └── labels-sync.md
-    │   ├── agents/
-    │   │   ├── planner.md
-    │   │   ├── orchestrator.md
-    │   │   └── executor.md
-    │   ├── skills/
-    │   │   └── label-taxonomy/
-    │   │       └── labels-reference.md
-    │   ├── README.md
-    │   └── CONFIGURATION.md
-    ├── projman-pmo/                # ← PMO PLUGIN
-    │   ├── .claude-plugin/
-    │   │   └── plugin.json
-    │   ├── .mcp.json               # Points to ../../mcp-servers/
-    │   ├── commands/
-    │   │   ├── pmo-status.md
-    │   │   ├── pmo-priorities.md
-    │   │   ├── pmo-dependencies.md
-    │   │   └── pmo-schedule.md
-    │   ├── agents/
-    │   │   └── pmo-coordinator.md
-    │   └── README.md
-    └── project-hygiene/            # ← CLEANUP PLUGIN
-        └── ...
+├── plugins/                        # ← ALL PLUGINS (with bundled MCP servers)
+│   ├── projman/                    # ← PROJECT PLUGIN
+│   │   ├── .claude-plugin/
+│   │   │   └── plugin.json
+│   │   ├── .mcp.json               # Points to ${CLAUDE_PLUGIN_ROOT}/mcp-servers/
+│   │   ├── mcp-servers/            # ← MCP servers BUNDLED IN plugin
+│   │   │   ├── gitea/
+│   │   │   │   ├── .venv/
+│   │   │   │   ├── requirements.txt
+│   │   │   │   ├── mcp_server/
+│   │   │   │   └── tests/
+│   │   │   └── wikijs/
+│   │   │       ├── .venv/
+│   │   │       ├── requirements.txt
+│   │   │       ├── mcp_server/
+│   │   │       └── tests/
+│   │   ├── commands/
+│   │   │   ├── sprint-plan.md
+│   │   │   ├── sprint-start.md
+│   │   │   ├── sprint-status.md
+│   │   │   ├── sprint-close.md
+│   │   │   └── labels-sync.md
+│   │   ├── agents/
+│   │   │   ├── planner.md
+│   │   │   ├── orchestrator.md
+│   │   │   └── executor.md
+│   │   ├── skills/
+│   │   │   └── label-taxonomy/
+│   │   │       └── labels-reference.md
+│   │   ├── README.md
+│   │   └── CONFIGURATION.md
+│   ├── projman-pmo/                # ← PMO PLUGIN
+│   │   ├── .claude-plugin/
+│   │   │   └── plugin.json
+│   │   ├── .mcp.json
+│   │   ├── commands/
+│   │   ├── agents/
+│   │   │   └── pmo-coordinator.md
+│   │   └── README.md
+│   ├── cmdb-assistant/             # ← CMDB PLUGIN
+│   │   ├── .claude-plugin/
+│   │   │   └── plugin.json
+│   │   ├── .mcp.json               # Points to ${CLAUDE_PLUGIN_ROOT}/mcp-servers/
+│   │   ├── mcp-servers/            # ← MCP servers BUNDLED IN plugin
+│   │   │   └── netbox/
+│   │   │       ├── .venv/
+│   │   │       ├── requirements.txt
+│   │   │       └── mcp_server/
+│   │   ├── commands/
+│   │   └── agents/
+│   └── project-hygiene/            # ← CLEANUP PLUGIN
+│       └── ...
+├── scripts/                        # Setup and maintenance scripts
+│   ├── setup.sh
+│   └── post-update.sh
+└── docs/
 ```
 
 ### Key Design Decisions
 
-**Two MCP Servers (Shared Architecture):**
-- **Gitea MCP**: Issues, labels, repository management
-- **Wiki.js MCP**: Documentation, lessons learned, knowledge base
-- Servers are **shared** between both plugins at repository root
+**MCP Servers (Bundled in Plugins):**
+- **Gitea MCP**: Issues, labels, repository management (bundled in projman)
+- **Wiki.js MCP**: Documentation, lessons learned, knowledge base (bundled in projman)
+- **NetBox MCP**: Infrastructure management (bundled in cmdb-assistant)
+- Servers are **bundled inside each plugin** that needs them
+- This ensures plugins work when cached by Claude Code
 - Mode detection based on environment variables (project vs company-wide)
-- Benefits: Single source of truth, fix bugs once, professional architecture
 
 **Python Implementation:**
 - Python chosen over Node.js for MCP servers

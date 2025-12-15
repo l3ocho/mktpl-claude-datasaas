@@ -2,7 +2,7 @@
 
 **This file defines ALL valid paths in this repository. No exceptions. No inference. No assumptions.**
 
-Last Updated: 2025-12-12
+Last Updated: 2025-12-15
 
 ---
 
@@ -19,15 +19,23 @@ support-claude-mktplace/
 │   ├── references/             # Reference specifications
 │   └── workflows/              # Workflow documentation
 ├── hooks/                      # Shared hooks (if any)
-├── mcp-servers/                # Shared MCP servers (AT ROOT)
-│   ├── gitea/
-│   ├── wikijs/
-│   └── netbox/
-├── plugins/                    # ALL plugins (INSIDE plugins/)
+├── plugins/                    # ALL plugins with bundled MCP servers
 │   ├── projman/
+│   │   ├── .claude-plugin/
+│   │   ├── mcp-servers/        # MCP servers bundled IN plugin
+│   │   │   ├── gitea/
+│   │   │   └── wikijs/
+│   │   ├── commands/
+│   │   ├── agents/
+│   │   └── skills/
 │   ├── projman-pmo/
 │   ├── project-hygiene/
 │   └── cmdb-assistant/
+│       ├── .claude-plugin/
+│       ├── mcp-servers/        # MCP servers bundled IN plugin
+│       │   └── netbox/
+│       ├── commands/
+│       └── agents/
 ├── scripts/                    # Setup and maintenance scripts
 ├── CLAUDE.md
 ├── README.md
@@ -50,19 +58,21 @@ support-claude-mktplace/
 | Plugin agents | `plugins/{plugin-name}/agents/` | `plugins/projman/agents/` |
 | Plugin .mcp.json | `plugins/{plugin-name}/.mcp.json` | `plugins/projman/.mcp.json` |
 
-### MCP Server Paths
+### MCP Server Paths (Bundled in Plugins)
+
+MCP servers are now **bundled inside each plugin** to ensure they work when plugins are cached.
 
 | Context | Pattern | Example |
 |---------|---------|---------|
-| MCP server location | `mcp-servers/{server-name}/` | `mcp-servers/gitea/` |
-| MCP server code | `mcp-servers/{server-name}/mcp_server/` | `mcp-servers/gitea/mcp_server/` |
-| MCP venv | `mcp-servers/{server-name}/.venv/` | `mcp-servers/gitea/.venv/` |
+| MCP server location | `plugins/{plugin}/mcp-servers/{server}/` | `plugins/projman/mcp-servers/gitea/` |
+| MCP server code | `plugins/{plugin}/mcp-servers/{server}/mcp_server/` | `plugins/projman/mcp-servers/gitea/mcp_server/` |
+| MCP venv | `plugins/{plugin}/mcp-servers/{server}/.venv/` | `plugins/projman/mcp-servers/gitea/.venv/` |
 
 ### Relative Path Patterns (CRITICAL)
 
 | From | To | Pattern |
 |------|----|---------|
-| Plugin .mcp.json | MCP server | `${CLAUDE_PLUGIN_ROOT}/../../mcp-servers/{server}` |
+| Plugin .mcp.json | Bundled MCP server | `${CLAUDE_PLUGIN_ROOT}/mcp-servers/{server}` |
 | marketplace.json | Plugin | `./plugins/{plugin-name}` |
 
 ### Documentation Paths
@@ -92,16 +102,13 @@ support-claude-mktplace/
 
 ### Relative Path Calculation
 
-From `plugins/projman/.mcp.json` to `mcp-servers/gitea/`:
+From `plugins/projman/.mcp.json` to bundled `mcp-servers/gitea/`:
 ```
 plugins/projman/.mcp.json
-  ↑ go up to plugins/projman/     (../)
-  ↑ go up to plugins/             (../)
-  ↑ go up to root/                (../)
-  → go down to mcp-servers/gitea/ (mcp-servers/gitea/)
+  → MCP servers are IN the plugin at mcp-servers/
 
-Result: ../../mcp-servers/gitea/
-With variable: ${CLAUDE_PLUGIN_ROOT}/../../mcp-servers/gitea/
+Result: mcp-servers/gitea/
+With variable: ${CLAUDE_PLUGIN_ROOT}/mcp-servers/gitea/
 ```
 
 From `.claude-plugin/marketplace.json` to `plugins/projman/`:
@@ -120,9 +127,18 @@ Result: ./plugins/projman
 | Wrong | Why | Correct |
 |-------|-----|---------|
 | `projman/` at root | Plugins go in `plugins/` | `plugins/projman/` |
-| `../mcp-servers/` from plugin | Missing one level | `../../mcp-servers/` |
+| `mcp-servers/` at root | MCP servers are bundled in plugins | `plugins/{plugin}/mcp-servers/` |
+| `../../mcp-servers/` from plugin | Old pattern, doesn't work with caching | `${CLAUDE_PLUGIN_ROOT}/mcp-servers/` |
 | `./../../../plugins/projman` in marketplace | Wrong (old nested structure) | `./plugins/projman` |
-| Creating `docs/CORRECT-ARCHITECTURE.md` | This file replaces it | Use `docs/CANONICAL-PATHS.md` |
+
+---
+
+## Architecture Note
+
+MCP servers are bundled inside each plugin (not shared at root) because:
+- Claude Code caches only the plugin directory when installed
+- Relative paths to parent directories break in the cache
+- Each plugin must be self-contained to work properly
 
 ---
 
@@ -130,4 +146,5 @@ Result: ./plugins/projman
 
 | Date | Change | By |
 |------|--------|-----|
+| 2025-12-15 | Restructured: MCP servers now bundled in plugins | Claude Code |
 | 2025-12-12 | Initial creation | Claude Code |

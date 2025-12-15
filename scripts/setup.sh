@@ -5,12 +5,12 @@
 # Usage: ./scripts/setup.sh
 #
 # This script:
-# 1. Creates Python virtual environments for MCP servers
+# 1. Creates Python virtual environments for MCP servers (inside each plugin)
 # 2. Installs dependencies
 # 3. Creates config file templates (if missing)
 # 4. Validates existing configuration
 # 5. Checks/creates Wiki.js directory structure
-# 6. Syncs Gitea labels (creates/updates, respects custom labels)
+# 6. Validates label reference file
 # 7. Reports remaining manual steps
 #
 
@@ -40,11 +40,13 @@ log_error() { echo -e "${RED}[ERROR]${NC} $1"; FAILED+=("$1"); }
 log_todo() { echo -e "${YELLOW}[TODO]${NC} $1"; MANUAL_TODO+=("$1"); }
 
 # --- Section 1: Python Environments ---
-setup_python_env() {
-    local server_name="$1"
-    local server_path="$REPO_ROOT/mcp-servers/$server_name"
+# MCP servers are now inside each plugin
+setup_plugin_mcp() {
+    local plugin_name="$1"
+    local server_name="$2"
+    local server_path="$REPO_ROOT/plugins/$plugin_name/mcp-servers/$server_name"
 
-    log_info "Setting up $server_name MCP server..."
+    log_info "Setting up $server_name MCP server (plugin: $plugin_name)..."
 
     if [[ ! -d "$server_path" ]]; then
         log_error "$server_name directory not found at $server_path"
@@ -55,10 +57,10 @@ setup_python_env() {
 
     # Check if venv exists
     if [[ -d ".venv" ]]; then
-        log_skip "$server_name venv already exists"
+        log_skip "$plugin_name/$server_name venv already exists"
     else
         python3 -m venv .venv
-        log_success "$server_name venv created"
+        log_success "$plugin_name/$server_name venv created"
     fi
 
     # Install/update dependencies
@@ -67,9 +69,9 @@ setup_python_env() {
         pip install -q --upgrade pip
         pip install -q -r requirements.txt
         deactivate
-        log_success "$server_name dependencies installed"
+        log_success "$plugin_name/$server_name dependencies installed"
     else
-        log_error "$server_name requirements.txt not found"
+        log_error "$plugin_name/$server_name requirements.txt not found"
     fi
 
     cd "$REPO_ROOT"
@@ -117,6 +119,22 @@ EOF
         log_success "wikijs.env template created"
         log_todo "Edit ~/.config/claude/wikijs.env with your Wiki.js credentials"
     fi
+
+    # NetBox config
+    if [[ -f "$config_dir/netbox.env" ]]; then
+        log_skip "netbox.env already exists"
+    else
+        cat > "$config_dir/netbox.env" << 'EOF'
+# NetBox API Configuration
+# Update these values with your NetBox instance details
+
+NETBOX_API_URL=https://netbox.example.com/api
+NETBOX_API_TOKEN=your_netbox_token_here
+EOF
+        chmod 600 "$config_dir/netbox.env"
+        log_success "netbox.env template created"
+        log_todo "Edit ~/.config/claude/netbox.env with your NetBox credentials"
+    fi
 }
 
 # --- Section 3: Validate Configuration ---
@@ -128,7 +146,7 @@ validate_config() {
     # Check Gitea config has real values
     if [[ -f "$config_dir/gitea.env" ]]; then
         source "$config_dir/gitea.env"
-        if [[ "$GITEA_API_TOKEN" == "your_gitea_token_here" ]] || [[ -z "$GITEA_API_TOKEN" ]]; then
+        if [[ "${GITEA_API_TOKEN:-}" == "your_gitea_token_here" ]] || [[ -z "${GITEA_API_TOKEN:-}" ]]; then
             log_todo "Update GITEA_API_TOKEN in ~/.config/claude/gitea.env"
         else
             log_success "Gitea configuration appears valid"
@@ -138,10 +156,20 @@ validate_config() {
     # Check Wiki.js config has real values
     if [[ -f "$config_dir/wikijs.env" ]]; then
         source "$config_dir/wikijs.env"
-        if [[ "$WIKIJS_API_TOKEN" == "your_wikijs_jwt_token_here" ]] || [[ -z "$WIKIJS_API_TOKEN" ]]; then
+        if [[ "${WIKIJS_API_TOKEN:-}" == "your_wikijs_jwt_token_here" ]] || [[ -z "${WIKIJS_API_TOKEN:-}" ]]; then
             log_todo "Update WIKIJS_API_TOKEN in ~/.config/claude/wikijs.env"
         else
             log_success "Wiki.js configuration appears valid"
+        fi
+    fi
+
+    # Check NetBox config has real values
+    if [[ -f "$config_dir/netbox.env" ]]; then
+        source "$config_dir/netbox.env"
+        if [[ "${NETBOX_API_TOKEN:-}" == "your_netbox_token_here" ]] || [[ -z "${NETBOX_API_TOKEN:-}" ]]; then
+            log_todo "Update NETBOX_API_TOKEN in ~/.config/claude/netbox.env"
+        else
+            log_success "NetBox configuration appears valid"
         fi
     fi
 }
@@ -156,7 +184,7 @@ setup_wikijs_structure() {
     local config_dir="$HOME/.config/claude"
     if [[ -f "$config_dir/wikijs.env" ]]; then
         source "$config_dir/wikijs.env"
-        if [[ "$WIKIJS_API_TOKEN" != "your_wikijs_jwt_token_here" ]] && [[ -n "$WIKIJS_API_TOKEN" ]]; then
+        if [[ "${WIKIJS_API_TOKEN:-}" != "your_wikijs_jwt_token_here" ]] && [[ -n "${WIKIJS_API_TOKEN:-}" ]]; then
             log_info "Wiki.js credentials found - directory structure can be verified after first use"
             log_success "Wiki.js setup deferred to first use"
         else
@@ -238,9 +266,12 @@ main() {
     echo "=============================================="
     echo ""
 
-    # Python environments
-    setup_python_env "gitea"
-    setup_python_env "wikijs"
+    # Python environments for projman plugin
+    setup_plugin_mcp "projman" "gitea"
+    setup_plugin_mcp "projman" "wikijs"
+
+    # Python environment for cmdb-assistant plugin
+    setup_plugin_mcp "cmdb-assistant" "netbox"
 
     # Configuration
     setup_config_templates
