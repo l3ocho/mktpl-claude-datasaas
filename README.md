@@ -1,20 +1,34 @@
 # Claude Code Marketplace - Bandit Labs
 
-A collection of Claude Code plugins and MCP servers for project management, infrastructure automation, and development workflows.
+A collection of Claude Code plugins for project management, infrastructure automation, and development workflows.
 
 ## Plugins
 
-### [projman](./plugins/projman/README.md)
+### [projman](./plugins/projman/README.md) v1.0.0
 **Sprint Planning and Project Management**
 
-AI-guided sprint planning with Gitea and Wiki.js integration. Transforms a proven 15-sprint workflow into a distributable plugin.
+AI-guided sprint planning with full Gitea integration. Transforms a proven 15-sprint workflow into a distributable plugin.
 
 - Three-agent model: Planner, Orchestrator, Executor
-- Intelligent label suggestions from 44-label taxonomy
-- Lessons learned capture to prevent repeated mistakes
+- Intelligent label suggestions from 43-label taxonomy
+- Lessons learned capture via Gitea Wiki
+- Native issue dependencies with parallel execution
+- Milestone management for sprint organization
 - Branch-aware security (development/staging/production)
 
-**Commands:** `/sprint-plan`, `/sprint-start`, `/sprint-status`, `/sprint-close`, `/labels-sync`
+**Commands:** `/sprint-plan`, `/sprint-start`, `/sprint-status`, `/sprint-close`, `/labels-sync`, `/initial-setup`
+
+### [claude-config-maintainer](./plugins/claude-config-maintainer/README.md)
+**CLAUDE.md Optimization and Maintenance**
+
+Analyze, optimize, and create CLAUDE.md configuration files for Claude Code projects.
+
+- Structure and clarity scoring (100-point system)
+- Automatic optimization with preview and backup
+- Project-aware initialization with stack detection
+- Best practices enforcement
+
+**Commands:** `/config-analyze`, `/config-optimize`, `/config-init`
 
 ### [cmdb-assistant](./plugins/cmdb-assistant/README.md)
 **NetBox CMDB Integration**
@@ -35,41 +49,28 @@ Hook-based cleanup that runs after Claude completes work.
 
 - Deletes temp files (`*.tmp`, `*.bak`, `__pycache__`, etc.)
 - Warns about unexpected files in project root
-- Identifies orphaned supporting files (`test_*`, `debug_*`, `*_backup.*`)
-- Logs actions to `.dev/logs/`
+- Identifies orphaned supporting files
 - Configurable via `.hygiene.json`
-
-**Hook:** `task-completed`
 
 ## MCP Servers
 
-Shared Model Context Protocol servers that provide plugins with external service access.
+MCP servers are **bundled inside each plugin** that needs them. This ensures plugins work when cached by Claude Code.
 
-### [Gitea MCP Server](./mcp-servers/gitea/README.md)
-Issue management, label operations, and repository tracking for Gitea.
+### Gitea MCP Server (bundled in projman)
 
-| Tool | Description |
-|------|-------------|
-| `list_issues` | Query issues with filters |
-| `create_issue` | Create issue with labels |
-| `get_labels` | Fetch org + repo labels |
-| `suggest_labels` | Intelligent label suggestions |
+Full Gitea API integration for project management.
 
-**Status:** Production Ready
+| Category | Tools |
+|----------|-------|
+| Issues | `list_issues`, `get_issue`, `create_issue`, `update_issue`, `add_comment` |
+| Labels | `get_labels`, `suggest_labels`, `create_label` |
+| Wiki | `list_wiki_pages`, `get_wiki_page`, `create_wiki_page`, `create_lesson`, `search_lessons` |
+| Milestones | `list_milestones`, `get_milestone`, `create_milestone`, `update_milestone` |
+| Dependencies | `list_issue_dependencies`, `create_issue_dependency`, `get_execution_order` |
+| Validation | `validate_repo_org`, `get_branch_protection` |
 
-### [Wiki.js MCP Server](./mcp-servers/wikijs/README.md)
-Documentation management and lessons learned capture via GraphQL.
+### NetBox MCP Server (bundled in cmdb-assistant)
 
-| Tool | Description |
-|------|-------------|
-| `search_pages` | Search by keywords/tags |
-| `create_page` | Create markdown pages |
-| `create_lesson` | Capture sprint lessons |
-| `search_lessons` | Find relevant insights |
-
-**Status:** Production Ready
-
-### [NetBox MCP Server](./mcp-servers/netbox/README.md)
 Comprehensive NetBox REST API integration for infrastructure management.
 
 | Module | Coverage |
@@ -80,15 +81,13 @@ Comprehensive NetBox REST API integration for infrastructure management.
 | Virtualization | Clusters, VMs, Interfaces |
 | Extras | Tags, Custom Fields, Audit Log |
 
-**Status:** Production Ready
-
 ## Installation
 
 ### Prerequisites
 
 - Claude Code installed
 - Python 3.10+
-- Access to target services (Gitea, Wiki.js, NetBox as needed)
+- Access to target services (Gitea, NetBox as needed)
 
 ### Quick Start
 
@@ -100,35 +99,33 @@ Comprehensive NetBox REST API integration for infrastructure management.
 
 2. **Install MCP server dependencies:**
    ```bash
-   # Gitea MCP
-   cd mcp-servers/gitea && python -m venv .venv && source .venv/bin/activate && pip install -r requirements.txt
+   # Gitea MCP (for projman)
+   cd plugins/projman/mcp-servers/gitea
+   python3 -m venv .venv
+   source .venv/bin/activate
+   pip install -r requirements.txt
+   deactivate
 
-   # Wiki.js MCP
-   cd ../wikijs && python -m venv .venv && source .venv/bin/activate && pip install -r requirements.txt
-
-   # NetBox MCP
-   cd ../netbox && python -m venv .venv && source .venv/bin/activate && pip install -r requirements.txt
+   # NetBox MCP (for cmdb-assistant)
+   cd ../../../cmdb-assistant/mcp-servers/netbox
+   python3 -m venv .venv
+   source .venv/bin/activate
+   pip install -r requirements.txt
+   deactivate
    ```
 
-3. **Configure credentials:**
+3. **Configure system-level credentials:**
    ```bash
    mkdir -p ~/.config/claude
 
-   # Gitea
+   # Gitea credentials
    cat > ~/.config/claude/gitea.env << 'EOF'
-   GITEA_API_URL=https://gitea.example.com/api/v1
-   GITEA_API_TOKEN=your_token
-   GITEA_OWNER=your_org
+   GITEA_URL=https://gitea.example.com
+   GITEA_TOKEN=your_token
+   GITEA_ORG=your_org
    EOF
 
-   # Wiki.js
-   cat > ~/.config/claude/wikijs.env << 'EOF'
-   WIKIJS_API_URL=https://wiki.example.com/graphql
-   WIKIJS_API_TOKEN=your_token
-   WIKIJS_BASE_PATH=/your-namespace
-   EOF
-
-   # NetBox
+   # NetBox credentials
    cat > ~/.config/claude/netbox.env << 'EOF'
    NETBOX_API_URL=https://netbox.example.com/api
    NETBOX_API_TOKEN=your_token
@@ -137,101 +134,85 @@ Comprehensive NetBox REST API integration for infrastructure management.
    chmod 600 ~/.config/claude/*.env
    ```
 
-4. **Add marketplace to Claude Code:**
+4. **Configure project-level settings:**
    ```bash
-   claude plugin marketplace add /path/to/support-claude-mktplace
-   claude plugin install projman
-   claude plugin install cmdb-assistant
-   claude plugin install project-hygiene
+   # In your target project root
+   cat > .env << 'EOF'
+   GITEA_REPO=your-repository-name
+   EOF
+   ```
+
+5. **Add marketplace to Claude Code:**
+
+   Add to your project's `.claude/settings.json`:
+   ```json
+   {
+     "pluginMarketplace": "/path/to/support-claude-mktplace"
+   }
    ```
 
 ## Repository Structure
 
 ```
 support-claude-mktplace/
-├── plugins/                    # All plugins
-│   ├── projman/               # Sprint management plugin
+├── .claude-plugin/                # Marketplace manifest
+│   └── marketplace.json
+├── plugins/                       # All plugins (with bundled MCP servers)
+│   ├── projman/                   # Sprint management plugin
 │   │   ├── .claude-plugin/
+│   │   ├── .mcp.json
+│   │   ├── mcp-servers/           # Bundled MCP server
+│   │   │   └── gitea/
 │   │   ├── commands/
 │   │   ├── agents/
 │   │   └── skills/
-│   ├── projman-pmo/           # PMO coordination plugin
+│   ├── claude-config-maintainer/  # CLAUDE.md optimization plugin
 │   │   ├── .claude-plugin/
 │   │   ├── commands/
 │   │   └── agents/
-│   ├── project-hygiene/       # Cleanup automation plugin
+│   ├── cmdb-assistant/            # NetBox CMDB integration
 │   │   ├── .claude-plugin/
-│   │   └── hooks/
-│   └── cmdb-assistant/        # NetBox CMDB integration
-│       ├── .claude-plugin/
-│       ├── commands/
-│       └── agents/
-├── mcp-servers/               # Shared MCP servers
-│   ├── gitea/
-│   ├── wikijs/
-│   └── netbox/
-├── .claude-plugin/            # Marketplace manifest (bandit-claude-marketplace)
-│   └── marketplace.json
-├── docs/                      # Reference documentation
+│   │   ├── .mcp.json
+│   │   ├── mcp-servers/           # Bundled MCP server
+│   │   │   └── netbox/
+│   │   ├── commands/
+│   │   └── agents/
+│   ├── projman-pmo/               # PMO coordination plugin (planned)
+│   └── project-hygiene/           # Cleanup automation plugin
+├── docs/                          # Reference documentation
+│   ├── CANONICAL-PATHS.md         # Single source of truth for paths
 │   └── references/
-└── .claude/                   # Claude Code local settings
+└── scripts/                       # Setup and maintenance scripts
 ```
+
+## Key Features (v1.0.0)
+
+### Parallel Execution
+Tasks are batched by dependency graph for optimal parallel execution:
+```
+Batch 1 (parallel): Task A, Task B, Task C
+Batch 2 (parallel): Task D, Task E  (depend on Batch 1)
+Batch 3 (sequential): Task F        (depends on Batch 2)
+```
+
+### Naming Conventions
+- **Tasks:** `[Sprint XX] <type>: <description>`
+- **Branches:** `feat/`, `fix/`, `debug/` prefixes with issue numbers
+
+### CLI Tools Blocked
+All agents use MCP tools exclusively. CLI tools like `tea` or `gh` are forbidden to ensure consistent, auditable operations.
 
 ## Documentation
 
-### Reference Material
-
 | Document | Description |
 |----------|-------------|
-| [PROJECT-SUMMARY.md](./docs/references/PROJECT-SUMMARY.md) | Architecture overview and design decisions |
-| [PLUGIN-PROJMAN.md](./docs/references/PLUGIN-PROJMAN.md) | Detailed projman plugin specification |
-| [PLUGIN-PMO.md](./docs/references/PLUGIN-PMO.md) | Multi-project PMO plugin specification |
-| [MCP-GITEA.md](./docs/references/MCP-GITEA.md) | Gitea MCP server API reference |
-| [MCP-WIKIJS.md](./docs/references/MCP-WIKIJS.md) | Wiki.js MCP server API reference |
-
-### Testing & Validation
-
-| Document | Description |
-|----------|-------------|
-| [PROJMAN_TESTING_COMPLETE.md](./docs/PROJMAN_TESTING_COMPLETE.md) | Test results and validation |
-| [LIVE_API_TEST_RESULTS.md](./docs/LIVE_API_TEST_RESULTS.md) | Live API integration tests |
-| [TEST_EXECUTION_REPORT.md](./docs/TEST_EXECUTION_REPORT.md) | Full test execution report |
-
-### Configuration Guides
-
-| Document | Description |
-|----------|-------------|
+| [CLAUDE.md](./CLAUDE.md) | Main project instructions |
+| [CANONICAL-PATHS.md](./docs/CANONICAL-PATHS.md) | Authoritative path reference |
 | [projman/CONFIGURATION.md](./plugins/projman/CONFIGURATION.md) | Projman setup guide |
-| [CREATE_LABELS_GUIDE.md](./docs/CREATE_LABELS_GUIDE.md) | Gitea label taxonomy setup |
-
-## Development
-
-### Adding New Plugins
-
-1. Create plugin directory in `plugins/` with `.claude-plugin/plugin.json`
-2. Add commands, agents, or hooks as needed
-3. Reference shared MCP servers via `.mcp.json` (use `../../mcp-servers/`)
-4. Add to marketplace in `.claude-plugin/marketplace.json`
-5. Document in plugin `README.md`
-
-### Testing
-
-```bash
-# MCP server unit tests
-cd mcp-servers/gitea && pytest -v
-cd mcp-servers/wikijs && pytest -v
-
-# Plugin validation
-claude plugin list
-claude --debug
-```
 
 ## Roadmap
 
-- [x] **Phase 1-2**: MCP servers and commands (Complete)
-- [ ] **Phase 3**: Agent system implementation
-- [ ] **Phase 4**: Lessons learned integration
-- [ ] **Phase 5-8**: Testing, documentation, production
+- [x] **Phase 1-8**: projman v1.0.0 (Complete)
 - [ ] **Phase 9-11**: PMO plugin for multi-project coordination
 - [ ] **Phase 12**: Public marketplace distribution
 

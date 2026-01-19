@@ -1,18 +1,20 @@
-# Projman - Project Management for Claude Code
+# Projman v1.0.0 - Project Management for Claude Code
 
-Sprint planning and project management plugin with Gitea and Wiki.js integration.
+Sprint planning and project management plugin with full Gitea integration.
 
 ## Overview
 
-Projman transforms a proven 15-sprint workflow into a distributable Claude Code plugin. It provides AI-guided sprint planning, intelligent issue creation with label taxonomy, and systematic lessons learned capture to prevent repeated mistakes.
+Projman transforms a proven 15-sprint workflow into a distributable Claude Code plugin. It provides AI-guided sprint planning, intelligent issue creation with label taxonomy, native issue dependencies, parallel task execution, and systematic lessons learned capture via Gitea Wiki.
 
 **Key Features:**
-- 🎯 **Sprint Planning** - AI-guided architecture analysis and issue creation
-- 🏷️ **Smart Label Suggestions** - Intelligent label recommendations from 44-label taxonomy
-- 📚 **Lessons Learned** - Systematic capture and search of sprint insights
-- 🔒 **Branch-Aware Security** - Prevents accidental changes on production branches
-- ⚙️ **Hybrid Configuration** - Simple setup with system + project-level config
-- 🤖 **Three-Agent Model** - Planner, Orchestrator, and Executor agents
+- **Sprint Planning** - AI-guided architecture analysis and issue creation
+- **Smart Label Suggestions** - Intelligent label recommendations from 43-label taxonomy
+- **Issue Dependencies** - Native Gitea dependencies with parallel execution batching
+- **Milestones** - Sprint milestone management and tracking
+- **Lessons Learned** - Systematic capture and search via Gitea Wiki
+- **Branch-Aware Security** - Prevents accidental changes on production branches
+- **Three-Agent Model** - Planner, Orchestrator, and Executor agents
+- **CLI Tools Blocked** - All operations via MCP tools only (no `tea` or `gh`)
 
 ## Quick Start
 
@@ -20,24 +22,17 @@ Projman transforms a proven 15-sprint workflow into a distributable Claude Code 
 
 - Claude Code installed
 - Access to Gitea instance with API token
-- Access to Wiki.js instance with API token
 - Python 3.10+ installed
 - Git repository initialized
 
-### 2. Install MCP Servers
+### 2. Install MCP Server
 
-The plugin requires two shared MCP servers:
+The plugin bundles the Gitea MCP server:
 
 ```bash
-# Navigate to MCP servers directory
-cd ../mcp-servers/gitea
-python -m venv .venv
+cd plugins/projman/mcp-servers/gitea
+python3 -m venv .venv
 source .venv/bin/activate  # or .venv\Scripts\activate on Windows
-pip install -r requirements.txt
-
-cd ../wikijs
-python -m venv .venv
-source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
@@ -45,27 +40,20 @@ See [CONFIGURATION.md](./CONFIGURATION.md) for detailed setup instructions.
 
 ### 3. Configure System-Level Settings
 
-Create system-wide configuration with your Gitea and Wiki.js credentials:
+Create system-wide configuration with your Gitea credentials:
 
 ```bash
 mkdir -p ~/.config/claude
 
 # Gitea configuration
-cat > ~/.config/claude/gitea.env << EOF
-GITEA_API_URL=https://gitea.example.com/api/v1
-GITEA_API_TOKEN=your_gitea_token_here
-GITEA_OWNER=bandit
+cat > ~/.config/claude/gitea.env << 'EOF'
+GITEA_URL=https://gitea.example.com
+GITEA_TOKEN=your_gitea_token_here
+GITEA_ORG=your_organization
 EOF
 
-# Wiki.js configuration
-cat > ~/.config/claude/wikijs.env << EOF
-WIKIJS_API_URL=https://wiki.your-company.com/graphql
-WIKIJS_API_TOKEN=your_wikijs_token_here
-WIKIJS_BASE_PATH=/your-org
-EOF
-
-# Secure the files
-chmod 600 ~/.config/claude/*.env
+# Secure the file
+chmod 600 ~/.config/claude/gitea.env
 ```
 
 ### 4. Configure Project-Level Settings
@@ -74,21 +62,15 @@ In your project root directory, create a `.env` file:
 
 ```bash
 # In your project directory
-cat > .env << EOF
+cat > .env << 'EOF'
 GITEA_REPO=your-repo-name
-WIKIJS_PROJECT=projects/your-project-name
 EOF
-
-# Add to .gitignore
-echo ".env" >> .gitignore
 ```
 
-### 5. Sync Label Taxonomy
-
-Fetch the label taxonomy from Gitea:
+### 5. Run Initial Setup
 
 ```bash
-/labels-sync
+/initial-setup
 ```
 
 ### 6. Start Planning!
@@ -103,53 +85,53 @@ Fetch the label taxonomy from Gitea:
 Start sprint planning with the AI planner agent.
 
 **What it does:**
+- Validates repository organization and label taxonomy
 - Asks clarifying questions about sprint goals
 - Searches relevant lessons learned from previous sprints
 - Performs architecture analysis
 - Creates Gitea issues with intelligent label suggestions
-- Generates planning document
+- Sets up issue dependencies for parallel execution
+- Creates sprint milestone
+
+**Pre-Planning Validations:**
+1. Repository belongs to configured organization
+2. Required label categories exist
+3. `docs/changes/` folder exists in repository
+
+**Task Naming:** `[Sprint XX] <type>: <description>`
 
 **When to use:** Beginning of a new sprint or when planning a major feature
-
-**Example:**
-```
-/sprint-plan
-
-> "I want to plan a sprint for user authentication"
-```
 
 ### `/sprint-start`
 Begin sprint execution with the orchestrator agent.
 
 **What it does:**
-- Reviews open sprint issues
-- Searches relevant lessons learned by tags
-- Identifies next task based on priority and dependencies
+- Reviews open sprint issues and dependencies
+- Batches tasks by dependency graph for parallel execution
 - Generates lean execution prompts
 - Tracks progress
 
-**When to use:** After planning, when ready to start implementation
+**Parallel Execution:**
+```
+Batch 1 (parallel): Task A, Task B, Task C
+Batch 2 (parallel): Task D, Task E  (depend on Batch 1)
+Batch 3 (sequential): Task F        (depends on Batch 2)
+```
 
-**Example:**
-```
-/sprint-start
-```
+**Branch Naming:** `feat/123-task-title`, `fix/456-bug-fix`, `debug/789-investigation`
+
+**When to use:** After planning, when ready to start implementation
 
 ### `/sprint-status`
 Check current sprint progress.
 
 **What it does:**
 - Lists all sprint issues by status (open, in progress, blocked, completed)
-- Identifies blockers and priorities
-- Shows completion percentage
-- Highlights critical items needing attention
+- Shows dependency analysis and blocked tasks
+- Displays completion percentage
+- Shows milestone progress
 
 **When to use:** Daily standup, progress check, deciding what to work on next
-
-**Example:**
-```
-/sprint-status
-```
 
 ### `/sprint-close`
 Complete sprint and capture lessons learned.
@@ -158,15 +140,11 @@ Complete sprint and capture lessons learned.
 - Reviews sprint completion
 - Captures lessons learned (what went wrong, what went right)
 - Tags lessons for discoverability
-- Saves lessons to Wiki.js
+- Saves lessons to Gitea Wiki
+- Closes sprint milestone
 - Handles git operations (merge, tag, cleanup)
 
 **When to use:** End of sprint, before starting the next one
-
-**Example:**
-```
-/sprint-close
-```
 
 **CRITICAL:** Don't skip this! After 15 sprints without lesson capture, teams repeat the same mistakes.
 
@@ -174,22 +152,27 @@ Complete sprint and capture lessons learned.
 Synchronize label taxonomy from Gitea.
 
 **What it does:**
+- Validates repository belongs to organization
 - Fetches current labels from Gitea (org + repo)
+- Validates required label categories
 - Compares with local reference
-- Detects changes (new, modified, removed labels)
 - Updates local taxonomy reference
-- Updates suggestion logic
 
 **When to use:**
 - First-time setup
 - Monthly maintenance
 - When new labels are added to Gitea
-- When label suggestions seem incorrect
 
-**Example:**
-```
-/labels-sync
-```
+### `/initial-setup`
+Run initial setup for a new project.
+
+**What it does:**
+- Validates Gitea MCP server connection
+- Tests credential configuration
+- Syncs label taxonomy
+- Creates required directory structure
+
+**When to use:** First time setting up projman for a project
 
 ## Agents
 
@@ -197,10 +180,12 @@ Synchronize label taxonomy from Gitea.
 **Personality:** Thoughtful, methodical, asks clarifying questions
 
 **Responsibilities:**
+- Pre-planning validations (org, labels, folder structure)
 - Sprint planning and architecture analysis
 - Asking clarifying questions before making assumptions
-- Searching relevant lessons learned
+- Searching relevant lessons learned via Gitea Wiki
 - Creating well-structured Gitea issues
+- Setting up issue dependencies
 - Suggesting appropriate labels based on context
 
 **Invoked by:** `/sprint-plan`
@@ -209,11 +194,11 @@ Synchronize label taxonomy from Gitea.
 **Personality:** Concise, action-oriented, detail-focused
 
 **Responsibilities:**
-- Coordinating sprint execution
+- Coordinating sprint execution with parallel batching
 - Generating lean execution prompts (not full documents)
 - Tracking progress meticulously
 - Managing Git operations
-- Handling task dependencies
+- Handling task dependencies via `get_execution_order`
 - Capturing lessons learned at sprint close
 
 **Invoked by:** `/sprint-start`, `/sprint-close`
@@ -225,14 +210,72 @@ Synchronize label taxonomy from Gitea.
 - Providing implementation guidance
 - Writing clean, tested code
 - Following architectural decisions from planning
-- Generating completion reports
+- Creating branches with proper naming (`feat/`, `fix/`, `debug/`)
+- Generating MR body template
 - Code review and quality standards
 
-**Usage:** Can be invoked by the orchestrator when implementation guidance is needed.
+**MR Body Template:**
+```markdown
+## Summary
+<1-3 bullet points>
+
+## Test plan
+<Testing approach>
+
+Closes #<issue-number>
+```
+
+## MCP Tools
+
+### Issue Tools
+| Tool | Description |
+|------|-------------|
+| `list_issues` | Query issues with filters |
+| `get_issue` | Fetch single issue details |
+| `create_issue` | Create new issue with labels |
+| `update_issue` | Modify existing issue |
+| `add_comment` | Add comments to issues |
+
+### Label Tools
+| Tool | Description |
+|------|-------------|
+| `get_labels` | Fetch org + repo label taxonomy |
+| `suggest_labels` | Analyze context and suggest appropriate labels |
+| `create_label` | Create missing required labels |
+
+### Milestone Tools
+| Tool | Description |
+|------|-------------|
+| `list_milestones` | List sprint milestones |
+| `get_milestone` | Get milestone details |
+| `create_milestone` | Create sprint milestone |
+| `update_milestone` | Update/close milestone |
+
+### Dependency Tools
+| Tool | Description |
+|------|-------------|
+| `list_issue_dependencies` | Get issue dependencies |
+| `create_issue_dependency` | Create dependency between issues |
+| `get_execution_order` | Get parallel execution batches |
+
+### Wiki Tools (Gitea Wiki)
+| Tool | Description |
+|------|-------------|
+| `list_wiki_pages` | List wiki pages |
+| `get_wiki_page` | Fetch specific page content |
+| `create_wiki_page` | Create new wiki page |
+| `create_lesson` | Create lessons learned document |
+| `search_lessons` | Search past lessons by tags |
+
+### Validation Tools
+| Tool | Description |
+|------|-------------|
+| `validate_repo_org` | Check repo belongs to organization |
+| `get_branch_protection` | Check branch protection rules |
 
 ## Label Taxonomy
 
-The plugin uses a dynamic 44-label taxonomy (28 organization + 16 repository):
+The plugin uses a dynamic 43-label taxonomy (27 organization + 16 repository):
 
 **Organization Labels:**
 - Agent/* (2): Human, Claude
@@ -254,20 +297,19 @@ Labels are fetched dynamically from Gitea using `/labels-sync`.
 The plugin implements defense-in-depth branch detection to prevent accidental changes on production:
 
 **Development Branches** (`development`, `develop`, `feat/*`, `dev/*`):
-- ✅ Full planning and execution capabilities
-- ✅ Can create and modify issues
-- ✅ Can capture lessons learned
+- Full planning and execution capabilities
+- Can create and modify issues
+- Can capture lessons learned
 
 **Staging Branches** (`staging`, `stage/*`):
-- ✅ Can create issues to document bugs
-- ❌ Cannot modify code
-- ⚠️ Warns when attempting changes
+- Can create issues to document bugs
+- Cannot modify code
+- Warns when attempting changes
 
 **Production Branches** (`main`, `master`, `prod/*`):
-- ✅ Read-only access
-- ❌ Cannot create issues
-- ❌ Cannot modify code
-- 🛑 Blocks all planning and execution
+- Read-only access
+- Cannot create issues
+- Blocks all planning and execution
 
 ## Lessons Learned System
 
@@ -279,8 +321,8 @@ The plugin implements defense-in-depth branch detection to prevent accidental ch
 **Solution:** Mandatory lessons learned capture at sprint close, searchable at sprint start.
 
 **Workflow:**
-1. **Sprint Close:** Orchestrator captures lessons (what went wrong, what went right, preventable mistakes)
-2. **Wiki.js Storage:** Lessons saved to `/projects/{project}/lessons-learned/sprints/`
+1. **Sprint Close:** Orchestrator captures lessons via Gitea Wiki tools
+2. **Gitea Wiki Storage:** Lessons saved to repository wiki under `lessons-learned/sprints/`
 3. **Sprint Start:** Planner searches relevant lessons by tags and keywords
 4. **Prevention:** Apply learned insights to avoid repeating mistakes
 
@@ -304,19 +346,57 @@ The plugin implements defense-in-depth branch detection to prevent accidental ch
 [technology, component, type]
 ```
 
+## Architecture
+
+```
+projman/
+├── .claude-plugin/
+│   └── plugin.json          # Plugin manifest
+├── .mcp.json                # MCP server configuration
+├── mcp-servers/             # Bundled MCP server
+│   └── gitea/
+│       ├── .venv/
+│       ├── requirements.txt
+│       ├── mcp_server/
+│       │   ├── server.py
+│       │   ├── gitea_client.py
+│       │   └── tools/
+│       │       ├── issues.py
+│       │       ├── labels.py
+│       │       ├── wiki.py
+│       │       ├── milestones.py
+│       │       └── dependencies.py
+│       └── tests/
+├── commands/                # Slash commands
+│   ├── sprint-plan.md
+│   ├── sprint-start.md
+│   ├── sprint-status.md
+│   ├── sprint-close.md
+│   ├── labels-sync.md
+│   └── initial-setup.md
+├── agents/                  # Agent prompts
+│   ├── planner.md
+│   ├── orchestrator.md
+│   └── executor.md
+├── skills/                  # Supporting knowledge
+│   └── label-taxonomy/
+│       └── labels-reference.md
+├── README.md                # This file
+└── CONFIGURATION.md         # Setup guide
+```
+
 ## Configuration
 
 See [CONFIGURATION.md](./CONFIGURATION.md) for detailed configuration instructions.
 
 **Quick summary:**
-- **System-level:** `~/.config/claude/gitea.env` and `wikijs.env` (credentials)
-- **Project-level:** `.env` in project root (repository and project paths)
-- **MCP Servers:** Located at `../mcp-servers/` (shared by multiple plugins)
+- **System-level:** `~/.config/claude/gitea.env` (credentials)
+- **Project-level:** `.env` in project root (repository specification)
 
 ## Troubleshooting
 
 ### Plugin not loading
-- Check that MCP servers are installed: `ls ../mcp-servers/gitea/.venv`
+- Check that MCP server is installed: `ls mcp-servers/gitea/.venv`
 - Verify plugin manifest: `cat .claude-plugin/plugin.json | jq`
 - Check Claude Code logs for errors
 
@@ -324,11 +404,6 @@ See [CONFIGURATION.md](./CONFIGURATION.md) for detailed configuration instructio
 - Verify `~/.config/claude/gitea.env` exists and has correct URL and token
 - Test token: `curl -H "Authorization: token YOUR_TOKEN" https://gitea.example.com/api/v1/user`
 - Check network connectivity
-
-### Cannot connect to Wiki.js
-- Verify `~/.config/claude/wikijs.env` exists and has correct URL and token
-- Check Wiki.js GraphQL endpoint: `https://wiki.your-company.com/graphql`
-- Verify API token has pages read/write permissions
 
 ### Labels not syncing
 - Run `/labels-sync` manually
@@ -340,100 +415,28 @@ See [CONFIGURATION.md](./CONFIGURATION.md) for detailed configuration instructio
 - Check current branch: `git branch --show-current`
 - If on wrong branch, switch: `git checkout development`
 
-## Architecture
-
-```
-projman/
-├── .claude-plugin/
-│   └── plugin.json          # Plugin manifest
-├── .mcp.json                # MCP server configuration
-├── commands/                # Slash commands
-│   ├── sprint-plan.md
-│   ├── sprint-start.md
-│   ├── sprint-status.md
-│   ├── sprint-close.md
-│   └── labels-sync.md
-├── agents/                  # Agent prompts (Phase 3)
-│   ├── planner.md
-│   ├── orchestrator.md
-│   └── executor.md
-├── skills/                  # Supporting knowledge
-│   └── label-taxonomy/
-│       └── labels-reference.md
-├── README.md                # This file
-└── CONFIGURATION.md         # Setup guide
-```
-
-**MCP Servers (shared):**
-```
-../mcp-servers/
-├── gitea/                   # Gitea MCP server
-│   ├── .venv/
-│   ├── mcp_server/
-│   └── tests/
-└── wikijs/                  # Wiki.js MCP server
-    ├── .venv/
-    ├── mcp_server/
-    └── tests/
-```
-
-## Workflow Example
-
-**Complete Sprint Lifecycle:**
-
-```bash
-# 1. Plan the sprint
-/sprint-plan
-> "Extract Intuit Engine service from monolith"
-[Planner asks questions, searches lessons, creates issues]
-
-# 2. Start execution
-/sprint-start
-[Orchestrator reviews issues, finds relevant lessons, identifies next task]
-
-# 3. Check progress daily
-/sprint-status
-[See completion percentage, blockers, priorities]
-
-# 4. Close sprint and capture lessons
-/sprint-close
-[Orchestrator captures lessons learned, saves to Wiki.js]
-
-# Next sprint uses those lessons automatically!
-```
-
 ## Support
 
 **Documentation:**
 - [CONFIGURATION.md](./CONFIGURATION.md) - Setup and configuration
-- [Gitea MCP Server](../mcp-servers/gitea/README.md) - Gitea integration details
-- [Wiki.js MCP Server](../mcp-servers/wikijs/README.md) - Wiki.js integration details
 
 **Issues:**
 - Report bugs: Contact repository maintainer
 - Feature requests: Contact repository maintainer
-- Documentation improvements: Submit PR
 
 ## License
 
 MIT License - See repository root for details
 
-## Related Plugins
-
-- **projman-pmo** - Multi-project PMO coordination (build after projman is validated)
-
 ## Version
 
-**Current:** 0.1.0 (Phase 2 - Commands implemented)
+**Current:** 1.0.0
 
-**Roadmap:**
-- Phase 3: Agent system implementation
-- Phase 4: Lessons learned integration
-- Phase 5: Testing and validation
-- Phase 6-8: Documentation, marketplace, production
+**Changelog:**
+- v1.0.0: Full Gitea integration with wiki, milestones, dependencies, parallel execution
+- v0.1.0: Initial commands implementation
 
 ---
 
 **Built for:** Bandit Labs
-**Status:** Phase 2 Complete - Commands ready for testing
-**Next:** Implement agent system (Phase 3)
+**Status:** Production Ready
