@@ -54,11 +54,11 @@ projman/
   "version": "0.1.0",
   "displayName": "Projman - Single-Repository Project Management",
   "description": "Sprint planning and project management with Gitea and Wiki.js integration",
-  "author": "Bandit Labs",
-  "homepage": "https://gitea.example.com/bandit/support-claude-mktplace/projman",
+  "author": "Leo Miranda",
+  "homepage": "https://gitea.hotserv.cloud/personal-projects/support-claude-mktplace",
   "repository": {
     "type": "git",
-    "url": "https://gitea.example.com/bandit/support-claude-mktplace.git"
+    "url": "ssh://git@hotserv.tailc9b278.ts.net:2222/personal-projects/support-claude-mktplace.git"
   },
   "license": "MIT",
   "keywords": [
@@ -269,7 +269,7 @@ Agents are also **markdown files** with specialized prompts. They can be invoked
 ```markdown
 # Sprint Planner Agent
 
-You are the Sprint Planner for Bandit Labs.
+You are the Sprint Planner for this project.
 
 ## Your Identity
 
@@ -551,7 +551,7 @@ The projman plugin implements a three-agent architecture mirroring the proven wo
 **Example Prompt:**
 
 ```markdown
-You are the Sprint Planner for Bandit Labs.
+You are the Sprint Planner for this project.
 
 Your role:
 - Guide users through sprint planning
@@ -609,7 +609,7 @@ Sprint Planning Flow:
 **Example Prompt:**
 
 ```markdown
-You are the Sprint Orchestrator for Bandit Labs.
+You are the Sprint Orchestrator for this project.
 
 Your role:
 - Monitor sprint progress
@@ -668,7 +668,7 @@ Status Monitoring:
 **Example Prompt:**
 
 ```markdown
-You are the Sprint Executor for Bandit Labs.
+You are the Sprint Executor for this project.
 
 Your role:
 - Provide implementation guidance

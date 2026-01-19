@@ -3,11 +3,11 @@
   "version": "2.0.0",
   "description": "Sprint planning and project management with Gitea integration",
   "author": {
-    "name": "Bandit Labs",
-    "email": "dev@banditlabs.io"
+    "name": "Leo Miranda",
+    "email": "leobmiranda@gmail.com"
   },
   "license": "MIT",
-  "repository": "https://gitea.hotserv.cloud/bandit/support-claude-mktplace",
+  "repository": "https://gitea.hotserv.cloud/personal-projects/support-claude-mktplace",
   "keywords": [
     "project-management",
     "sprint-planning",

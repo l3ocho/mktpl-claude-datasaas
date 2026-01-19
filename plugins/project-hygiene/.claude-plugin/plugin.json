@@ -3,12 +3,12 @@
   "version": "0.1.0",
   "description": "Post-task cleanup hook that removes temp files, warns about unexpected root files, and manages orphaned supporting files",
   "author": {
-    "name": "Bandit Labs",
-    "email": "dev@banditlabs.io"
+    "name": "Leo Miranda",
+    "email": "leobmiranda@gmail.com"
   },
   "license": "MIT",
   "keywords": ["cleanup", "hygiene", "automation", "hooks", "maintenance"],
-  "repository": "https://github.com/bandit-labs/project-hygiene",
+  "repository": "https://gitea.hotserv.cloud/personal-projects/support-claude-mktplace",
   "hooks": {
     "PostToolUse": [
       {

@@ -45,7 +45,7 @@ class GiteaClient:
         """Parse owner/repo from input. Always requires 'owner/repo' format."""
         target = repo or self.repo
         if not target or '/' not in target:
-            raise ValueError("Use 'owner/repo' format (e.g. 'bandit/support-claude-mktplace')")
+            raise ValueError("Use 'owner/repo' format (e.g. 'org/repo-name')")
         parts = target.split('/', 1)
         return parts[0], parts[1]
 

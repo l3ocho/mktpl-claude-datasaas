@@ -11,7 +11,7 @@ Last Updated: 2025-12-15
 ```
 support-claude-mktplace/
 ├── .claude/                    # Claude Code local settings
-├── .claude-plugin/             # Marketplace manifest (bandit-claude-marketplace)
+├── .claude-plugin/             # Marketplace manifest (claude-code-marketplace)
 │   └── marketplace.json
 ├── .scratch/                   # Transient work (auto-cleaned)
 ├── docs/                       # All documentation

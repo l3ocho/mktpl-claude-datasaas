@@ -1,10 +1,10 @@
 {
-  "name": "bandit-claude-marketplace",
+  "name": "claude-code-marketplace",
   "version": "2.0.0",
   "description": "Project management plugins with Gitea and NetBox integrations",
   "owner": {
-    "name": "Bandit Labs",
-    "email": "dev@banditlabs.io"
+    "name": "Leo Miranda",
+    "email": "leobmiranda@gmail.com"
   },
   "plugins": [
     {

@@ -96,4 +96,4 @@ Target score: **70+** for effective Claude Code usage.
 
 ## Contributing
 
-This plugin is part of the bandit/support-claude-mktplace repository.
+This plugin is part of the personal-projects/support-claude-mktplace repository.

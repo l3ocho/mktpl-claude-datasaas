@@ -80,7 +80,7 @@ The MCP servers detect their operating mode based on environment variables:
 ## Repository Structure
 
 ```
-bandit/support-claude-mktplace/
+personal-projects/support-claude-mktplace/
 ├── mcp-servers/                    # ← SHARED BY BOTH PLUGINS
 │   ├── gitea/                      # Gitea MCP Server
 │   │   ├── .venv/
