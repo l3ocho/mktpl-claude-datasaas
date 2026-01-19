@@ -4,7 +4,7 @@ description: Begin sprint execution with relevant lessons learned from previous 
 
 # Start Sprint Execution
 
-You are initiating sprint execution. The orchestrator agent will coordinate the work, search for relevant lessons learned, and guide you through the implementation process.
+You are initiating sprint execution. The orchestrator agent will coordinate the work, analyze dependencies for parallel execution, search for relevant lessons learned, and guide you through the implementation process.
 
 ## Branch Detection
 
@@ -15,9 +15,9 @@ git branch --show-current
 ```
 
 **Branch Requirements:**
-- ✅ **Development branches** (`development`, `develop`, `feat/*`, `dev/*`): Full execution capabilities
-- ⚠️ **Staging branches** (`staging`, `stage/*`): Can create issues to document bugs, but cannot modify code
-- ❌ **Production branches** (`main`, `master`, `prod/*`): READ-ONLY - no execution allowed
+- **Development branches** (`development`, `develop`, `feat/*`, `dev/*`): Full execution capabilities
+- **Staging branches** (`staging`, `stage/*`): Can create issues to document bugs, but cannot modify code
+- **Production branches** (`main`, `master`, `prod/*`): READ-ONLY - no execution allowed
 
 If you are on a production or staging branch, you MUST stop and ask the user to switch to a development branch.
 
@@ -25,32 +25,72 @@ If you are on a production or staging branch, you MUST stop and ask the user to 
 
 The orchestrator agent will:
 
-1. **Review Sprint Issues**
+1. **Fetch Sprint Issues**
    - Use `list_issues` to fetch open issues for the sprint
    - Identify priorities based on labels (Priority/Critical, Priority/High, etc.)
-   - Understand dependencies between issues
 
-2. **Search Relevant Lessons Learned**
+2. **Analyze Dependencies and Plan Parallel Execution**
+   - Use `get_execution_order` to build dependency graph
+   - Identify batches that can be executed in parallel
+   - Present parallel execution plan
+
+3. **Search Relevant Lessons Learned**
    - Use `search_lessons` to find experiences from past sprints
    - Search by tags matching the current sprint's technology and components
    - Review patterns, gotchas, and preventable mistakes
    - Present relevant lessons before starting work
 
-3. **Identify Next Task**
-   - Select the highest priority task that's unblocked
-   - Review task details and acceptance criteria
-   - Check for dependencies
-
-4. **Generate Lean Execution Prompt**
-   - Create concise implementation guidance (NOT full planning docs)
-   - Reference architectural decisions from planning phase
-   - Highlight relevant lessons learned
-   - Provide clear acceptance criteria
+4. **Dispatch Tasks (Parallel When Possible)**
+   - For independent tasks (same batch), spawn multiple Executor agents in parallel
+   - For dependent tasks, execute sequentially
+   - Create proper branch for each task
 
 5. **Track Progress**
    - Update issue status as work progresses
    - Use `add_comment` to document progress and blockers
-   - Identify when tasks are blocked and need attention
+   - Monitor when dependencies are satisfied and new tasks become unblocked
+
+## Parallel Execution Model
+
+The orchestrator analyzes dependencies and groups issues into parallelizable batches:
+
+```
+Parallel Execution Batches:
++---------------------------------------------------------------+
+| Batch 1 (can start immediately):                               |
+|   #45 [Sprint 18] feat: Implement JWT service                  |
+|   #48 [Sprint 18] docs: Update API documentation               |
++---------------------------------------------------------------+
+| Batch 2 (after batch 1):                                       |
+|   #46 [Sprint 18] feat: Build login endpoint (needs #45)       |
+|   #49 [Sprint 18] test: Add auth tests (needs #45)             |
++---------------------------------------------------------------+
+| Batch 3 (after batch 2):                                       |
+|   #47 [Sprint 18] feat: Create login form (needs #46)          |
++---------------------------------------------------------------+
+```
+
+**Independent tasks in the same batch run in parallel.**
+
+## Branch Naming Convention (MANDATORY)
+
+When creating branches for tasks:
+
+- Features: `feat/<issue-number>-<short-description>`
+- Bug fixes: `fix/<issue-number>-<short-description>`
+- Debugging: `debug/<issue-number>-<short-description>`
+
+**Examples:**
+```bash
+git checkout -b feat/45-jwt-service
+git checkout -b fix/46-login-timeout
+git checkout -b debug/47-investigate-memory-leak
+```
+
+**Validation:**
+- Issue number MUST be present
+- Prefix MUST be `feat/`, `fix/`, or `debug/`
+- Description should be kebab-case (lowercase, hyphens)
 
 ## MCP Tools Available
 
@@ -60,34 +100,54 @@ The orchestrator agent will:
 - `update_issue` - Update issue status, assignee, labels
 - `add_comment` - Add progress updates or blocker notes
 
-**Wiki.js Tools:**
+**Dependency Tools:**
+- `list_issue_dependencies` - Get dependencies for an issue
+- `get_execution_order` - Get parallel execution batches for sprint issues
+
+**Milestone Tools:**
+- `list_milestones` - List milestones
+- `get_milestone` - Get milestone details
+
+**Lessons Learned Tools (Gitea Wiki):**
 - `search_lessons` - Find relevant lessons from past sprints
-- `search_pages` - Search project documentation for references
-- `get_page` - Fetch specific documentation (e.g., architecture decisions)
+- `list_wiki_pages` - List project documentation
+- `get_wiki_page` - Fetch specific documentation (e.g., architecture decisions)
 
 ## Orchestrator Personality
 
 The orchestrator agent is concise and action-oriented:
 - Generates lean execution prompts, not lengthy documents
 - Tracks details meticulously (no task forgotten)
+- Coordinates parallel execution based on dependencies
 - Identifies blockers proactively
 - Coordinates Git operations (commit, merge, cleanup)
-- Manages task dependencies
 - Updates documentation as work progresses
 
 ## Example Sprint Start Session
 
 ```
 User: /sprint-start
-Orchestrator: Starting sprint execution. Let me review open issues and relevant lessons...
+Orchestrator: Starting sprint execution. Let me analyze the sprint...
 
 [Uses list_issues to fetch sprint backlog]
 
-Found 8 open issues for this sprint:
-- Issue #45: Implement JWT token generation [Priority/High, Component/Auth]
-- Issue #46: Build user login endpoint [Priority/High, Component/API]
-- Issue #47: Create user registration form [Priority/Medium, Component/Frontend]
-...
+Found 5 open issues for this sprint.
+
+[Uses get_execution_order to analyze dependencies]
+
+Parallel Execution Batches:
++-----------------------------------------------+
+| Batch 1 (can start immediately):               |
+|   #45 - Implement JWT service                  |
+|   #48 - Update API documentation               |
++-----------------------------------------------+
+| Batch 2 (after batch 1):                       |
+|   #46 - Build login endpoint (needs #45)       |
+|   #49 - Add auth tests (needs #45)             |
++-----------------------------------------------+
+| Batch 3 (after batch 2):                       |
+|   #47 - Create login form (needs #46)          |
++-----------------------------------------------+
 
 [Uses search_lessons to find relevant past experiences]
 
@@ -95,38 +155,53 @@ Relevant lessons learned:
 - Sprint 12: "JWT Token Expiration Edge Cases" - Remember to handle token refresh
 - Sprint 8: "OAuth Integration Pitfalls" - Test error handling for auth providers
 
-[Identifies next task based on priority and dependencies]
+Ready to start? I can dispatch multiple tasks in parallel.
 
-Next task: Issue #45 - Implement JWT token generation
-This is unblocked and high priority.
+Dispatching Batch 1 (2 tasks in parallel):
 
-Execution prompt:
-- Create JWT token generation utility in backend/auth/jwt.py
-- Use HS256 algorithm with secret from environment variable
-- Include user_id, email, and expiration in payload
-- Add token refresh logic (remember lesson from Sprint 12!)
-- Write unit tests for token generation and validation
+Task 1: #45 - Implement JWT service
+  Branch: feat/45-jwt-service
+  Executor: Starting...
 
-Would you like me to invoke the executor agent for implementation guidance?
+Task 2: #48 - Update API documentation
+  Branch: feat/48-api-docs
+  Executor: Starting...
+
+Both tasks running in parallel. I'll monitor progress.
 ```
 
-## Lessons Learned Integration
+## Lean Execution Prompts
 
-The orchestrator actively searches for and presents relevant lessons before starting work:
+The orchestrator generates concise prompts (NOT verbose documents):
 
-**Search by Technology:**
 ```
-search_lessons(tags="python,fastapi,jwt")
-```
+Next Task: #45 - [Sprint 18] feat: Implement JWT token generation
 
-**Search by Component:**
-```
-search_lessons(tags="authentication,api,backend")
-```
+Priority: High | Effort: M (1 day) | Unblocked
+Branch: feat/45-jwt-service
 
-**Search by Keywords:**
-```
-search_lessons(query="token expiration edge cases")
+Quick Context:
+- Create backend service for JWT tokens
+- Use HS256 algorithm (decision from planning)
+- Include user_id, email, expiration in payload
+
+Key Actions:
+1. Create auth/jwt_service.py
+2. Implement generate_token(user_id, email)
+3. Implement verify_token(token)
+4. Add token refresh logic (Sprint 12 lesson!)
+5. Write unit tests for generation/validation
+
+Acceptance Criteria:
+- Tokens generate successfully
+- Token verification works
+- Refresh prevents expiration issues
+- Tests cover edge cases
+
+Relevant Lessons:
+Sprint 12: Handle token refresh explicitly to prevent mid-request expiration
+
+Dependencies: None (can start immediately)
 ```
 
 ## Progress Tracking
@@ -145,16 +220,32 @@ update_issue(issue_number=45, state="closed")
 
 **Document Blockers:**
 ```
-add_comment(issue_number=46, body="Blocked: Waiting for auth database schema migration")
+add_comment(issue_number=46, body="BLOCKED: Waiting for #45 to complete (dependency)")
+```
+
+**Track Parallel Execution:**
+```
+Parallel Execution Status:
+
+Batch 1:
+  #45 - JWT service - COMPLETED (12:45)
+  #48 - API docs - IN PROGRESS (75%)
+
+Batch 2 (now unblocked):
+  #46 - Login endpoint - READY TO START
+  #49 - Auth tests - READY TO START
+
+#45 completed! #46 and #49 are now unblocked.
+Starting #46 while #48 continues...
 ```
 
 ## Getting Started
 
 Simply invoke `/sprint-start` and the orchestrator will:
 1. Review your sprint backlog
-2. Search for relevant lessons
-3. Identify the next task to work on
-4. Provide lean execution guidance
+2. Analyze dependencies and plan parallel execution
+3. Search for relevant lessons
+4. Dispatch tasks (parallel when possible)
 5. Track progress as you work
 
-The orchestrator keeps you focused and ensures nothing is forgotten.
+The orchestrator keeps you focused, maximizes parallelism, and ensures nothing is forgotten.

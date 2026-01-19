@@ -23,17 +23,20 @@ support-claude-mktplace/
 │   ├── projman/
 │   │   ├── .claude-plugin/
 │   │   ├── mcp-servers/        # MCP servers bundled IN plugin
-│   │   │   ├── gitea/
-│   │   │   └── wikijs/
+│   │   │   └── gitea/          # Gitea + Wiki tools
 │   │   ├── commands/
 │   │   ├── agents/
 │   │   └── skills/
 │   ├── projman-pmo/
 │   ├── project-hygiene/
-│   └── cmdb-assistant/
+│   ├── cmdb-assistant/
+│   │   ├── .claude-plugin/
+│   │   ├── mcp-servers/        # MCP servers bundled IN plugin
+│   │   │   └── netbox/
+│   │   ├── commands/
+│   │   └── agents/
+│   └── claude-config-maintainer/
 │       ├── .claude-plugin/
-│       ├── mcp-servers/        # MCP servers bundled IN plugin
-│       │   └── netbox/
 │       ├── commands/
 │       └── agents/
 ├── scripts/                    # Setup and maintenance scripts

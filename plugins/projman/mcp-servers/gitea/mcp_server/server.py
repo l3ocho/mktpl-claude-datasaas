@@ -14,6 +14,9 @@ from .config import GiteaConfig
 from .gitea_client import GiteaClient
 from .tools.issues import IssueTools
 from .tools.labels import LabelTools
+from .tools.wiki import WikiTools
+from .tools.milestones import MilestoneTools
+from .tools.dependencies import DependencyTools
 
 # Suppress noisy MCP validation warnings on stderr
 logging.basicConfig(level=logging.INFO)
@@ -31,6 +34,9 @@ class GiteaMCPServer:
         self.client = None
         self.issue_tools = None
         self.label_tools = None
+        self.wiki_tools = None
+        self.milestone_tools = None
+        self.dependency_tools = None
 
     async def initialize(self):
         """
@@ -46,6 +52,9 @@ class GiteaMCPServer:
             self.client = GiteaClient()
             self.issue_tools = IssueTools(self.client)
             self.label_tools = LabelTools(self.client)
+            self.wiki_tools = WikiTools(self.client)
+            self.milestone_tools = MilestoneTools(self.client)
+            self.dependency_tools = DependencyTools(self.client)
 
             logger.info(f"Gitea MCP Server initialized in {self.config['mode']} mode")
         except Exception as e:
@@ -237,6 +246,398 @@ class GiteaMCPServer:
                         },
                         "required": ["org"]
                     }
+                ),
+                # Wiki Tools (Lessons Learned)
+                Tool(
+                    name="list_wiki_pages",
+                    description="List all wiki pages in repository",
+                    inputSchema={
+                        "type": "object",
+                        "properties": {
+                            "repo": {
+                                "type": "string",
+                                "description": "Repository name (owner/repo format)"
+                            }
+                        }
+                    }
+                ),
+                Tool(
+                    name="get_wiki_page",
+                    description="Get a specific wiki page by name",
+                    inputSchema={
+                        "type": "object",
+                        "properties": {
+                            "page_name": {
+                                "type": "string",
+                                "description": "Wiki page name/path"
+                            },
+                            "repo": {
+                                "type": "string",
+                                "description": "Repository name (owner/repo format)"
+                            }
+                        },
+                        "required": ["page_name"]
+                    }
+                ),
+                Tool(
+                    name="create_wiki_page",
+                    description="Create a new wiki page",
+                    inputSchema={
+                        "type": "object",
+                        "properties": {
+                            "title": {
+                                "type": "string",
+                                "description": "Page title/name"
+                            },
+                            "content": {
+                                "type": "string",
+                                "description": "Page content (markdown)"
+                            },
+                            "repo": {
+                                "type": "string",
+                                "description": "Repository name (owner/repo format)"
+                            }
+                        },
+                        "required": ["title", "content"]
+                    }
+                ),
+                Tool(
+                    name="update_wiki_page",
+                    description="Update an existing wiki page",
+                    inputSchema={
+                        "type": "object",
+                        "properties": {
+                            "page_name": {
+                                "type": "string",
+                                "description": "Wiki page name/path"
+                            },
+                            "content": {
+                                "type": "string",
+                                "description": "New page content (markdown)"
+                            },
+                            "repo": {
+                                "type": "string",
+                                "description": "Repository name (owner/repo format)"
+                            }
+                        },
+                        "required": ["page_name", "content"]
+                    }
+                ),
+                Tool(
+                    name="create_lesson",
+                    description="Create a lessons learned entry in the wiki",
+                    inputSchema={
+                        "type": "object",
+                        "properties": {
+                            "title": {
+                                "type": "string",
+                                "description": "Lesson title (e.g., 'Sprint 16 - Prevent Infinite Loops')"
+                            },
+                            "content": {
+                                "type": "string",
+                                "description": "Lesson content (markdown with context, problem, solution, prevention)"
+                            },
+                            "tags": {
+                                "type": "array",
+                                "items": {"type": "string"},
+                                "description": "Tags for categorization"
+                            },
+                            "category": {
+                                "type": "string",
+                                "default": "sprints",
+                                "description": "Category (sprints, patterns, architecture, etc.)"
+                            },
+                            "repo": {
+                                "type": "string",
+                                "description": "Repository name (owner/repo format)"
+                            }
+                        },
+                        "required": ["title", "content", "tags"]
+                    }
+                ),
+                Tool(
+                    name="search_lessons",
+                    description="Search lessons learned from previous sprints",
+                    inputSchema={
+                        "type": "object",
+                        "properties": {
+                            "query": {
+                                "type": "string",
+                                "description": "Search query (optional)"
+                            },
+                            "tags": {
+                                "type": "array",
+                                "items": {"type": "string"},
+                                "description": "Tags to filter by (optional)"
+                            },
+                            "limit": {
+                                "type": "integer",
+                                "default": 20,
+                                "description": "Maximum results"
+                            },
+                            "repo": {
+                                "type": "string",
+                                "description": "Repository name (owner/repo format)"
+                            }
+                        }
+                    }
+                ),
+                # Milestone Tools
+                Tool(
+                    name="list_milestones",
+                    description="List all milestones in repository",
+                    inputSchema={
+                        "type": "object",
+                        "properties": {
+                            "state": {
+                                "type": "string",
+                                "enum": ["open", "closed", "all"],
+                                "default": "open",
+                                "description": "Milestone state filter"
+                            },
+                            "repo": {
+                                "type": "string",
+                                "description": "Repository name (owner/repo format)"
+                            }
+                        }
+                    }
+                ),
+                Tool(
+                    name="get_milestone",
+                    description="Get a specific milestone by ID",
+                    inputSchema={
+                        "type": "object",
+                        "properties": {
+                            "milestone_id": {
+                                "type": "integer",
+                                "description": "Milestone ID"
+                            },
+                            "repo": {
+                                "type": "string",
+                                "description": "Repository name (owner/repo format)"
+                            }
+                        },
+                        "required": ["milestone_id"]
+                    }
+                ),
+                Tool(
+                    name="create_milestone",
+                    description="Create a new milestone",
+                    inputSchema={
+                        "type": "object",
+                        "properties": {
+                            "title": {
+                                "type": "string",
+                                "description": "Milestone title"
+                            },
+                            "description": {
+                                "type": "string",
+                                "description": "Milestone description"
+                            },
+                            "due_on": {
+                                "type": "string",
+                                "description": "Due date (ISO 8601 format)"
+                            },
+                            "repo": {
+                                "type": "string",
+                                "description": "Repository name (owner/repo format)"
+                            }
+                        },
+                        "required": ["title"]
+                    }
+                ),
+                Tool(
+                    name="update_milestone",
+                    description="Update an existing milestone",
+                    inputSchema={
+                        "type": "object",
+                        "properties": {
+                            "milestone_id": {
+                                "type": "integer",
+                                "description": "Milestone ID"
+                            },
+                            "title": {
+                                "type": "string",
+                                "description": "New title"
+                            },
+                            "description": {
+                                "type": "string",
+                                "description": "New description"
+                            },
+                            "state": {
+                                "type": "string",
+                                "enum": ["open", "closed"],
+                                "description": "New state"
+                            },
+                            "due_on": {
+                                "type": "string",
+                                "description": "New due date"
+                            },
+                            "repo": {
+                                "type": "string",
+                                "description": "Repository name (owner/repo format)"
+                            }
+                        },
+                        "required": ["milestone_id"]
+                    }
+                ),
+                Tool(
+                    name="delete_milestone",
+                    description="Delete a milestone",
+                    inputSchema={
+                        "type": "object",
+                        "properties": {
+                            "milestone_id": {
+                                "type": "integer",
+                                "description": "Milestone ID"
+                            },
+                            "repo": {
+                                "type": "string",
+                                "description": "Repository name (owner/repo format)"
+                            }
+                        },
+                        "required": ["milestone_id"]
+                    }
+                ),
+                # Dependency Tools
+                Tool(
+                    name="list_issue_dependencies",
+                    description="List all dependencies for an issue (issues that block this one)",
+                    inputSchema={
+                        "type": "object",
+                        "properties": {
+                            "issue_number": {
+                                "type": "integer",
+                                "description": "Issue number"
+                            },
+                            "repo": {
+                                "type": "string",
+                                "description": "Repository name (owner/repo format)"
+                            }
+                        },
+                        "required": ["issue_number"]
+                    }
+                ),
+                Tool(
+                    name="create_issue_dependency",
+                    description="Create a dependency (issue depends on another issue)",
+                    inputSchema={
+                        "type": "object",
+                        "properties": {
+                            "issue_number": {
+                                "type": "integer",
+                                "description": "Issue that will depend on another"
+                            },
+                            "depends_on": {
+                                "type": "integer",
+                                "description": "Issue that blocks issue_number"
+                            },
+                            "repo": {
+                                "type": "string",
+                                "description": "Repository name (owner/repo format)"
+                            }
+                        },
+                        "required": ["issue_number", "depends_on"]
+                    }
+                ),
+                Tool(
+                    name="remove_issue_dependency",
+                    description="Remove a dependency between issues",
+                    inputSchema={
+                        "type": "object",
+                        "properties": {
+                            "issue_number": {
+                                "type": "integer",
+                                "description": "Issue that depends on another"
+                            },
+                            "depends_on": {
+                                "type": "integer",
+                                "description": "Issue being depended on"
+                            },
+                            "repo": {
+                                "type": "string",
+                                "description": "Repository name (owner/repo format)"
+                            }
+                        },
+                        "required": ["issue_number", "depends_on"]
+                    }
+                ),
+                Tool(
+                    name="get_execution_order",
+                    description="Get parallelizable execution order for issues based on dependencies",
+                    inputSchema={
+                        "type": "object",
+                        "properties": {
+                            "issue_numbers": {
+                                "type": "array",
+                                "items": {"type": "integer"},
+                                "description": "List of issue numbers to analyze"
+                            },
+                            "repo": {
+                                "type": "string",
+                                "description": "Repository name (owner/repo format)"
+                            }
+                        },
+                        "required": ["issue_numbers"]
+                    }
+                ),
+                # Validation Tools
+                Tool(
+                    name="validate_repo_org",
+                    description="Check if repository belongs to an organization",
+                    inputSchema={
+                        "type": "object",
+                        "properties": {
+                            "repo": {
+                                "type": "string",
+                                "description": "Repository name (owner/repo format)"
+                            }
+                        }
+                    }
+                ),
+                Tool(
+                    name="get_branch_protection",
+                    description="Get branch protection rules",
+                    inputSchema={
+                        "type": "object",
+                        "properties": {
+                            "branch": {
+                                "type": "string",
+                                "description": "Branch name"
+                            },
+                            "repo": {
+                                "type": "string",
+                                "description": "Repository name (owner/repo format)"
+                            }
+                        },
+                        "required": ["branch"]
+                    }
+                ),
+                Tool(
+                    name="create_label",
+                    description="Create a new label in the repository",
+                    inputSchema={
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "type": "string",
+                                "description": "Label name"
+                            },
+                            "color": {
+                                "type": "string",
+                                "description": "Label color (hex code)"
+                            },
+                            "description": {
+                                "type": "string",
+                                "description": "Label description"
+                            },
+                            "repo": {
+                                "type": "string",
+                                "description": "Repository name (owner/repo format)"
+                            }
+                        },
+                        "required": ["name", "color"]
+                    }
                 )
             ]
 
@@ -270,6 +671,61 @@ class GiteaMCPServer:
                     result = await self.label_tools.suggest_labels(**arguments)
                 elif name == "aggregate_issues":
                     result = await self.issue_tools.aggregate_issues(**arguments)
+                # Wiki tools
+                elif name == "list_wiki_pages":
+                    result = await self.wiki_tools.list_wiki_pages(**arguments)
+                elif name == "get_wiki_page":
+                    result = await self.wiki_tools.get_wiki_page(**arguments)
+                elif name == "create_wiki_page":
+                    result = await self.wiki_tools.create_wiki_page(**arguments)
+                elif name == "update_wiki_page":
+                    result = await self.wiki_tools.update_wiki_page(**arguments)
+                elif name == "create_lesson":
+                    result = await self.wiki_tools.create_lesson(**arguments)
+                elif name == "search_lessons":
+                    tags = arguments.get('tags')
+                    result = await self.wiki_tools.search_lessons(
+                        query=arguments.get('query'),
+                        tags=tags,
+                        limit=arguments.get('limit', 20),
+                        repo=arguments.get('repo')
+                    )
+                # Milestone tools
+                elif name == "list_milestones":
+                    result = await self.milestone_tools.list_milestones(**arguments)
+                elif name == "get_milestone":
+                    result = await self.milestone_tools.get_milestone(**arguments)
+                elif name == "create_milestone":
+                    result = await self.milestone_tools.create_milestone(**arguments)
+                elif name == "update_milestone":
+                    result = await self.milestone_tools.update_milestone(**arguments)
+                elif name == "delete_milestone":
+                    result = await self.milestone_tools.delete_milestone(**arguments)
+                # Dependency tools
+                elif name == "list_issue_dependencies":
+                    result = await self.dependency_tools.list_issue_dependencies(**arguments)
+                elif name == "create_issue_dependency":
+                    result = await self.dependency_tools.create_issue_dependency(**arguments)
+                elif name == "remove_issue_dependency":
+                    result = await self.dependency_tools.remove_issue_dependency(**arguments)
+                elif name == "get_execution_order":
+                    result = await self.dependency_tools.get_execution_order(**arguments)
+                # Validation tools
+                elif name == "validate_repo_org":
+                    is_org = self.client.is_org_repo(arguments.get('repo'))
+                    result = {'is_organization': is_org}
+                elif name == "get_branch_protection":
+                    result = self.client.get_branch_protection(
+                        arguments['branch'],
+                        arguments.get('repo')
+                    )
+                elif name == "create_label":
+                    result = self.client.create_label(
+                        arguments['name'],
+                        arguments['color'],
+                        arguments.get('description'),
+                        arguments.get('repo')
+                    )
                 else:
                     raise ValueError(f"Unknown tool: {name}")
 

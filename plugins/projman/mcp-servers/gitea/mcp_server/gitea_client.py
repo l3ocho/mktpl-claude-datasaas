@@ -6,9 +6,13 @@ Provides synchronous methods for:
 - Label management
 - Repository operations
 - PMO multi-repo aggregation
+- Wiki operations (lessons learned)
+- Milestone management
+- Issue dependencies
 """
 import requests
 import logging
+import re
 from typing import List, Dict, Optional
 from .config import GiteaConfig
 
@@ -209,3 +213,381 @@ class GiteaClient:
                 logger.error(f"Error fetching issues from {repo_name}: {e}")
 
         return aggregated
+
+    # ========================================
+    # WIKI OPERATIONS (Lessons Learned)
+    # ========================================
+
+    def list_wiki_pages(self, repo: Optional[str] = None) -> List[Dict]:
+        """List all wiki pages in repository."""
+        owner, target_repo = self._parse_repo(repo)
+        url = f"{self.base_url}/repos/{owner}/{target_repo}/wiki/pages"
+        logger.info(f"Listing wiki pages from {owner}/{target_repo}")
+        response = self.session.get(url)
+        response.raise_for_status()
+        return response.json()
+
+    def get_wiki_page(
+        self,
+        page_name: str,
+        repo: Optional[str] = None
+    ) -> Dict:
+        """Get a specific wiki page by name."""
+        owner, target_repo = self._parse_repo(repo)
+        url = f"{self.base_url}/repos/{owner}/{target_repo}/wiki/page/{page_name}"
+        logger.info(f"Getting wiki page '{page_name}' from {owner}/{target_repo}")
+        response = self.session.get(url)
+        response.raise_for_status()
+        return response.json()
+
+    def create_wiki_page(
+        self,
+        title: str,
+        content: str,
+        repo: Optional[str] = None
+    ) -> Dict:
+        """Create a new wiki page."""
+        owner, target_repo = self._parse_repo(repo)
+        url = f"{self.base_url}/repos/{owner}/{target_repo}/wiki/new"
+        data = {
+            'title': title,
+            'content_base64': self._encode_base64(content)
+        }
+        logger.info(f"Creating wiki page '{title}' in {owner}/{target_repo}")
+        response = self.session.post(url, json=data)
+        response.raise_for_status()
+        return response.json()
+
+    def update_wiki_page(
+        self,
+        page_name: str,
+        content: str,
+        repo: Optional[str] = None
+    ) -> Dict:
+        """Update an existing wiki page."""
+        owner, target_repo = self._parse_repo(repo)
+        url = f"{self.base_url}/repos/{owner}/{target_repo}/wiki/page/{page_name}"
+        data = {
+            'content_base64': self._encode_base64(content)
+        }
+        logger.info(f"Updating wiki page '{page_name}' in {owner}/{target_repo}")
+        response = self.session.patch(url, json=data)
+        response.raise_for_status()
+        return response.json()
+
+    def delete_wiki_page(
+        self,
+        page_name: str,
+        repo: Optional[str] = None
+    ) -> bool:
+        """Delete a wiki page."""
+        owner, target_repo = self._parse_repo(repo)
+        url = f"{self.base_url}/repos/{owner}/{target_repo}/wiki/page/{page_name}"
+        logger.info(f"Deleting wiki page '{page_name}' from {owner}/{target_repo}")
+        response = self.session.delete(url)
+        response.raise_for_status()
+        return True
+
+    def _encode_base64(self, content: str) -> str:
+        """Encode content to base64 for wiki API."""
+        import base64
+        return base64.b64encode(content.encode('utf-8')).decode('utf-8')
+
+    def _decode_base64(self, content: str) -> str:
+        """Decode base64 content from wiki API."""
+        import base64
+        return base64.b64decode(content.encode('utf-8')).decode('utf-8')
+
+    def search_wiki_pages(
+        self,
+        query: str,
+        repo: Optional[str] = None
+    ) -> List[Dict]:
+        """Search wiki pages by content (client-side filtering)."""
+        pages = self.list_wiki_pages(repo)
+        results = []
+        query_lower = query.lower()
+        for page in pages:
+            if query_lower in page.get('title', '').lower():
+                results.append(page)
+        return results
+
+    def create_lesson(
+        self,
+        title: str,
+        content: str,
+        tags: List[str],
+        category: str = "sprints",
+        repo: Optional[str] = None
+    ) -> Dict:
+        """Create a lessons learned entry in the wiki."""
+        # Sanitize title for wiki page name
+        page_name = f"lessons/{category}/{self._sanitize_page_name(title)}"
+
+        # Add tags as metadata at the end of content
+        full_content = f"{content}\n\n---\n**Tags:** {', '.join(tags)}"
+
+        return self.create_wiki_page(page_name, full_content, repo)
+
+    def search_lessons(
+        self,
+        query: Optional[str] = None,
+        tags: Optional[List[str]] = None,
+        repo: Optional[str] = None
+    ) -> List[Dict]:
+        """Search lessons learned by query and/or tags."""
+        pages = self.list_wiki_pages(repo)
+        results = []
+
+        for page in pages:
+            title = page.get('title', '')
+            # Filter to only lessons (pages starting with lessons/)
+            if not title.startswith('lessons/'):
+                continue
+
+            # If query provided, check if it matches title
+            if query:
+                if query.lower() not in title.lower():
+                    continue
+
+            # Get full page content for tag matching if tags provided
+            if tags:
+                try:
+                    full_page = self.get_wiki_page(title, repo)
+                    content = self._decode_base64(full_page.get('content_base64', ''))
+                    # Check if any tag is in the content
+                    if not any(tag.lower() in content.lower() for tag in tags):
+                        continue
+                except Exception:
+                    continue
+
+            results.append(page)
+
+        return results
+
+    def _sanitize_page_name(self, title: str) -> str:
+        """Convert title to valid wiki page name."""
+        # Replace spaces with hyphens, remove special chars
+        name = re.sub(r'[^\w\s-]', '', title)
+        name = re.sub(r'[\s]+', '-', name)
+        return name.lower()
+
+    # ========================================
+    # MILESTONE OPERATIONS
+    # ========================================
+
+    def list_milestones(
+        self,
+        state: str = 'open',
+        repo: Optional[str] = None
+    ) -> List[Dict]:
+        """List all milestones in repository."""
+        owner, target_repo = self._parse_repo(repo)
+        url = f"{self.base_url}/repos/{owner}/{target_repo}/milestones"
+        params = {'state': state}
+        logger.info(f"Listing milestones from {owner}/{target_repo}")
+        response = self.session.get(url, params=params)
+        response.raise_for_status()
+        return response.json()
+
+    def get_milestone(
+        self,
+        milestone_id: int,
+        repo: Optional[str] = None
+    ) -> Dict:
+        """Get a specific milestone by ID."""
+        owner, target_repo = self._parse_repo(repo)
+        url = f"{self.base_url}/repos/{owner}/{target_repo}/milestones/{milestone_id}"
+        logger.info(f"Getting milestone #{milestone_id} from {owner}/{target_repo}")
+        response = self.session.get(url)
+        response.raise_for_status()
+        return response.json()
+
+    def create_milestone(
+        self,
+        title: str,
+        description: Optional[str] = None,
+        due_on: Optional[str] = None,
+        repo: Optional[str] = None
+    ) -> Dict:
+        """Create a new milestone."""
+        owner, target_repo = self._parse_repo(repo)
+        url = f"{self.base_url}/repos/{owner}/{target_repo}/milestones"
+        data = {'title': title}
+        if description:
+            data['description'] = description
+        if due_on:
+            data['due_on'] = due_on
+        logger.info(f"Creating milestone '{title}' in {owner}/{target_repo}")
+        response = self.session.post(url, json=data)
+        response.raise_for_status()
+        return response.json()
+
+    def update_milestone(
+        self,
+        milestone_id: int,
+        title: Optional[str] = None,
+        description: Optional[str] = None,
+        state: Optional[str] = None,
+        due_on: Optional[str] = None,
+        repo: Optional[str] = None
+    ) -> Dict:
+        """Update an existing milestone."""
+        owner, target_repo = self._parse_repo(repo)
+        url = f"{self.base_url}/repos/{owner}/{target_repo}/milestones/{milestone_id}"
+        data = {}
+        if title is not None:
+            data['title'] = title
+        if description is not None:
+            data['description'] = description
+        if state is not None:
+            data['state'] = state
+        if due_on is not None:
+            data['due_on'] = due_on
+        logger.info(f"Updating milestone #{milestone_id} in {owner}/{target_repo}")
+        response = self.session.patch(url, json=data)
+        response.raise_for_status()
+        return response.json()
+
+    def delete_milestone(
+        self,
+        milestone_id: int,
+        repo: Optional[str] = None
+    ) -> bool:
+        """Delete a milestone."""
+        owner, target_repo = self._parse_repo(repo)
+        url = f"{self.base_url}/repos/{owner}/{target_repo}/milestones/{milestone_id}"
+        logger.info(f"Deleting milestone #{milestone_id} from {owner}/{target_repo}")
+        response = self.session.delete(url)
+        response.raise_for_status()
+        return True
+
+    # ========================================
+    # ISSUE DEPENDENCY OPERATIONS
+    # ========================================
+
+    def list_issue_dependencies(
+        self,
+        issue_number: int,
+        repo: Optional[str] = None
+    ) -> List[Dict]:
+        """List all dependencies for an issue (issues that block this one)."""
+        owner, target_repo = self._parse_repo(repo)
+        url = f"{self.base_url}/repos/{owner}/{target_repo}/issues/{issue_number}/dependencies"
+        logger.info(f"Listing dependencies for issue #{issue_number} in {owner}/{target_repo}")
+        response = self.session.get(url)
+        response.raise_for_status()
+        return response.json()
+
+    def create_issue_dependency(
+        self,
+        issue_number: int,
+        depends_on: int,
+        repo: Optional[str] = None
+    ) -> Dict:
+        """Create a dependency (issue_number depends on depends_on)."""
+        owner, target_repo = self._parse_repo(repo)
+        url = f"{self.base_url}/repos/{owner}/{target_repo}/issues/{issue_number}/dependencies"
+        data = {
+            'dependentIssue': {
+                'owner': owner,
+                'repo': target_repo,
+                'index': depends_on
+            }
+        }
+        logger.info(f"Creating dependency: #{issue_number} depends on #{depends_on} in {owner}/{target_repo}")
+        response = self.session.post(url, json=data)
+        response.raise_for_status()
+        return response.json()
+
+    def remove_issue_dependency(
+        self,
+        issue_number: int,
+        depends_on: int,
+        repo: Optional[str] = None
+    ) -> bool:
+        """Remove a dependency between issues."""
+        owner, target_repo = self._parse_repo(repo)
+        url = f"{self.base_url}/repos/{owner}/{target_repo}/issues/{issue_number}/dependencies"
+        data = {
+            'dependentIssue': {
+                'owner': owner,
+                'repo': target_repo,
+                'index': depends_on
+            }
+        }
+        logger.info(f"Removing dependency: #{issue_number} no longer depends on #{depends_on}")
+        response = self.session.delete(url, json=data)
+        response.raise_for_status()
+        return True
+
+    def list_issue_blocks(
+        self,
+        issue_number: int,
+        repo: Optional[str] = None
+    ) -> List[Dict]:
+        """List all issues that this issue blocks."""
+        owner, target_repo = self._parse_repo(repo)
+        url = f"{self.base_url}/repos/{owner}/{target_repo}/issues/{issue_number}/blocks"
+        logger.info(f"Listing issues blocked by #{issue_number} in {owner}/{target_repo}")
+        response = self.session.get(url)
+        response.raise_for_status()
+        return response.json()
+
+    # ========================================
+    # REPOSITORY VALIDATION
+    # ========================================
+
+    def get_repo_info(self, repo: Optional[str] = None) -> Dict:
+        """Get repository information including owner type."""
+        owner, target_repo = self._parse_repo(repo)
+        url = f"{self.base_url}/repos/{owner}/{target_repo}"
+        logger.info(f"Getting repo info for {owner}/{target_repo}")
+        response = self.session.get(url)
+        response.raise_for_status()
+        return response.json()
+
+    def is_org_repo(self, repo: Optional[str] = None) -> bool:
+        """Check if repository belongs to an organization (not a user)."""
+        info = self.get_repo_info(repo)
+        owner_type = info.get('owner', {}).get('type', '')
+        return owner_type.lower() == 'organization'
+
+    def get_branch_protection(
+        self,
+        branch: str,
+        repo: Optional[str] = None
+    ) -> Optional[Dict]:
+        """Get branch protection rules for a branch."""
+        owner, target_repo = self._parse_repo(repo)
+        url = f"{self.base_url}/repos/{owner}/{target_repo}/branch_protections/{branch}"
+        logger.info(f"Getting branch protection for {branch} in {owner}/{target_repo}")
+        try:
+            response = self.session.get(url)
+            response.raise_for_status()
+            return response.json()
+        except requests.exceptions.HTTPError as e:
+            if e.response.status_code == 404:
+                return None  # No protection rules
+            raise
+
+    def create_label(
+        self,
+        name: str,
+        color: str,
+        description: Optional[str] = None,
+        repo: Optional[str] = None
+    ) -> Dict:
+        """Create a new label in the repository."""
+        owner, target_repo = self._parse_repo(repo)
+        url = f"{self.base_url}/repos/{owner}/{target_repo}/labels"
+        data = {
+            'name': name,
+            'color': color.lstrip('#')  # Remove # if present
+        }
+        if description:
+            data['description'] = description
+        logger.info(f"Creating label '{name}' in {owner}/{target_repo}")
+        response = self.session.post(url, json=data)
+        response.raise_for_status()
+        return response.json()

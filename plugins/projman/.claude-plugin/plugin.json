@@ -1,7 +1,7 @@
 {
   "name": "projman",
-  "version": "0.1.0",
-  "description": "Sprint planning and project management with Gitea and Wiki.js integration",
+  "version": "2.0.0",
+  "description": "Sprint planning and project management with Gitea integration",
   "author": {
     "name": "Bandit Labs",
     "email": "dev@banditlabs.io"
@@ -12,7 +12,7 @@
     "project-management",
     "sprint-planning",
     "gitea",
-    "wikijs",
-    "agile"
+    "agile",
+    "lessons-learned"
   ]
 }

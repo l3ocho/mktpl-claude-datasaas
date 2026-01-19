@@ -1,7 +1,7 @@
 {
   "name": "bandit-claude-marketplace",
-  "version": "1.0.0",
-  "description": "Project management plugins with Gitea, Wiki.js, and NetBox integrations",
+  "version": "2.0.0",
+  "description": "Project management plugins with Gitea and NetBox integrations",
   "owner": {
     "name": "Bandit Labs",
     "email": "dev@banditlabs.io"
@@ -9,8 +9,8 @@
   "plugins": [
     {
       "name": "projman",
-      "version": "0.1.0",
-      "description": "Sprint planning and project management with Gitea and Wiki.js integration",
+      "version": "2.0.0",
+      "description": "Sprint planning and project management with Gitea integration",
       "source": "./plugins/projman"
     },
     {
@@ -24,6 +24,12 @@
       "version": "1.0.0",
       "description": "NetBox CMDB integration for infrastructure management",
       "source": "./plugins/cmdb-assistant"
+    },
+    {
+      "name": "claude-config-maintainer",
+      "version": "1.0.0",
+      "description": "CLAUDE.md optimization and maintenance for Claude Code projects",
+      "source": "./plugins/claude-config-maintainer"
     }
   ]
 }
