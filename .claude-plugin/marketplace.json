@@ -11,25 +11,43 @@
       "name": "projman",
       "version": "2.0.0",
       "description": "Sprint planning and project management with Gitea integration",
-      "source": "./plugins/projman"
+      "source": "./plugins/projman",
+      "mcpServers": ["gitea"],
+      "integrationFile": "claude-md-integration.md"
     },
     {
       "name": "project-hygiene",
       "version": "0.1.0",
       "description": "Post-task cleanup hook that removes temp files and manages orphaned files",
-      "source": "./plugins/project-hygiene"
+      "source": "./plugins/project-hygiene",
+      "mcpServers": [],
+      "integrationFile": "claude-md-integration.md",
+      "hooks": ["PostToolUse"]
     },
     {
       "name": "cmdb-assistant",
       "version": "1.0.0",
       "description": "NetBox CMDB integration for infrastructure management",
-      "source": "./plugins/cmdb-assistant"
+      "source": "./plugins/cmdb-assistant",
+      "mcpServers": ["netbox"],
+      "integrationFile": "claude-md-integration.md"
     },
     {
       "name": "claude-config-maintainer",
       "version": "1.0.0",
       "description": "CLAUDE.md optimization and maintenance for Claude Code projects",
-      "source": "./plugins/claude-config-maintainer"
+      "source": "./plugins/claude-config-maintainer",
+      "mcpServers": [],
+      "integrationFile": "claude-md-integration.md"
     }
-  ]
+  ],
+  "pluginDetection": {
+    "mcpServerMapping": {
+      "gitea": "projman",
+      "netbox": "cmdb-assistant"
+    },
+    "hookMapping": {
+      "PostToolUse:Write|Edit": "project-hygiene"
+    }
+  }
 }

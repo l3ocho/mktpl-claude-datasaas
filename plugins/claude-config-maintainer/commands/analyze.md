@@ -1,10 +1,10 @@
 ---
-description: Analyze CLAUDE.md for optimization opportunities
+description: Analyze CLAUDE.md for optimization opportunities and plugin integration
 ---
 
 # Analyze CLAUDE.md
 
-This command analyzes your project's CLAUDE.md file and provides a detailed report on optimization opportunities.
+This command analyzes your project's CLAUDE.md file and provides a detailed report on optimization opportunities and plugin integration status.
 
 ## What This Command Does
 
@@ -12,7 +12,9 @@ This command analyzes your project's CLAUDE.md file and provides a detailed repo
 2. **Analyze Structure** - Evaluates organization, headers, and flow
 3. **Check Content** - Reviews clarity, completeness, and conciseness
 4. **Identify Issues** - Finds redundancy, verbosity, and missing sections
-5. **Generate Report** - Provides scored assessment with recommendations
+5. **Detect Active Plugins** - Identifies marketplace plugins enabled in the project
+6. **Check Plugin Integration** - Verifies CLAUDE.md references active plugins
+7. **Generate Report** - Provides scored assessment with recommendations
 
 ## Usage
 
@@ -51,6 +53,29 @@ Analyze the CLAUDE.md file in this project
 - Efficient information density
 - Appropriate length for project size
 - No generic filler content
+
+## Plugin Integration Analysis
+
+After the content analysis, the command detects and analyzes marketplace plugin integration:
+
+### Detection Method
+
+1. **Read `.claude/settings.local.json`** - Check for enabled MCP servers
+2. **Map MCP servers to plugins** - Use marketplace registry to identify active plugins:
+   - `gitea` → projman
+   - `netbox` → cmdb-assistant
+3. **Check for hooks** - Identify hook-based plugins (project-hygiene)
+4. **Scan CLAUDE.md** - Look for plugin integration content
+
+### Plugin Coverage Scoring
+
+For each detected plugin, verify CLAUDE.md contains:
+- Plugin section header or mention
+- Available commands documentation
+- MCP tools reference (if applicable)
+- Usage guidelines
+
+Coverage is reported as percentage: `(plugins referenced / plugins detected) * 100`
 
 ## Expected Output
 
@@ -101,10 +126,37 @@ Recommendations:
 
 Estimated improvement: 15-20 points after changes
 
+---
+
+Plugin Integration Analysis
+===========================
+
+Detected Active Plugins:
+  ✓ projman (via gitea MCP server)
+  ✓ cmdb-assistant (via netbox MCP server)
+  ✓ project-hygiene (via PostToolUse hook)
+
+Plugin Coverage: 33% (1/3 plugins referenced)
+
+  ✓ projman - Referenced in CLAUDE.md
+  ✗ cmdb-assistant - NOT referenced
+  ✗ project-hygiene - NOT referenced
+
+Missing Integration Content:
+
+1. cmdb-assistant
+   Add infrastructure management commands and NetBox MCP tools reference.
+
+2. project-hygiene
+   Add cleanup hook documentation and configuration options.
+
+---
+
 Would you like me to:
-[1] Implement all recommended changes
-[2] Show before/after for specific section
-[3] Generate optimized version for review
+[1] Implement all content recommendations
+[2] Add missing plugin integrations to CLAUDE.md
+[3] Do both (recommended)
+[4] Show preview of changes first
 ```
 
 ## When to Use
@@ -115,6 +167,8 @@ Run `/config-analyze` when:
 - Claude seems to miss instructions
 - Before major project changes
 - Periodic maintenance (quarterly)
+- After installing new marketplace plugins
+- When Claude doesn't seem to use available plugin tools
 
 ## Follow-Up Actions
 

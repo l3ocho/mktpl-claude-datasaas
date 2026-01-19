@@ -26,7 +26,8 @@ support-claude-mktplace/
 │   │   │   └── gitea/          # Gitea + Wiki tools
 │   │   ├── commands/
 │   │   ├── agents/
-│   │   └── skills/
+│   │   ├── skills/
+│   │   └── claude-md-integration.md  # CLAUDE.md integration snippet
 │   ├── projman-pmo/
 │   ├── project-hygiene/
 │   ├── cmdb-assistant/
@@ -34,11 +35,17 @@ support-claude-mktplace/
 │   │   ├── mcp-servers/        # MCP servers bundled IN plugin
 │   │   │   └── netbox/
 │   │   ├── commands/
-│   │   └── agents/
-│   └── claude-config-maintainer/
+│   │   ├── agents/
+│   │   └── claude-md-integration.md  # CLAUDE.md integration snippet
+│   ├── claude-config-maintainer/
+│   │   ├── .claude-plugin/
+│   │   ├── commands/
+│   │   ├── agents/
+│   │   └── claude-md-integration.md  # CLAUDE.md integration snippet
+│   └── project-hygiene/
 │       ├── .claude-plugin/
-│       ├── commands/
-│       └── agents/
+│       ├── hooks/
+│       └── claude-md-integration.md  # CLAUDE.md integration snippet
 ├── scripts/                    # Setup and maintenance scripts
 ├── CLAUDE.md
 ├── README.md
@@ -60,6 +67,7 @@ support-claude-mktplace/
 | Plugin commands | `plugins/{plugin-name}/commands/` | `plugins/projman/commands/` |
 | Plugin agents | `plugins/{plugin-name}/agents/` | `plugins/projman/agents/` |
 | Plugin .mcp.json | `plugins/{plugin-name}/.mcp.json` | `plugins/projman/.mcp.json` |
+| Plugin integration snippet | `plugins/{plugin-name}/claude-md-integration.md` | `plugins/projman/claude-md-integration.md` |
 
 ### MCP Server Paths (Bundled in Plugins)
 
@@ -149,5 +157,6 @@ MCP servers are bundled inside each plugin (not shared at root) because:
 
 | Date | Change | By |
 |------|--------|-----|
+| 2026-01-19 | Added claude-md-integration.md path pattern for plugin integration snippets | Claude Code |
 | 2025-12-15 | Restructured: MCP servers now bundled in plugins | Claude Code |
 | 2025-12-12 | Initial creation | Claude Code |
