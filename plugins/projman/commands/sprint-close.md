@@ -1,10 +1,10 @@
 ---
-description: Complete sprint and capture lessons learned to Wiki.js
+description: Complete sprint and capture lessons learned to Gitea Wiki
 ---
 
 # Close Sprint and Capture Lessons Learned
 
-This command completes the sprint and captures lessons learned to Wiki.js. **This is critical** - after 15 sprints without lesson capture, repeated mistakes occurred (e.g., Claude Code infinite loops 2-3 times on similar issues).
+This command completes the sprint and captures lessons learned to Gitea Wiki. **This is critical** - after 15 sprints without lesson capture, repeated mistakes occurred (e.g., Claude Code infinite loops 2-3 times on similar issues).
 
 ## Why Lessons Learned Matter
 
@@ -20,7 +20,8 @@ This command completes the sprint and captures lessons learned to Wiki.js. **Thi
 The orchestrator agent will guide you through:
 
 1. **Review Sprint Completion**
-   - Verify all issues are closed or moved to backlog
+   - Use `list_issues` to verify all issues are closed or moved to backlog
+   - Check milestone completion status
    - Check for incomplete work needing carryover
    - Review overall sprint goals vs. actual completion
 
@@ -35,10 +36,9 @@ The orchestrator agent will guide you through:
    - Ensure future sprints can find these lessons via search
    - Use consistent tagging for patterns
 
-4. **Update Wiki.js**
-   - Use `create_lesson` to save lessons to Wiki.js
-   - Create lessons in `/projects/{project}/lessons-learned/sprints/`
-   - Update INDEX.md automatically
+4. **Save to Gitea Wiki**
+   - Use `create_lesson` to save lessons to Gitea Wiki
+   - Create lessons in project wiki under `lessons-learned/sprints/`
    - Make lessons searchable for future sprints
 
 5. **Git Operations**
@@ -47,6 +47,10 @@ The orchestrator agent will guide you through:
    - Clean up merged branches
    - Tag sprint completion
 
+6. **Close Milestone**
+   - Use `update_milestone` to close the sprint milestone
+   - Document final completion status
+
 ## MCP Tools Available
 
 **Gitea Tools:**
@@ -54,11 +58,15 @@ The orchestrator agent will guide you through:
 - `get_issue` - Get detailed issue information for retrospective
 - `update_issue` - Move incomplete issues to next sprint
 
-**Wiki.js Tools:**
+**Milestone Tools:**
+- `get_milestone` - Get milestone status
+- `update_milestone` - Close milestone
+
+**Lessons Learned Tools (Gitea Wiki):**
 - `create_lesson` - Create lessons learned entry
-- `tag_lesson` - Add/update tags on lessons
-- `list_pages` - Check existing lessons learned
-- `update_page` - Update INDEX.md if needed
+- `search_lessons` - Check for similar existing lessons
+- `list_wiki_pages` - Check existing lessons learned
+- `get_wiki_page` - Read existing lessons
 
 ## Lesson Structure
 
@@ -165,8 +173,9 @@ The orchestrator agent will:
 2. Identify preventable mistakes vs. expected challenges
 3. Structure lessons in the proper format
 4. Suggest appropriate tags
-5. Create lessons in Wiki.js using `create_lesson`
+5. Create lessons in Gitea Wiki using `create_lesson`
 6. Ensure lessons are discoverable for future sprints
+7. Handle git operations and milestone closure
 
 ## Example Sprint Close Session
 
@@ -178,14 +187,14 @@ First, let me review the sprint completion...
 
 [Uses list_issues to check sprint status]
 
-Sprint 16 Summary:
+Sprint 18 Summary:
 - 8 issues planned
 - 7 completed (87.5%)
 - 1 moved to backlog (#52: Deploy auth service - blocked by infra)
 
 Great progress! Now, let's capture lessons learned.
 
-What went wrong or what challenges did you face this sprint?
+What challenges did you face this sprint?
 
 User: Claude Code got stuck in a loop when pytest validation tests failed
 
@@ -200,10 +209,10 @@ Let me ask some clarifying questions:
 
 I'll create this lesson with tags: testing, claude-code, validation, python, pytest, debugging
 
-[Uses create_lesson to save to Wiki.js]
+[Uses create_lesson to save to Gitea Wiki]
 
-Lesson created: "Sprint 16 - Claude Code Infinite Loop on Validation Errors"
-Path: /projects/cuisineflow/lessons-learned/sprints/sprint-16-validation-loop.md
+Lesson created: "Sprint 18 - Claude Code Infinite Loop on Validation Errors"
+Saved to Gitea Wiki with appropriate tags.
 
 Any other lessons from this sprint?
 
@@ -215,7 +224,14 @@ Orchestrator: Excellent - let's capture that too...
 
 All lessons captured! They'll be searchable when planning future sprints.
 
-Would you like me to handle git operations (merge branches, tag release)?
+Would you like me to handle git operations?
+- Commit any remaining changes
+- Merge feature branches to development
+- Tag sprint completion (v0.18.0)
+- Clean up merged branches
+- Close milestone
+
+[Y/n]
 ```
 
 ## Getting Started
@@ -223,7 +239,8 @@ Would you like me to handle git operations (merge branches, tag release)?
 Simply run `/sprint-close` when your sprint is complete. The orchestrator will guide you through:
 1. Sprint review
 2. Lessons learned capture
-3. Wiki.js updates
+3. Gitea Wiki updates
 4. Git operations
+5. Milestone closure
 
 **Don't skip this step!** Future sprints will thank you for capturing these insights.

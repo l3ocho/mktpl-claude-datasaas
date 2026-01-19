@@ -1,0 +1,30 @@
+{
+  "name": "claude-config-maintainer",
+  "version": "1.0.0",
+  "description": "Maintains and optimizes CLAUDE.md configuration files for Claude Code projects",
+  "entryPoint": "agents/maintainer.md",
+  "commands": [
+    {
+      "name": "config-analyze",
+      "description": "Analyze CLAUDE.md for optimization opportunities",
+      "entryPoint": "commands/analyze.md"
+    },
+    {
+      "name": "config-optimize",
+      "description": "Optimize CLAUDE.md structure and content",
+      "entryPoint": "commands/optimize.md"
+    },
+    {
+      "name": "config-init",
+      "description": "Initialize a new CLAUDE.md file for a project",
+      "entryPoint": "commands/init.md"
+    }
+  ],
+  "agents": [
+    {
+      "name": "maintainer",
+      "description": "CLAUDE.md optimization and maintenance agent",
+      "entryPoint": "agents/maintainer.md"
+    }
+  ]
+}

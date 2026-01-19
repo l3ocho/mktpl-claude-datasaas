@@ -16,25 +16,42 @@ The label taxonomy is **dynamic** - new labels may be added to Gitea over time:
 
 ## What This Command Does
 
-1. **Fetch Current Labels** - Uses `get_labels` MCP tool to fetch all labels (org + repo)
-2. **Compare with Local Reference** - Checks against `skills/label-taxonomy/labels-reference.md`
-3. **Detect Changes** - Identifies new, removed, or modified labels
-4. **Explain Changes** - Shows what changed and why it matters
-5. **Update Reference** - Updates the local labels-reference.md file
-6. **Confirm Update** - Asks for user confirmation before updating
+1. **Validate Repository** - Verify repo belongs to an organization using `validate_repo_org`
+2. **Fetch Current Labels** - Uses `get_labels` MCP tool to fetch all labels (org + repo)
+3. **Compare with Local Reference** - Checks against `skills/label-taxonomy/labels-reference.md`
+4. **Detect Changes** - Identifies new, removed, or modified labels
+5. **Explain Changes** - Shows what changed and why it matters
+6. **Create Missing Labels** - Uses `create_label` for required labels that don't exist
+7. **Update Reference** - Updates the local labels-reference.md file
+8. **Confirm Update** - Asks for user confirmation before updating
 
 ## MCP Tools Used
 
 **Gitea Tools:**
 - `get_labels` - Fetch all labels (organization + repository)
+- `create_label` - Create missing required labels
+- `validate_repo_org` - Verify repository belongs to organization
 
-The command will parse the response and categorize labels by namespace and color.
+## Required Label Categories
+
+At minimum, these label categories must exist:
+
+- **Type/***: Bug, Feature, Refactor, Documentation, Test, Chore
+- **Priority/***: Low, Medium, High, Critical
+- **Complexity/***: Simple, Medium, Complex
+- **Efforts/***: XS, S, M, L, XL
+
+If any required labels are missing, the command will offer to create them.
 
 ## Expected Output
 
 ```
 Label Taxonomy Sync
 ===================
+
+Validating repository organization...
+Repository: bandit/your-repo-name
+Organization: bandit
 
 Fetching labels from Gitea...
 
@@ -46,34 +63,36 @@ Current Label Taxonomy:
 Comparing with local reference...
 
 Changes Detected:
-✨ NEW: Type/Performance (org-level)
+  NEW: Type/Performance (org-level)
    Description: Performance optimization tasks
    Color: #FF6B6B
    Suggestion: Add to suggestion logic for performance-related work
 
-✨ NEW: Tech/Redis (repo-level)
+  NEW: Tech/Redis (repo-level)
    Description: Redis-related technology
    Color: #DC143C
    Suggestion: Add to suggestion logic for caching and data store work
 
-📝 MODIFIED: Priority/Critical
+  MODIFIED: Priority/Critical
    Change: Color updated from #D73A4A to #FF0000
    Impact: Visual only, no logic change needed
 
-❌ REMOVED: Component/Legacy
+  REMOVED: Component/Legacy
    Reason: Component deprecated and removed from codebase
    Impact: Remove from suggestion logic
+
+Required Labels Check:
+  Type/*: 6/6 present
+  Priority/*: 4/4 present
+  Complexity/*: 3/3 present
+  Efforts/*: 5/5 present
 
 Summary:
 - 2 new labels added
 - 1 label modified (color only)
 - 1 label removed
-- Total labels: 44 → 45
-
-Label Suggestion Logic Updates:
-- Type/Performance: Suggest for keywords "optimize", "performance", "slow", "speed"
-- Tech/Redis: Suggest for keywords "cache", "redis", "session", "pubsub"
-- Component/Legacy: Remove from all suggestion contexts
+- Total labels: 44 -> 45
+- All required labels present
 
 Update local reference file?
 [Y/n]
@@ -135,9 +154,9 @@ Source: Gitea (bandit/your-repo-name)
 When suggesting labels, consider:
 
 **Type Detection:**
-- Keywords "bug", "fix", "error" → Type/Bug
-- Keywords "feature", "add", "implement" → Type/Feature
-- Keywords "refactor", "extract", "restructure" → Type/Refactor
+- Keywords "bug", "fix", "error" -> Type/Bug
+- Keywords "feature", "add", "implement" -> Type/Feature
+- Keywords "refactor", "extract", "restructure" -> Type/Refactor
 ...
 ```
 
@@ -161,6 +180,9 @@ The updated taxonomy is used by:
 ```
 User: /labels-sync
 
+Validating repository organization...
+Repository: bandit/your-repo-name
+
 Fetching labels from Gitea...
 
 Current Label Taxonomy:
@@ -170,26 +192,43 @@ Current Label Taxonomy:
 
 Comparing with local reference...
 
-✅ No changes detected. Label taxonomy is up to date.
+No changes detected. Label taxonomy is up to date.
 
 Last synced: 2025-01-18 14:30 UTC
+```
 
+```
 User: /labels-sync
 
 Fetching labels from Gitea...
 
 Changes Detected:
-✨ NEW: Type/Performance
-✨ NEW: Tech/Redis
+  NEW: Type/Performance
+  NEW: Tech/Redis
+
+Required Labels Check:
+  MISSING: Complexity/Simple
+  MISSING: Complexity/Medium
+  MISSING: Complexity/Complex
+
+Would you like me to create the missing required labels? [Y/n] y
+
+Creating missing labels...
+  Created: Complexity/Simple
+  Created: Complexity/Medium
+  Created: Complexity/Complex
 
 Update local reference file? [Y/n] y
 
-✅ Label taxonomy updated successfully!
-✅ Suggestion logic updated with new labels
+Label taxonomy updated successfully!
+Suggestion logic updated with new labels
 
 New labels available for use:
 - Type/Performance
 - Tech/Redis
+- Complexity/Simple
+- Complexity/Medium
+- Complexity/Complex
 ```
 
 ## Troubleshooting
@@ -198,6 +237,10 @@ New labels available for use:
 - Check your Gitea configuration in `~/.config/claude/gitea.env`
 - Verify your API token has `read:org` and `repo` permissions
 - Ensure you're connected to the network
+
+**Error: Repository is not under an organization**
+- This plugin requires repositories to belong to an organization
+- Transfer the repository to an organization or create one
 
 **Error: Permission denied to update reference file**
 - Check file permissions on `skills/label-taxonomy/labels-reference.md`
@@ -210,8 +253,8 @@ New labels available for use:
 
 ## Best Practices
 
-1. **Sync regularly** - Run monthly or when notified of label changes
+1. **Sync at sprint start** - Ensure labels are current before planning
 2. **Review changes** - Always review what changed before confirming
-3. **Update planning** - After sync, consider if new labels affect current sprint
-4. **Communicate changes** - Let team know when new labels are available
-5. **Keep skill updated** - The label-taxonomy skill should match the reference file
+3. **Create missing required labels** - Don't skip this step
+4. **Update planning** - After sync, consider if new labels affect current sprint
+5. **Communicate changes** - Let team know when new labels are available

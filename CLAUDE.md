@@ -4,14 +4,16 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This repository contains development of two Claude Code plugins for project management:
+This repository contains Claude Code plugins for project management:
 
-1. **`projman`** - Single-repository project management plugin (build first)
-2. **`projman-pmo`** - Multi-project PMO coordination plugin (build second)
+1. **`projman`** - Single-repository project management plugin with Gitea integration
+2. **`projman-pmo`** - Multi-project PMO coordination plugin
+3. **`claude-config-maintainer`** - CLAUDE.md optimization and maintenance plugin
+4. **`cmdb-assistant`** - NetBox CMDB integration for infrastructure management
 
-These plugins transform a proven 15-sprint workflow into reusable, distributable tools for managing software development with Claude Code, Gitea, Wiki.js, and agile methodologies.
+These plugins transform a proven 15-sprint workflow into reusable, distributable tools for managing software development with Claude Code, Gitea, and agile methodologies.
 
-**Status:** Planning phase complete, ready for implementation (Phase 1)
+**Status:** projman v1.0.0 complete with full Gitea integration
 
 ## File Creation Governance
 
@@ -38,8 +40,7 @@ Only these directories may exist at the repository root:
 | `.scratch/` | Transient work (auto-cleaned) |
 | `docs/` | Documentation |
 | `hooks/` | Shared hooks (if any) |
-| `mcp-servers/` | Shared MCP servers |
-| `plugins/` | All plugins (projman, projman-pmo, project-hygiene, cmdb-assistant) |
+| `plugins/` | All plugins (projman, projman-pmo, project-hygiene, cmdb-assistant, claude-config-maintainer) |
 | `scripts/` | Setup and maintenance scripts |
 
 ### File Creation Rules
@@ -97,7 +98,7 @@ Before creating any file, verify:
 
 ### Relative Path Rules
 
-- Plugin to MCP server: `${CLAUDE_PLUGIN_ROOT}/../../mcp-servers/{server}`
+- Plugin to bundled MCP server: `${CLAUDE_PLUGIN_ROOT}/mcp-servers/{server}`
 - Marketplace to plugin: `./../../../plugins/{plugin-name}`
 - **ALWAYS calculate from CANONICAL-PATHS.md, never from memory**
 
@@ -139,9 +140,9 @@ The plugins implement a three-agent architecture that mirrors the proven workflo
 
 ### MCP Server Integration
 
-Both plugins use **two shared MCP servers** at repository root level (`mcp-servers/`):
+**Gitea MCP Server** (Python) - bundled in projman plugin
 
-**1. Gitea MCP Server** (Python)
+**Issue Tools:**
 - `list_issues` - Query issues with filters
 - `get_issue` - Fetch single issue details
 - `create_issue` - Create new issue with labels
@@ -150,20 +151,32 @@ Both plugins use **two shared MCP servers** at repository root level (`mcp-serve
 - `get_labels` - Fetch org + repo label taxonomy
 - `suggest_labels` - Analyze context and suggest appropriate labels
 
-**2. Wiki.js MCP Server** (Python, GraphQL)
-- `search_pages` - Search Wiki.js pages by keywords/tags
-- `get_page` - Fetch specific page content
-- `create_page` - Create new Wiki page
-- `update_page` - Modify existing page
-- `list_pages` - List pages in a path
+**Milestone Tools:**
+- `list_milestones` - List sprint milestones
+- `get_milestone` - Get milestone details
+- `create_milestone` - Create sprint milestone
+- `update_milestone` - Update/close milestone
+
+**Dependency Tools:**
+- `list_issue_dependencies` - Get issue dependencies
+- `create_issue_dependency` - Create dependency between issues
+- `get_execution_order` - Get parallel execution batches
+
+**Wiki Tools (Gitea Wiki):**
+- `list_wiki_pages` - List wiki pages
+- `get_wiki_page` - Fetch specific page content
+- `create_wiki_page` - Create new wiki page
 - `create_lesson` - Create lessons learned document
 - `search_lessons` - Search past lessons by tags
-- `tag_lesson` - Add tags to lessons learned
+
+**Validation Tools:**
+- `validate_repo_org` - Check repo belongs to organization
+- `get_branch_protection` - Check branch protection rules
+- `create_label` - Create missing required labels
 
 **Key Architecture Points:**
 - MCP servers are **bundled inside each plugin** at `plugins/{plugin}/mcp-servers/`
 - This ensures plugins work when cached by Claude Code (only plugin directory is cached)
-- Each MCP server detects its mode (project-scoped vs company-wide) based on environment variables
 - Configuration uses hybrid approach (system-level + project-level)
 - All plugins reference `${CLAUDE_PLUGIN_ROOT}/mcp-servers/` in their `.mcp.json` files
 
@@ -213,36 +226,15 @@ The label system includes:
 
 **Critical Feature:** After 15 sprints without lesson capture, repeated mistakes occurred (e.g., Claude Code infinite loops on similar issues 2-3 times).
 
-**Wiki.js Structure (Example):**
-```
-Wiki.js: https://wiki.your-company.com
-└── /your-org/
-    ├── projects/                       # Project-specific documentation
-    │   ├── project-a/
-    │   │   ├── lessons-learned/
-    │   │   │   ├── sprints/
-    │   │   │   ├── patterns/
-    │   │   │   └── INDEX.md
-    │   │   └── documentation/
-    │   ├── project-b/
-    │   └── project-c/
-    ├── company/                        # Company-wide documentation
-    │   ├── processes/
-    │   ├── standards/
-    │   └── tools/
-    └── shared/                         # Cross-project resources
-        ├── architecture-patterns/
-        ├── best-practices/
-        └── tech-stack/
-```
+**Gitea Wiki Structure:**
+Lessons learned are stored in the Gitea repository's built-in wiki under `lessons-learned/sprints/`.
 
 **Workflow:**
-- Orchestrator captures lessons at sprint close via Wiki.js MCP
-- Planner searches relevant lessons at sprint start using GraphQL search
-- INDEX.md maintained automatically via Wiki.js API
+- Orchestrator captures lessons at sprint close via Gitea Wiki MCP tools
+- Planner searches relevant lessons at sprint start using `search_lessons`
 - Tags enable cross-project lesson discovery
 - Focus on preventable repetitions, not every detail
-- Web interface for team review and editing
+- Web interface available through Gitea Wiki
 
 ## Development Workflow
 
@@ -268,12 +260,7 @@ bandit/support-claude-mktplace/
 │   │   │   └── plugin.json
 │   │   ├── .mcp.json               # Points to ${CLAUDE_PLUGIN_ROOT}/mcp-servers/
 │   │   ├── mcp-servers/            # ← MCP servers BUNDLED IN plugin
-│   │   │   ├── gitea/
-│   │   │   │   ├── .venv/
-│   │   │   │   ├── requirements.txt
-│   │   │   │   ├── mcp_server/
-│   │   │   │   └── tests/
-│   │   │   └── wikijs/
+│   │   │   └── gitea/              # Gitea + Wiki tools
 │   │   │       ├── .venv/
 │   │   │       ├── requirements.txt
 │   │   │       ├── mcp_server/
@@ -283,7 +270,8 @@ bandit/support-claude-mktplace/
 │   │   │   ├── sprint-start.md
 │   │   │   ├── sprint-status.md
 │   │   │   ├── sprint-close.md
-│   │   │   └── labels-sync.md
+│   │   │   ├── labels-sync.md
+│   │   │   └── initial-setup.md
 │   │   ├── agents/
 │   │   │   ├── planner.md
 │   │   │   ├── orchestrator.md
@@ -323,12 +311,10 @@ bandit/support-claude-mktplace/
 ### Key Design Decisions
 
 **MCP Servers (Bundled in Plugins):**
-- **Gitea MCP**: Issues, labels, repository management (bundled in projman)
-- **Wiki.js MCP**: Documentation, lessons learned, knowledge base (bundled in projman)
+- **Gitea MCP**: Issues, labels, wiki, milestones, dependencies (bundled in projman)
 - **NetBox MCP**: Infrastructure management (bundled in cmdb-assistant)
 - Servers are **bundled inside each plugin** that needs them
 - This ensures plugins work when cached by Claude Code
-- Mode detection based on environment variables (project vs company-wide)
 
 **Python Implementation:**
 - Python chosen over Node.js for MCP servers
@@ -337,8 +323,8 @@ bandit/support-claude-mktplace/
 - Virtual environment (.venv) per MCP server
 
 **Hybrid Configuration:**
-- **System-level**: `~/.config/claude/gitea.env` and `wikijs.env` (credentials)
-- **Project-level**: `project-root/.env` (repository and path specification)
+- **System-level**: `~/.config/claude/gitea.env` (credentials)
+- **Project-level**: `project-root/.env` (repository specification)
 - Merge strategy: project overrides system
 - Benefits: Single token per service, easy multi-project setup
 
@@ -370,9 +356,9 @@ PMO plugin adds:
 - Company-wide lessons learned search
 
 **Configuration Difference:**
-- PMO operates at company level (no `GITEA_REPO` or `WIKIJS_PROJECT`)
-- Accesses entire organization Wiki.js namespace
-- Queries all repositories in organization
+- PMO operates at company level (no `GITEA_REPO`)
+- Accesses all repositories in organization
+- Aggregates issues and lessons across projects
 
 Build PMO plugin AFTER projman is working and validated.
 
@@ -405,7 +391,7 @@ Test in a real repository with actual Gitea instance before distribution.
 - **Type/Refactor label** - Newly implemented at org level for architectural work
 - **Branch detection must be 100% reliable** - Prevents production accidents
 - **Python for MCP servers** - Use Python 3.8+ with virtual environments
-- **Wiki.js structure** - Organization content under configured base namespace
+- **CLI tools forbidden** - Use MCP tools exclusively, never CLI tools like `tea` or `gh`
 
 ## CRITICAL: Rules You MUST Follow
 
