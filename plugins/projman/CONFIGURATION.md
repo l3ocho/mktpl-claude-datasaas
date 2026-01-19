@@ -1,4 +1,4 @@
-# Configuration Guide - Projman Plugin v1.0.0
+# Configuration Guide - Projman Plugin v2.0.0
 
 Complete setup and configuration instructions for the Projman project management plugin.
 

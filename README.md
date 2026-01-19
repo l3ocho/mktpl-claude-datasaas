@@ -4,7 +4,7 @@ A collection of Claude Code plugins for project management, infrastructure autom
 
 ## Plugins
 
-### [projman](./plugins/projman/README.md) v1.0.0
+### [projman](./plugins/projman/README.md) v2.0.0
 **Sprint Planning and Project Management**
 
 AI-guided sprint planning with full Gitea integration. Transforms a proven 15-sprint workflow into a distributable plugin.
@@ -185,7 +185,7 @@ support-claude-mktplace/
 └── scripts/                       # Setup and maintenance scripts
 ```
 
-## Key Features (v1.0.0)
+## Key Features (v2.0.0)
 
 ### Parallel Execution
 Tasks are batched by dependency graph for optimal parallel execution:
@@ -209,12 +209,6 @@ All agents use MCP tools exclusively. CLI tools like `tea` or `gh` are forbidden
 | [CLAUDE.md](./CLAUDE.md) | Main project instructions |
 | [CANONICAL-PATHS.md](./docs/CANONICAL-PATHS.md) | Authoritative path reference |
 | [projman/CONFIGURATION.md](./plugins/projman/CONFIGURATION.md) | Projman setup guide |
-
-## Roadmap
-
-- [x] **Phase 1-8**: projman v1.0.0 (Complete)
-- [ ] **Phase 9-11**: PMO plugin for multi-project coordination
-- [ ] **Phase 12**: Public marketplace distribution
 
 ## License
 
