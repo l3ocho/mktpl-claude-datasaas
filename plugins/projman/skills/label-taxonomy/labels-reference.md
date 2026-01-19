@@ -7,7 +7,7 @@ description: Dynamic reference for Gitea label taxonomy (organization + reposito
 
 **Status:** ✅ Synced with Gitea
 **Last synced:** 2025-11-21 (via automated testing)
-**Source:** Gitea (bandit/support-claude-mktplace)
+**Source:** Gitea (personal-projects/support-claude-mktplace)
 
 ## Overview
 
@@ -17,7 +17,7 @@ This skill provides the current label taxonomy used for issue classification in 
 
 ## Organization Labels (27)
 
-Organization-level labels are shared across all repositories in the `bandit` organization.
+Organization-level labels are shared across all repositories in your configured organization.
 
 ### Agent (2)
 - `Agent/Human` (#0052cc) - Work performed by human developers

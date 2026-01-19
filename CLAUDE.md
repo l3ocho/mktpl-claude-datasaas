@@ -251,7 +251,7 @@ See [docs/reference-material/projman-implementation-plan.md](docs/reference-mate
 ⚠️ **See `docs/CANONICAL-PATHS.md` for the authoritative path reference - THIS IS THE SINGLE SOURCE OF TRUTH**
 
 ```
-bandit/support-claude-mktplace/
+personal-projects/support-claude-mktplace/
 ├── .claude-plugin/
 │   └── marketplace.json
 ├── plugins/                        # ← ALL PLUGINS (with bundled MCP servers)

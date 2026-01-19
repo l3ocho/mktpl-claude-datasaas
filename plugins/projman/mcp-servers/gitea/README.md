@@ -389,7 +389,7 @@ def list_issues(self, state='open', labels=None, repo=None):
 
 ## License
 
-Part of the Bandit Labs Claude Code Plugins project.
+MIT License - Part of the Claude Code Marketplace project.
 
 ## Related Documentation
 
@@ -407,7 +407,7 @@ For issues or questions:
 
 ---
 
-**Built for**: Bandit Labs Project Management Plugins
+**Built for**: Claude Code Marketplace - Project Management Plugins
 **Phase**: 1 (Complete)
 **Status**: ✅ Production Ready
 **Last Updated**: 2025-01-06

@@ -1,4 +1,4 @@
-# Claude Code Marketplace - Bandit Labs
+# Claude Code Marketplace
 
 A collection of Claude Code plugins for project management, infrastructure automation, and development workflows.
 
@@ -93,7 +93,7 @@ Comprehensive NetBox REST API integration for infrastructure management.
 
 1. **Clone the repository:**
    ```bash
-   git clone ssh://git@hotserv.tailc9b278.ts.net:2222/bandit/support-claude-mktplace.git
+   git clone ssh://git@hotserv.tailc9b278.ts.net:2222/personal-projects/support-claude-mktplace.git
    cd support-claude-mktplace
    ```
 
@@ -212,9 +212,9 @@ All agents use MCP tools exclusively. CLI tools like `tea` or `gh` are forbidden
 
 ## License
 
-MIT License - Bandit Labs
+MIT License
 
 ## Support
 
 - **Issues**: Contact repository maintainer
-- **Repository**: `ssh://git@hotserv.tailc9b278.ts.net:2222/bandit/support-claude-mktplace.git`
+- **Repository**: `ssh://git@hotserv.tailc9b278.ts.net:2222/personal-projects/support-claude-mktplace.git`

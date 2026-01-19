@@ -294,4 +294,4 @@ logging.basicConfig(level=logging.DEBUG)
 
 ## License
 
-Part of the Bandit Labs Claude Code Plugins project (`support-claude-mktplace`).
+MIT License - Part of the Claude Code Marketplace (`support-claude-mktplace`).

@@ -32,7 +32,7 @@ class LabelTools:
 
         target_repo = repo or self.gitea.repo
         if not target_repo or '/' not in target_repo:
-            raise ValueError("Use 'owner/repo' format (e.g. 'bandit/support-claude-mktplace')")
+            raise ValueError("Use 'owner/repo' format (e.g. 'org/repo-name')")
 
         org = target_repo.split('/')[0]
 

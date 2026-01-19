@@ -438,5 +438,4 @@ MIT License - See repository root for details
 
 ---
 
-**Built for:** Bandit Labs
 **Status:** Production Ready

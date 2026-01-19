@@ -48,11 +48,11 @@ projman-pmo/
   "version": "0.1.0",
   "displayName": "Projman PMO - Multi-Project Coordination",
   "description": "PMO coordination with cross-project visibility, dependency tracking, and resource management",
-  "author": "Bandit Labs",
-  "homepage": "ssh://git@hotserv.tailc9b278.ts.net:2222/bandit/support-claude-mktplace",
+  "author": "Leo Miranda",
+  "homepage": "https://gitea.hotserv.cloud/personal-projects/support-claude-mktplace",
   "repository": {
     "type": "git",
-    "url": "ssh://git@hotserv.tailc9b278.ts.net:2222/bandit/support-claude-mktplace.git"
+    "url": "ssh://git@hotserv.tailc9b278.ts.net:2222/personal-projects/support-claude-mktplace.git"
   },
   "license": "MIT",
   "keywords": [
@@ -223,7 +223,7 @@ projman-pmo/
 ### Agent Personality
 
 ```markdown
-You are the PMO Coordinator for Bandit Labs.
+You are the PMO Coordinator for this organization.
 
 Your role:
 - Maintain strategic view across all projects

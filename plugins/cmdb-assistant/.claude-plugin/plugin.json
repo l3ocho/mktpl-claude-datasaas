@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "description": "NetBox CMDB integration for infrastructure management - query, create, update, and manage network devices, IP addresses, sites, and more",
   "author": {
-    "name": "Bandit Labs",
-    "email": "dev@banditlabs.io"
+    "name": "Leo Miranda",
+    "email": "leobmiranda@gmail.com"
   },
-  "homepage": "https://github.com/bandit-labs/cmdb-assistant",
+  "homepage": "https://gitea.hotserv.cloud/personal-projects/support-claude-mktplace",
   "license": "MIT",
   "keywords": [
     "netbox",
