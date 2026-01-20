@@ -181,15 +181,35 @@ Stored in Gitea Wiki under `lessons-learned/sprints/`.
 | `plugins/projman/CONFIGURATION.md` | Projman setup guide |
 | `plugins/projman/README.md` | Projman full documentation |
 
-## Versioning Rule
+## Versioning and Changelog Rules
 
+### Version Display
 **The marketplace version is displayed ONLY in the main `README.md` title.**
 
 - Format: `# Claude Code Marketplace - vX.Y.Z`
 - Do NOT add version numbers to individual plugin documentation titles
 - Do NOT add version numbers to configuration guides
-- Version history is maintained in `CHANGELOG.md`
-- When releasing a new version, update ONLY the main README.md title
+- Do NOT add version numbers to CLAUDE.md or other docs
+
+### Changelog Maintenance (MANDATORY)
+**`CHANGELOG.md` is the authoritative source for version history.**
+
+When releasing a new version:
+1. Update main `README.md` title with new version
+2. Update `CHANGELOG.md` with:
+   - Version number and date: `## [X.Y.Z] - YYYY-MM-DD`
+   - **Added**: New features, commands, files
+   - **Changed**: Modifications to existing functionality
+   - **Fixed**: Bug fixes
+   - **Removed**: Deleted features, files, deprecated items
+3. Update `marketplace.json` metadata version
+4. Update plugin `plugin.json` versions if plugin-specific changes
+
+### Version Format
+- Follow [Semantic Versioning](https://semver.org/): MAJOR.MINOR.PATCH
+- MAJOR: Breaking changes
+- MINOR: New features, backward compatible
+- PATCH: Bug fixes, minor improvements
 
 ---
 
