@@ -7,6 +7,30 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 
 ### Added
+- `/review` command for pre-sprint-close code quality checks (projman)
+- `/test-check` command for test verification before sprint close (projman)
+- `code-reviewer` agent for structured code review workflow (projman)
+- Validation script (`scripts/validate-marketplace.sh`) for marketplace compliance
+- `homepage` and `repository` fields to all plugin entries in marketplace.json
+- `metadata` wrapper for description/version in marketplace.json
+- Keywords to all plugin manifests for better discoverability
+- `commands` and `agents` directory references to plugin manifests
+
+### Changed
+- Updated marketplace.json with required fields per Claude Code spec
+- Fixed installation documentation to use official Claude Code methods
+- Prioritized public HTTPS URL over Tailscale SSH URL in documentation
+- Updated all plugin manifests with author, homepage, repository, license fields
+
+### Fixed
+- Plugin manifests now include all required fields per Claude Code spec
+- Installation section uses `extraKnownMarketplaces` instead of undocumented `pluginMarketplace`
+
+---
+
+## [Previous Unreleased]
+
+### Added
 - `docs/CANONICAL-PATHS.md` - Single source of truth for all file paths
 - Path verification rules in CLAUDE.md (mandatory pre-flight check)
 - Recovery protocol for path issues
