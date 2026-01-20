@@ -5,14 +5,16 @@ This file provides guidance to Claude Code when working with code in this reposi
 ## Project Overview
 
 **Repository:** support-claude-mktplace
-**Version:** 2.2.0
+**Version:** 2.3.0
 **Status:** Production Ready
 
 A Claude Code plugin marketplace containing:
 
 | Plugin | Description | Version |
 |--------|-------------|---------|
-| `projman` | Sprint planning and project management with Gitea integration | 2.2.0 |
+| `projman` | Sprint planning and project management with Gitea integration | 2.3.0 |
+| `doc-guardian` | Automatic documentation drift detection and synchronization | 1.0.0 |
+| `code-sentinel` | Security scanning and code refactoring tools | 1.0.0 |
 | `claude-config-maintainer` | CLAUDE.md optimization and maintenance | 1.0.0 |
 | `cmdb-assistant` | NetBox CMDB integration for infrastructure management | 1.0.0 |
 | `project-hygiene` | Post-task cleanup automation via hooks | 0.1.0 |
@@ -42,14 +44,26 @@ support-claude-mktplace/
 │   │   ├── .claude-plugin/plugin.json
 │   │   ├── .mcp.json
 │   │   ├── mcp-servers/gitea/    # Bundled MCP server
-│   │   ├── commands/             # 8 commands
+│   │   ├── commands/             # 9 commands
 │   │   │   ├── sprint-plan.md, sprint-start.md, sprint-status.md
 │   │   │   ├── sprint-close.md, labels-sync.md, initial-setup.md
-│   │   │   └── review.md, test-check.md
+│   │   │   └── review.md, test-check.md, test-gen.md
 │   │   ├── agents/               # 4 agents
 │   │   │   ├── planner.md, orchestrator.md, executor.md
 │   │   │   └── code-reviewer.md
 │   │   └── skills/label-taxonomy/
+│   ├── doc-guardian/             # Documentation drift detection
+│   │   ├── .claude-plugin/plugin.json
+│   │   ├── hooks/hooks.json      # PostToolUse, Stop hooks
+│   │   ├── commands/             # doc-audit.md, doc-sync.md
+│   │   ├── agents/               # doc-analyzer.md
+│   │   └── skills/doc-patterns/
+│   ├── code-sentinel/            # Security scanning & refactoring
+│   │   ├── .claude-plugin/plugin.json
+│   │   ├── hooks/hooks.json      # PreToolUse hook
+│   │   ├── commands/             # security-scan.md, refactor.md, refactor-dry.md
+│   │   ├── agents/               # security-reviewer.md, refactor-advisor.md
+│   │   └── skills/security-patterns/
 │   ├── claude-config-maintainer/
 │   ├── cmdb-assistant/
 │   └── project-hygiene/
