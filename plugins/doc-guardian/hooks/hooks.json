@@ -1,0 +1,26 @@
+{
+  "hooks": {
+    "PostToolUse": [
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "A file was just modified. Silently check if this change affects any documentation:\n\n1. If a code file changed: check if README, CLAUDE.md, docstrings, or API docs reference the modified functions/classes/configs\n2. If drift detected: add to internal queue (do NOT interrupt user flow)\n3. At natural breakpoints or when user runs /doc-sync: report pending doc updates\n\nDo NOT announce this check unless drift is found. Work silently."
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": ".*",
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "Before ending, check if there are pending documentation updates queued by doc-guardian. If yes, ask user: 'I detected documentation drift in X files. Run /doc-sync to update, or skip for now?'"
+          }
+        ]
+      }
+    ]
+  }
+}
