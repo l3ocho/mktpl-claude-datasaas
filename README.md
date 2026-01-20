@@ -1,4 +1,4 @@
-# Claude Code Marketplace - v2.2.0
+# Claude Code Marketplace - v2.3.0
 
 A collection of Claude Code plugins for project management, infrastructure automation, and development workflows.
 
@@ -17,7 +17,7 @@ AI-guided sprint planning with full Gitea integration. Transforms a proven 15-sp
 - Branch-aware security (development/staging/production)
 - Pre-sprint-close code quality review and test verification
 
-**Commands:** `/sprint-plan`, `/sprint-start`, `/sprint-status`, `/sprint-close`, `/labels-sync`, `/initial-setup`, `/review`, `/test-check`
+**Commands:** `/sprint-plan`, `/sprint-start`, `/sprint-status`, `/sprint-close`, `/labels-sync`, `/initial-setup`, `/review`, `/test-check`, `/test-gen`
 
 ### [claude-config-maintainer](./plugins/claude-config-maintainer/README.md)
 **CLAUDE.md Optimization and Maintenance**
@@ -52,6 +52,28 @@ Hook-based cleanup that runs after Claude completes work.
 - Warns about unexpected files in project root
 - Identifies orphaned supporting files
 - Configurable via `.hygiene.json`
+
+### [doc-guardian](./plugins/doc-guardian/README.md)
+**Documentation Lifecycle Management**
+
+Automatic documentation drift detection and synchronization. Eliminates manual doc update cycles.
+
+- PostToolUse hook detects when code changes affect documentation
+- Stop hook reminds of pending updates before session ends
+- Batched updates in single commit
+
+**Commands:** `/doc-audit`, `/doc-sync`
+
+### [code-sentinel](./plugins/code-sentinel/README.md)
+**Security Scanning & Refactoring**
+
+Security vulnerability detection and code refactoring tools.
+
+- PreToolUse hook catches security issues before code is written
+- Pattern library: SQL injection, XSS, command injection, hardcoded secrets
+- Refactoring patterns: extract method, simplify conditional, modernize syntax
+
+**Commands:** `/security-scan`, `/refactor`, `/refactor-dry`
 
 ## MCP Servers
 
@@ -204,7 +226,9 @@ support-claude-mktplace/
 │   │   ├── commands/
 │   │   └── agents/
 │   ├── projman-pmo/               # PMO coordination plugin (planned)
-│   └── project-hygiene/           # Cleanup automation plugin
+│   ├── project-hygiene/           # Cleanup automation plugin
+│   ├── doc-guardian/              # Documentation drift detection
+│   └── code-sentinel/             # Security scanning & refactoring
 ├── docs/                          # Reference documentation
 │   ├── CANONICAL-PATHS.md         # Single source of truth for paths
 │   └── references/
