@@ -13,22 +13,26 @@
 | ID | Label | Type | Color | Position |
 |----|-------|------|-------|----------|
 | projman | projman | rectangle | #4A90D9 | top-center |
-| projman-pmo | projman-pmo | rectangle | #4A90D9 | top-right |
+| projman-pmo | projman-pmo (planned) | rectangle | #4A90D9 | top-right |
 | project-hygiene | project-hygiene | rectangle | #4A90D9 | top-left |
+| claude-config | claude-config-maintainer | rectangle | #4A90D9 | bottom-left |
+| cmdb-assistant | cmdb-assistant | rectangle | #4A90D9 | bottom-right |
 
 ### MCP Servers (Green - #7CB342)
 
-| ID | Label | Type | Color | Position |
-|----|-------|------|-------|----------|
-| gitea-mcp | Gitea MCP Server | rectangle | #7CB342 | middle-left |
-| wikijs-mcp | Wiki.js MCP Server | rectangle | #7CB342 | middle-right |
+MCP servers are **bundled inside each plugin** that needs them.
+
+| ID | Label | Type | Color | Position | Bundled In |
+|----|-------|------|-------|----------|------------|
+| gitea-mcp | Gitea MCP Server | rectangle | #7CB342 | middle-left | projman |
+| netbox-mcp | NetBox MCP Server | rectangle | #7CB342 | middle-right | cmdb-assistant |
 
 ### External Systems (Gray - #9E9E9E)
 
 | ID | Label | Type | Color | Position |
 |----|-------|------|-------|----------|
-| gitea-instance | Gitea\ngitea.hotserv.cloud | cylinder | #9E9E9E | bottom-left |
-| wikijs-instance | Wiki.js\nwikijs.hotserv.cloud | cylinder | #9E9E9E | bottom-right |
+| gitea-instance | Gitea\n(Issues + Wiki) | cylinder | #9E9E9E | bottom-left |
+| netbox-instance | NetBox | cylinder | #9E9E9E | bottom-right |
 
 ### Configuration (Orange - #FF9800)
 
@@ -45,10 +49,8 @@
 
 | From | To | Label | Style | Arrow |
 |------|----|-------|-------|-------|
-| projman | gitea-mcp | uses | solid | forward |
-| projman | wikijs-mcp | uses | solid | forward |
-| projman-pmo | gitea-mcp | uses (company-wide) | solid | forward |
-| projman-pmo | wikijs-mcp | uses (company-wide) | solid | forward |
+| projman | gitea-mcp | bundled | solid | bidirectional |
+| cmdb-assistant | netbox-mcp | bundled | solid | bidirectional |
 
 ### Plugin Dependencies
 
@@ -61,16 +63,16 @@
 | From | To | Label | Style | Arrow |
 |------|----|-------|-------|-------|
 | gitea-mcp | gitea-instance | REST API | solid | forward |
-| wikijs-mcp | wikijs-instance | GraphQL | solid | forward |
+| netbox-mcp | netbox-instance | REST API | solid | forward |
 
 ### Configuration Connections
 
 | From | To | Label | Style | Arrow |
 |------|----|-------|-------|-------|
 | system-config | gitea-mcp | credentials | dashed | forward |
-| system-config | wikijs-mcp | credentials | dashed | forward |
+| system-config | netbox-mcp | credentials | dashed | forward |
 | project-config | gitea-mcp | repo context | dashed | forward |
-| project-config | wikijs-mcp | project path | dashed | forward |
+| project-config | netbox-mcp | site context | dashed | forward |
 
 ---
 
@@ -78,9 +80,8 @@
 
 | ID | Label | Contains | Style |
 |----|-------|----------|-------|
-| plugins-group | Plugins | projman, projman-pmo, project-hygiene | light blue border |
-| mcp-group | Shared MCP Servers | gitea-mcp, wikijs-mcp | light green border |
-| external-group | External Services | gitea-instance, wikijs-instance | light gray border |
+| plugins-group | Plugins | projman, projman-pmo, project-hygiene, claude-config, cmdb-assistant | light blue border |
+| external-group | External Services | gitea-instance, netbox-instance | light gray border |
 | config-group | Configuration | system-config, project-config | light orange border |
 
 ---
@@ -92,25 +93,21 @@
 |                         PLUGINS GROUP                             |
 |  +----------------+  +----------------+  +-------------------+    |
 |  | project-       |  |    projman     |  |   projman-pmo    |    |
-|  | hygiene        |  |                |  |                   |    |
-|  +----------------+  +-------+--------+  +--------+----------+    |
-|                              |                    |               |
+|  | hygiene        |  |  [gitea-mcp]   |  |    (planned)      |    |
+|  +----------------+  +-------+--------+  +-------------------+    |
+|                              |                                    |
+|  +----------------+  +-------------------+                        |
+|  | claude-config  |  |  cmdb-assistant   |                        |
+|  | -maintainer    |  |   [netbox-mcp]    |                        |
+|  +----------------+  +--------+----------+                        |
 +------------------------------------------------------------------+
-                               |                    |
-                               v                    v
-+------------------------------------------------------------------+
-|                      MCP SERVERS GROUP                            |
-|  +-------------------+              +-------------------+         |
-|  |  Gitea MCP Server |              | Wiki.js MCP Server|         |
-|  +--------+----------+              +---------+---------+         |
-+------------------------------------------------------------------+
-           |                                     |
-           v                                     v
+                               |
+                               v
 +------------------------------------------------------------------+
 |                    EXTERNAL SERVICES GROUP                        |
 |  +-------------------+              +-------------------+         |
-|  |      Gitea        |              |     Wiki.js       |         |
-|  | gitea.hotserv.cloud              | wikijs.hotserv.cloud        |
+|  |      Gitea        |              |     NetBox        |         |
+|  |  (Issues + Wiki)  |              |                   |         |
 |  +-------------------+              +-------------------+         |
 +------------------------------------------------------------------+
 
@@ -128,6 +125,15 @@ CONFIG GROUP (left side):           CONFIG GROUP (right side):
 | Color | Hex | Meaning |
 |-------|-----|---------|
 | Blue | #4A90D9 | Plugins |
-| Green | #7CB342 | MCP Servers |
+| Green | #7CB342 | MCP Servers (bundled in plugins) |
 | Gray | #9E9E9E | External Systems |
 | Orange | #FF9800 | Configuration |
+
+---
+
+## ARCHITECTURE NOTES
+
+- MCP servers are **bundled inside plugins** (not shared at root)
+- Gitea provides both issue tracking AND wiki (lessons learned)
+- No separate Wiki.js - all wiki functionality uses Gitea Wiki
+- Each plugin is self-contained for Claude Code caching
