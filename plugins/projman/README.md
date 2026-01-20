@@ -174,6 +174,43 @@ Run initial setup for a new project.
 
 **When to use:** First time setting up projman for a project
 
+### `/review`
+Pre-sprint-close code quality review.
+
+**What it does:**
+- Scans recent changes for debug artifacts (TODO, console.log, commented code)
+- Checks for code complexity issues (long functions, deep nesting)
+- Performs lightweight security scan (hardcoded secrets, SQL injection risks)
+- Identifies error handling gaps (bare except, swallowed exceptions)
+
+**Output format:**
+- Critical Issues (Block Sprint Close)
+- Warnings (Should Address)
+- Recommendations (Nice to Have)
+
+**When to use:** Before closing a sprint to ensure code quality
+
+### `/test-check`
+Test verification before sprint close.
+
+**What it does:**
+- Automatically detects test framework (pytest, Jest, Go test, Cargo, etc.)
+- Runs the test suite
+- Reports pass/fail summary with details on failures
+- Includes coverage report when available
+- Identifies sprint files lacking test coverage
+
+**Flags:**
+- "run tests with coverage" - Include coverage report
+- "run tests verbose" - Show full output
+- "just check, don't run" - Report framework detection only
+
+**When to use:** Before closing a sprint to ensure tests pass
+
+## Code Quality Commands
+
+The `/review` and `/test-check` commands complement the Executor agent by catching issues before work is marked complete. Run both commands before `/sprint-close` for a complete quality check.
+
 ## Agents
 
 ### Planner Agent
@@ -202,6 +239,17 @@ Run initial setup for a new project.
 - Capturing lessons learned at sprint close
 
 **Invoked by:** `/sprint-start`, `/sprint-close`
+
+### Code Reviewer Agent
+**Personality:** Thorough, practical, severity-focused
+
+**Responsibilities:**
+- Identifying code quality issues before sprint close
+- Prioritizing findings (Critical > Warning > Recommendation)
+- Providing actionable feedback with file:line references
+- Respecting sprint scope (only reviewing changed files)
+
+**Invoked by:** `/review`
 
 ### Executor Agent
 **Personality:** Implementation-focused, follows specs precisely
@@ -373,11 +421,14 @@ projman/
 │   ├── sprint-status.md
 │   ├── sprint-close.md
 │   ├── labels-sync.md
-│   └── initial-setup.md
+│   ├── initial-setup.md
+│   ├── review.md
+│   └── test-check.md
 ├── agents/                  # Agent prompts
 │   ├── planner.md
 │   ├── orchestrator.md
-│   └── executor.md
+│   ├── executor.md
+│   └── code-reviewer.md
 ├── skills/                  # Supporting knowledge
 │   └── label-taxonomy/
 │       └── labels-reference.md
