@@ -29,8 +29,21 @@ support-claude-mktplace/
 │   │   ├── agents/
 │   │   ├── skills/
 │   │   └── claude-md-integration.md  # CLAUDE.md integration snippet
+│   ├── doc-guardian/           # Documentation drift detection
+│   │   ├── .claude-plugin/
+│   │   ├── hooks/              # PostToolUse, Stop hooks
+│   │   ├── commands/
+│   │   ├── agents/
+│   │   ├── skills/
+│   │   └── claude-md-integration.md
+│   ├── code-sentinel/          # Security scanning & refactoring
+│   │   ├── .claude-plugin/
+│   │   ├── hooks/              # PreToolUse hook
+│   │   ├── commands/
+│   │   ├── agents/
+│   │   ├── skills/
+│   │   └── claude-md-integration.md
 │   ├── projman-pmo/
-│   ├── project-hygiene/
 │   ├── cmdb-assistant/
 │   │   ├── .claude-plugin/
 │   │   ├── mcp-servers/        # MCP servers bundled IN plugin

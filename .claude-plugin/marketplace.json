@@ -6,12 +6,12 @@
   },
   "metadata": {
     "description": "Project management plugins with Gitea and NetBox integrations",
-    "version": "2.2.0"
+    "version": "2.3.0"
   },
   "plugins": [
     {
       "name": "projman",
-      "version": "2.2.0",
+      "version": "2.3.0",
       "description": "Sprint planning and project management with Gitea integration",
       "source": "./plugins/projman",
       "author": {
@@ -22,6 +22,36 @@
       "repository": "https://gitea.hotserv.cloud/personal-projects/support-claude-mktplace.git",
       "mcpServers": ["gitea"],
       "integrationFile": "claude-md-integration.md"
+    },
+    {
+      "name": "doc-guardian",
+      "version": "1.0.0",
+      "description": "Automatic documentation drift detection and synchronization",
+      "source": "./plugins/doc-guardian",
+      "author": {
+        "name": "Leo Miranda",
+        "email": "leobmiranda@gmail.com"
+      },
+      "homepage": "https://gitea.hotserv.cloud/personal-projects/support-claude-mktplace/src/branch/main/plugins/doc-guardian/README.md",
+      "repository": "https://gitea.hotserv.cloud/personal-projects/support-claude-mktplace.git",
+      "mcpServers": [],
+      "integrationFile": "claude-md-integration.md",
+      "hooks": ["PostToolUse", "Stop"]
+    },
+    {
+      "name": "code-sentinel",
+      "version": "1.0.0",
+      "description": "Security scanning and code refactoring tools",
+      "source": "./plugins/code-sentinel",
+      "author": {
+        "name": "Leo Miranda",
+        "email": "leobmiranda@gmail.com"
+      },
+      "homepage": "https://gitea.hotserv.cloud/personal-projects/support-claude-mktplace/src/branch/main/plugins/code-sentinel/README.md",
+      "repository": "https://gitea.hotserv.cloud/personal-projects/support-claude-mktplace.git",
+      "mcpServers": [],
+      "integrationFile": "claude-md-integration.md",
+      "hooks": ["PreToolUse"]
     },
     {
       "name": "project-hygiene",
@@ -73,7 +103,9 @@
       "netbox": "cmdb-assistant"
     },
     "hookMapping": {
-      "PostToolUse:Write|Edit": "project-hygiene"
+      "PostToolUse:Write|Edit": "project-hygiene",
+      "PostToolUse:Write|Edit|MultiEdit": "doc-guardian",
+      "PreToolUse:Write|Edit|MultiEdit": "code-sentinel"
     }
   }
 }

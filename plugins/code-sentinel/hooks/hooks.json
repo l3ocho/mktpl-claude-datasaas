@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "prompt",
+            "prompt": "SECURITY CHECK - Before writing this code, scan for these patterns:\n\n**Critical (BLOCK if found):**\n- eval(), exec() with user input\n- SQL string concatenation (SQL injection)\n- shell=True with user input (command injection)\n- Hardcoded secrets (API keys, passwords, tokens)\n- Pickle/marshal deserialization of untrusted data\n- innerHTML/dangerouslySetInnerHTML with user content (XSS)\n\n**Warning (WARN but allow):**\n- subprocess without input validation\n- File operations without path sanitization\n- HTTP requests without timeout\n- Broad exception catches (except:)\n- Debug/print statements with sensitive data\n\n**Response:**\n- If CRITICAL found: STOP, explain the issue, suggest safe alternative\n- If WARNING found: Note it briefly, proceed with suggestion\n- If clean: Proceed silently (say nothing)\n\nDo NOT announce clean scans. Only speak if issues found."
+          }
+        ]
+      }
+    ]
+  }
+}

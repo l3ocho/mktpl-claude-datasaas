@@ -1,0 +1,13 @@
+{
+  "name": "code-sentinel",
+  "description": "Security scanning and code refactoring tools",
+  "version": "1.0.0",
+  "author": {
+    "name": "Leo Miranda",
+    "email": "leobmiranda@gmail.com"
+  },
+  "homepage": "https://gitea.hotserv.cloud/personal-projects/support-claude-mktplace/src/branch/main/plugins/code-sentinel/README.md",
+  "repository": "https://gitea.hotserv.cloud/personal-projects/support-claude-mktplace.git",
+  "license": "MIT",
+  "keywords": ["security", "refactoring", "code-quality", "static-analysis", "hooks"]
+}

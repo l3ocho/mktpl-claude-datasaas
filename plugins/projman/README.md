@@ -207,6 +207,25 @@ Test verification before sprint close.
 
 **When to use:** Before closing a sprint to ensure tests pass
 
+### `/test-gen`
+Generate tests for specified code.
+
+**What it does:**
+- Analyzes target code (function, class, or module)
+- Auto-detects test framework (pytest, Jest, vitest, Go test, Cargo, etc.)
+- Generates comprehensive tests: happy path, edge cases, error cases
+- Supports unit, integration, e2e, and snapshot test types
+
+**Usage:**
+```
+/test-gen <target> [--type=<type>] [--framework=<framework>]
+```
+
+**Target:** File path, function name, class name, or module
+**Type:** unit (default), integration, e2e, snapshot
+
+**When to use:** When adding new code that needs test coverage
+
 ## Code Quality Commands
 
 The `/review` and `/test-check` commands complement the Executor agent by catching issues before work is marked complete. Run both commands before `/sprint-close` for a complete quality check.
@@ -423,7 +442,8 @@ projman/
 │   ├── labels-sync.md
 │   ├── initial-setup.md
 │   ├── review.md
-│   └── test-check.md
+│   ├── test-check.md
+│   └── test-gen.md
 ├── agents/                  # Agent prompts
 │   ├── planner.md
 │   ├── orchestrator.md
