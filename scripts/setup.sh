@@ -1,17 +1,16 @@
 #!/usr/bin/env bash
 #
-# setup.sh - Initial setup for support-claude-mktplace
+# setup.sh - Initial setup for lm-claude-plugins
 #
 # Usage: ./scripts/setup.sh
 #
 # This script:
-# 1. Creates Python virtual environments for MCP servers (inside each plugin)
+# 1. Creates Python virtual environments for MCP servers (shared at root)
 # 2. Installs dependencies
 # 3. Creates config file templates (if missing)
 # 4. Validates existing configuration
-# 5. Checks/creates Wiki.js directory structure
-# 6. Validates label reference file
-# 7. Reports remaining manual steps
+# 5. Validates label reference file
+# 6. Reports remaining manual steps
 #
 
 set -euo pipefail
@@ -40,13 +39,12 @@ log_error() { echo -e "${RED}[ERROR]${NC} $1"; FAILED+=("$1"); }
 log_todo() { echo -e "${YELLOW}[TODO]${NC} $1"; MANUAL_TODO+=("$1"); }
 
 # --- Section 1: Python Environments ---
-# MCP servers are now inside each plugin
-setup_plugin_mcp() {
-    local plugin_name="$1"
-    local server_name="$2"
-    local server_path="$REPO_ROOT/plugins/$plugin_name/mcp-servers/$server_name"
+# MCP servers are now shared at repository root (v3.0.0+)
+setup_shared_mcp() {
+    local server_name="$1"
+    local server_path="$REPO_ROOT/mcp-servers/$server_name"
 
-    log_info "Setting up $server_name MCP server (plugin: $plugin_name)..."
+    log_info "Setting up $server_name MCP server (shared)..."
 
     if [[ ! -d "$server_path" ]]; then
         log_error "$server_name directory not found at $server_path"
@@ -57,10 +55,10 @@ setup_plugin_mcp() {
 
     # Check if venv exists
     if [[ -d ".venv" ]]; then
-        log_skip "$plugin_name/$server_name venv already exists"
+        log_skip "$server_name venv already exists"
     else
         python3 -m venv .venv
-        log_success "$plugin_name/$server_name venv created"
+        log_success "$server_name venv created"
     fi
 
     # Install/update dependencies
@@ -69,15 +67,47 @@ setup_plugin_mcp() {
         pip install -q --upgrade pip
         pip install -q -r requirements.txt
         deactivate
-        log_success "$plugin_name/$server_name dependencies installed"
+        log_success "$server_name dependencies installed"
     else
-        log_error "$plugin_name/$server_name requirements.txt not found"
+        log_error "$server_name requirements.txt not found"
     fi
 
     cd "$REPO_ROOT"
 }
 
-# --- Section 2: Config File Templates ---
+# --- Section 2: Verify Symlinks ---
+verify_symlinks() {
+    log_info "Verifying MCP server symlinks..."
+
+    # Check projman -> gitea symlink
+    local projman_gitea="$REPO_ROOT/plugins/projman/mcp-servers/gitea"
+    if [[ -L "$projman_gitea" ]]; then
+        log_success "projman/gitea symlink exists"
+    else
+        log_error "projman/gitea symlink missing"
+        log_todo "Run: ln -s ../../../mcp-servers/gitea plugins/projman/mcp-servers/gitea"
+    fi
+
+    # Check cmdb-assistant -> netbox symlink
+    local cmdb_netbox="$REPO_ROOT/plugins/cmdb-assistant/mcp-servers/netbox"
+    if [[ -L "$cmdb_netbox" ]]; then
+        log_success "cmdb-assistant/netbox symlink exists"
+    else
+        log_error "cmdb-assistant/netbox symlink missing"
+        log_todo "Run: ln -s ../../../mcp-servers/netbox plugins/cmdb-assistant/mcp-servers/netbox"
+    fi
+
+    # Check pr-review -> gitea symlink
+    local prreview_gitea="$REPO_ROOT/plugins/pr-review/mcp-servers/gitea"
+    if [[ -L "$prreview_gitea" ]]; then
+        log_success "pr-review/gitea symlink exists"
+    else
+        log_error "pr-review/gitea symlink missing"
+        log_todo "Run: ln -s ../../../mcp-servers/gitea plugins/pr-review/mcp-servers/gitea"
+    fi
+}
+
+# --- Section 3: Config File Templates ---
 setup_config_templates() {
     local config_dir="$HOME/.config/claude"
 
@@ -94,30 +124,13 @@ setup_config_templates() {
 # Gitea API Configuration
 # Update these values with your Gitea instance details
 
-GITEA_API_URL=https://gitea.example.com/api/v1
-GITEA_API_TOKEN=your_gitea_token_here
-GITEA_OWNER=your_organization_name
+GITEA_URL=https://gitea.example.com
+GITEA_TOKEN=your_gitea_token_here
+GITEA_ORG=your_organization_name
 EOF
         chmod 600 "$config_dir/gitea.env"
         log_success "gitea.env template created"
         log_todo "Edit ~/.config/claude/gitea.env with your Gitea credentials"
-    fi
-
-    # Wiki.js config
-    if [[ -f "$config_dir/wikijs.env" ]]; then
-        log_skip "wikijs.env already exists"
-    else
-        cat > "$config_dir/wikijs.env" << 'EOF'
-# Wiki.js API Configuration
-# Update these values with your Wiki.js instance details
-
-WIKIJS_API_URL=https://wiki.example.com/graphql
-WIKIJS_API_TOKEN=your_wikijs_jwt_token_here
-WIKIJS_BASE_PATH=/your-namespace
-EOF
-        chmod 600 "$config_dir/wikijs.env"
-        log_success "wikijs.env template created"
-        log_todo "Edit ~/.config/claude/wikijs.env with your Wiki.js credentials"
     fi
 
     # NetBox config
@@ -128,16 +141,35 @@ EOF
 # NetBox API Configuration
 # Update these values with your NetBox instance details
 
-NETBOX_API_URL=https://netbox.example.com/api
-NETBOX_API_TOKEN=your_netbox_token_here
+NETBOX_URL=https://netbox.example.com
+NETBOX_TOKEN=your_netbox_token_here
 EOF
         chmod 600 "$config_dir/netbox.env"
         log_success "netbox.env template created"
         log_todo "Edit ~/.config/claude/netbox.env with your NetBox credentials"
     fi
+
+    # Git-flow config (optional)
+    if [[ -f "$config_dir/git-flow.env" ]]; then
+        log_skip "git-flow.env already exists"
+    else
+        cat > "$config_dir/git-flow.env" << 'EOF'
+# Git-Flow Default Configuration (optional)
+
+GIT_WORKFLOW_STYLE=feature-branch
+GIT_DEFAULT_BASE=development
+GIT_AUTO_DELETE_MERGED=true
+GIT_AUTO_PUSH=false
+GIT_PROTECTED_BRANCHES=main,master,development,staging,production
+GIT_COMMIT_STYLE=conventional
+GIT_CO_AUTHOR=true
+EOF
+        chmod 600 "$config_dir/git-flow.env"
+        log_success "git-flow.env template created"
+    fi
 }
 
-# --- Section 3: Validate Configuration ---
+# --- Section 4: Validate Configuration ---
 validate_config() {
     local config_dir="$HOME/.config/claude"
 
@@ -146,49 +178,20 @@ validate_config() {
     # Check Gitea config has real values
     if [[ -f "$config_dir/gitea.env" ]]; then
         source "$config_dir/gitea.env"
-        if [[ "${GITEA_API_TOKEN:-}" == "your_gitea_token_here" ]] || [[ -z "${GITEA_API_TOKEN:-}" ]]; then
-            log_todo "Update GITEA_API_TOKEN in ~/.config/claude/gitea.env"
+        if [[ "${GITEA_TOKEN:-}" == "your_gitea_token_here" ]] || [[ -z "${GITEA_TOKEN:-}" ]]; then
+            log_todo "Update GITEA_TOKEN in ~/.config/claude/gitea.env"
         else
             log_success "Gitea configuration appears valid"
-        fi
-    fi
-
-    # Check Wiki.js config has real values
-    if [[ -f "$config_dir/wikijs.env" ]]; then
-        source "$config_dir/wikijs.env"
-        if [[ "${WIKIJS_API_TOKEN:-}" == "your_wikijs_jwt_token_here" ]] || [[ -z "${WIKIJS_API_TOKEN:-}" ]]; then
-            log_todo "Update WIKIJS_API_TOKEN in ~/.config/claude/wikijs.env"
-        else
-            log_success "Wiki.js configuration appears valid"
         fi
     fi
 
     # Check NetBox config has real values
     if [[ -f "$config_dir/netbox.env" ]]; then
         source "$config_dir/netbox.env"
-        if [[ "${NETBOX_API_TOKEN:-}" == "your_netbox_token_here" ]] || [[ -z "${NETBOX_API_TOKEN:-}" ]]; then
-            log_todo "Update NETBOX_API_TOKEN in ~/.config/claude/netbox.env"
+        if [[ "${NETBOX_TOKEN:-}" == "your_netbox_token_here" ]] || [[ -z "${NETBOX_TOKEN:-}" ]]; then
+            log_todo "Update NETBOX_TOKEN in ~/.config/claude/netbox.env"
         else
             log_success "NetBox configuration appears valid"
-        fi
-    fi
-}
-
-# --- Section 4: Wiki.js Directory Structure ---
-setup_wikijs_structure() {
-    log_info "Wiki.js directory structure check..."
-
-    # This requires Wiki.js MCP to be working
-    # For now, just note it as a TODO if credentials aren't set
-
-    local config_dir="$HOME/.config/claude"
-    if [[ -f "$config_dir/wikijs.env" ]]; then
-        source "$config_dir/wikijs.env"
-        if [[ "${WIKIJS_API_TOKEN:-}" != "your_wikijs_jwt_token_here" ]] && [[ -n "${WIKIJS_API_TOKEN:-}" ]]; then
-            log_info "Wiki.js credentials found - directory structure can be verified after first use"
-            log_success "Wiki.js setup deferred to first use"
-        else
-            log_todo "Configure Wiki.js credentials, then verify directory structure exists"
         fi
     fi
 }
@@ -262,23 +265,20 @@ print_report() {
 # --- Main ---
 main() {
     echo "=============================================="
-    echo "  support-claude-mktplace Setup"
+    echo "  lm-claude-plugins Setup (v3.0.0)"
     echo "=============================================="
     echo ""
 
-    # Python environments for projman plugin
-    setup_plugin_mcp "projman" "gitea"
-    setup_plugin_mcp "projman" "wikijs"
+    # Shared MCP servers at repository root
+    setup_shared_mcp "gitea"
+    setup_shared_mcp "netbox"
 
-    # Python environment for cmdb-assistant plugin
-    setup_plugin_mcp "cmdb-assistant" "netbox"
+    # Verify symlinks from plugins to shared MCP servers
+    verify_symlinks
 
     # Configuration
     setup_config_templates
     validate_config
-
-    # Wiki.js structure
-    setup_wikijs_structure
 
     # Labels
     setup_labels

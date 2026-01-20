@@ -17,6 +17,7 @@ from .tools.labels import LabelTools
 from .tools.wiki import WikiTools
 from .tools.milestones import MilestoneTools
 from .tools.dependencies import DependencyTools
+from .tools.pull_requests import PullRequestTools
 
 # Suppress noisy MCP validation warnings on stderr
 logging.basicConfig(level=logging.INFO)
@@ -37,6 +38,7 @@ class GiteaMCPServer:
         self.wiki_tools = None
         self.milestone_tools = None
         self.dependency_tools = None
+        self.pr_tools = None
 
     async def initialize(self):
         """
@@ -55,6 +57,7 @@ class GiteaMCPServer:
             self.wiki_tools = WikiTools(self.client)
             self.milestone_tools = MilestoneTools(self.client)
             self.dependency_tools = DependencyTools(self.client)
+            self.pr_tools = PullRequestTools(self.client)
 
             logger.info(f"Gitea MCP Server initialized in {self.config['mode']} mode")
         except Exception as e:
@@ -638,6 +641,153 @@ class GiteaMCPServer:
                         },
                         "required": ["name", "color"]
                     }
+                ),
+                # Pull Request Tools
+                Tool(
+                    name="list_pull_requests",
+                    description="List pull requests from repository",
+                    inputSchema={
+                        "type": "object",
+                        "properties": {
+                            "state": {
+                                "type": "string",
+                                "enum": ["open", "closed", "all"],
+                                "default": "open",
+                                "description": "PR state filter"
+                            },
+                            "sort": {
+                                "type": "string",
+                                "enum": ["oldest", "recentupdate", "leastupdate", "mostcomment", "leastcomment", "priority"],
+                                "default": "recentupdate",
+                                "description": "Sort order"
+                            },
+                            "labels": {
+                                "type": "array",
+                                "items": {"type": "string"},
+                                "description": "Filter by labels"
+                            },
+                            "repo": {
+                                "type": "string",
+                                "description": "Repository name (owner/repo format)"
+                            }
+                        }
+                    }
+                ),
+                Tool(
+                    name="get_pull_request",
+                    description="Get specific pull request details",
+                    inputSchema={
+                        "type": "object",
+                        "properties": {
+                            "pr_number": {
+                                "type": "integer",
+                                "description": "Pull request number"
+                            },
+                            "repo": {
+                                "type": "string",
+                                "description": "Repository name (owner/repo format)"
+                            }
+                        },
+                        "required": ["pr_number"]
+                    }
+                ),
+                Tool(
+                    name="get_pr_diff",
+                    description="Get the diff for a pull request",
+                    inputSchema={
+                        "type": "object",
+                        "properties": {
+                            "pr_number": {
+                                "type": "integer",
+                                "description": "Pull request number"
+                            },
+                            "repo": {
+                                "type": "string",
+                                "description": "Repository name (owner/repo format)"
+                            }
+                        },
+                        "required": ["pr_number"]
+                    }
+                ),
+                Tool(
+                    name="get_pr_comments",
+                    description="Get comments on a pull request",
+                    inputSchema={
+                        "type": "object",
+                        "properties": {
+                            "pr_number": {
+                                "type": "integer",
+                                "description": "Pull request number"
+                            },
+                            "repo": {
+                                "type": "string",
+                                "description": "Repository name (owner/repo format)"
+                            }
+                        },
+                        "required": ["pr_number"]
+                    }
+                ),
+                Tool(
+                    name="create_pr_review",
+                    description="Create a review on a pull request (approve, request changes, or comment)",
+                    inputSchema={
+                        "type": "object",
+                        "properties": {
+                            "pr_number": {
+                                "type": "integer",
+                                "description": "Pull request number"
+                            },
+                            "body": {
+                                "type": "string",
+                                "description": "Review body/summary"
+                            },
+                            "event": {
+                                "type": "string",
+                                "enum": ["APPROVE", "REQUEST_CHANGES", "COMMENT"],
+                                "default": "COMMENT",
+                                "description": "Review action"
+                            },
+                            "comments": {
+                                "type": "array",
+                                "items": {
+                                    "type": "object",
+                                    "properties": {
+                                        "path": {"type": "string"},
+                                        "position": {"type": "integer"},
+                                        "body": {"type": "string"}
+                                    }
+                                },
+                                "description": "Optional inline comments"
+                            },
+                            "repo": {
+                                "type": "string",
+                                "description": "Repository name (owner/repo format)"
+                            }
+                        },
+                        "required": ["pr_number", "body"]
+                    }
+                ),
+                Tool(
+                    name="add_pr_comment",
+                    description="Add a general comment to a pull request",
+                    inputSchema={
+                        "type": "object",
+                        "properties": {
+                            "pr_number": {
+                                "type": "integer",
+                                "description": "Pull request number"
+                            },
+                            "body": {
+                                "type": "string",
+                                "description": "Comment text"
+                            },
+                            "repo": {
+                                "type": "string",
+                                "description": "Repository name (owner/repo format)"
+                            }
+                        },
+                        "required": ["pr_number", "body"]
+                    }
                 )
             ]
 
@@ -726,6 +876,19 @@ class GiteaMCPServer:
                         arguments.get('description'),
                         arguments.get('repo')
                     )
+                # Pull Request tools
+                elif name == "list_pull_requests":
+                    result = await self.pr_tools.list_pull_requests(**arguments)
+                elif name == "get_pull_request":
+                    result = await self.pr_tools.get_pull_request(**arguments)
+                elif name == "get_pr_diff":
+                    result = await self.pr_tools.get_pr_diff(**arguments)
+                elif name == "get_pr_comments":
+                    result = await self.pr_tools.get_pr_comments(**arguments)
+                elif name == "create_pr_review":
+                    result = await self.pr_tools.create_pr_review(**arguments)
+                elif name == "add_pr_comment":
+                    result = await self.pr_tools.add_pr_comment(**arguments)
                 else:
                     raise ValueError(f"Unknown tool: {name}")
 

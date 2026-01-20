@@ -2,64 +2,106 @@
 
 **This file defines ALL valid paths in this repository. No exceptions. No inference. No assumptions.**
 
-Last Updated: 2026-01-20
+Last Updated: 2026-01-20 (v3.0.0)
 
 ---
 
 ## Repository Root Structure
 
 ```
-support-claude-mktplace/
+lm-claude-plugins/
 ├── .claude/                    # Claude Code local settings
-├── .claude-plugin/             # Marketplace manifest (claude-code-marketplace)
+├── .claude-plugin/             # Marketplace manifest
 │   └── marketplace.json
 ├── .scratch/                   # Transient work (auto-cleaned)
 ├── docs/                       # All documentation
 │   ├── architecture/           # Draw.io diagrams and specs
 │   ├── CANONICAL-PATHS.md      # This file - single source of truth
+│   ├── CONFIGURATION.md        # Centralized configuration guide
 │   ├── UPDATING.md             # Update guide
 │   └── workflows/              # Workflow documentation
 ├── hooks/                      # Shared hooks (if any)
-├── plugins/                    # ALL plugins with bundled MCP servers
-│   ├── projman/
+├── mcp-servers/                # SHARED MCP servers (v3.0.0+)
+│   ├── gitea/                  # Gitea MCP server
+│   │   ├── mcp_server/
+│   │   │   ├── server.py
+│   │   │   ├── gitea_client.py
+│   │   │   ├── config.py
+│   │   │   └── tools/
+│   │   │       ├── issues.py
+│   │   │       ├── labels.py
+│   │   │       ├── wiki.py
+│   │   │       ├── milestones.py
+│   │   │       ├── dependencies.py
+│   │   │       └── pull_requests.py  # NEW in v3.0.0
+│   │   ├── requirements.txt
+│   │   └── .venv/
+│   └── netbox/                 # NetBox MCP server
+│       ├── mcp_server/
+│       ├── requirements.txt
+│       └── .venv/
+├── plugins/                    # ALL plugins
+│   ├── projman/                # Sprint management
 │   │   ├── .claude-plugin/
-│   │   ├── mcp-servers/        # MCP servers bundled IN plugin
-│   │   │   └── gitea/          # Gitea + Wiki tools
+│   │   ├── .mcp.json
+│   │   ├── mcp-servers/
+│   │   │   └── gitea -> ../../../mcp-servers/gitea  # SYMLINK
 │   │   ├── commands/
 │   │   ├── agents/
 │   │   ├── skills/
-│   │   └── claude-md-integration.md  # CLAUDE.md integration snippet
+│   │   └── claude-md-integration.md
 │   ├── doc-guardian/           # Documentation drift detection
 │   │   ├── .claude-plugin/
-│   │   ├── hooks/              # PostToolUse, Stop hooks
+│   │   ├── hooks/
 │   │   ├── commands/
 │   │   ├── agents/
 │   │   ├── skills/
 │   │   └── claude-md-integration.md
 │   ├── code-sentinel/          # Security scanning & refactoring
 │   │   ├── .claude-plugin/
-│   │   ├── hooks/              # PreToolUse hook
+│   │   ├── hooks/
 │   │   ├── commands/
 │   │   ├── agents/
 │   │   ├── skills/
 │   │   └── claude-md-integration.md
-│   ├── projman-pmo/
-│   ├── cmdb-assistant/
+│   ├── cmdb-assistant/         # NetBox CMDB integration
 │   │   ├── .claude-plugin/
-│   │   ├── mcp-servers/        # MCP servers bundled IN plugin
-│   │   │   └── netbox/
+│   │   ├── .mcp.json
+│   │   ├── mcp-servers/
+│   │   │   └── netbox -> ../../../mcp-servers/netbox  # SYMLINK
 │   │   ├── commands/
 │   │   ├── agents/
-│   │   └── claude-md-integration.md  # CLAUDE.md integration snippet
+│   │   └── claude-md-integration.md
 │   ├── claude-config-maintainer/
 │   │   ├── .claude-plugin/
 │   │   ├── commands/
 │   │   ├── agents/
-│   │   └── claude-md-integration.md  # CLAUDE.md integration snippet
-│   └── project-hygiene/
+│   │   └── claude-md-integration.md
+│   ├── project-hygiene/
+│   │   ├── .claude-plugin/
+│   │   ├── hooks/
+│   │   └── claude-md-integration.md
+│   ├── clarity-assist/         # NEW in v3.0.0
+│   │   ├── .claude-plugin/
+│   │   ├── commands/
+│   │   ├── agents/
+│   │   ├── skills/
+│   │   └── claude-md-integration.md
+│   ├── git-flow/               # NEW in v3.0.0
+│   │   ├── .claude-plugin/
+│   │   ├── commands/
+│   │   ├── agents/
+│   │   ├── skills/
+│   │   └── claude-md-integration.md
+│   └── pr-review/              # NEW in v3.0.0
 │       ├── .claude-plugin/
-│       ├── hooks/
-│       └── claude-md-integration.md  # CLAUDE.md integration snippet
+│       ├── .mcp.json
+│       ├── mcp-servers/
+│       │   └── gitea -> ../../../mcp-servers/gitea  # SYMLINK
+│       ├── commands/
+│       ├── agents/
+│       ├── skills/
+│       └── claude-md-integration.md
 ├── scripts/                    # Setup and maintenance scripts
 ├── CLAUDE.md
 ├── README.md
@@ -83,22 +125,26 @@ support-claude-mktplace/
 | Plugin .mcp.json | `plugins/{plugin-name}/.mcp.json` | `plugins/projman/.mcp.json` |
 | Plugin integration snippet | `plugins/{plugin-name}/claude-md-integration.md` | `plugins/projman/claude-md-integration.md` |
 
-### MCP Server Paths (Bundled in Plugins)
+### MCP Server Paths (v3.0.0 Architecture)
 
-MCP servers are now **bundled inside each plugin** to ensure they work when plugins are cached.
+MCP servers are **shared at repository root** with **symlinks** from plugins.
 
 | Context | Pattern | Example |
 |---------|---------|---------|
-| MCP server location | `plugins/{plugin}/mcp-servers/{server}/` | `plugins/projman/mcp-servers/gitea/` |
-| MCP server code | `plugins/{plugin}/mcp-servers/{server}/mcp_server/` | `plugins/projman/mcp-servers/gitea/mcp_server/` |
-| MCP venv | `plugins/{plugin}/mcp-servers/{server}/.venv/` | `plugins/projman/mcp-servers/gitea/.venv/` |
+| Shared MCP server | `mcp-servers/{server}/` | `mcp-servers/gitea/` |
+| MCP server code | `mcp-servers/{server}/mcp_server/` | `mcp-servers/gitea/mcp_server/` |
+| MCP venv | `mcp-servers/{server}/.venv/` | `mcp-servers/gitea/.venv/` |
+| Plugin symlink | `plugins/{plugin}/mcp-servers/{server}` | `plugins/projman/mcp-servers/gitea` |
 
-### Relative Path Patterns (CRITICAL)
+### Symlink Pattern
 
-| From | To | Pattern |
-|------|----|---------|
-| Plugin .mcp.json | Bundled MCP server | `${CLAUDE_PLUGIN_ROOT}/mcp-servers/{server}` |
-| marketplace.json | Plugin | `./plugins/{plugin-name}` |
+Plugins that use MCP servers create symlinks:
+```bash
+# From plugin directory
+ln -s ../../../mcp-servers/gitea plugins/projman/mcp-servers/gitea
+```
+
+The symlink target is relative: `../../../mcp-servers/{server}`
 
 ### Documentation Paths
 
@@ -108,6 +154,7 @@ MCP servers are now **bundled inside each plugin** to ensure they work when plug
 | Workflow docs | `docs/workflows/` |
 | This file | `docs/CANONICAL-PATHS.md` |
 | Update guide | `docs/UPDATING.md` |
+| Configuration guide | `docs/CONFIGURATION.md` |
 
 ---
 
@@ -125,15 +172,15 @@ MCP servers are now **bundled inside each plugin** to ensure they work when plug
 2. Verify each path against patterns in this file
 3. Show verification to user before proceeding
 
-### Relative Path Calculation
+### Relative Path Calculation (v3.0.0)
 
-From `plugins/projman/.mcp.json` to bundled `mcp-servers/gitea/`:
+From `plugins/projman/.mcp.json` to shared `mcp-servers/gitea/`:
 ```
 plugins/projman/.mcp.json
-  → MCP servers are IN the plugin at mcp-servers/
+  → Uses ${CLAUDE_PLUGIN_ROOT}/mcp-servers/gitea/
+  → Symlink at plugins/projman/mcp-servers/gitea points to ../../../mcp-servers/gitea
 
-Result: mcp-servers/gitea/
-With variable: ${CLAUDE_PLUGIN_ROOT}/mcp-servers/gitea/
+Result in .mcp.json: ${CLAUDE_PLUGIN_ROOT}/mcp-servers/gitea/.venv/bin/python
 ```
 
 From `.claude-plugin/marketplace.json` to `plugins/projman/`:
@@ -152,18 +199,28 @@ Result: ./plugins/projman
 | Wrong | Why | Correct |
 |-------|-----|---------|
 | `projman/` at root | Plugins go in `plugins/` | `plugins/projman/` |
-| `mcp-servers/` at root | MCP servers are bundled in plugins | `plugins/{plugin}/mcp-servers/` |
-| `../../mcp-servers/` from plugin | Old pattern, doesn't work with caching | `${CLAUDE_PLUGIN_ROOT}/mcp-servers/` |
-| `./../../../plugins/projman` in marketplace | Wrong (old nested structure) | `./plugins/projman` |
+| Direct path in .mcp.json to root mcp-servers | Use symlink | Symlink at `plugins/{plugin}/mcp-servers/` |
+| Creating new mcp-servers inside plugins | Use shared + symlink | Symlink to `mcp-servers/` |
+| Hardcoding absolute paths | Breaks portability | Use `${CLAUDE_PLUGIN_ROOT}` |
 
 ---
 
-## Architecture Note
+## Architecture Note (v3.0.0)
 
-MCP servers are bundled inside each plugin (not shared at root) because:
-- Claude Code caches only the plugin directory when installed
-- Relative paths to parent directories break in the cache
-- Each plugin must be self-contained to work properly
+MCP servers are now **shared at repository root** with **symlinks** from plugins:
+
+**Benefits:**
+- Single source of truth for each MCP server
+- Updates apply to all plugins automatically
+- Reduced duplication
+- Symlinks work with Claude Code caching
+
+**Symlink Pattern:**
+```
+plugins/projman/mcp-servers/gitea -> ../../../mcp-servers/gitea
+plugins/cmdb-assistant/mcp-servers/netbox -> ../../../mcp-servers/netbox
+plugins/pr-review/mcp-servers/gitea -> ../../../mcp-servers/gitea
+```
 
 ---
 
@@ -171,7 +228,11 @@ MCP servers are bundled inside each plugin (not shared at root) because:
 
 | Date | Change | By |
 |------|--------|-----|
+| 2026-01-20 | v3.0.0: MCP servers moved to root with symlinks | Claude Code |
+| 2026-01-20 | v3.0.0: Added clarity-assist, git-flow, pr-review plugins | Claude Code |
+| 2026-01-20 | v3.0.0: Added docs/CONFIGURATION.md | Claude Code |
+| 2026-01-20 | v3.0.0: Renamed marketplace to lm-claude-plugins | Claude Code |
 | 2026-01-20 | Removed docs/references/ (obsolete planning docs) | Claude Code |
-| 2026-01-19 | Added claude-md-integration.md path pattern for plugin integration snippets | Claude Code |
-| 2025-12-15 | Restructured: MCP servers now bundled in plugins | Claude Code |
+| 2026-01-19 | Added claude-md-integration.md path pattern | Claude Code |
+| 2025-12-15 | Restructured: MCP servers bundled in plugins | Claude Code |
 | 2025-12-12 | Initial creation | Claude Code |

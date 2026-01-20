@@ -64,8 +64,9 @@ main() {
     echo "=============================================="
     echo ""
 
+    # Shared MCP servers at repository root (v3.0.0+)
     update_mcp_server "gitea"
-    update_mcp_server "wikijs"
+    update_mcp_server "netbox"
 
     check_changelog
 
