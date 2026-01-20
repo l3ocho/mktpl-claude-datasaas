@@ -155,6 +155,7 @@ The symlink target is relative: `../../../mcp-servers/{server}`
 | This file | `docs/CANONICAL-PATHS.md` |
 | Update guide | `docs/UPDATING.md` |
 | Configuration guide | `docs/CONFIGURATION.md` |
+| Commands cheat sheet | `docs/COMMANDS-CHEATSHEET.md` |
 
 ---
 

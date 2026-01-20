@@ -199,6 +199,7 @@ Stored in Gitea Wiki under `lessons-learned/sprints/`.
 | Document | Purpose |
 |----------|---------|
 | `docs/CANONICAL-PATHS.md` | **Single source of truth** for paths |
+| `docs/COMMANDS-CHEATSHEET.md` | All commands quick reference with workflow examples |
 | `docs/CONFIGURATION.md` | Centralized setup guide |
 | `docs/UPDATING.md` | Update guide for the marketplace |
 | `plugins/projman/CONFIGURATION.md` | Quick reference (links to central) |
