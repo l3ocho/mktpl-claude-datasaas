@@ -38,24 +38,24 @@ support-claude-mktplace/
 ├── .claude-plugin/
 │   └── marketplace.json          # Marketplace manifest
 ├── plugins/
-│   ├── projman/                  # Sprint management (v2.2.0)
+│   ├── projman/                  # Sprint management
 │   │   ├── .claude-plugin/plugin.json
 │   │   ├── .mcp.json
 │   │   ├── mcp-servers/gitea/    # Bundled MCP server
 │   │   ├── commands/             # 8 commands
 │   │   │   ├── sprint-plan.md, sprint-start.md, sprint-status.md
 │   │   │   ├── sprint-close.md, labels-sync.md, initial-setup.md
-│   │   │   ├── review.md, test-check.md    # NEW in v2.2.0
+│   │   │   └── review.md, test-check.md
 │   │   ├── agents/               # 4 agents
 │   │   │   ├── planner.md, orchestrator.md, executor.md
-│   │   │   └── code-reviewer.md            # NEW in v2.2.0
+│   │   │   └── code-reviewer.md
 │   │   └── skills/label-taxonomy/
 │   ├── claude-config-maintainer/
 │   ├── cmdb-assistant/
 │   └── project-hygiene/
 ├── scripts/
 │   ├── setup.sh, post-update.sh
-│   └── validate-marketplace.sh   # NEW in v2.2.0
+│   └── validate-marketplace.sh   # Marketplace compliance validation
 └── docs/
     ├── CANONICAL-PATHS.md        # Single source of truth for paths
     └── references/
@@ -88,7 +88,7 @@ support-claude-mktplace/
 
 ## Architecture
 
-### Four-Agent Model (projman v2.2.0)
+### Four-Agent Model
 
 | Agent | Personality | Responsibilities |
 |-------|-------------|------------------|
@@ -181,15 +181,36 @@ Stored in Gitea Wiki under `lessons-learned/sprints/`.
 | `plugins/projman/CONFIGURATION.md` | Projman setup guide |
 | `plugins/projman/README.md` | Projman full documentation |
 
-## Version History
+## Versioning and Changelog Rules
 
-| Version | Date | Highlights |
-|---------|------|------------|
-| 2.2.0 | 2026-01-20 | `/review`, `/test-check` commands, code-reviewer agent, validation script, marketplace compliance |
-| 2.1.0 | Previous | Canonical paths, initial-setup command, documentation improvements |
-| 2.0.0 | Previous | Full Gitea integration, wiki, milestones, dependencies, parallel execution |
-| 0.1.0 | Initial | Basic plugin structure |
+### Version Display
+**The marketplace version is displayed ONLY in the main `README.md` title.**
+
+- Format: `# Claude Code Marketplace - vX.Y.Z`
+- Do NOT add version numbers to individual plugin documentation titles
+- Do NOT add version numbers to configuration guides
+- Do NOT add version numbers to CLAUDE.md or other docs
+
+### Changelog Maintenance (MANDATORY)
+**`CHANGELOG.md` is the authoritative source for version history.**
+
+When releasing a new version:
+1. Update main `README.md` title with new version
+2. Update `CHANGELOG.md` with:
+   - Version number and date: `## [X.Y.Z] - YYYY-MM-DD`
+   - **Added**: New features, commands, files
+   - **Changed**: Modifications to existing functionality
+   - **Fixed**: Bug fixes
+   - **Removed**: Deleted features, files, deprecated items
+3. Update `marketplace.json` metadata version
+4. Update plugin `plugin.json` versions if plugin-specific changes
+
+### Version Format
+- Follow [Semantic Versioning](https://semver.org/): MAJOR.MINOR.PATCH
+- MAJOR: Breaking changes
+- MINOR: New features, backward compatible
+- PATCH: Bug fixes, minor improvements
 
 ---
 
-**Last Updated:** 2026-01-20 | **Current Version:** 2.2.0
+**Last Updated:** 2026-01-20
