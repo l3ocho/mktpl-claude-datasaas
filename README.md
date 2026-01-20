@@ -4,19 +4,20 @@ A collection of Claude Code plugins for project management, infrastructure autom
 
 ## Plugins
 
-### [projman](./plugins/projman/README.md) v2.1.0
+### [projman](./plugins/projman/README.md) v2.2.0
 **Sprint Planning and Project Management**
 
 AI-guided sprint planning with full Gitea integration. Transforms a proven 15-sprint workflow into a distributable plugin.
 
-- Three-agent model: Planner, Orchestrator, Executor
+- Three-agent model: Planner, Orchestrator, Executor, Code Reviewer
 - Intelligent label suggestions from 43-label taxonomy
 - Lessons learned capture via Gitea Wiki
 - Native issue dependencies with parallel execution
 - Milestone management for sprint organization
 - Branch-aware security (development/staging/production)
+- Pre-sprint-close code quality review and test verification
 
-**Commands:** `/sprint-plan`, `/sprint-start`, `/sprint-status`, `/sprint-close`, `/labels-sync`, `/initial-setup`
+**Commands:** `/sprint-plan`, `/sprint-start`, `/sprint-status`, `/sprint-close`, `/labels-sync`, `/initial-setup`, `/review`, `/test-check`
 
 ### [claude-config-maintainer](./plugins/claude-config-maintainer/README.md)
 **CLAUDE.md Optimization and Maintenance**
@@ -89,67 +90,92 @@ Comprehensive NetBox REST API integration for infrastructure management.
 - Python 3.10+
 - Access to target services (Gitea, NetBox as needed)
 
-### Quick Start
+### Add Marketplace to Claude Code
 
-1. **Clone the repository:**
-   ```bash
-   git clone ssh://git@hotserv.tailc9b278.ts.net:2222/personal-projects/support-claude-mktplace.git
-   cd support-claude-mktplace
-   ```
+**Option 1 - CLI command (recommended):**
+```bash
+/plugin marketplace add https://gitea.hotserv.cloud/personal-projects/support-claude-mktplace.git
+```
 
-2. **Install MCP server dependencies:**
-   ```bash
-   # Gitea MCP (for projman)
-   cd plugins/projman/mcp-servers/gitea
-   python3 -m venv .venv
-   source .venv/bin/activate
-   pip install -r requirements.txt
-   deactivate
+**Option 2 - Settings file (for team distribution):**
 
-   # NetBox MCP (for cmdb-assistant)
-   cd ../../../cmdb-assistant/mcp-servers/netbox
-   python3 -m venv .venv
-   source .venv/bin/activate
-   pip install -r requirements.txt
-   deactivate
-   ```
+Add to `.claude/settings.json` in your target project:
+```json
+{
+  "extraKnownMarketplaces": {
+    "support-claude-mktplace": {
+      "source": {
+        "source": "git",
+        "url": "https://gitea.hotserv.cloud/personal-projects/support-claude-mktplace.git"
+      }
+    }
+  }
+}
+```
 
-3. **Configure system-level credentials:**
-   ```bash
-   mkdir -p ~/.config/claude
+**Option 3 - Local development:**
+```bash
+# Clone the repository first
+git clone https://gitea.hotserv.cloud/personal-projects/support-claude-mktplace.git
 
-   # Gitea credentials
-   cat > ~/.config/claude/gitea.env << 'EOF'
-   GITEA_URL=https://gitea.example.com
-   GITEA_TOKEN=your_token
-   GITEA_ORG=your_org
-   EOF
+# Then add from local path
+/plugin marketplace add /path/to/support-claude-mktplace
+```
 
-   # NetBox credentials
-   cat > ~/.config/claude/netbox.env << 'EOF'
-   NETBOX_API_URL=https://netbox.example.com/api
-   NETBOX_API_TOKEN=your_token
-   EOF
+**Alternative SSH URL (for authenticated access):**
+```
+ssh://git@hotserv.tailc9b278.ts.net:2222/personal-projects/support-claude-mktplace.git
+```
 
-   chmod 600 ~/.config/claude/*.env
-   ```
+### Configure MCP Server Dependencies
 
-4. **Configure project-level settings:**
-   ```bash
-   # In your target project root
-   cat > .env << 'EOF'
-   GITEA_REPO=your-repository-name
-   EOF
-   ```
+If using plugins with MCP servers (projman, cmdb-assistant), install dependencies:
 
-5. **Add marketplace to Claude Code:**
+```bash
+# Gitea MCP (for projman)
+cd plugins/projman/mcp-servers/gitea
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+deactivate
 
-   Add to your project's `.claude/settings.json`:
-   ```json
-   {
-     "pluginMarketplace": "/path/to/support-claude-mktplace"
-   }
-   ```
+# NetBox MCP (for cmdb-assistant)
+cd ../../../cmdb-assistant/mcp-servers/netbox
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+deactivate
+```
+
+### Configure Credentials
+
+**System-level credentials:**
+```bash
+mkdir -p ~/.config/claude
+
+# Gitea credentials
+cat > ~/.config/claude/gitea.env << 'EOF'
+GITEA_URL=https://gitea.example.com
+GITEA_TOKEN=your_token
+GITEA_ORG=your_org
+EOF
+
+# NetBox credentials
+cat > ~/.config/claude/netbox.env << 'EOF'
+NETBOX_API_URL=https://netbox.example.com/api
+NETBOX_API_TOKEN=your_token
+EOF
+
+chmod 600 ~/.config/claude/*.env
+```
+
+**Project-level settings:**
+```bash
+# In your target project root
+cat > .env << 'EOF'
+GITEA_REPO=your-repository-name
+EOF
+```
 
 ## Repository Structure
 
@@ -183,9 +209,10 @@ support-claude-mktplace/
 │   ├── CANONICAL-PATHS.md         # Single source of truth for paths
 │   └── references/
 └── scripts/                       # Setup and maintenance scripts
+    └── validate-marketplace.sh    # Marketplace compliance validation
 ```
 
-## Key Features (v2.1.0)
+## Key Features (v2.2.0)
 
 ### Parallel Execution
 Tasks are batched by dependency graph for optimal parallel execution:
@@ -217,4 +244,5 @@ MIT License
 ## Support
 
 - **Issues**: Contact repository maintainer
-- **Repository**: `ssh://git@hotserv.tailc9b278.ts.net:2222/personal-projects/support-claude-mktplace.git`
+- **Repository**: `https://gitea.hotserv.cloud/personal-projects/support-claude-mktplace.git`
+- **SSH URL**: `ssh://git@hotserv.tailc9b278.ts.net:2222/personal-projects/support-claude-mktplace.git`

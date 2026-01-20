@@ -1,17 +1,25 @@
 {
   "name": "claude-code-marketplace",
-  "version": "2.0.0",
-  "description": "Project management plugins with Gitea and NetBox integrations",
   "owner": {
     "name": "Leo Miranda",
     "email": "leobmiranda@gmail.com"
   },
+  "metadata": {
+    "description": "Project management plugins with Gitea and NetBox integrations",
+    "version": "2.2.0"
+  },
   "plugins": [
     {
       "name": "projman",
-      "version": "2.0.0",
+      "version": "2.2.0",
       "description": "Sprint planning and project management with Gitea integration",
       "source": "./plugins/projman",
+      "author": {
+        "name": "Leo Miranda",
+        "email": "leobmiranda@gmail.com"
+      },
+      "homepage": "https://gitea.hotserv.cloud/personal-projects/support-claude-mktplace/src/branch/main/plugins/projman/README.md",
+      "repository": "https://gitea.hotserv.cloud/personal-projects/support-claude-mktplace.git",
       "mcpServers": ["gitea"],
       "integrationFile": "claude-md-integration.md"
     },
@@ -20,6 +28,12 @@
       "version": "0.1.0",
       "description": "Post-task cleanup hook that removes temp files and manages orphaned files",
       "source": "./plugins/project-hygiene",
+      "author": {
+        "name": "Leo Miranda",
+        "email": "leobmiranda@gmail.com"
+      },
+      "homepage": "https://gitea.hotserv.cloud/personal-projects/support-claude-mktplace/src/branch/main/plugins/project-hygiene/README.md",
+      "repository": "https://gitea.hotserv.cloud/personal-projects/support-claude-mktplace.git",
       "mcpServers": [],
       "integrationFile": "claude-md-integration.md",
       "hooks": ["PostToolUse"]
@@ -29,6 +43,12 @@
       "version": "1.0.0",
       "description": "NetBox CMDB integration for infrastructure management",
       "source": "./plugins/cmdb-assistant",
+      "author": {
+        "name": "Leo Miranda",
+        "email": "leobmiranda@gmail.com"
+      },
+      "homepage": "https://gitea.hotserv.cloud/personal-projects/support-claude-mktplace/src/branch/main/plugins/cmdb-assistant/README.md",
+      "repository": "https://gitea.hotserv.cloud/personal-projects/support-claude-mktplace.git",
       "mcpServers": ["netbox"],
       "integrationFile": "claude-md-integration.md"
     },
@@ -37,6 +57,12 @@
       "version": "1.0.0",
       "description": "CLAUDE.md optimization and maintenance for Claude Code projects",
       "source": "./plugins/claude-config-maintainer",
+      "author": {
+        "name": "Leo Miranda",
+        "email": "leobmiranda@gmail.com"
+      },
+      "homepage": "https://gitea.hotserv.cloud/personal-projects/support-claude-mktplace/src/branch/main/plugins/claude-config-maintainer/README.md",
+      "repository": "https://gitea.hotserv.cloud/personal-projects/support-claude-mktplace.git",
       "mcpServers": [],
       "integrationFile": "claude-md-integration.md"
     }
