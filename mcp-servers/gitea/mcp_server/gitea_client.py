@@ -591,3 +591,126 @@ class GiteaClient:
         response = self.session.post(url, json=data)
         response.raise_for_status()
         return response.json()
+
+    # ========================================
+    # PULL REQUEST OPERATIONS
+    # ========================================
+
+    def list_pull_requests(
+        self,
+        state: str = 'open',
+        sort: str = 'recentupdate',
+        labels: Optional[List[str]] = None,
+        repo: Optional[str] = None
+    ) -> List[Dict]:
+        """
+        List pull requests from Gitea repository.
+
+        Args:
+            state: PR state (open, closed, all)
+            sort: Sort order (oldest, recentupdate, leastupdate, mostcomment, leastcomment, priority)
+            labels: Filter by labels
+            repo: Repository in 'owner/repo' format
+
+        Returns:
+            List of pull request dictionaries
+        """
+        owner, target_repo = self._parse_repo(repo)
+        url = f"{self.base_url}/repos/{owner}/{target_repo}/pulls"
+        params = {'state': state, 'sort': sort}
+        if labels:
+            params['labels'] = ','.join(labels)
+        logger.info(f"Listing PRs from {owner}/{target_repo} with state={state}")
+        response = self.session.get(url, params=params)
+        response.raise_for_status()
+        return response.json()
+
+    def get_pull_request(
+        self,
+        pr_number: int,
+        repo: Optional[str] = None
+    ) -> Dict:
+        """Get specific pull request details."""
+        owner, target_repo = self._parse_repo(repo)
+        url = f"{self.base_url}/repos/{owner}/{target_repo}/pulls/{pr_number}"
+        logger.info(f"Getting PR #{pr_number} from {owner}/{target_repo}")
+        response = self.session.get(url)
+        response.raise_for_status()
+        return response.json()
+
+    def get_pr_diff(
+        self,
+        pr_number: int,
+        repo: Optional[str] = None
+    ) -> str:
+        """Get the diff for a pull request."""
+        owner, target_repo = self._parse_repo(repo)
+        url = f"{self.base_url}/repos/{owner}/{target_repo}/pulls/{pr_number}.diff"
+        logger.info(f"Getting diff for PR #{pr_number} from {owner}/{target_repo}")
+        response = self.session.get(url)
+        response.raise_for_status()
+        return response.text
+
+    def get_pr_comments(
+        self,
+        pr_number: int,
+        repo: Optional[str] = None
+    ) -> List[Dict]:
+        """Get comments on a pull request (uses issue comments endpoint)."""
+        owner, target_repo = self._parse_repo(repo)
+        # PRs share comment endpoint with issues in Gitea
+        url = f"{self.base_url}/repos/{owner}/{target_repo}/issues/{pr_number}/comments"
+        logger.info(f"Getting comments for PR #{pr_number} from {owner}/{target_repo}")
+        response = self.session.get(url)
+        response.raise_for_status()
+        return response.json()
+
+    def create_pr_review(
+        self,
+        pr_number: int,
+        body: str,
+        event: str = 'COMMENT',
+        comments: Optional[List[Dict]] = None,
+        repo: Optional[str] = None
+    ) -> Dict:
+        """
+        Create a review on a pull request.
+
+        Args:
+            pr_number: Pull request number
+            body: Review body/summary
+            event: Review action (APPROVE, REQUEST_CHANGES, COMMENT)
+            comments: Optional list of inline comments with path, position, body
+            repo: Repository in 'owner/repo' format
+
+        Returns:
+            Created review dictionary
+        """
+        owner, target_repo = self._parse_repo(repo)
+        url = f"{self.base_url}/repos/{owner}/{target_repo}/pulls/{pr_number}/reviews"
+        data = {
+            'body': body,
+            'event': event
+        }
+        if comments:
+            data['comments'] = comments
+        logger.info(f"Creating review on PR #{pr_number} in {owner}/{target_repo}")
+        response = self.session.post(url, json=data)
+        response.raise_for_status()
+        return response.json()
+
+    def add_pr_comment(
+        self,
+        pr_number: int,
+        body: str,
+        repo: Optional[str] = None
+    ) -> Dict:
+        """Add a general comment to a pull request (uses issue comment endpoint)."""
+        owner, target_repo = self._parse_repo(repo)
+        # PRs share comment endpoint with issues in Gitea
+        url = f"{self.base_url}/repos/{owner}/{target_repo}/issues/{pr_number}/comments"
+        data = {'body': body}
+        logger.info(f"Adding comment to PR #{pr_number} in {owner}/{target_repo}")
+        response = self.session.post(url, json=data)
+        response.raise_for_status()
+        return response.json()
