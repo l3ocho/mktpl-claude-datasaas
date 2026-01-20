@@ -177,7 +177,7 @@ Stored in Gitea Wiki under `lessons-learned/sprints/`.
 | Document | Purpose |
 |----------|---------|
 | `docs/CANONICAL-PATHS.md` | **Single source of truth** for paths |
-| `docs/references/` | Reference specs and summaries |
+| `docs/UPDATING.md` | Update guide for the marketplace |
 | `plugins/projman/CONFIGURATION.md` | Projman setup guide |
 | `plugins/projman/README.md` | Projman full documentation |
 

@@ -2,7 +2,7 @@
 
 **This file defines ALL valid paths in this repository. No exceptions. No inference. No assumptions.**
 
-Last Updated: 2025-12-15
+Last Updated: 2026-01-20
 
 ---
 
@@ -16,7 +16,8 @@ support-claude-mktplace/
 ├── .scratch/                   # Transient work (auto-cleaned)
 ├── docs/                       # All documentation
 │   ├── architecture/           # Draw.io diagrams and specs
-│   ├── references/             # Reference specifications
+│   ├── CANONICAL-PATHS.md      # This file - single source of truth
+│   ├── UPDATING.md             # Update guide
 │   └── workflows/              # Workflow documentation
 ├── hooks/                      # Shared hooks (if any)
 ├── plugins/                    # ALL plugins with bundled MCP servers
@@ -90,10 +91,10 @@ MCP servers are now **bundled inside each plugin** to ensure they work when plug
 
 | Type | Location |
 |------|----------|
-| Reference specs | `docs/references/` |
 | Architecture diagrams | `docs/architecture/` |
 | Workflow docs | `docs/workflows/` |
 | This file | `docs/CANONICAL-PATHS.md` |
+| Update guide | `docs/UPDATING.md` |
 
 ---
 
@@ -157,6 +158,7 @@ MCP servers are bundled inside each plugin (not shared at root) because:
 
 | Date | Change | By |
 |------|--------|-----|
+| 2026-01-20 | Removed docs/references/ (obsolete planning docs) | Claude Code |
 | 2026-01-19 | Added claude-md-integration.md path pattern for plugin integration snippets | Claude Code |
 | 2025-12-15 | Restructured: MCP servers now bundled in plugins | Claude Code |
 | 2025-12-12 | Initial creation | Claude Code |

@@ -574,8 +574,8 @@ After completing testing:
 
 - **MCP Documentation**: https://docs.anthropic.com/claude/docs/mcp
 - **Gitea API Documentation**: https://docs.gitea.io/en-us/api-usage/
-- **Project Documentation**: `docs/references/MCP-GITEA.md`
-- **Implementation Plan**: `docs/references/PROJECT-SUMMARY.md`
+- **Projman Documentation**: `plugins/projman/README.md`
+- **Configuration Guide**: `plugins/projman/CONFIGURATION.md`
 
 ---
 

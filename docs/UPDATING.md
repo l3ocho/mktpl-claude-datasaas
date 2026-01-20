@@ -15,7 +15,7 @@ git pull origin main
 
 ## What the Post-Update Script Does
 
-1. **Updates Python dependencies** for Gitea and Wiki.js MCP servers
+1. **Updates Python dependencies** for MCP servers
 2. **Shows recent changelog entries** so you know what changed
 3. **Validates your configuration** is still compatible
 
@@ -30,7 +30,6 @@ If the changelog mentions new environment variables:
 1. Check the variable name and purpose in the changelog
 2. Add it to the appropriate config file:
    - Gitea variables → `~/.config/claude/gitea.env`
-   - Wiki.js variables → `~/.config/claude/wikijs.env`
    - Project variables → `.env` in your project root
 
 ### New MCP Server Features
@@ -38,7 +37,7 @@ If the changelog mentions new environment variables:
 If a new MCP server tool is added:
 
 1. The post-update script handles dependency installation
-2. Check `docs/references/MCP-*.md` for usage documentation
+2. Check `plugins/projman/README.md` for usage documentation
 3. New tools are available immediately after update
 
 ### Breaking Changes
@@ -51,15 +50,7 @@ Breaking changes will be clearly marked in CHANGELOG.md with migration instructi
 
 ```bash
 # Rebuild virtual environment
-cd mcp-servers/gitea
-rm -rf .venv
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-deactivate
-
-# Repeat for wikijs
-cd ../wikijs
+cd plugins/projman/mcp-servers/gitea
 rm -rf .venv
 python3 -m venv .venv
 source .venv/bin/activate
@@ -76,7 +67,7 @@ deactivate
 ### MCP server won't start
 
 1. Check Python version: `python3 --version` (requires 3.10+)
-2. Verify venv exists: `ls mcp-servers/gitea/.venv`
+2. Verify venv exists: `ls plugins/projman/mcp-servers/gitea/.venv`
 3. Check logs for specific errors
 
 ## Version Pinning
@@ -88,7 +79,7 @@ To stay on a specific version:
 git tag
 
 # Checkout specific version
-git checkout v1.0.0
+git checkout v2.2.0
 
 # Run post-update
 ./scripts/post-update.sh
@@ -96,6 +87,7 @@ git checkout v1.0.0
 
 ## Getting Help
 
-- Check `docs/references/` for component documentation
+- Check `plugins/projman/README.md` for projman documentation
+- Check `plugins/projman/CONFIGURATION.md` for setup guide
 - Review CHANGELOG.md for recent changes
 - Search existing issues in Gitea
