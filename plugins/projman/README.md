@@ -1,4 +1,4 @@
-# Projman v2.1.0 - Project Management for Claude Code
+# Projman - Project Management for Claude Code
 
 Sprint planning and project management plugin with full Gitea integration.
 
