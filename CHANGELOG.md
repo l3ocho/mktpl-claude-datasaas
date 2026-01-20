@@ -4,6 +4,35 @@ All notable changes to support-claude-mktplace will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [2.3.0] - 2026-01-20
+
+### Added
+
+#### New Plugins
+- **doc-guardian** v1.0.0 - Documentation lifecycle management
+  - `/doc-audit` command for full project documentation drift analysis
+  - `/doc-sync` command to batch apply pending documentation updates
+  - PostToolUse hook for automatic drift detection
+  - Stop hook reminder for pending updates
+  - doc-analyzer agent for cross-reference analysis
+  - doc-patterns skill for documentation structure knowledge
+
+- **code-sentinel** v1.0.0 - Security scanning and refactoring
+  - `/security-scan` command for comprehensive security audit
+  - `/refactor` command to apply refactoring patterns
+  - `/refactor-dry` command to preview refactoring opportunities
+  - PreToolUse hook for real-time security scanning
+  - security-reviewer agent for vulnerability analysis
+  - refactor-advisor agent for code structure improvements
+  - security-patterns skill for vulnerability detection rules
+
+#### projman Enhancements
+- `/test-gen` command - Generate unit, integration, and e2e tests for specified code
+
+### Changed
+- Marketplace version bumped to 2.3.0
+- projman version bumped to 2.3.0
+
 ## [2.2.0] - 2026-01-20
 
 ### Added
