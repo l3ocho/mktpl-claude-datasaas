@@ -4,15 +4,18 @@ This file provides guidance to Claude Code when working with code in this reposi
 
 ## Project Overview
 
-**Repository:** support-claude-mktplace
-**Version:** 2.3.0
+**Repository:** lm-claude-plugins
+**Version:** 3.0.0
 **Status:** Production Ready
 
 A Claude Code plugin marketplace containing:
 
 | Plugin | Description | Version |
 |--------|-------------|---------|
-| `projman` | Sprint planning and project management with Gitea integration | 2.3.0 |
+| `projman` | Sprint planning and project management with Gitea integration | 3.0.0 |
+| `git-flow` | Git workflow automation with smart commits and branch management | 1.0.0 |
+| `pr-review` | Multi-agent PR review with confidence scoring | 1.0.0 |
+| `clarity-assist` | Prompt optimization with ND-friendly accommodations | 1.0.0 |
 | `doc-guardian` | Automatic documentation drift detection and synchronization | 1.0.0 |
 | `code-sentinel` | Security scanning and code refactoring tools | 1.0.0 |
 | `claude-config-maintainer` | CLAUDE.md optimization and maintenance | 1.0.0 |
@@ -36,34 +39,36 @@ A Claude Code plugin marketplace containing:
 ## Repository Structure
 
 ```
-support-claude-mktplace/
+lm-claude-plugins/
 ├── .claude-plugin/
 │   └── marketplace.json          # Marketplace manifest
+├── mcp-servers/                  # SHARED MCP servers (v3.0.0+)
+│   ├── gitea/                    # Gitea MCP (issues, PRs, wiki)
+│   └── netbox/                   # NetBox MCP (CMDB)
 ├── plugins/
 │   ├── projman/                  # Sprint management
 │   │   ├── .claude-plugin/plugin.json
 │   │   ├── .mcp.json
-│   │   ├── mcp-servers/gitea/    # Bundled MCP server
+│   │   ├── mcp-servers/gitea -> ../../../mcp-servers/gitea  # SYMLINK
 │   │   ├── commands/             # 9 commands
-│   │   │   ├── sprint-plan.md, sprint-start.md, sprint-status.md
-│   │   │   ├── sprint-close.md, labels-sync.md, initial-setup.md
-│   │   │   └── review.md, test-check.md, test-gen.md
 │   │   ├── agents/               # 4 agents
-│   │   │   ├── planner.md, orchestrator.md, executor.md
-│   │   │   └── code-reviewer.md
 │   │   └── skills/label-taxonomy/
+│   ├── git-flow/                 # Git workflow automation (NEW v3.0.0)
+│   │   ├── .claude-plugin/plugin.json
+│   │   ├── commands/             # 8 commands
+│   │   └── agents/
+│   ├── pr-review/                # Multi-agent PR review (NEW v3.0.0)
+│   │   ├── .claude-plugin/plugin.json
+│   │   ├── .mcp.json
+│   │   ├── mcp-servers/gitea -> ../../../mcp-servers/gitea  # SYMLINK
+│   │   ├── commands/             # 3 commands
+│   │   └── agents/               # 5 agents
+│   ├── clarity-assist/           # Prompt optimization (NEW v3.0.0)
+│   │   ├── .claude-plugin/plugin.json
+│   │   ├── commands/             # 2 commands
+│   │   └── agents/
 │   ├── doc-guardian/             # Documentation drift detection
-│   │   ├── .claude-plugin/plugin.json
-│   │   ├── hooks/hooks.json      # PostToolUse, Stop hooks
-│   │   ├── commands/             # doc-audit.md, doc-sync.md
-│   │   ├── agents/               # doc-analyzer.md
-│   │   └── skills/doc-patterns/
 │   ├── code-sentinel/            # Security scanning & refactoring
-│   │   ├── .claude-plugin/plugin.json
-│   │   ├── hooks/hooks.json      # PreToolUse hook
-│   │   ├── commands/             # security-scan.md, refactor.md, refactor-dry.md
-│   │   ├── agents/               # security-reviewer.md, refactor-advisor.md
-│   │   └── skills/security-patterns/
 │   ├── claude-config-maintainer/
 │   ├── cmdb-assistant/
 │   └── project-hygiene/
@@ -72,7 +77,7 @@ support-claude-mktplace/
 │   └── validate-marketplace.sh   # Marketplace compliance validation
 └── docs/
     ├── CANONICAL-PATHS.md        # Single source of truth for paths
-    └── references/
+    └── CONFIGURATION.md          # Centralized configuration guide
 ```
 
 ## CRITICAL: Rules You MUST Follow
@@ -86,7 +91,8 @@ support-claude-mktplace/
 ### Plugin Development
 - **plugin.json MUST be in `.claude-plugin/` directory** (not plugin root)
 - **Every plugin MUST be listed in marketplace.json**
-- **MCP servers MUST use venv python path**: `${CLAUDE_PLUGIN_ROOT}/mcp-servers/{name}/.venv/bin/python`
+- **MCP servers are SHARED at root** with symlinks from plugins
+- **MCP server venv path**: `${CLAUDE_PLUGIN_ROOT}/mcp-servers/{name}/.venv/bin/python`
 - **CLI tools forbidden** - Use MCP tools exclusively (never `tea`, `gh`, etc.)
 
 ### Hooks (Valid Events Only)
@@ -98,11 +104,11 @@ support-claude-mktplace/
 `CLAUDE.md`, `README.md`, `LICENSE`, `CHANGELOG.md`, `.gitignore`, `.env.example`
 
 ### Allowed Root Directories
-`.claude/`, `.claude-plugin/`, `.claude-plugins/`, `.scratch/`, `docs/`, `hooks/`, `plugins/`, `scripts/`
+`.claude/`, `.claude-plugin/`, `.claude-plugins/`, `.scratch/`, `docs/`, `hooks/`, `mcp-servers/`, `plugins/`, `scripts/`
 
 ## Architecture
 
-### Four-Agent Model
+### Four-Agent Model (projman)
 
 | Agent | Personality | Responsibilities |
 |-------|-------------|------------------|
@@ -120,6 +126,7 @@ support-claude-mktplace/
 | Milestones | `list_milestones`, `get_milestone`, `create_milestone`, `update_milestone` |
 | Dependencies | `list_issue_dependencies`, `create_issue_dependency`, `get_execution_order` |
 | Wiki | `list_wiki_pages`, `get_wiki_page`, `create_wiki_page`, `create_lesson`, `search_lessons` |
+| **Pull Requests** | `list_pull_requests`, `get_pull_request`, `get_pr_diff`, `get_pr_comments`, `create_pr_review`, `add_pr_comment` *(NEW v3.0.0)* |
 | Validation | `validate_repo_org`, `get_branch_protection` |
 
 ### Hybrid Configuration
@@ -160,10 +167,11 @@ Stored in Gitea Wiki under `lessons-learned/sprints/`.
 ### Adding a New Plugin
 
 1. Create `plugins/{name}/.claude-plugin/plugin.json`
-2. Add entry to `.claude-plugin/marketplace.json`
+2. Add entry to `.claude-plugin/marketplace.json` with category, tags, license
 3. Create `README.md` and `claude-md-integration.md`
-4. Run `./scripts/validate-marketplace.sh`
-5. Update `CHANGELOG.md`
+4. If using MCP server, create symlink: `ln -s ../../../mcp-servers/{server} plugins/{name}/mcp-servers/{server}`
+5. Run `./scripts/validate-marketplace.sh`
+6. Update `CHANGELOG.md`
 
 ### Adding a Command to projman
 
@@ -191,8 +199,9 @@ Stored in Gitea Wiki under `lessons-learned/sprints/`.
 | Document | Purpose |
 |----------|---------|
 | `docs/CANONICAL-PATHS.md` | **Single source of truth** for paths |
+| `docs/CONFIGURATION.md` | Centralized setup guide |
 | `docs/UPDATING.md` | Update guide for the marketplace |
-| `plugins/projman/CONFIGURATION.md` | Projman setup guide |
+| `plugins/projman/CONFIGURATION.md` | Quick reference (links to central) |
 | `plugins/projman/README.md` | Projman full documentation |
 
 ## Versioning and Changelog Rules

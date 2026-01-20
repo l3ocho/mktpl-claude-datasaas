@@ -1,0 +1,45 @@
+{
+  "name": "clarity-assist",
+  "version": "1.0.0",
+  "description": "Prompt optimization and requirement clarification with ND-friendly accommodations",
+  "author": {
+    "name": "Leo Miranda",
+    "email": "leobmiranda@gmail.com"
+  },
+  "homepage": "https://gitea.hotserv.cloud/personal-projects/support-claude-mktplace/src/branch/main/plugins/clarity-assist/README.md",
+  "repository": "https://gitea.hotserv.cloud/personal-projects/support-claude-mktplace.git",
+  "license": "MIT",
+  "keywords": [
+    "prompt-optimization",
+    "clarification",
+    "neurodivergent",
+    "requirements",
+    "methodology"
+  ],
+  "commands": [
+    {
+      "name": "clarify",
+      "description": "Full 4-D prompt optimization (Deconstruct, Diagnose, Develop, Deliver)",
+      "file": "commands/clarify.md"
+    },
+    {
+      "name": "quick-clarify",
+      "description": "Rapid mode - single-pass clarification for simple requests",
+      "file": "commands/quick-clarify.md"
+    }
+  ],
+  "agents": [
+    {
+      "name": "clarity-coach",
+      "description": "ND-friendly coach for structured requirement gathering",
+      "file": "agents/clarity-coach.md"
+    }
+  ],
+  "skills": [
+    {
+      "name": "prompt-patterns",
+      "description": "Optimization rules and patterns for effective prompts",
+      "path": "skills/prompt-patterns"
+    }
+  ]
+}

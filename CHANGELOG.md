@@ -1,8 +1,61 @@
 # Changelog
 
-All notable changes to support-claude-mktplace will be documented in this file.
+All notable changes to lm-claude-plugins will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
+
+## [3.0.0] - 2026-01-20
+
+### Added
+
+#### New Plugins
+- **clarity-assist** v1.0.0 - Prompt optimization with ND accommodations
+  - `/clarify` command for full 4-D methodology optimization
+  - `/quick-clarify` command for rapid single-pass clarification
+  - clarity-coach agent with ND-friendly questioning patterns
+  - prompt-patterns skill with optimization rules
+
+- **git-flow** v1.0.0 - Git workflow automation
+  - `/commit` command with smart conventional commit messages
+  - `/commit-push`, `/commit-merge`, `/commit-sync` workflow commands
+  - `/branch-start`, `/branch-cleanup` branch management commands
+  - `/git-status` enhanced status with recommendations
+  - `/git-config` interactive configuration
+  - git-assistant agent for complex operations
+  - workflow-patterns skill with branching strategies
+
+- **pr-review** v1.0.0 - Multi-agent pull request review
+  - `/pr-review` command for comprehensive multi-agent review
+  - `/pr-summary` command for quick PR overview
+  - `/pr-findings` command for filtering review findings
+  - coordinator agent for orchestrating reviews
+  - security-reviewer, performance-analyst, maintainability-auditor, test-validator agents
+  - review-patterns skill with confidence scoring rules
+
+#### Gitea MCP Server Enhancements
+- 6 new Pull Request tools:
+  - `list_pull_requests` - List PRs with filters
+  - `get_pull_request` - Get PR details
+  - `get_pr_diff` - Get PR diff
+  - `get_pr_comments` - Get PR comments
+  - `create_pr_review` - Create review (approve, request changes, comment)
+  - `add_pr_comment` - Add comment to PR
+
+#### Documentation
+- `docs/CONFIGURATION.md` - Centralized configuration guide for all plugins
+
+### Changed
+- **BREAKING:** Marketplace renamed from `claude-code-marketplace` to `lm-claude-plugins`
+- **BREAKING:** MCP servers moved from plugin directories to shared `mcp-servers/` at repository root
+- All plugins now have `category`, `tags`, and `license` fields in marketplace.json
+- Plugin MCP dependencies now use symlinks to shared servers
+- projman version bumped to 3.0.0 (includes PR tools integration)
+- projman CONFIGURATION.md slimmed down, links to central docs
+
+### Removed
+- Standalone MCP server directories inside plugins (replaced with symlinks)
+
+---
 
 ## [2.3.0] - 2026-01-20
 

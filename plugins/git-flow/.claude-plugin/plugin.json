@@ -1,0 +1,75 @@
+{
+  "name": "git-flow",
+  "version": "1.0.0",
+  "description": "Git workflow automation with intelligent commit messages and branch management",
+  "author": {
+    "name": "Leo Miranda",
+    "email": "leobmiranda@gmail.com"
+  },
+  "homepage": "https://gitea.hotserv.cloud/personal-projects/support-claude-mktplace/src/branch/main/plugins/git-flow/README.md",
+  "repository": "https://gitea.hotserv.cloud/personal-projects/support-claude-mktplace.git",
+  "license": "MIT",
+  "keywords": [
+    "git",
+    "workflow",
+    "commit",
+    "branch",
+    "automation"
+  ],
+  "commands": [
+    {
+      "name": "commit",
+      "description": "Create a commit with auto-generated conventional message",
+      "file": "commands/commit.md"
+    },
+    {
+      "name": "commit-push",
+      "description": "Commit and push to remote in one operation",
+      "file": "commands/commit-push.md"
+    },
+    {
+      "name": "commit-merge",
+      "description": "Commit current changes and merge into target branch",
+      "file": "commands/commit-merge.md"
+    },
+    {
+      "name": "commit-sync",
+      "description": "Commit, push, and sync with upstream",
+      "file": "commands/commit-sync.md"
+    },
+    {
+      "name": "branch-start",
+      "description": "Start a new feature/fix/chore branch with naming convention",
+      "file": "commands/branch-start.md"
+    },
+    {
+      "name": "branch-cleanup",
+      "description": "Clean up merged branches locally and optionally remotely",
+      "file": "commands/branch-cleanup.md"
+    },
+    {
+      "name": "git-status",
+      "description": "Enhanced git status with recommendations",
+      "file": "commands/git-status.md"
+    },
+    {
+      "name": "git-config",
+      "description": "Configure git-flow settings for this project",
+      "file": "commands/git-config.md"
+    }
+  ],
+  "agents": [
+    {
+      "name": "git-assistant",
+      "description": "Git workflow assistant for complex operations",
+      "file": "agents/git-assistant.md"
+    }
+  ],
+  "skills": [
+    {
+      "name": "workflow-patterns",
+      "description": "Git branching strategies and workflow patterns",
+      "path": "skills/workflow-patterns"
+    }
+  ]
+}
