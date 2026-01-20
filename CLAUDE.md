@@ -38,24 +38,24 @@ support-claude-mktplace/
 ├── .claude-plugin/
 │   └── marketplace.json          # Marketplace manifest
 ├── plugins/
-│   ├── projman/                  # Sprint management (v2.2.0)
+│   ├── projman/                  # Sprint management
 │   │   ├── .claude-plugin/plugin.json
 │   │   ├── .mcp.json
 │   │   ├── mcp-servers/gitea/    # Bundled MCP server
 │   │   ├── commands/             # 8 commands
 │   │   │   ├── sprint-plan.md, sprint-start.md, sprint-status.md
 │   │   │   ├── sprint-close.md, labels-sync.md, initial-setup.md
-│   │   │   ├── review.md, test-check.md    # NEW in v2.2.0
+│   │   │   └── review.md, test-check.md
 │   │   ├── agents/               # 4 agents
 │   │   │   ├── planner.md, orchestrator.md, executor.md
-│   │   │   └── code-reviewer.md            # NEW in v2.2.0
+│   │   │   └── code-reviewer.md
 │   │   └── skills/label-taxonomy/
 │   ├── claude-config-maintainer/
 │   ├── cmdb-assistant/
 │   └── project-hygiene/
 ├── scripts/
 │   ├── setup.sh, post-update.sh
-│   └── validate-marketplace.sh   # NEW in v2.2.0
+│   └── validate-marketplace.sh   # Marketplace compliance validation
 └── docs/
     ├── CANONICAL-PATHS.md        # Single source of truth for paths
     └── references/
@@ -88,7 +88,7 @@ support-claude-mktplace/
 
 ## Architecture
 
-### Four-Agent Model (projman v2.2.0)
+### Four-Agent Model
 
 | Agent | Personality | Responsibilities |
 |-------|-------------|------------------|
@@ -181,15 +181,16 @@ Stored in Gitea Wiki under `lessons-learned/sprints/`.
 | `plugins/projman/CONFIGURATION.md` | Projman setup guide |
 | `plugins/projman/README.md` | Projman full documentation |
 
-## Version History
+## Versioning Rule
 
-| Version | Date | Highlights |
-|---------|------|------------|
-| 2.2.0 | 2026-01-20 | `/review`, `/test-check` commands, code-reviewer agent, validation script, marketplace compliance |
-| 2.1.0 | Previous | Canonical paths, initial-setup command, documentation improvements |
-| 2.0.0 | Previous | Full Gitea integration, wiki, milestones, dependencies, parallel execution |
-| 0.1.0 | Initial | Basic plugin structure |
+**The marketplace version is displayed ONLY in the main `README.md` title.**
+
+- Format: `# Claude Code Marketplace - vX.Y.Z`
+- Do NOT add version numbers to individual plugin documentation titles
+- Do NOT add version numbers to configuration guides
+- Version history is maintained in `CHANGELOG.md`
+- When releasing a new version, update ONLY the main README.md title
 
 ---
 
-**Last Updated:** 2026-01-20 | **Current Version:** 2.2.0
+**Last Updated:** 2026-01-20
