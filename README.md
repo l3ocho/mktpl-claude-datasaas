@@ -4,7 +4,7 @@ A collection of Claude Code plugins for project management, infrastructure autom
 
 ## Plugins
 
-### [projman](./plugins/projman/README.md) v2.0.0
+### [projman](./plugins/projman/README.md) v2.1.0
 **Sprint Planning and Project Management**
 
 AI-guided sprint planning with full Gitea integration. Transforms a proven 15-sprint workflow into a distributable plugin.
@@ -185,7 +185,7 @@ support-claude-mktplace/
 └── scripts/                       # Setup and maintenance scripts
 ```
 
-## Key Features (v2.0.0)
+## Key Features (v2.1.0)
 
 ### Parallel Execution
 Tasks are batched by dependency graph for optimal parallel execution:
