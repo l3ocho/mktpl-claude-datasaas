@@ -393,16 +393,15 @@ MIT License - Part of the Claude Code Marketplace project.
 
 ## Related Documentation
 
-- **MCP Specification**: `docs/references/MCP-GITEA.md`
-- **Project Summary**: `docs/references/PROJECT-SUMMARY.md`
-- **Implementation Plan**: `docs/reference-material/projman-implementation-plan.md`
+- **Projman Documentation**: `plugins/projman/README.md`
+- **Configuration Guide**: `plugins/projman/CONFIGURATION.md`
 - **Testing Guide**: `TESTING.md`
 
 ## Support
 
 For issues or questions:
 1. Check [TESTING.md](./TESTING.md) troubleshooting section
-2. Review [MCP-GITEA.md](../../docs/references/MCP-GITEA.md) specification
+2. Review [plugins/projman/README.md](../../README.md) for plugin documentation
 3. Create an issue in the project repository
 
 ---
