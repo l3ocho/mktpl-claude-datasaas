@@ -4,19 +4,20 @@ A collection of Claude Code plugins for project management, infrastructure autom
 
 ## Plugins
 
-### [projman](./plugins/projman/README.md) v2.1.0
+### [projman](./plugins/projman/README.md) v2.2.0
 **Sprint Planning and Project Management**
 
 AI-guided sprint planning with full Gitea integration. Transforms a proven 15-sprint workflow into a distributable plugin.
 
-- Three-agent model: Planner, Orchestrator, Executor
+- Three-agent model: Planner, Orchestrator, Executor, Code Reviewer
 - Intelligent label suggestions from 43-label taxonomy
 - Lessons learned capture via Gitea Wiki
 - Native issue dependencies with parallel execution
 - Milestone management for sprint organization
 - Branch-aware security (development/staging/production)
+- Pre-sprint-close code quality review and test verification
 
-**Commands:** `/sprint-plan`, `/sprint-start`, `/sprint-status`, `/sprint-close`, `/labels-sync`, `/initial-setup`
+**Commands:** `/sprint-plan`, `/sprint-start`, `/sprint-status`, `/sprint-close`, `/labels-sync`, `/initial-setup`, `/review`, `/test-check`
 
 ### [claude-config-maintainer](./plugins/claude-config-maintainer/README.md)
 **CLAUDE.md Optimization and Maintenance**
@@ -208,9 +209,10 @@ support-claude-mktplace/
 │   ├── CANONICAL-PATHS.md         # Single source of truth for paths
 │   └── references/
 └── scripts/                       # Setup and maintenance scripts
+    └── validate-marketplace.sh    # Marketplace compliance validation
 ```
 
-## Key Features (v2.1.0)
+## Key Features (v2.2.0)
 
 ### Parallel Execution
 Tasks are batched by dependency graph for optimal parallel execution:

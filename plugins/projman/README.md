@@ -1,4 +1,4 @@
-# Projman v2.0.0 - Project Management for Claude Code
+# Projman v2.2.0 - Project Management for Claude Code
 
 Sprint planning and project management plugin with full Gitea integration.
 
@@ -481,9 +481,11 @@ MIT License - See repository root for details
 
 ## Version
 
-**Current:** 2.0.0
+**Current:** 2.2.0
 
 **Changelog:**
+- v2.2.0: Added `/review` and `/test-check` commands, code-reviewer agent, marketplace compliance updates
+- v2.1.0: Documentation improvements, canonical paths, initial-setup command
 - v2.0.0: Full Gitea integration with wiki, milestones, dependencies, parallel execution
 - v1.0.0: Initial release with basic commands
 

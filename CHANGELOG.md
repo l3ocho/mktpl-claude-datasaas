@@ -4,7 +4,7 @@ All notable changes to support-claude-mktplace will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## [Unreleased]
+## [2.2.0] - 2026-01-20
 
 ### Added
 - `/review` command for pre-sprint-close code quality checks (projman)
@@ -26,9 +26,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Plugin manifests now include all required fields per Claude Code spec
 - Installation section uses `extraKnownMarketplaces` instead of undocumented `pluginMarketplace`
 
----
-
-## [Previous Unreleased]
+## [2.1.0] - Previous Release
 
 ### Added
 - `docs/CANONICAL-PATHS.md` - Single source of truth for all file paths

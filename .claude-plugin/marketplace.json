@@ -6,12 +6,12 @@
   },
   "metadata": {
     "description": "Project management plugins with Gitea and NetBox integrations",
-    "version": "2.0.0"
+    "version": "2.2.0"
   },
   "plugins": [
     {
       "name": "projman",
-      "version": "2.0.0",
+      "version": "2.2.0",
       "description": "Sprint planning and project management with Gitea integration",
       "source": "./plugins/projman",
       "author": {
