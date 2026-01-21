@@ -4,6 +4,30 @@ All notable changes to the Leo Claude Marketplace will be documented in this fil
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [3.0.1] - 2026-01-21
+
+### Added
+- `/project-init` command for quick project setup when system is already configured
+- `/project-sync` command to sync .env with git remote after repository move/rename
+- SessionStart hooks for automatic mismatch detection between git remote and .env
+- Interactive setup wizard (`/initial-setup`) redesigned to use Claude tools instead of bash script
+
+### Changed
+- `GITEA_ORG` moved from system-level to project-level configuration (different projects may belong to different organizations)
+- Environment variables renamed to match MCP server expectations:
+  - `GITEA_URL` → `GITEA_API_URL` (must include `/api/v1`)
+  - `GITEA_TOKEN` → `GITEA_API_TOKEN`
+  - `NETBOX_URL` → `NETBOX_API_URL` (must include `/api`)
+  - `NETBOX_TOKEN` → `NETBOX_API_TOKEN`
+- Setup commands now validate repository via Gitea API before saving configuration
+- README.md simplified to show only wizard setup path (manual setup moved to CONFIGURATION.md)
+
+### Fixed
+- API URL paths in curl commands (removed redundant `/api/v1` since it's now in the URL variable)
+- Documentation now correctly references environment variable names
+
+---
+
 ## [3.0.0] - 2026-01-20
 
 ### Added
