@@ -10,7 +10,8 @@ from mcp_server.tools.labels import LabelTools
 def mock_gitea_client():
     """Fixture providing mocked Gitea client"""
     client = Mock()
-    client.repo = 'test_repo'
+    client.repo = 'test_org/test_repo'
+    client.is_org_repo = Mock(return_value=True)
     return client
 
 
@@ -244,3 +245,58 @@ async def test_suggest_labels_multiple_categories():
 
     # Should have Source
     assert any('Source/' in label for label in suggestions)
+
+
+@pytest.mark.asyncio
+async def test_get_labels_org_owned_repo():
+    """Test getting labels for organization-owned repository"""
+    mock_client = Mock()
+    mock_client.repo = 'myorg/myrepo'
+    mock_client.is_org_repo = Mock(return_value=True)
+    mock_client.get_org_labels = Mock(return_value=[
+        {'name': 'Type/Bug', 'id': 1},
+        {'name': 'Type/Feature', 'id': 2}
+    ])
+    mock_client.get_labels = Mock(return_value=[
+        {'name': 'Component/Backend', 'id': 3}
+    ])
+
+    tools = LabelTools(mock_client)
+    result = await tools.get_labels()
+
+    # Should fetch both org and repo labels
+    mock_client.is_org_repo.assert_called_once_with('myorg/myrepo')
+    mock_client.get_org_labels.assert_called_once_with('myorg')
+    mock_client.get_labels.assert_called_once_with('myorg/myrepo')
+
+    assert len(result['organization']) == 2
+    assert len(result['repository']) == 1
+    assert result['total_count'] == 3
+
+
+@pytest.mark.asyncio
+async def test_get_labels_user_owned_repo():
+    """Test getting labels for user-owned repository (no org labels)"""
+    mock_client = Mock()
+    mock_client.repo = 'lmiranda/personal-portfolio'
+    mock_client.is_org_repo = Mock(return_value=False)
+    mock_client.get_labels = Mock(return_value=[
+        {'name': 'bug', 'id': 1},
+        {'name': 'enhancement', 'id': 2}
+    ])
+
+    tools = LabelTools(mock_client)
+    result = await tools.get_labels()
+
+    # Should check if org repo
+    mock_client.is_org_repo.assert_called_once_with('lmiranda/personal-portfolio')
+
+    # Should NOT call get_org_labels for user-owned repos
+    mock_client.get_org_labels.assert_not_called()
+
+    # Should still get repo labels
+    mock_client.get_labels.assert_called_once_with('lmiranda/personal-portfolio')
+
+    assert len(result['organization']) == 0
+    assert len(result['repository']) == 2
+    assert result['total_count'] == 2

@@ -27,19 +27,26 @@ class LabelTools:
         self.gitea = gitea_client
 
     async def get_labels(self, repo: Optional[str] = None) -> Dict[str, List[Dict]]:
-        """Get all labels (org + repo). Repo must be 'owner/repo' format."""
+        """Get all labels (org + repo if org-owned, repo-only if user-owned)."""
         loop = asyncio.get_event_loop()
 
         target_repo = repo or self.gitea.repo
         if not target_repo or '/' not in target_repo:
             raise ValueError("Use 'owner/repo' format (e.g. 'org/repo-name')")
 
-        org = target_repo.split('/')[0]
-
-        org_labels = await loop.run_in_executor(
+        # Check if repo belongs to an organization or user
+        is_org = await loop.run_in_executor(
             None,
-            lambda: self.gitea.get_org_labels(org)
+            lambda: self.gitea.is_org_repo(target_repo)
         )
+
+        org_labels = []
+        if is_org:
+            org = target_repo.split('/')[0]
+            org_labels = await loop.run_in_executor(
+                None,
+                lambda: self.gitea.get_org_labels(org)
+            )
 
         repo_labels = await loop.run_in_executor(
             None,
