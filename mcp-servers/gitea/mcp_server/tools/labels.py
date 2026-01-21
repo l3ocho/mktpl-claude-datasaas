@@ -8,6 +8,7 @@ Provides async wrappers for label operations with:
 """
 import asyncio
 import logging
+import re
 from typing import List, Dict, Optional
 
 logging.basicConfig(level=logging.INFO)
@@ -59,107 +60,202 @@ class LabelTools:
             'total_count': len(org_labels) + len(repo_labels)
         }
 
-    async def suggest_labels(self, context: str) -> List[str]:
+    async def suggest_labels(self, context: str, repo: Optional[str] = None) -> List[str]:
         """
-        Analyze context and suggest appropriate labels.
+        Analyze context and suggest appropriate labels from repository's actual labels.
+
+        This method fetches actual labels from the repository and matches them
+        dynamically, supporting any label naming convention (slash, colon-space, etc.).
 
         Args:
             context: Issue title + description or sprint context
+            repo: Repository in 'owner/repo' format (optional, uses default if not provided)
 
         Returns:
-            List of suggested label names
+            List of suggested label names that exist in the repository
         """
+        # Fetch actual labels from repository
+        target_repo = repo or self.gitea.repo
+        if not target_repo:
+            logger.warning("No repository specified, returning empty suggestions")
+            return []
+
+        try:
+            labels_data = await self.get_labels(target_repo)
+            all_labels = labels_data.get('organization', []) + labels_data.get('repository', [])
+            label_names = [label['name'] for label in all_labels]
+        except Exception as e:
+            logger.warning(f"Failed to fetch labels: {e}. Using fallback suggestions.")
+            label_names = []
+
+        # Build label lookup for dynamic matching
+        label_lookup = self._build_label_lookup(label_names)
+
         suggested = []
         context_lower = context.lower()
 
         # Type detection (exclusive - only one)
+        type_label = None
         if any(word in context_lower for word in ['bug', 'error', 'fix', 'broken', 'crash', 'fail']):
-            suggested.append('Type/Bug')
+            type_label = self._find_label(label_lookup, 'type', 'bug')
         elif any(word in context_lower for word in ['refactor', 'extract', 'restructure', 'architecture', 'service extraction']):
-            suggested.append('Type/Refactor')
+            type_label = self._find_label(label_lookup, 'type', 'refactor')
         elif any(word in context_lower for word in ['feature', 'add', 'implement', 'new', 'create']):
-            suggested.append('Type/Feature')
+            type_label = self._find_label(label_lookup, 'type', 'feature')
         elif any(word in context_lower for word in ['docs', 'documentation', 'readme', 'guide']):
-            suggested.append('Type/Documentation')
+            type_label = self._find_label(label_lookup, 'type', 'documentation')
         elif any(word in context_lower for word in ['test', 'testing', 'spec', 'coverage']):
-            suggested.append('Type/Test')
+            type_label = self._find_label(label_lookup, 'type', 'test')
         elif any(word in context_lower for word in ['chore', 'maintenance', 'update', 'upgrade']):
-            suggested.append('Type/Chore')
+            type_label = self._find_label(label_lookup, 'type', 'chore')
+        if type_label:
+            suggested.append(type_label)
 
         # Priority detection
+        priority_label = None
         if any(word in context_lower for word in ['critical', 'urgent', 'blocker', 'blocking', 'emergency']):
-            suggested.append('Priority/Critical')
+            priority_label = self._find_label(label_lookup, 'priority', 'critical')
         elif any(word in context_lower for word in ['high', 'important', 'asap', 'soon']):
-            suggested.append('Priority/High')
+            priority_label = self._find_label(label_lookup, 'priority', 'high')
         elif any(word in context_lower for word in ['low', 'nice-to-have', 'optional', 'later']):
-            suggested.append('Priority/Low')
+            priority_label = self._find_label(label_lookup, 'priority', 'low')
         else:
-            suggested.append('Priority/Medium')
+            priority_label = self._find_label(label_lookup, 'priority', 'medium')
+        if priority_label:
+            suggested.append(priority_label)
 
         # Complexity detection
+        complexity_label = None
         if any(word in context_lower for word in ['simple', 'trivial', 'easy', 'quick']):
-            suggested.append('Complexity/Simple')
+            complexity_label = self._find_label(label_lookup, 'complexity', 'simple')
         elif any(word in context_lower for word in ['complex', 'difficult', 'challenging', 'intricate']):
-            suggested.append('Complexity/Complex')
+            complexity_label = self._find_label(label_lookup, 'complexity', 'complex')
         else:
-            suggested.append('Complexity/Medium')
+            complexity_label = self._find_label(label_lookup, 'complexity', 'medium')
+        if complexity_label:
+            suggested.append(complexity_label)
 
-        # Efforts detection
+        # Effort detection (supports both "Effort" and "Efforts" naming)
+        effort_label = None
         if any(word in context_lower for word in ['xs', 'tiny', '1 hour', '2 hours']):
-            suggested.append('Efforts/XS')
+            effort_label = self._find_label(label_lookup, 'effort', 'xs')
         elif any(word in context_lower for word in ['small', 's ', '1 day', 'half day']):
-            suggested.append('Efforts/S')
+            effort_label = self._find_label(label_lookup, 'effort', 's')
         elif any(word in context_lower for word in ['medium', 'm ', '2 days', '3 days']):
-            suggested.append('Efforts/M')
+            effort_label = self._find_label(label_lookup, 'effort', 'm')
         elif any(word in context_lower for word in ['large', 'l ', '1 week', '5 days']):
-            suggested.append('Efforts/L')
+            effort_label = self._find_label(label_lookup, 'effort', 'l')
         elif any(word in context_lower for word in ['xl', 'extra large', '2 weeks', 'sprint']):
-            suggested.append('Efforts/XL')
+            effort_label = self._find_label(label_lookup, 'effort', 'xl')
+        if effort_label:
+            suggested.append(effort_label)
 
         # Component detection (based on keywords)
-        component_keywords = {
-            'Component/Backend': ['backend', 'server', 'api', 'database', 'service'],
-            'Component/Frontend': ['frontend', 'ui', 'interface', 'react', 'vue', 'component'],
-            'Component/API': ['api', 'endpoint', 'rest', 'graphql', 'route'],
-            'Component/Database': ['database', 'db', 'sql', 'migration', 'schema', 'postgres'],
-            'Component/Auth': ['auth', 'authentication', 'login', 'oauth', 'token', 'session'],
-            'Component/Deploy': ['deploy', 'deployment', 'docker', 'kubernetes', 'ci/cd'],
-            'Component/Testing': ['test', 'testing', 'spec', 'jest', 'pytest', 'coverage'],
-            'Component/Docs': ['docs', 'documentation', 'readme', 'guide', 'wiki']
+        component_mappings = {
+            'backend': ['backend', 'server', 'api', 'database', 'service'],
+            'frontend': ['frontend', 'ui', 'interface', 'react', 'vue', 'component'],
+            'api': ['api', 'endpoint', 'rest', 'graphql', 'route'],
+            'database': ['database', 'db', 'sql', 'migration', 'schema', 'postgres'],
+            'auth': ['auth', 'authentication', 'login', 'oauth', 'token', 'session'],
+            'deploy': ['deploy', 'deployment', 'docker', 'kubernetes', 'ci/cd'],
+            'testing': ['test', 'testing', 'spec', 'jest', 'pytest', 'coverage'],
+            'docs': ['docs', 'documentation', 'readme', 'guide', 'wiki']
         }
 
-        for label, keywords in component_keywords.items():
+        for component, keywords in component_mappings.items():
             if any(keyword in context_lower for keyword in keywords):
-                suggested.append(label)
+                label = self._find_label(label_lookup, 'component', component)
+                if label and label not in suggested:
+                    suggested.append(label)
 
         # Tech stack detection
-        tech_keywords = {
-            'Tech/Python': ['python', 'fastapi', 'django', 'flask', 'pytest'],
-            'Tech/JavaScript': ['javascript', 'js', 'node', 'npm', 'yarn'],
-            'Tech/Docker': ['docker', 'dockerfile', 'container', 'compose'],
-            'Tech/PostgreSQL': ['postgres', 'postgresql', 'psql', 'sql'],
-            'Tech/Redis': ['redis', 'cache', 'session store'],
-            'Tech/Vue': ['vue', 'vuejs', 'nuxt'],
-            'Tech/FastAPI': ['fastapi', 'pydantic', 'starlette']
+        tech_mappings = {
+            'python': ['python', 'fastapi', 'django', 'flask', 'pytest'],
+            'javascript': ['javascript', 'js', 'node', 'npm', 'yarn'],
+            'docker': ['docker', 'dockerfile', 'container', 'compose'],
+            'postgresql': ['postgres', 'postgresql', 'psql', 'sql'],
+            'redis': ['redis', 'cache', 'session store'],
+            'vue': ['vue', 'vuejs', 'nuxt'],
+            'fastapi': ['fastapi', 'pydantic', 'starlette']
         }
 
-        for label, keywords in tech_keywords.items():
+        for tech, keywords in tech_mappings.items():
             if any(keyword in context_lower for keyword in keywords):
-                suggested.append(label)
+                label = self._find_label(label_lookup, 'tech', tech)
+                if label and label not in suggested:
+                    suggested.append(label)
 
         # Source detection (based on git branch or context)
+        source_label = None
         if 'development' in context_lower or 'dev/' in context_lower:
-            suggested.append('Source/Development')
+            source_label = self._find_label(label_lookup, 'source', 'development')
         elif 'staging' in context_lower or 'stage/' in context_lower:
-            suggested.append('Source/Staging')
+            source_label = self._find_label(label_lookup, 'source', 'staging')
         elif 'production' in context_lower or 'prod' in context_lower:
-            suggested.append('Source/Production')
+            source_label = self._find_label(label_lookup, 'source', 'production')
+        if source_label:
+            suggested.append(source_label)
 
         # Risk detection
+        risk_label = None
         if any(word in context_lower for word in ['breaking', 'breaking change', 'major', 'risky']):
-            suggested.append('Risk/High')
+            risk_label = self._find_label(label_lookup, 'risk', 'high')
         elif any(word in context_lower for word in ['safe', 'low risk', 'minor']):
-            suggested.append('Risk/Low')
+            risk_label = self._find_label(label_lookup, 'risk', 'low')
+        if risk_label:
+            suggested.append(risk_label)
 
-        logger.info(f"Suggested {len(suggested)} labels based on context")
+        logger.info(f"Suggested {len(suggested)} labels based on context and {len(label_names)} available labels")
         return suggested
+
+    def _build_label_lookup(self, label_names: List[str]) -> Dict[str, Dict[str, str]]:
+        """
+        Build a lookup dictionary for label matching.
+
+        Supports various label formats:
+        - Slash format: Type/Bug, Priority/High
+        - Colon-space format: Type: Bug, Priority: High
+        - Colon format: Type:Bug
+
+        Args:
+            label_names: List of actual label names from repository
+
+        Returns:
+            Nested dict: {category: {value: actual_label_name}}
+        """
+        lookup: Dict[str, Dict[str, str]] = {}
+
+        for label in label_names:
+            # Try different separator patterns
+            # Pattern: Category<separator>Value
+            # Separators: /, : , :
+            match = re.match(r'^([^/:]+)(?:/|:\s*|:)(.+)$', label)
+            if match:
+                category = match.group(1).lower().rstrip('s')  # Normalize: "Efforts" -> "effort"
+                value = match.group(2).lower()
+
+                if category not in lookup:
+                    lookup[category] = {}
+                lookup[category][value] = label
+
+        return lookup
+
+    def _find_label(self, lookup: Dict[str, Dict[str, str]], category: str, value: str) -> Optional[str]:
+        """
+        Find actual label name from lookup.
+
+        Args:
+            lookup: Label lookup dictionary
+            category: Category to search (e.g., 'type', 'priority')
+            value: Value to find (e.g., 'bug', 'high')
+
+        Returns:
+            Actual label name if found, None otherwise
+        """
+        category_lower = category.lower().rstrip('s')  # Normalize
+        value_lower = value.lower()
+
+        if category_lower in lookup and value_lower in lookup[category_lower]:
+            return lookup[category_lower][value_lower]
+
+        return None
