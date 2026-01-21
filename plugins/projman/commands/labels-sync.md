@@ -16,14 +16,15 @@ The label taxonomy is **dynamic** - new labels may be added to Gitea over time:
 
 ## What This Command Does
 
-1. **Validate Repository** - Verify repo belongs to an organization using `validate_repo_org`
-2. **Fetch Current Labels** - Uses `get_labels` MCP tool to fetch all labels (org + repo)
-3. **Compare with Local Reference** - Checks against `skills/label-taxonomy/labels-reference.md`
-4. **Detect Changes** - Identifies new, removed, or modified labels
-5. **Explain Changes** - Shows what changed and why it matters
-6. **Create Missing Labels** - Uses `create_label` for required labels that don't exist
-7. **Update Reference** - Updates the local labels-reference.md file
-8. **Confirm Update** - Asks for user confirmation before updating
+1. **Auto-Detect Repository** - Automatically detects repo from git remote (or uses explicit `repo` param)
+2. **Check Owner Type** - Determines if owner is organization or user account
+3. **Fetch Current Labels** - Uses `get_labels` MCP tool to fetch all labels (org + repo)
+4. **Display Current Taxonomy** - Shows organization and repository label counts
+5. **Identify Missing Required Labels** - Checks for required labels (Type/*, Priority/*, etc.)
+6. **Create Missing Labels** - Automatically creates any missing required labels
+7. **Report Status** - Summarizes what was found and created
+
+**Note:** This command executes autonomously without user prompts. It fetches labels, reports findings, and creates missing labels automatically.
 
 ## MCP Tools Used
 
@@ -49,37 +50,29 @@ If any required labels are missing, the command will offer to create them.
 Label Taxonomy Sync
 ===================
 
-Validating repository organization...
-Repository: bandit/your-repo-name
-Organization: bandit
+Auto-detecting repository from git remote...
+Repository: personal-projects/your-repo-name
+Owner type: Organization
 
 Fetching labels from Gitea...
 
 Current Label Taxonomy:
-- Organization Labels: 28
+- Organization Labels: 27
 - Repository Labels: 16
-- Total: 44 labels
+- Total: 43 labels
 
-Comparing with local reference...
+Organization Labels by Category:
+  Agent/*: 2 labels
+  Complexity/*: 3 labels
+  Efforts/*: 5 labels
+  Priority/*: 4 labels
+  Risk/*: 3 labels
+  Source/*: 4 labels
+  Type/*: 6 labels
 
-Changes Detected:
-  NEW: Type/Performance (org-level)
-   Description: Performance optimization tasks
-   Color: #FF6B6B
-   Suggestion: Add to suggestion logic for performance-related work
-
-  NEW: Tech/Redis (repo-level)
-   Description: Redis-related technology
-   Color: #DC143C
-   Suggestion: Add to suggestion logic for caching and data store work
-
-  MODIFIED: Priority/Critical
-   Change: Color updated from #D73A4A to #FF0000
-   Impact: Visual only, no logic change needed
-
-  REMOVED: Component/Legacy
-   Reason: Component deprecated and removed from codebase
-   Impact: Remove from suggestion logic
+Repository Labels by Category:
+  Component/*: 9 labels
+  Tech/*: 7 labels
 
 Required Labels Check:
   Type/*: 6/6 present
@@ -87,15 +80,7 @@ Required Labels Check:
   Complexity/*: 3/3 present
   Efforts/*: 5/5 present
 
-Summary:
-- 2 new labels added
-- 1 label modified (color only)
-- 1 label removed
-- Total labels: 44 -> 45
-- All required labels present
-
-Update local reference file?
-[Y/n]
+All required labels present. Label taxonomy is ready for use.
 ```
 
 ## Label Taxonomy Structure
@@ -115,9 +100,15 @@ Labels are organized by namespace:
 - `Component/*` (9): Backend, Frontend, API, Database, Auth, Deploy, Testing, Docs, Infra
 - `Tech/*` (7): Python, JavaScript, Docker, PostgreSQL, Redis, Vue, FastAPI
 
-## Local Reference File
+## Label Reference
 
-The command updates `skills/label-taxonomy/labels-reference.md` with:
+The plugin includes a static reference file at `skills/label-taxonomy/labels-reference.md` that documents the expected label taxonomy and suggestion logic.
+
+**Important:** This reference file is part of the plugin package and serves as documentation. The `/labels-sync` command fetches labels dynamically from Gitea - it does not modify the reference file.
+
+**Dynamic Approach:** Labels are always fetched fresh from Gitea using `get_labels`. The reference file provides context for the `suggest_labels` logic but is not the source of truth.
+
+Example reference file structure:
 
 ```markdown
 # Label Taxonomy Reference
@@ -177,58 +168,57 @@ The updated taxonomy is used by:
 
 ## Example Usage
 
+**Example 1: All labels present**
 ```
 User: /labels-sync
 
-Validating repository organization...
-Repository: bandit/your-repo-name
+Auto-detecting repository...
+Repository: personal-projects/my-project
+Owner type: Organization
 
 Fetching labels from Gitea...
 
 Current Label Taxonomy:
-- Organization Labels: 28
+- Organization Labels: 27
 - Repository Labels: 16
-- Total: 44 labels
+- Total: 43 labels
 
-Comparing with local reference...
+Required Labels Check:
+  Type/*: 6/6 present
+  Priority/*: 4/4 present
+  Complexity/*: 3/3 present
+  Efforts/*: 5/5 present
 
-No changes detected. Label taxonomy is up to date.
-
-Last synced: 2025-01-18 14:30 UTC
+All required labels present. Label taxonomy is ready for use.
 ```
 
+**Example 2: Missing required labels (auto-created)**
 ```
 User: /labels-sync
 
+Auto-detecting repository...
+Repository: personal-projects/new-project
+Owner type: User (no organization labels available)
+
 Fetching labels from Gitea...
 
-Changes Detected:
-  NEW: Type/Performance
-  NEW: Tech/Redis
+Current Label Taxonomy:
+- Organization Labels: 0 (user account - no org labels)
+- Repository Labels: 3
+- Total: 3 labels
 
 Required Labels Check:
-  MISSING: Complexity/Simple
-  MISSING: Complexity/Medium
-  MISSING: Complexity/Complex
+  Type/*: 0/6 - MISSING: Bug, Feature, Refactor, Documentation, Test, Chore
+  Priority/*: 0/4 - MISSING: Low, Medium, High, Critical
+  Complexity/*: 0/3 - MISSING: Simple, Medium, Complex
+  Efforts/*: 0/5 - MISSING: XS, S, M, L, XL
 
-Would you like me to create the missing required labels? [Y/n] y
+Creating missing required labels...
+  Created: Type/Bug (#d73a4a)
+  Created: Type/Feature (#0075ca)
+  ... (18 total labels created)
 
-Creating missing labels...
-  Created: Complexity/Simple
-  Created: Complexity/Medium
-  Created: Complexity/Complex
-
-Update local reference file? [Y/n] y
-
-Label taxonomy updated successfully!
-Suggestion logic updated with new labels
-
-New labels available for use:
-- Type/Performance
-- Tech/Redis
-- Complexity/Simple
-- Complexity/Medium
-- Complexity/Complex
+Label taxonomy initialized. All required labels now present.
 ```
 
 ## Troubleshooting
@@ -238,18 +228,18 @@ New labels available for use:
 - Verify your API token has `read:org` and `repo` permissions
 - Ensure you're connected to the network
 
-**Error: Repository is not under an organization**
-- This plugin requires repositories to belong to an organization
-- Transfer the repository to an organization or create one
+**Error: Use 'owner/repo' format**
+- Ensure you're running from a directory with a git remote configured
+- Or pass the `repo` parameter explicitly: `GITEA_REPO=owner/repo` in `.env`
 
-**Error: Permission denied to update reference file**
-- Check file permissions on `skills/label-taxonomy/labels-reference.md`
-- Ensure you have write access to the plugin directory
+**Organization labels empty for org-owned repo**
+- Verify the organization has labels configured in Gitea
+- Check if the owner is truly an organization (not a user account)
+- User accounts don't have organization-level labels
 
-**No changes detected but labels seem wrong**
-- The reference file may be manually edited - review it
-- Try forcing a re-sync by deleting the reference file first
-- Check if you're comparing against the correct repository
+**User-owned repo (no org labels)**
+- This is expected behavior - user accounts can only have repository-level labels
+- The plugin will work with repo labels only and create missing required labels
 
 ## Best Practices
 
