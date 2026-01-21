@@ -1,10 +1,10 @@
 ---
-description: Synchronize label taxonomy from Gitea and update suggestion logic
+description: Fetch and validate label taxonomy from Gitea, create missing required labels
 ---
 
 # Sync Label Taxonomy from Gitea
 
-This command synchronizes the label taxonomy from Gitea (organization + repository labels) and updates the local reference file used by the label suggestion logic.
+This command fetches the current label taxonomy from Gitea (organization + repository labels), validates that required labels exist, and creates any missing ones. Labels are fetched dynamically - no local files are created or modified.
 
 ## Why Label Sync Matters
 
