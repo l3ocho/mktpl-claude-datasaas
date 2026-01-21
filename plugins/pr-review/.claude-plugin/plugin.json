@@ -16,56 +16,7 @@
     "performance",
     "multi-agent"
   ],
-  "commands": [
-    {
-      "name": "pr-review",
-      "description": "Full multi-agent PR review (security, performance, maintainability, tests)",
-      "file": "commands/pr-review.md"
-    },
-    {
-      "name": "pr-summary",
-      "description": "Quick summary of PR changes without full review",
-      "file": "commands/pr-summary.md"
-    },
-    {
-      "name": "pr-findings",
-      "description": "List and filter review findings by category or confidence",
-      "file": "commands/pr-findings.md"
-    }
-  ],
-  "agents": [
-    {
-      "name": "coordinator",
-      "description": "Orchestrates the multi-agent review process",
-      "file": "agents/coordinator.md"
-    },
-    {
-      "name": "security-reviewer",
-      "description": "Analyzes code for security vulnerabilities",
-      "file": "agents/security-reviewer.md"
-    },
-    {
-      "name": "performance-analyst",
-      "description": "Identifies performance issues and optimization opportunities",
-      "file": "agents/performance-analyst.md"
-    },
-    {
-      "name": "maintainability-auditor",
-      "description": "Reviews code quality, patterns, and maintainability",
-      "file": "agents/maintainability-auditor.md"
-    },
-    {
-      "name": "test-validator",
-      "description": "Validates test coverage and test quality",
-      "file": "agents/test-validator.md"
-    }
-  ],
-  "skills": [
-    {
-      "name": "review-patterns",
-      "description": "Code review patterns and confidence scoring rules",
-      "path": "skills/review-patterns"
-    }
-  ],
-  "mcpServers": ["gitea"]
+  "commands": ["./commands/"],
+  "agents": ["./agents/"],
+  "mcpServers": ["./.mcp.json"]
 }
