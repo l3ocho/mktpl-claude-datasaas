@@ -51,11 +51,15 @@ class GiteaConfig:
                 "cat > ~/.config/claude/gitea.env"
             )
 
+        # Find project directory (MCP server cwd is plugin dir, not project dir)
+        project_dir = self._find_project_directory()
+
         # Load project config (overrides system)
-        project_config = Path.cwd() / '.env'
-        if project_config.exists():
-            load_dotenv(project_config, override=True)
-            logger.info(f"Loaded project configuration from {project_config}")
+        if project_dir:
+            project_config = project_dir / '.env'
+            if project_config.exists():
+                load_dotenv(project_config, override=True)
+                logger.info(f"Loaded project configuration from {project_config}")
 
         # Extract values
         self.api_url = os.getenv('GITEA_API_URL')
@@ -63,8 +67,8 @@ class GiteaConfig:
         self.repo = os.getenv('GITEA_REPO')  # Optional, must be owner/repo format
 
         # Auto-detect repo from git remote if not specified
-        if not self.repo:
-            self.repo = self._detect_repo_from_git()
+        if not self.repo and project_dir:
+            self.repo = self._detect_repo_from_git(project_dir)
             if self.repo:
                 logger.info(f"Auto-detected repository from git remote: {self.repo}")
 
@@ -106,9 +110,56 @@ class GiteaConfig:
                 "Check your ~/.config/claude/gitea.env file"
             )
 
-    def _detect_repo_from_git(self) -> Optional[str]:
+    def _find_project_directory(self) -> Optional[Path]:
+        """
+        Find the user's project directory.
+
+        The MCP server runs with cwd set to the plugin directory, not the
+        user's project. We need to find the actual project directory using
+        various heuristics.
+
+        Returns:
+            Path to project directory, or None if not found
+        """
+        # Strategy 1: Check CLAUDE_PROJECT_DIR environment variable
+        project_dir = os.getenv('CLAUDE_PROJECT_DIR')
+        if project_dir:
+            path = Path(project_dir)
+            if path.exists():
+                logger.info(f"Found project directory from CLAUDE_PROJECT_DIR: {path}")
+                return path
+
+        # Strategy 2: Check PWD (original working directory before cwd override)
+        pwd = os.getenv('PWD')
+        if pwd:
+            path = Path(pwd)
+            # Verify it has .git or .env (indicates a project)
+            if path.exists() and ((path / '.git').exists() or (path / '.env').exists()):
+                logger.info(f"Found project directory from PWD: {path}")
+                return path
+
+        # Strategy 3: Check current working directory
+        # This handles test scenarios and cases where cwd is actually the project
+        cwd = Path.cwd()
+        if (cwd / '.git').exists() or (cwd / '.env').exists():
+            logger.info(f"Found project directory from cwd: {cwd}")
+            return cwd
+
+        # Strategy 4: Check if GITEA_REPO is already set (user configured it)
+        # If so, we don't need to find the project directory for git detection
+        if os.getenv('GITEA_REPO'):
+            logger.debug("GITEA_REPO already set, skipping project directory detection")
+            return None
+
+        logger.debug("Could not determine project directory")
+        return None
+
+    def _detect_repo_from_git(self, project_dir: Optional[Path] = None) -> Optional[str]:
         """
         Auto-detect repository from git remote origin URL.
+
+        Args:
+            project_dir: Directory to run git command from (defaults to cwd)
 
         Supports URL formats:
         - SSH: ssh://git@host:port/owner/repo.git
@@ -124,7 +175,8 @@ class GiteaConfig:
                 ['git', 'remote', 'get-url', 'origin'],
                 capture_output=True,
                 text=True,
-                timeout=5
+                timeout=5,
+                cwd=str(project_dir) if project_dir else None
             )
             if result.returncode != 0:
                 logger.debug("No git remote 'origin' found")
