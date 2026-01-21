@@ -211,3 +211,50 @@ def test_parse_git_url_invalid_format():
     url = "not-a-valid-url"
     result = config._parse_git_url(url)
     assert result is None
+
+
+def test_find_project_directory_from_env(tmp_path, monkeypatch):
+    """Test finding project directory from CLAUDE_PROJECT_DIR env var"""
+    project_dir = tmp_path / 'my-project'
+    project_dir.mkdir()
+    (project_dir / '.git').mkdir()
+
+    monkeypatch.setenv('CLAUDE_PROJECT_DIR', str(project_dir))
+
+    config = GiteaConfig()
+    result = config._find_project_directory()
+
+    assert result == project_dir
+
+
+def test_find_project_directory_from_cwd(tmp_path, monkeypatch):
+    """Test finding project directory from cwd with .env file"""
+    project_dir = tmp_path / 'project'
+    project_dir.mkdir()
+    (project_dir / '.env').write_text("GITEA_REPO=test/repo")
+
+    monkeypatch.chdir(project_dir)
+    # Clear env vars that might interfere
+    monkeypatch.delenv('CLAUDE_PROJECT_DIR', raising=False)
+    monkeypatch.delenv('PWD', raising=False)
+
+    config = GiteaConfig()
+    result = config._find_project_directory()
+
+    assert result == project_dir
+
+
+def test_find_project_directory_none_when_no_markers(tmp_path, monkeypatch):
+    """Test returns None when no project markers found"""
+    empty_dir = tmp_path / 'empty'
+    empty_dir.mkdir()
+
+    monkeypatch.chdir(empty_dir)
+    monkeypatch.delenv('CLAUDE_PROJECT_DIR', raising=False)
+    monkeypatch.delenv('PWD', raising=False)
+    monkeypatch.delenv('GITEA_REPO', raising=False)
+
+    config = GiteaConfig()
+    result = config._find_project_directory()
+
+    assert result is None
