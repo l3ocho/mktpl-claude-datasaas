@@ -225,10 +225,12 @@ Use AskUserQuestion:
 Read the config file and verify it has non-placeholder values:
 
 ```bash
-source ~/.config/claude/gitea.env && echo "URL: $GITEA_URL" && echo "ORG: $GITEA_ORG" && echo "TOKEN_LENGTH: ${#GITEA_TOKEN}"
+source ~/.config/claude/gitea.env && echo "URL: $GITEA_URL" && echo "TOKEN_LENGTH: ${#GITEA_TOKEN}"
 ```
 
 If TOKEN_LENGTH is less than 10 or contains "PASTE" or "your_", the token hasn't been set properly.
+
+**Note:** GITEA_ORG is configured per-project in `.env`, not in the system-level config.
 
 **Test connectivity (optional but recommended):**
 
