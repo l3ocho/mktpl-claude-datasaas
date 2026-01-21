@@ -18,7 +18,7 @@ Fast setup for a new project when system-level configuration is already complete
 ### Step 1: Verify System Configuration
 
 ```bash
-cat ~/.config/claude/gitea.env 2>/dev/null | grep -v "^#" | grep -v "PASTE_YOUR" | grep "GITEA_TOKEN=" && echo "SYSTEM_OK" || echo "SYSTEM_MISSING"
+cat ~/.config/claude/gitea.env 2>/dev/null | grep -v "^#" | grep -v "PASTE_YOUR" | grep "GITEA_API_TOKEN=" && echo "SYSTEM_OK" || echo "SYSTEM_MISSING"
 ```
 
 **If SYSTEM_MISSING:**
@@ -67,7 +67,7 @@ git remote get-url origin 2>/dev/null | sed 's/.*[:/]\([^/]*\)\.git$/\1/' | sed 
 
 ```bash
 source ~/.config/claude/gitea.env
-curl -s -o /dev/null -w "%{http_code}" -H "Authorization: token $GITEA_TOKEN" "$GITEA_URL/api/v1/repos/<detected-org>/<detected-repo>"
+curl -s -o /dev/null -w "%{http_code}" -H "Authorization: token $GITEA_API_TOKEN" "$GITEA_API_URL/repos/<detected-org>/<detected-repo>"
 ```
 
 | HTTP Code | Action |

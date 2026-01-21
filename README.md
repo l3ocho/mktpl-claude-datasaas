@@ -19,7 +19,7 @@ AI-guided sprint planning with full Gitea integration. Transforms a proven 15-sp
 - Branch-aware security (development/staging/production)
 - Pre-sprint-close code quality review and test verification
 
-**Commands:** `/sprint-plan`, `/sprint-start`, `/sprint-status`, `/sprint-close`, `/labels-sync`, `/initial-setup`, `/review`, `/test-check`, `/test-gen`
+**Commands:** `/sprint-plan`, `/sprint-start`, `/sprint-status`, `/sprint-close`, `/labels-sync`, `/initial-setup`, `/project-init`, `/project-sync`, `/review`, `/test-check`, `/test-gen`
 
 #### [git-flow](./plugins/git-flow/README.md) *NEW in v3.0.0*
 **Git Workflow Automation**
@@ -44,7 +44,7 @@ Comprehensive pull request review using specialized agents.
 - Actionable feedback with suggested fixes
 - Gitea integration for automated review submission
 
-**Commands:** `/pr-review`, `/pr-summary`, `/pr-findings`
+**Commands:** `/pr-review`, `/pr-summary`, `/pr-findings`, `/initial-setup`, `/project-init`, `/project-sync`
 
 #### [claude-config-maintainer](./plugins/claude-config-maintainer/README.md)
 **CLAUDE.md Optimization and Maintenance**
@@ -94,7 +94,7 @@ Security vulnerability detection and code refactoring tools.
 
 Full CRUD operations for network infrastructure management directly from Claude Code.
 
-**Commands:** `/cmdb-search`, `/cmdb-device`, `/cmdb-ip`, `/cmdb-site`
+**Commands:** `/initial-setup`, `/cmdb-search`, `/cmdb-device`, `/cmdb-ip`, `/cmdb-site`
 
 ## MCP Servers
 
@@ -157,47 +157,32 @@ Add to `.claude/settings.json` in your target project:
 }
 ```
 
-### Configure MCP Server Dependencies
+### Run Interactive Setup
 
-Install dependencies for shared MCP servers:
+After installing plugins, run the setup wizard:
 
-```bash
-# Gitea MCP (for projman, pr-review)
-cd mcp-servers/gitea
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-deactivate
-
-# NetBox MCP (for cmdb-assistant)
-cd ../netbox
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-deactivate
+```
+/initial-setup
 ```
 
-### Configure Credentials
+The wizard handles everything:
+- Sets up MCP server (Python venv + dependencies)
+- Creates system config (`~/.config/claude/gitea.env`)
+- Guides you through adding your API token
+- Detects and validates your repository via API
+- Creates project config (`.env`)
 
-See [docs/CONFIGURATION.md](./docs/CONFIGURATION.md) for complete setup instructions.
-
-**Quick start:**
-```bash
-mkdir -p ~/.config/claude
-
-# Gitea credentials
-cat > ~/.config/claude/gitea.env << 'EOF'
-GITEA_URL=https://gitea.example.com
-GITEA_TOKEN=your_token
-GITEA_ORG=your_org
-EOF
-chmod 600 ~/.config/claude/gitea.env
-
-# Project-level settings
-cat > .env << 'EOF'
-GITEA_REPO=your-repository-name
-EOF
+**For new projects** (when system is already configured):
 ```
+/project-init
+```
+
+**After moving a repository:**
+```
+/project-sync
+```
+
+See [docs/CONFIGURATION.md](./docs/CONFIGURATION.md) for manual setup and advanced options.
 
 ## Verifying Plugin Installation
 
@@ -269,6 +254,8 @@ leo-claude-mktplace/
 |----------|-------------|
 | [CLAUDE.md](./CLAUDE.md) | Main project instructions |
 | [CONFIGURATION.md](./docs/CONFIGURATION.md) | Centralized setup guide |
+| [COMMANDS-CHEATSHEET.md](./docs/COMMANDS-CHEATSHEET.md) | All commands quick reference |
+| [UPDATING.md](./docs/UPDATING.md) | Update guide for the marketplace |
 | [CANONICAL-PATHS.md](./docs/CANONICAL-PATHS.md) | Authoritative path reference |
 | [CHANGELOG.md](./CHANGELOG.md) | Version history |
 

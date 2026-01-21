@@ -134,10 +134,10 @@ setup_config_templates() {
         cat > "$config_dir/gitea.env" << 'EOF'
 # Gitea API Configuration
 # Update these values with your Gitea instance details
+# Note: GITEA_ORG is configured per-project in .env
 
-GITEA_URL=https://gitea.example.com
-GITEA_TOKEN=your_gitea_token_here
-GITEA_ORG=your_organization_name
+GITEA_API_URL=https://gitea.example.com/api/v1
+GITEA_API_TOKEN=your_gitea_token_here
 EOF
         chmod 600 "$config_dir/gitea.env"
         log_success "gitea.env template created"
@@ -152,8 +152,8 @@ EOF
 # NetBox API Configuration
 # Update these values with your NetBox instance details
 
-NETBOX_URL=https://netbox.example.com
-NETBOX_TOKEN=your_netbox_token_here
+NETBOX_API_URL=https://netbox.example.com/api
+NETBOX_API_TOKEN=your_netbox_token_here
 EOF
         chmod 600 "$config_dir/netbox.env"
         log_success "netbox.env template created"
@@ -189,8 +189,8 @@ validate_config() {
     # Check Gitea config has real values
     if [[ -f "$config_dir/gitea.env" ]]; then
         source "$config_dir/gitea.env"
-        if [[ "${GITEA_TOKEN:-}" == "your_gitea_token_here" ]] || [[ -z "${GITEA_TOKEN:-}" ]]; then
-            log_todo "Update GITEA_TOKEN in ~/.config/claude/gitea.env"
+        if [[ "${GITEA_API_TOKEN:-}" == "your_gitea_token_here" ]] || [[ -z "${GITEA_API_TOKEN:-}" ]]; then
+            log_todo "Update GITEA_API_TOKEN in ~/.config/claude/gitea.env"
         else
             log_success "Gitea configuration appears valid"
         fi
@@ -199,8 +199,8 @@ validate_config() {
     # Check NetBox config has real values
     if [[ -f "$config_dir/netbox.env" ]]; then
         source "$config_dir/netbox.env"
-        if [[ "${NETBOX_TOKEN:-}" == "your_netbox_token_here" ]] || [[ -z "${NETBOX_TOKEN:-}" ]]; then
-            log_todo "Update NETBOX_TOKEN in ~/.config/claude/netbox.env"
+        if [[ "${NETBOX_API_TOKEN:-}" == "your_netbox_token_here" ]] || [[ -z "${NETBOX_API_TOKEN:-}" ]]; then
+            log_todo "Update NETBOX_API_TOKEN in ~/.config/claude/netbox.env"
         else
             log_success "NetBox configuration appears valid"
         fi

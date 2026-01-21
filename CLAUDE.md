@@ -140,7 +140,7 @@ leo-claude-mktplace/
 
 | Level | Location | Purpose |
 |-------|----------|---------|
-| System | `~/.config/claude/gitea.env` | Credentials (GITEA_URL, GITEA_TOKEN) |
+| System | `~/.config/claude/gitea.env` | Credentials (GITEA_API_URL, GITEA_API_TOKEN) |
 | Project | `.env` in project root | Repository specification (GITEA_ORG, GITEA_REPO) |
 
 **Note:** `GITEA_ORG` is at project level since different projects may belong to different organizations.
