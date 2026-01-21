@@ -1,5 +1,5 @@
 {
-  "name": "lm-claude-plugins",
+  "name": "leo-claude-mktplace",
   "owner": {
     "name": "Leo Miranda",
     "email": "leobmiranda@gmail.com"
@@ -18,8 +18,8 @@
         "name": "Leo Miranda",
         "email": "leobmiranda@gmail.com"
       },
-      "homepage": "https://gitea.hotserv.cloud/personal-projects/support-claude-mktplace/src/branch/main/plugins/projman/README.md",
-      "repository": "https://gitea.hotserv.cloud/personal-projects/support-claude-mktplace.git",
+      "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/projman/README.md",
+      "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
       "mcpServers": ["gitea"],
       "integrationFile": "claude-md-integration.md",
       "category": "development",
@@ -35,8 +35,8 @@
         "name": "Leo Miranda",
         "email": "leobmiranda@gmail.com"
       },
-      "homepage": "https://gitea.hotserv.cloud/personal-projects/support-claude-mktplace/src/branch/main/plugins/doc-guardian/README.md",
-      "repository": "https://gitea.hotserv.cloud/personal-projects/support-claude-mktplace.git",
+      "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/doc-guardian/README.md",
+      "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
       "mcpServers": [],
       "integrationFile": "claude-md-integration.md",
       "hooks": ["PostToolUse", "Stop"],
@@ -53,8 +53,8 @@
         "name": "Leo Miranda",
         "email": "leobmiranda@gmail.com"
       },
-      "homepage": "https://gitea.hotserv.cloud/personal-projects/support-claude-mktplace/src/branch/main/plugins/code-sentinel/README.md",
-      "repository": "https://gitea.hotserv.cloud/personal-projects/support-claude-mktplace.git",
+      "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/code-sentinel/README.md",
+      "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
       "mcpServers": [],
       "integrationFile": "claude-md-integration.md",
       "hooks": ["PreToolUse"],
@@ -71,8 +71,8 @@
         "name": "Leo Miranda",
         "email": "leobmiranda@gmail.com"
       },
-      "homepage": "https://gitea.hotserv.cloud/personal-projects/support-claude-mktplace/src/branch/main/plugins/project-hygiene/README.md",
-      "repository": "https://gitea.hotserv.cloud/personal-projects/support-claude-mktplace.git",
+      "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/project-hygiene/README.md",
+      "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
       "mcpServers": [],
       "integrationFile": "claude-md-integration.md",
       "hooks": ["PostToolUse"],
@@ -89,8 +89,8 @@
         "name": "Leo Miranda",
         "email": "leobmiranda@gmail.com"
       },
-      "homepage": "https://gitea.hotserv.cloud/personal-projects/support-claude-mktplace/src/branch/main/plugins/cmdb-assistant/README.md",
-      "repository": "https://gitea.hotserv.cloud/personal-projects/support-claude-mktplace.git",
+      "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/cmdb-assistant/README.md",
+      "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
       "mcpServers": ["netbox"],
       "integrationFile": "claude-md-integration.md",
       "category": "infrastructure",
@@ -106,8 +106,8 @@
         "name": "Leo Miranda",
         "email": "leobmiranda@gmail.com"
       },
-      "homepage": "https://gitea.hotserv.cloud/personal-projects/support-claude-mktplace/src/branch/main/plugins/claude-config-maintainer/README.md",
-      "repository": "https://gitea.hotserv.cloud/personal-projects/support-claude-mktplace.git",
+      "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/claude-config-maintainer/README.md",
+      "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
       "mcpServers": [],
       "integrationFile": "claude-md-integration.md",
       "category": "development",
@@ -123,8 +123,8 @@
         "name": "Leo Miranda",
         "email": "leobmiranda@gmail.com"
       },
-      "homepage": "https://gitea.hotserv.cloud/personal-projects/support-claude-mktplace/src/branch/main/plugins/clarity-assist/README.md",
-      "repository": "https://gitea.hotserv.cloud/personal-projects/support-claude-mktplace.git",
+      "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/clarity-assist/README.md",
+      "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
       "mcpServers": [],
       "integrationFile": "claude-md-integration.md",
       "category": "productivity",
@@ -140,8 +140,8 @@
         "name": "Leo Miranda",
         "email": "leobmiranda@gmail.com"
       },
-      "homepage": "https://gitea.hotserv.cloud/personal-projects/support-claude-mktplace/src/branch/main/plugins/git-flow/README.md",
-      "repository": "https://gitea.hotserv.cloud/personal-projects/support-claude-mktplace.git",
+      "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/git-flow/README.md",
+      "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
       "mcpServers": [],
       "integrationFile": "claude-md-integration.md",
       "category": "development",
@@ -157,8 +157,8 @@
         "name": "Leo Miranda",
         "email": "leobmiranda@gmail.com"
       },
-      "homepage": "https://gitea.hotserv.cloud/personal-projects/support-claude-mktplace/src/branch/main/plugins/pr-review/README.md",
-      "repository": "https://gitea.hotserv.cloud/personal-projects/support-claude-mktplace.git",
+      "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/pr-review/README.md",
+      "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
       "mcpServers": ["gitea"],
       "integrationFile": "claude-md-integration.md",
       "category": "development",

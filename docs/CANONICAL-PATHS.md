@@ -9,7 +9,7 @@ Last Updated: 2026-01-20 (v3.0.0)
 ## Repository Root Structure
 
 ```
-lm-claude-plugins/
+leo-claude-mktplace/
 ├── .claude/                    # Claude Code local settings
 ├── .claude-plugin/             # Marketplace manifest
 │   └── marketplace.json
@@ -232,7 +232,7 @@ plugins/pr-review/mcp-servers/gitea -> ../../../mcp-servers/gitea
 | 2026-01-20 | v3.0.0: MCP servers moved to root with symlinks | Claude Code |
 | 2026-01-20 | v3.0.0: Added clarity-assist, git-flow, pr-review plugins | Claude Code |
 | 2026-01-20 | v3.0.0: Added docs/CONFIGURATION.md | Claude Code |
-| 2026-01-20 | v3.0.0: Renamed marketplace to lm-claude-plugins | Claude Code |
+| 2026-01-20 | v3.0.0: Renamed marketplace to leo-claude-mktplace | Claude Code |
 | 2026-01-20 | Removed docs/references/ (obsolete planning docs) | Claude Code |
 | 2026-01-19 | Added claude-md-integration.md path pattern | Claude Code |
 | 2025-12-15 | Restructured: MCP servers bundled in plugins | Claude Code |

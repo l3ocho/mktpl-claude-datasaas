@@ -167,4 +167,4 @@ The plugin uses the shared NetBox MCP server at `../mcp-servers/netbox/`.
 
 ## License
 
-MIT License - Part of the Claude Code Marketplace.
+MIT License - Part of the Leo Claude Marketplace.

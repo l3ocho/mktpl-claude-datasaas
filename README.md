@@ -138,7 +138,7 @@ Comprehensive NetBox REST API integration for infrastructure management.
 
 **Option 1 - CLI command (recommended):**
 ```bash
-/plugin marketplace add https://gitea.hotserv.cloud/personal-projects/support-claude-mktplace.git
+/plugin marketplace add https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git
 ```
 
 **Option 2 - Settings file (for team distribution):**
@@ -147,10 +147,10 @@ Add to `.claude/settings.json` in your target project:
 ```json
 {
   "extraKnownMarketplaces": {
-    "lm-claude-plugins": {
+    "leo-claude-mktplace": {
       "source": {
         "source": "git",
-        "url": "https://gitea.hotserv.cloud/personal-projects/support-claude-mktplace.git"
+        "url": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git"
       }
     }
   }
@@ -202,7 +202,7 @@ EOF
 ## Repository Structure
 
 ```
-lm-claude-plugins/
+leo-claude-mktplace/
 ├── .claude-plugin/                # Marketplace manifest
 │   └── marketplace.json
 ├── mcp-servers/                   # SHARED MCP servers (v3.0.0+)
@@ -240,4 +240,4 @@ MIT License
 ## Support
 
 - **Issues**: Contact repository maintainer
-- **Repository**: `https://gitea.hotserv.cloud/personal-projects/support-claude-mktplace.git`
+- **Repository**: `https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git`
