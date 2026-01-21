@@ -25,57 +25,38 @@ Projman transforms a proven 15-sprint workflow into a distributable Claude Code 
 - Python 3.10+ installed
 - Git repository initialized
 
-### 2. Install MCP Server
+### 2. Run Interactive Setup
 
-The plugin bundles the Gitea MCP server:
+The setup wizard handles everything:
 
-```bash
-cd plugins/projman/mcp-servers/gitea
-python3 -m venv .venv
-source .venv/bin/activate  # or .venv\Scripts\activate on Windows
-pip install -r requirements.txt
 ```
-
-See [CONFIGURATION.md](./CONFIGURATION.md) for detailed setup instructions.
-
-### 3. Configure System-Level Settings
-
-Create system-wide configuration with your Gitea credentials:
-
-```bash
-mkdir -p ~/.config/claude
-
-# Gitea configuration
-cat > ~/.config/claude/gitea.env << 'EOF'
-GITEA_URL=https://gitea.example.com
-GITEA_TOKEN=your_gitea_token_here
-GITEA_ORG=your_organization
-EOF
-
-# Secure the file
-chmod 600 ~/.config/claude/gitea.env
-```
-
-### 4. Configure Project-Level Settings
-
-In your project root directory, create a `.env` file:
-
-```bash
-# In your project directory
-cat > .env << 'EOF'
-GITEA_REPO=your-repo-name
-EOF
-```
-
-### 5. Run Initial Setup
-
-```bash
 /initial-setup
 ```
 
-### 6. Start Planning!
+This will:
+- Set up the MCP server (Python venv + dependencies)
+- Create system config (`~/.config/claude/gitea.env`)
+- Guide you through adding your Gitea token
+- Detect and validate your repository via API
+- Create project config (`.env`)
 
-```bash
+**For new projects** (when system is already configured):
+
+```
+/project-init
+```
+
+**After moving a repository:**
+
+```
+/project-sync
+```
+
+See [docs/CONFIGURATION.md](../../docs/CONFIGURATION.md) for detailed instructions.
+
+### 3. Start Planning!
+
+```
 /sprint-plan
 ```
 
@@ -164,15 +145,40 @@ Synchronize label taxonomy from Gitea.
 - When new labels are added to Gitea
 
 ### `/initial-setup`
-Run initial setup for a new project.
+Full interactive setup wizard.
 
 **What it does:**
-- Validates Gitea MCP server connection
-- Tests credential configuration
-- Syncs label taxonomy
-- Creates required directory structure
+- Checks Python version (requires 3.10+)
+- Sets up MCP server virtual environment
+- Creates system-level config (`~/.config/claude/gitea.env`)
+- Guides token setup (manual entry for security)
+- Detects and validates repository via Gitea API
+- Creates project-level config (`.env` with GITEA_ORG, GITEA_REPO)
 
-**When to use:** First time setting up projman for a project
+**When to use:** First time on a new machine
+
+### `/project-init`
+Quick project setup (assumes system config exists).
+
+**What it does:**
+- Verifies system configuration exists
+- Detects organization and repository from git remote
+- Validates via Gitea API
+- Creates project `.env` file
+
+**When to use:** Starting work on a new project
+
+### `/project-sync`
+Sync configuration with current git remote.
+
+**What it does:**
+- Compares .env values with git remote URL
+- Validates new repository via Gitea API
+- Updates .env if mismatch detected
+
+**When to use:** After moving or renaming a repository
+
+**Note:** A SessionStart hook automatically detects mismatches and warns you to run `/project-sync`.
 
 ### `/review`
 Pre-sprint-close code quality review.
