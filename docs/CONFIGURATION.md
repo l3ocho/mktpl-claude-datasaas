@@ -160,8 +160,8 @@ This marketplace uses a **hybrid configuration** approach:
 │                    SYSTEM-LEVEL (once per machine)             │
 │                    ~/.config/claude/                            │
 ├─────────────────────────────────────────────────────────────────┤
-│  gitea.env     │  GITEA_URL, GITEA_TOKEN                       │
-│  netbox.env    │  NETBOX_URL, NETBOX_TOKEN                     │
+│  gitea.env     │  GITEA_API_URL, GITEA_API_TOKEN                       │
+│  netbox.env    │  NETBOX_API_URL, NETBOX_API_TOKEN                     │
 │  git-flow.env  │  GIT_WORKFLOW_STYLE, GIT_DEFAULT_BASE, etc.   │
 └─────────────────────────────────────────────────────────────────┘
                               │
@@ -250,8 +250,8 @@ mkdir -p ~/.config/claude
 
 # Gitea configuration (credentials only)
 cat > ~/.config/claude/gitea.env << 'EOF'
-GITEA_URL=https://gitea.example.com
-GITEA_TOKEN=your_token_here
+GITEA_API_URL=https://gitea.example.com
+GITEA_API_TOKEN=your_token_here
 EOF
 chmod 600 ~/.config/claude/gitea.env
 ```
@@ -298,14 +298,14 @@ Located in `~/.config/claude/`:
 
 ```bash
 # ~/.config/claude/gitea.env
-GITEA_URL=https://gitea.example.com
-GITEA_TOKEN=your_gitea_token_here
+GITEA_API_URL=https://gitea.example.com/api/v1
+GITEA_API_TOKEN=your_gitea_token_here
 ```
 
 | Variable | Description | Example |
 |----------|-------------|---------|
-| `GITEA_URL` | Gitea base URL (no `/api/v1`) | `https://gitea.example.com` |
-| `GITEA_TOKEN` | Personal access token | `abc123...` |
+| `GITEA_API_URL` | Gitea API endpoint (with `/api/v1`) | `https://gitea.example.com/api/v1` |
+| `GITEA_API_TOKEN` | Personal access token | `abc123...` |
 
 **Note:** `GITEA_ORG` is configured at the project level (see below) since different projects may belong to different organizations.
 
@@ -323,14 +323,14 @@ GITEA_TOKEN=your_gitea_token_here
 
 ```bash
 # ~/.config/claude/netbox.env
-NETBOX_URL=https://netbox.example.com
-NETBOX_TOKEN=your_netbox_token_here
+NETBOX_API_URL=https://netbox.example.com
+NETBOX_API_TOKEN=your_netbox_token_here
 ```
 
 | Variable | Description | Example |
 |----------|-------------|---------|
-| `NETBOX_URL` | NetBox base URL | `https://netbox.example.com` |
-| `NETBOX_TOKEN` | API token | `abc123...` |
+| `NETBOX_API_URL` | NetBox base URL | `https://netbox.example.com` |
+| `NETBOX_API_TOKEN` | API token | `abc123...` |
 
 ### Git-Flow Configuration
 
@@ -456,7 +456,7 @@ This helps when you:
 
 ```bash
 source ~/.config/claude/gitea.env
-curl -H "Authorization: token $GITEA_TOKEN" "$GITEA_URL/api/v1/user"
+curl -H "Authorization: token $GITEA_API_TOKEN" "$GITEA_API_URL/user"
 ```
 
 ### Verify Project Setup
@@ -492,7 +492,7 @@ stat ~/.config/claude/gitea.env
 ```bash
 # Test token directly
 source ~/.config/claude/gitea.env
-curl -H "Authorization: token $GITEA_TOKEN" "$GITEA_URL/api/v1/user"
+curl -H "Authorization: token $GITEA_API_TOKEN" "$GITEA_API_URL/user"
 ```
 
 If you get 401, regenerate your token in Gitea.
