@@ -20,8 +20,7 @@
       },
       "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/projman/README.md",
       "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
-      "mcpServers": ["gitea"],
-      "integrationFile": "claude-md-integration.md",
+      "mcpServers": ["./.mcp.json"],
       "category": "development",
       "tags": ["sprint", "agile", "gitea", "project-management"],
       "license": "MIT"
@@ -37,9 +36,7 @@
       },
       "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/doc-guardian/README.md",
       "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
-      "mcpServers": [],
-      "integrationFile": "claude-md-integration.md",
-      "hooks": ["PostToolUse", "Stop"],
+      "hooks": ["./hooks/hooks.json"],
       "category": "productivity",
       "tags": ["documentation", "drift-detection", "sync"],
       "license": "MIT"
@@ -55,9 +52,7 @@
       },
       "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/code-sentinel/README.md",
       "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
-      "mcpServers": [],
-      "integrationFile": "claude-md-integration.md",
-      "hooks": ["PreToolUse"],
+      "hooks": ["./hooks/hooks.json"],
       "category": "security",
       "tags": ["security-scan", "refactoring", "vulnerabilities"],
       "license": "MIT"
@@ -73,9 +68,7 @@
       },
       "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/project-hygiene/README.md",
       "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
-      "mcpServers": [],
-      "integrationFile": "claude-md-integration.md",
-      "hooks": ["PostToolUse"],
+      "hooks": ["./hooks/hooks.json"],
       "category": "productivity",
       "tags": ["cleanup", "automation", "hygiene"],
       "license": "MIT"
@@ -91,8 +84,7 @@
       },
       "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/cmdb-assistant/README.md",
       "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
-      "mcpServers": ["netbox"],
-      "integrationFile": "claude-md-integration.md",
+      "mcpServers": ["./.mcp.json"],
       "category": "infrastructure",
       "tags": ["cmdb", "netbox", "dcim", "ipam"],
       "license": "MIT"
@@ -108,8 +100,6 @@
       },
       "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/claude-config-maintainer/README.md",
       "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
-      "mcpServers": [],
-      "integrationFile": "claude-md-integration.md",
       "category": "development",
       "tags": ["claude-md", "configuration", "optimization"],
       "license": "MIT"
@@ -125,8 +115,6 @@
       },
       "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/clarity-assist/README.md",
       "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
-      "mcpServers": [],
-      "integrationFile": "claude-md-integration.md",
       "category": "productivity",
       "tags": ["prompts", "requirements", "clarification", "nd-friendly"],
       "license": "MIT"
@@ -142,8 +130,6 @@
       },
       "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/git-flow/README.md",
       "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
-      "mcpServers": [],
-      "integrationFile": "claude-md-integration.md",
       "category": "development",
       "tags": ["git", "workflow", "commits", "branching"],
       "license": "MIT"
@@ -159,22 +145,10 @@
       },
       "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/pr-review/README.md",
       "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
-      "mcpServers": ["gitea"],
-      "integrationFile": "claude-md-integration.md",
+      "mcpServers": ["./.mcp.json"],
       "category": "development",
       "tags": ["code-review", "pull-requests", "security", "quality"],
       "license": "MIT"
     }
-  ],
-  "pluginDetection": {
-    "mcpServerMapping": {
-      "gitea": "projman",
-      "netbox": "cmdb-assistant"
-    },
-    "hookMapping": {
-      "PostToolUse:Write|Edit": "project-hygiene",
-      "PostToolUse:Write|Edit|MultiEdit": "doc-guardian",
-      "PreToolUse:Write|Edit|MultiEdit": "code-sentinel"
-    }
-  }
+  ]
 }
