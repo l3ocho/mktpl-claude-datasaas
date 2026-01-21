@@ -28,7 +28,12 @@ A plugin marketplace for Claude Code containing:
 # Validate marketplace compliance
 ./scripts/validate-marketplace.sh
 
-# Run projman commands (in a target project with plugin installed)
+# Setup commands (in a target project with plugin installed)
+/initial-setup    # First time: full setup wizard
+/project-init     # New project: quick config
+/project-sync     # After repo move: sync config
+
+# Run projman commands
 /sprint-plan      # Start sprint planning
 /sprint-status    # Check progress
 /review           # Pre-close code quality review
@@ -50,18 +55,20 @@ leo-claude-mktplace/
 │   │   ├── .claude-plugin/plugin.json
 │   │   ├── .mcp.json
 │   │   ├── mcp-servers/gitea -> ../../../mcp-servers/gitea  # SYMLINK
-│   │   ├── commands/             # 9 commands
+│   │   ├── commands/             # 12 commands (incl. setup)
+│   │   ├── hooks/                # SessionStart mismatch detection
 │   │   ├── agents/               # 4 agents
 │   │   └── skills/label-taxonomy/
-│   ├── git-flow/                 # Git workflow automation (NEW v3.0.0)
+│   ├── git-flow/                 # Git workflow automation
 │   │   ├── .claude-plugin/plugin.json
 │   │   ├── commands/             # 8 commands
 │   │   └── agents/
-│   ├── pr-review/                # Multi-agent PR review (NEW v3.0.0)
+│   ├── pr-review/                # Multi-agent PR review
 │   │   ├── .claude-plugin/plugin.json
 │   │   ├── .mcp.json
 │   │   ├── mcp-servers/gitea -> ../../../mcp-servers/gitea  # SYMLINK
-│   │   ├── commands/             # 3 commands
+│   │   ├── commands/             # 6 commands (incl. setup)
+│   │   ├── hooks/                # SessionStart mismatch detection
 │   │   └── agents/               # 5 agents
 │   ├── clarity-assist/           # Prompt optimization (NEW v3.0.0)
 │   │   ├── .claude-plugin/plugin.json
@@ -133,8 +140,10 @@ leo-claude-mktplace/
 
 | Level | Location | Purpose |
 |-------|----------|---------|
-| System | `~/.config/claude/gitea.env` | Credentials (GITEA_URL, GITEA_TOKEN, GITEA_ORG) |
-| Project | `.env` in project root | Repository specification (GITEA_REPO) |
+| System | `~/.config/claude/gitea.env` | Credentials (GITEA_URL, GITEA_TOKEN) |
+| Project | `.env` in project root | Repository specification (GITEA_ORG, GITEA_REPO) |
+
+**Note:** `GITEA_ORG` is at project level since different projects may belong to different organizations.
 
 ### Branch-Aware Security
 

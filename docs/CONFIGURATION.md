@@ -2,92 +2,331 @@
 
 Centralized configuration documentation for all plugins and MCP servers in the Leo Claude Marketplace.
 
-## Overview
+---
+
+## Quick Start
+
+**After installing the marketplace and plugins via Claude Code:**
+
+```
+/initial-setup
+```
+
+The interactive wizard handles everything except manually adding your API tokens.
+
+---
+
+## Setup Flow Diagram
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                           FIRST TIME SETUP                                  │
+│                         (once per machine)                                  │
+└─────────────────────────────────────────────────────────────────────────────┘
+                                    │
+                                    ▼
+                            /initial-setup
+                                    │
+     ┌──────────────────────────────┼──────────────────────────────┐
+     ▼                              ▼                              ▼
+┌─────────────┐            ┌─────────────────┐            ┌─────────────────┐
+│  PHASE 1    │            │    PHASE 2      │            │    PHASE 3      │
+│  Automated  │───────────▶│    Automated    │───────────▶│   Interactive   │
+│             │            │                 │            │                 │
+│ • Check     │            │ • Find MCP path │            │ • Ask Gitea URL │
+│   Python    │            │ • Create venv   │            │ • Ask Org name  │
+│   version   │            │ • Install deps  │            │ • Create config │
+└─────────────┘            └─────────────────┘            └─────────────────┘
+                                                                   │
+                                                                   ▼
+                                                   ┌───────────────────────────┐
+                                                   │        PHASE 4            │
+                                                   │     USER ACTION           │
+                                                   │                           │
+                                                   │  Edit config file to add  │
+                                                   │  API token (for security) │
+                                                   │                           │
+                                                   │  nano ~/.config/claude/   │
+                                                   │       gitea.env           │
+                                                   └───────────────────────────┘
+                                                                   │
+                                                                   ▼
+     ┌──────────────────────────────┬──────────────────────────────┐
+     ▼                              ▼                              ▼
+┌─────────────┐            ┌─────────────────┐            ┌─────────────────┐
+│  PHASE 5    │            │    PHASE 6      │            │    PHASE 7      │
+│ Interactive │            │    Automated    │            │    Automated    │
+│             │            │                 │            │                 │
+│ • Confirm   │            │ • Create .env   │            │ • Test API      │
+│   repo name │            │ • Check         │            │ • Show summary  │
+│   from git  │            │   .gitignore    │            │ • Restart note  │
+└─────────────┘            └─────────────────┘            └─────────────────┘
+                                                                   │
+                                                                   ▼
+                                                   ┌───────────────────────────┐
+                                                   │      RESTART SESSION      │
+                                                   │                           │
+                                                   │  MCP tools available      │
+                                                   │  after restart            │
+                                                   └───────────────────────────┘
+
+
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                          NEW PROJECT SETUP                                  │
+│                        (once per project)                                   │
+└─────────────────────────────────────────────────────────────────────────────┘
+                                    │
+                    ┌───────────────┴───────────────┐
+                    ▼                               ▼
+             /project-init                   /initial-setup
+             (direct path)                   (smart detection)
+                    │                               │
+                    │                    ┌──────────┴──────────┐
+                    │                    ▼                     ▼
+                    │              "Quick setup"         "Full setup"
+                    │               (skips to              (re-runs
+                    │              project config)          everything)
+                    │                    │                     │
+                    └────────────────────┴─────────────────────┘
+                                         │
+                                         ▼
+                              ┌─────────────────────┐
+                              │   PROJECT CONFIG    │
+                              │                     │
+                              │ • Detect repo from  │
+                              │   git remote        │
+                              │ • Confirm with user │
+                              │ • Create .env       │
+                              │ • Check .gitignore  │
+                              └─────────────────────┘
+                                         │
+                                         ▼
+                                      Done!
+```
+
+---
+
+## What Runs Automatically vs User Interaction
+
+### `/initial-setup` - Full Setup
+
+| Phase | Type | What Happens |
+|-------|------|--------------|
+| **1. Environment Check** | Automated | Verifies Python 3.10+ is installed |
+| **2. MCP Server Setup** | Automated | Finds plugin path, creates venv, installs dependencies |
+| **3. System Config Creation** | Interactive | Asks for Gitea URL and organization name |
+| **4. Token Entry** | **User Action** | User manually edits config file to add API token |
+| **5. Project Detection** | Interactive | Shows detected repo name, asks for confirmation |
+| **6. Project Config** | Automated | Creates `.env` file, checks `.gitignore` |
+| **7. Validation** | Automated | Tests API connectivity, shows summary |
+
+### `/project-init` - Quick Project Setup
+
+| Phase | Type | What Happens |
+|-------|------|--------------|
+| **1. Pre-flight Check** | Automated | Verifies system config exists |
+| **2. Project Detection** | Interactive | Shows detected repo name, asks for confirmation |
+| **3. Project Config** | Automated | Creates/updates `.env` file |
+| **4. Gitignore Check** | Interactive | Asks to add `.env` to `.gitignore` if missing |
+
+---
+
+## Three Commands for Different Scenarios
+
+| Command | When to Use | What It Does |
+|---------|-------------|--------------|
+| `/initial-setup` | First time on a machine | Full setup: MCP server + system config + project config |
+| `/project-init` | Starting a new project | Quick setup: project config only (assumes system is ready) |
+| `/project-sync` | After repo move/rename | Updates .env to match current git remote |
+
+**Typical workflow:**
+1. Install plugin → run `/initial-setup` (once per machine)
+2. Start new project → run `/project-init` (once per project)
+3. Repository moved? → run `/project-sync` (updates config)
+
+**Smart features:**
+- `/initial-setup` detects existing system config and offers quick project setup
+- All commands validate org/repo via Gitea API before saving (auto-fills if verified)
+- SessionStart hook automatically detects git remote vs .env mismatches
+
+---
+
+## Configuration Architecture
 
 This marketplace uses a **hybrid configuration** approach:
-- **System-level:** Credentials and service configuration (stored once per machine)
-- **Project-level:** Repository-specific settings (stored per project)
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                    SYSTEM-LEVEL (once per machine)             │
+│                    ~/.config/claude/                            │
+├─────────────────────────────────────────────────────────────────┤
+│  gitea.env     │  GITEA_URL, GITEA_TOKEN                       │
+│  netbox.env    │  NETBOX_URL, NETBOX_TOKEN                     │
+│  git-flow.env  │  GIT_WORKFLOW_STYLE, GIT_DEFAULT_BASE, etc.   │
+└─────────────────────────────────────────────────────────────────┘
+                              │
+                              │ Shared across all projects
+                              ▼
+┌─────────────────────────────────────────────────────────────────┐
+│                  PROJECT-LEVEL (once per project)              │
+│                  <project-root>/.env                            │
+├─────────────────────────────────────────────────────────────────┤
+│  GITEA_ORG               │  Organization for this project      │
+│  GITEA_REPO              │  Repository name for this project   │
+│  GIT_WORKFLOW_STYLE      │  (optional) Override system default │
+│  PR_REVIEW_*             │  (optional) PR review settings      │
+└─────────────────────────────────────────────────────────────────┘
+```
 
 **Benefits:**
 - Single token per service (update once, use everywhere)
-- Easy multi-project setup (just add `.env` per project)
-- Security (tokens never committed to git)
-- Project isolation (each project has its own scope)
+- Easy multi-project setup (just run `/project-init` in each project)
+- Security (tokens never committed to git, never typed into AI chat)
+- Project isolation (each project can override defaults)
+
+---
 
 ## Prerequisites
 
-Before configuring any plugin:
+Before running `/initial-setup`:
 
 1. **Python 3.10+** installed
    ```bash
    python3 --version  # Should be 3.10.0 or higher
    ```
 
-2. **Git repository** initialized
+2. **Git repository** initialized (for project setup)
    ```bash
    git status  # Should show initialized repository
    ```
 
-3. **Claude Code** installed and working
+3. **Claude Code** installed and working with the marketplace
 
 ---
 
-## System-Level Configuration
+## Setup Methods
 
-Configuration files stored in `~/.config/claude/`:
+### Method 1: Interactive Wizard (Recommended)
+
+Run the setup wizard in Claude Code:
+
+```
+/initial-setup
+```
+
+The wizard will guide you through each step interactively.
+
+**Note:** After first-time setup, you'll need to restart your Claude Code session for MCP tools to become available.
+
+### Method 2: Manual Setup
+
+If you prefer to set up manually or need to troubleshoot:
+
+#### Step 1: MCP Server Setup
+
+```bash
+# Navigate to marketplace directory
+cd /path/to/leo-claude-mktplace
+
+# Set up Gitea MCP server
+cd mcp-servers/gitea
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+deactivate
+
+# (Optional) Set up NetBox MCP server
+cd ../netbox
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+deactivate
+```
+
+#### Step 2: System Configuration
 
 ```bash
 mkdir -p ~/.config/claude
-```
 
-### Gitea Configuration
-
-Required by: `projman`, `pr-review`
-
-```bash
+# Gitea configuration (credentials only)
 cat > ~/.config/claude/gitea.env << 'EOF'
-# Gitea API Configuration
 GITEA_URL=https://gitea.example.com
-GITEA_TOKEN=your_gitea_token_here
-GITEA_ORG=your_organization
+GITEA_TOKEN=your_token_here
 EOF
-
-# Secure the file
 chmod 600 ~/.config/claude/gitea.env
 ```
 
-**Variables:**
+#### Step 3: Project Configuration
+
+In each project root:
+
+```bash
+cat > .env << 'EOF'
+GITEA_ORG=your-organization
+GITEA_REPO=your-repo-name
+EOF
+```
+
+Add `.env` to `.gitignore` if not already there.
+
+### Method 3: Automation Script (CI/Scripting)
+
+For automated setups or CI environments:
+
+```bash
+cd /path/to/leo-claude-mktplace
+./scripts/setup.sh
+```
+
+This script is useful for CI/CD pipelines and bulk provisioning.
+
+---
+
+## Configuration Reference
+
+### System-Level Files
+
+Located in `~/.config/claude/`:
+
+| File | Required By | Purpose |
+|------|-------------|---------|
+| `gitea.env` | projman, pr-review | Gitea API credentials |
+| `netbox.env` | cmdb-assistant | NetBox API credentials |
+| `git-flow.env` | git-flow | Default git workflow settings |
+
+### Gitea Configuration
+
+```bash
+# ~/.config/claude/gitea.env
+GITEA_URL=https://gitea.example.com
+GITEA_TOKEN=your_gitea_token_here
+```
+
 | Variable | Description | Example |
 |----------|-------------|---------|
 | `GITEA_URL` | Gitea base URL (no `/api/v1`) | `https://gitea.example.com` |
-| `GITEA_TOKEN` | Personal access token | `glpat-xxx...` |
-| `GITEA_ORG` | Organization name | `bandit` |
+| `GITEA_TOKEN` | Personal access token | `abc123...` |
 
-**Generating Gitea Token:**
+**Note:** `GITEA_ORG` is configured at the project level (see below) since different projects may belong to different organizations.
+
+**Generating a Gitea Token:**
 1. Log into Gitea → **User Icon** → **Settings**
 2. **Applications** tab → **Manage Access Tokens**
 3. **Generate New Token** with permissions:
    - `repo` (all sub-permissions)
    - `read:org`
    - `read:user`
-   - `write:repo` (for wiki)
+   - `write:repo` (for wiki access)
 4. Copy token immediately (shown only once)
 
 ### NetBox Configuration
 
-Required by: `cmdb-assistant`
-
 ```bash
-cat > ~/.config/claude/netbox.env << 'EOF'
-# NetBox API Configuration
+# ~/.config/claude/netbox.env
 NETBOX_URL=https://netbox.example.com
 NETBOX_TOKEN=your_netbox_token_here
-EOF
-
-chmod 600 ~/.config/claude/netbox.env
 ```
 
-**Variables:**
 | Variable | Description | Example |
 |----------|-------------|---------|
 | `NETBOX_URL` | NetBox base URL | `https://netbox.example.com` |
@@ -95,11 +334,8 @@ chmod 600 ~/.config/claude/netbox.env
 
 ### Git-Flow Configuration
 
-Optional system defaults for: `git-flow`
-
 ```bash
-cat > ~/.config/claude/git-flow.env << 'EOF'
-# Git-Flow Default Configuration
+# ~/.config/claude/git-flow.env
 GIT_WORKFLOW_STYLE=feature-branch
 GIT_DEFAULT_BASE=development
 GIT_AUTO_DELETE_MERGED=true
@@ -107,8 +343,17 @@ GIT_AUTO_PUSH=false
 GIT_PROTECTED_BRANCHES=main,master,development,staging,production
 GIT_COMMIT_STYLE=conventional
 GIT_CO_AUTHOR=true
-EOF
 ```
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `GIT_WORKFLOW_STYLE` | `feature-branch` | Branching strategy |
+| `GIT_DEFAULT_BASE` | `development` | Default base branch |
+| `GIT_AUTO_DELETE_MERGED` | `true` | Delete merged branches |
+| `GIT_AUTO_PUSH` | `false` | Auto-push after commit |
+| `GIT_PROTECTED_BRANCHES` | `main,master,...` | Protected branches |
+| `GIT_COMMIT_STYLE` | `conventional` | Commit message style |
+| `GIT_CO_AUTHOR` | `true` | Include Claude co-author |
 
 ---
 
@@ -116,161 +361,92 @@ EOF
 
 Create `.env` in each project root:
 
-### Gitea Repository (projman, pr-review)
-
 ```bash
-# .env in project root
+# Required for projman, pr-review
+GITEA_ORG=your-organization
 GITEA_REPO=your-repo-name
-```
 
-### Git-Flow (project overrides)
-
-```bash
-# .env in project root
+# Optional: Override git-flow defaults
 GIT_WORKFLOW_STYLE=pr-required
 GIT_DEFAULT_BASE=main
-```
 
-### PR Review
-
-```bash
-# .env in project root
+# Optional: PR review settings
 PR_REVIEW_CONFIDENCE_THRESHOLD=0.5
 PR_REVIEW_AUTO_SUBMIT=false
 ```
 
----
-
-## MCP Server Installation
-
-MCP servers are located at repository root: `mcp-servers/`
-
-### Gitea MCP Server
-
-```bash
-cd mcp-servers/gitea
-
-# Create virtual environment
-python3 -m venv .venv
-
-# Activate
-source .venv/bin/activate
-
-# Install dependencies
-pip install -r requirements.txt
-
-# Verify
-python -c "from mcp_server import server; print('OK')"
-
-deactivate
-```
-
-### NetBox MCP Server
-
-```bash
-cd mcp-servers/netbox
-
-# Create virtual environment
-python3 -m venv .venv
-
-# Activate
-source .venv/bin/activate
-
-# Install dependencies
-pip install -r requirements.txt
-
-# Verify
-python -c "from mcp_server import server; print('OK')"
-
-deactivate
-```
+| Variable | Required | Description |
+|----------|----------|-------------|
+| `GITEA_ORG` | Yes | Gitea organization for this project |
+| `GITEA_REPO` | Yes | Repository name (must match Gitea exactly) |
+| `GIT_WORKFLOW_STYLE` | No | Override system default |
+| `PR_REVIEW_*` | No | PR review settings |
 
 ---
 
-## Plugin Configuration Reference
+## Plugin Configuration Summary
 
-### projman
-
-| Level | Variable | Default | Description |
-|-------|----------|---------|-------------|
-| System | `GITEA_URL` | (required) | Gitea API base URL |
-| System | `GITEA_TOKEN` | (required) | API token |
-| System | `GITEA_ORG` | (required) | Organization name |
-| Project | `GITEA_REPO` | (required) | Repository name |
-
-**Commands:** `/sprint-plan`, `/sprint-start`, `/sprint-status`, `/sprint-close`, `/labels-sync`, `/initial-setup`, `/review`, `/test-check`, `/test-gen`
-
-### pr-review
-
-| Level | Variable | Default | Description |
-|-------|----------|---------|-------------|
-| System | `GITEA_URL` | (required) | Gitea API base URL |
-| System | `GITEA_TOKEN` | (required) | API token |
-| Project | `GITEA_REPO` | (required) | Repository name |
-| Project | `PR_REVIEW_CONFIDENCE_THRESHOLD` | `0.5` | Minimum confidence |
-| Project | `PR_REVIEW_AUTO_SUBMIT` | `false` | Auto-submit reviews |
-
-**Commands:** `/pr-review`, `/pr-summary`, `/pr-findings`
-
-### git-flow
-
-| Level | Variable | Default | Description |
-|-------|----------|---------|-------------|
-| System/Project | `GIT_WORKFLOW_STYLE` | `feature-branch` | Branching strategy |
-| System/Project | `GIT_DEFAULT_BASE` | `development` | Default base branch |
-| System/Project | `GIT_AUTO_DELETE_MERGED` | `true` | Delete merged branches |
-| System/Project | `GIT_AUTO_PUSH` | `false` | Auto-push after commit |
-| System/Project | `GIT_PROTECTED_BRANCHES` | `main,master,...` | Protected branches |
-| System/Project | `GIT_COMMIT_STYLE` | `conventional` | Commit message style |
-| System/Project | `GIT_CO_AUTHOR` | `true` | Include Claude co-author |
-
-**Commands:** `/commit`, `/commit-push`, `/commit-merge`, `/commit-sync`, `/branch-start`, `/branch-cleanup`, `/git-status`, `/git-config`
-
-### clarity-assist
-
-No configuration required. Uses sensible defaults.
-
-**Commands:** `/clarify`, `/quick-clarify`
-
-### cmdb-assistant
-
-| Level | Variable | Default | Description |
-|-------|----------|---------|-------------|
-| System | `NETBOX_URL` | (required) | NetBox API base URL |
-| System | `NETBOX_TOKEN` | (required) | API token |
-
-### doc-guardian
-
-No configuration required. Hook-based plugin.
-
-### code-sentinel
-
-No configuration required. Hook-based plugin.
-
-### project-hygiene
-
-No configuration required. Hook-based plugin.
-
-### claude-config-maintainer
-
-No configuration required.
+| Plugin | System Config | Project Config | Setup Commands |
+|--------|---------------|----------------|----------------|
+| **projman** | gitea.env | .env (GITEA_ORG, GITEA_REPO) | `/initial-setup`, `/project-init`, `/project-sync` |
+| **pr-review** | gitea.env | .env (GITEA_ORG, GITEA_REPO) | `/initial-setup`, `/project-init`, `/project-sync` |
+| **git-flow** | git-flow.env (optional) | .env (optional) | None needed |
+| **clarity-assist** | None | None | None needed |
+| **cmdb-assistant** | netbox.env | None | `/initial-setup` |
+| **doc-guardian** | None | None | None needed |
+| **code-sentinel** | None | None | None needed |
+| **project-hygiene** | None | None | None needed |
+| **claude-config-maintainer** | None | None | None needed |
 
 ---
 
-## Multi-Project Setup
+## Multi-Project Workflow
 
-1. **System config:** Set up once (credentials)
-2. **Project config:** Create `.env` in each project root
+Once system-level config is set up, adding new projects is simple:
 
-**Example:**
-```bash
-# ~/projects/my-app/.env
-GITEA_REPO=my-app
-
-# ~/projects/another-app/.env
-GITEA_REPO=another-app
-GIT_WORKFLOW_STYLE=trunk-based
+**Option 1: Use `/project-init` (faster)**
 ```
+cd ~/projects/new-project
+/project-init
+```
+
+**Option 2: Use `/initial-setup` (auto-detects)**
+```
+cd ~/projects/new-project
+/initial-setup
+# → Detects system config exists
+# → Offers "Quick project setup" option
+```
+
+Both approaches work. Use `/project-init` when you know the system is already configured.
+
+---
+
+## Automatic Validation Features
+
+### API Validation
+
+When running `/initial-setup`, `/project-init`, or `/project-sync`, the commands:
+
+1. **Detect** organization and repository from git remote URL
+2. **Validate** via Gitea API: `GET /api/v1/repos/{org}/{repo}`
+3. **Auto-fill** if repository exists and is accessible (no confirmation needed)
+4. **Ask for confirmation** only if validation fails (404 or permission error)
+
+This catches typos and permission issues before saving configuration.
+
+### Mismatch Detection (SessionStart Hook)
+
+When you start a Claude Code session, a hook automatically:
+
+1. Reads `GITEA_ORG` and `GITEA_REPO` from `.env`
+2. Compares with current `git remote get-url origin`
+3. **Warns** if mismatch detected: "Repository location mismatch. Run `/project-sync` to update."
+
+This helps when you:
+- Move a repository to a different organization
+- Rename a repository
+- Clone a repo but forget to update `.env`
 
 ---
 
@@ -279,31 +455,29 @@ GIT_WORKFLOW_STYLE=trunk-based
 ### Test Gitea Connection
 
 ```bash
-curl -H "Authorization: token YOUR_TOKEN" \
-  https://gitea.example.com/api/v1/user
+source ~/.config/claude/gitea.env
+curl -H "Authorization: token $GITEA_TOKEN" "$GITEA_URL/api/v1/user"
 ```
 
-### Test MCP Server
+### Verify Project Setup
 
-```bash
-cd mcp-servers/gitea
-source .venv/bin/activate
-python -c "from mcp_server import server; print('OK')"
+In Claude Code, after restarting your session:
 ```
-
-### Run Plugin Setup
-
-```bash
-# For projman
-/initial-setup
 /labels-sync
 ```
+
+If this works, your setup is complete.
 
 ---
 
 ## Troubleshooting
 
-### Configuration not found
+### MCP tools not available
+
+**Cause:** Session wasn't restarted after setup.
+**Solution:** Exit Claude Code and start a new session.
+
+### "Configuration not found" error
 
 ```bash
 # Check system config exists
@@ -317,23 +491,25 @@ stat ~/.config/claude/gitea.env
 
 ```bash
 # Test token directly
-curl -H "Authorization: token YOUR_TOKEN" \
-  https://gitea.example.com/api/v1/user
-
-# Regenerate if invalid
+source ~/.config/claude/gitea.env
+curl -H "Authorization: token $GITEA_TOKEN" "$GITEA_URL/api/v1/user"
 ```
 
-### MCP server not starting
+If you get 401, regenerate your token in Gitea.
+
+### MCP server won't start
 
 ```bash
 # Check venv exists
-ls mcp-servers/gitea/.venv
+ls /path/to/mcp-servers/gitea/.venv
 
 # Reinstall if missing
-cd mcp-servers/gitea
+cd /path/to/mcp-servers/gitea
+rm -rf .venv
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
+deactivate
 ```
 
 ### Wrong repository
@@ -342,7 +518,7 @@ pip install -r requirements.txt
 # Check project .env
 cat .env
 
-# Verify GITEA_REPO matches exactly
+# Verify GITEA_REPO matches the Gitea repository name exactly
 ```
 
 ---
@@ -358,23 +534,14 @@ cat .env
    chmod 600 ~/.config/claude/*.env
    ```
 
-3. **Rotate tokens periodically**
+3. **Never type tokens into AI chat**
+   - Always edit config files directly in your editor
+   - The `/initial-setup` wizard respects this
+
+4. **Rotate tokens periodically**
    - Every 6-12 months
    - Immediately if compromised
 
-4. **Minimum permissions**
+5. **Minimum permissions**
    - Only grant required token permissions
    - Use separate tokens for different environments
-
----
-
-## Quick Setup Checklist
-
-- [ ] Python 3.10+ installed
-- [ ] `~/.config/claude/` directory created
-- [ ] Service credentials configured (gitea.env, netbox.env)
-- [ ] Configuration files secured (chmod 600)
-- [ ] MCP servers installed with venv
-- [ ] Project `.env` created with repository settings
-- [ ] Connections tested
-- [ ] Plugin commands verified

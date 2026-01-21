@@ -15,7 +15,10 @@ Quick reference for all commands in the Leo Claude Marketplace.
 | **projman** | `/test-check` | | X | Run tests and verify coverage before sprint close |
 | **projman** | `/sprint-close` | | X | Complete sprint and capture lessons learned to Gitea Wiki |
 | **projman** | `/labels-sync` | | X | Synchronize label taxonomy from Gitea |
-| **projman** | `/initial-setup` | | X | Run installation script for projman plugin setup |
+| **projman** | `/initial-setup` | | X | Full setup wizard: MCP server + system config + project config |
+| **projman** | `/project-init` | | X | Quick project setup (assumes system config exists) |
+| **projman** | `/project-sync` | | X | Sync config with git remote after repo move/rename |
+| **projman** | *SessionStart hook* | X | | Detects git remote vs .env mismatch, warns to run /project-sync |
 | **projman** | `/test-gen` | | X | Generate comprehensive tests for specified code |
 | **git-flow** | `/commit` | | X | Create commit with auto-generated conventional message |
 | **git-flow** | `/commit-push` | | X | Commit and push to remote in one operation |
@@ -25,6 +28,10 @@ Quick reference for all commands in the Leo Claude Marketplace.
 | **git-flow** | `/branch-cleanup` | | X | Remove merged branches locally and optionally on remote |
 | **git-flow** | `/git-status` | | X | Enhanced git status with recommendations |
 | **git-flow** | `/git-config` | | X | Configure git-flow settings for the project |
+| **pr-review** | `/initial-setup` | | X | Setup wizard for pr-review (shares Gitea MCP with projman) |
+| **pr-review** | `/project-init` | | X | Quick project setup for PR reviews |
+| **pr-review** | `/project-sync` | | X | Sync config with git remote after repo move/rename |
+| **pr-review** | *SessionStart hook* | X | | Detects git remote vs .env mismatch |
 | **pr-review** | `/pr-review` | | X | Full multi-agent PR review with confidence scoring |
 | **pr-review** | `/pr-summary` | | X | Quick summary of PR changes |
 | **pr-review** | `/pr-findings` | | X | List and filter review findings by category/severity |
@@ -41,6 +48,7 @@ Quick reference for all commands in the Leo Claude Marketplace.
 | **claude-config-maintainer** | `/config-analyze` | | X | Analyze CLAUDE.md for optimization opportunities |
 | **claude-config-maintainer** | `/config-optimize` | | X | Optimize CLAUDE.md structure with preview/backup |
 | **claude-config-maintainer** | `/config-init` | | X | Initialize new CLAUDE.md for a project |
+| **cmdb-assistant** | `/initial-setup` | | X | Setup wizard for NetBox MCP server |
 | **cmdb-assistant** | `/cmdb-search` | | X | Search NetBox for devices, IPs, sites |
 | **cmdb-assistant** | `/cmdb-device` | | X | Manage network devices (create, view, update, delete) |
 | **cmdb-assistant** | `/cmdb-ip` | | X | Manage IP addresses and prefixes |
@@ -53,6 +61,7 @@ Quick reference for all commands in the Leo Claude Marketplace.
 
 | Category | Plugins | Primary Use |
 |----------|---------|-------------|
+| **Setup** | projman, pr-review, cmdb-assistant | `/initial-setup`, `/project-init` |
 | **Task Planning** | projman, clarity-assist | Sprint management, requirement clarification |
 | **Code Quality** | code-sentinel, pr-review | Security scanning, PR reviews |
 | **Documentation** | doc-guardian, claude-config-maintainer | Doc sync, CLAUDE.md maintenance |
@@ -66,6 +75,8 @@ Quick reference for all commands in the Leo Claude Marketplace.
 
 | Plugin | Hook Event | Behavior |
 |--------|------------|----------|
+| **projman** | SessionStart | Checks git remote vs .env; warns if mismatch detected |
+| **pr-review** | SessionStart | Checks git remote vs .env; warns if mismatch detected |
 | **doc-guardian** | PostToolUse (Write/Edit) | Silently tracks documentation drift |
 | **doc-guardian** | Stop | Prompts to sync if drift detected |
 | **code-sentinel** | PreToolUse (Write/Edit) | Scans for security issues; blocks critical vulnerabilities |
@@ -151,15 +162,30 @@ Managing infrastructure with CMDB:
 4. /cmdb-site view Y         # Check site info
 ```
 
-### Example 7: New Project Setup
+### Example 7: First-Time Setup (New Machine)
 
-Setting up a project with marketplace plugins:
+Setting up the marketplace for the first time:
 
 ```
-1. /config-init              # Create CLAUDE.md
-2. /initial-setup            # Setup projman (if using)
+1. /initial-setup            # Full setup: MCP + system config + project
+   # → Follow prompts for Gitea URL, org
+   # → Add token manually when prompted
+   # → Confirm repository name
+2. # Restart Claude Code session
 3. /labels-sync              # Sync Gitea labels
 4. /sprint-plan              # Plan first sprint
+```
+
+### Example 8: New Project Setup (System Already Configured)
+
+Adding a new project when system config exists:
+
+```
+1. /project-init             # Quick project setup
+   # → Confirms detected repo name
+   # → Creates .env
+2. /labels-sync              # Sync Gitea labels
+3. /sprint-plan              # Plan first sprint
 ```
 
 ---
@@ -188,4 +214,4 @@ Ensure credentials are configured in `~/.config/claude/gitea.env` or `~/.config/
 
 ---
 
-*Last Updated: 2026-01-20*
+*Last Updated: 2026-01-21*

@@ -1,6 +1,17 @@
 #!/usr/bin/env bash
 #
-# setup.sh - Initial setup for Leo Claude Marketplace
+# setup.sh - Automated setup for Leo Claude Marketplace
+#
+# ============================================================================
+# NOTE: For interactive setup, use the /initial-setup command in Claude Code
+# instead of this script. The command provides a guided wizard experience.
+#
+# This script is intended for:
+# - CI/CD pipelines
+# - Automated deployments
+# - Bulk machine provisioning
+# - Fallback when Claude Code is not available
+# ============================================================================
 #
 # Usage: ./scripts/setup.sh
 #
