@@ -4,6 +4,44 @@ All notable changes to the Leo Claude Marketplace will be documented in this fil
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [3.1.0] - 2026-01-21
+
+### Added
+
+#### Debug Workflow Commands (projman)
+- **`/debug-report`** - Run diagnostics in test projects, create structured issues in marketplace
+  - Runs 5 diagnostic MCP tool tests with explicit repo parameter
+  - Captures full project context (git remote, cwd, branch)
+  - Generates structured issue with hypothesis and investigation steps
+  - Creates issue in configured marketplace repository automatically
+
+- **`/debug-review`** - Investigate diagnostic issues with human approval gates
+  - Lists open diagnostic issues for triage
+  - Maps errors to relevant code files using error-to-file mapping
+  - MANDATORY: Reads relevant files before proposing any fix
+  - Three approval gates: investigation summary, fix approach, PR creation
+  - Creates feature branch, commits, and PR with proper linking
+
+#### MCP Server Improvements
+- Dynamic label format detection in `suggest_labels`
+  - Supports slash format (`Type/Bug`) and colon-space format (`Type: Bug`)
+  - Fetches actual labels from repo and matches suggestions to real format
+  - Handles Effort/Efforts singular/plural normalization
+
+### Changed
+- **`/labels-sync`** completely rewritten with explicit execution steps
+  - Step 1 now explicitly requires running `git remote get-url origin` via Bash
+  - All MCP tool calls show required `repo` parameter
+  - Added "DO NOT" section preventing common mistakes
+  - Removed confusing "Label Reference" section that caused file creation prompts
+
+### Fixed
+- MCP tools no longer fail with "Use 'owner/repo' format" error
+  - Root cause: MCP server is sandboxed and cannot auto-detect project directory
+  - Solution: Command documentation now instructs Claude to detect repo via Bash first
+
+---
+
 ## [3.0.1] - 2026-01-21
 
 ### Added
