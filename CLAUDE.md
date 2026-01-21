@@ -4,11 +4,11 @@ This file provides guidance to Claude Code when working with code in this reposi
 
 ## Project Overview
 
-**Repository:** lm-claude-plugins
+**Repository:** leo-claude-mktplace
 **Version:** 3.0.0
 **Status:** Production Ready
 
-A Claude Code plugin marketplace containing:
+A plugin marketplace for Claude Code containing:
 
 | Plugin | Description | Version |
 |--------|-------------|---------|
@@ -39,7 +39,7 @@ A Claude Code plugin marketplace containing:
 ## Repository Structure
 
 ```
-lm-claude-plugins/
+leo-claude-mktplace/
 ├── .claude-plugin/
 │   └── marketplace.json          # Marketplace manifest
 ├── mcp-servers/                  # SHARED MCP servers (v3.0.0+)
@@ -210,7 +210,7 @@ Stored in Gitea Wiki under `lessons-learned/sprints/`.
 ### Version Display
 **The marketplace version is displayed ONLY in the main `README.md` title.**
 
-- Format: `# Claude Code Marketplace - vX.Y.Z`
+- Format: `# Leo Claude Marketplace - vX.Y.Z`
 - Do NOT add version numbers to individual plugin documentation titles
 - Do NOT add version numbers to configuration guides
 - Do NOT add version numbers to CLAUDE.md or other docs

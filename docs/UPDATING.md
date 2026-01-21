@@ -1,4 +1,4 @@
-# Updating support-claude-mktplace
+# Updating Leo Claude Marketplace
 
 This guide covers how to update your local installation when new versions are released.
 
@@ -6,7 +6,7 @@ This guide covers how to update your local installation when new versions are re
 
 ```bash
 # 1. Pull latest changes
-cd /path/to/support-claude-mktplace
+cd /path/to/leo-claude-mktplace
 git pull origin main
 
 # 2. Run post-update script

@@ -294,4 +294,4 @@ logging.basicConfig(level=logging.DEBUG)
 
 ## License
 
-MIT License - Part of the Claude Code Marketplace (`support-claude-mktplace`).
+MIT License - Part of the Leo Claude Marketplace.

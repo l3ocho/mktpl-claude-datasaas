@@ -38,7 +38,7 @@ Security scanning and code refactoring tools for Claude Code projects.
 ## Installation
 
 ```bash
-/plugin marketplace add https://gitea.hotserv.cloud/personal-projects/support-claude-mktplace.git
+/plugin marketplace add https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git
 /plugin install code-sentinel
 ```
 
