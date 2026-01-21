@@ -40,10 +40,141 @@ async def test_get_labels(label_tools):
     assert result['total_count'] == 4
 
 
+# ========================================
+# LABEL LOOKUP TESTS (NEW)
+# ========================================
+
+def test_build_label_lookup_slash_format():
+    """Test building label lookup with slash format labels"""
+    mock_client = Mock()
+    mock_client.repo = 'test/repo'
+    tools = LabelTools(mock_client)
+
+    labels = ['Type/Bug', 'Type/Feature', 'Priority/High', 'Priority/Low']
+    lookup = tools._build_label_lookup(labels)
+
+    assert 'type' in lookup
+    assert 'bug' in lookup['type']
+    assert lookup['type']['bug'] == 'Type/Bug'
+    assert lookup['type']['feature'] == 'Type/Feature'
+    assert 'priority' in lookup
+    assert lookup['priority']['high'] == 'Priority/High'
+
+
+def test_build_label_lookup_colon_space_format():
+    """Test building label lookup with colon-space format labels"""
+    mock_client = Mock()
+    mock_client.repo = 'test/repo'
+    tools = LabelTools(mock_client)
+
+    labels = ['Type: Bug', 'Type: Feature', 'Priority: High', 'Effort: M']
+    lookup = tools._build_label_lookup(labels)
+
+    assert 'type' in lookup
+    assert 'bug' in lookup['type']
+    assert lookup['type']['bug'] == 'Type: Bug'
+    assert lookup['type']['feature'] == 'Type: Feature'
+    assert 'priority' in lookup
+    assert lookup['priority']['high'] == 'Priority: High'
+    # Test singular "Effort" (not "Efforts")
+    assert 'effort' in lookup
+    assert lookup['effort']['m'] == 'Effort: M'
+
+
+def test_build_label_lookup_efforts_normalization():
+    """Test that 'Efforts' is normalized to 'effort' for matching"""
+    mock_client = Mock()
+    mock_client.repo = 'test/repo'
+    tools = LabelTools(mock_client)
+
+    labels = ['Efforts/XS', 'Efforts/S', 'Efforts/M']
+    lookup = tools._build_label_lookup(labels)
+
+    # 'Efforts' should be normalized to 'effort'
+    assert 'effort' in lookup
+    assert lookup['effort']['xs'] == 'Efforts/XS'
+
+
+def test_find_label():
+    """Test finding labels from lookup"""
+    mock_client = Mock()
+    mock_client.repo = 'test/repo'
+    tools = LabelTools(mock_client)
+
+    lookup = {
+        'type': {'bug': 'Type: Bug', 'feature': 'Type: Feature'},
+        'priority': {'high': 'Priority: High', 'low': 'Priority: Low'}
+    }
+
+    assert tools._find_label(lookup, 'type', 'bug') == 'Type: Bug'
+    assert tools._find_label(lookup, 'priority', 'high') == 'Priority: High'
+    assert tools._find_label(lookup, 'type', 'nonexistent') is None
+    assert tools._find_label(lookup, 'nonexistent', 'bug') is None
+
+
+# ========================================
+# SUGGEST LABELS WITH DYNAMIC FORMAT TESTS
+# ========================================
+
+def _create_tools_with_labels(labels):
+    """Helper to create LabelTools with mocked labels"""
+    import asyncio
+    mock_client = Mock()
+    mock_client.repo = 'test/repo'
+    mock_client.is_org_repo = Mock(return_value=False)
+    mock_client.get_labels = Mock(return_value=[{'name': l} for l in labels])
+    return LabelTools(mock_client)
+
+
+@pytest.mark.asyncio
+async def test_suggest_labels_with_slash_format():
+    """Test label suggestion with slash format labels"""
+    labels = [
+        'Type/Bug', 'Type/Feature', 'Type/Refactor',
+        'Priority/Critical', 'Priority/High', 'Priority/Medium', 'Priority/Low',
+        'Complexity/Simple', 'Complexity/Medium', 'Complexity/Complex',
+        'Component/Auth'
+    ]
+    tools = _create_tools_with_labels(labels)
+
+    context = "Fix critical bug in login authentication"
+    suggestions = await tools.suggest_labels(context)
+
+    assert 'Type/Bug' in suggestions
+    assert 'Priority/Critical' in suggestions
+    assert 'Component/Auth' in suggestions
+
+
+@pytest.mark.asyncio
+async def test_suggest_labels_with_colon_space_format():
+    """Test label suggestion with colon-space format labels"""
+    labels = [
+        'Type: Bug', 'Type: Feature', 'Type: Refactor',
+        'Priority: Critical', 'Priority: High', 'Priority: Medium', 'Priority: Low',
+        'Complexity: Simple', 'Complexity: Medium', 'Complexity: Complex',
+        'Effort: XS', 'Effort: S', 'Effort: M', 'Effort: L', 'Effort: XL'
+    ]
+    tools = _create_tools_with_labels(labels)
+
+    context = "Fix critical bug for tiny 1 hour fix"
+    suggestions = await tools.suggest_labels(context)
+
+    # Should return colon-space format labels
+    assert 'Type: Bug' in suggestions
+    assert 'Priority: Critical' in suggestions
+    assert 'Effort: XS' in suggestions
+
+
 @pytest.mark.asyncio
 async def test_suggest_labels_bug():
     """Test label suggestion for bug context"""
-    tools = LabelTools(Mock())
+    labels = [
+        'Type/Bug', 'Type/Feature',
+        'Priority/Critical', 'Priority/High', 'Priority/Medium', 'Priority/Low',
+        'Complexity/Simple', 'Complexity/Medium', 'Complexity/Complex',
+        'Component/Auth'
+    ]
+    tools = _create_tools_with_labels(labels)
 
     context = "Fix critical bug in login authentication"
     suggestions = await tools.suggest_labels(context)
@@ -56,7 +187,8 @@ async def test_suggest_labels_bug():
 @pytest.mark.asyncio
 async def test_suggest_labels_feature():
     """Test label suggestion for feature context"""
-    tools = LabelTools(Mock())
+    labels = ['Type/Feature', 'Priority/Medium', 'Complexity/Medium']
+    tools = _create_tools_with_labels(labels)
 
     context = "Add new feature to implement user dashboard"
     suggestions = await tools.suggest_labels(context)
@@ -68,7 +200,8 @@ async def test_suggest_labels_feature():
 @pytest.mark.asyncio
 async def test_suggest_labels_refactor():
     """Test label suggestion for refactor context"""
-    tools = LabelTools(Mock())
+    labels = ['Type/Refactor', 'Priority/Medium', 'Complexity/Medium', 'Component/Backend']
+    tools = _create_tools_with_labels(labels)
 
     context = "Refactor architecture to extract service layer"
     suggestions = await tools.suggest_labels(context)
@@ -80,7 +213,8 @@ async def test_suggest_labels_refactor():
 @pytest.mark.asyncio
 async def test_suggest_labels_documentation():
     """Test label suggestion for documentation context"""
-    tools = LabelTools(Mock())
+    labels = ['Type/Documentation', 'Priority/Medium', 'Complexity/Medium', 'Component/API', 'Component/Docs']
+    tools = _create_tools_with_labels(labels)
 
     context = "Update documentation for API endpoints"
     suggestions = await tools.suggest_labels(context)
@@ -92,7 +226,8 @@ async def test_suggest_labels_documentation():
 @pytest.mark.asyncio
 async def test_suggest_labels_priority():
     """Test priority detection in suggestions"""
-    tools = LabelTools(Mock())
+    labels = ['Type/Feature', 'Priority/Critical', 'Priority/High', 'Priority/Medium', 'Priority/Low', 'Complexity/Medium']
+    tools = _create_tools_with_labels(labels)
 
     # Critical priority
     context = "Urgent blocker in production"
@@ -113,7 +248,8 @@ async def test_suggest_labels_priority():
 @pytest.mark.asyncio
 async def test_suggest_labels_complexity():
     """Test complexity detection in suggestions"""
-    tools = LabelTools(Mock())
+    labels = ['Type/Feature', 'Priority/Medium', 'Complexity/Simple', 'Complexity/Medium', 'Complexity/Complex']
+    tools = _create_tools_with_labels(labels)
 
     # Simple complexity
     context = "Simple quick fix for typo"
@@ -129,7 +265,8 @@ async def test_suggest_labels_complexity():
 @pytest.mark.asyncio
 async def test_suggest_labels_efforts():
     """Test efforts detection in suggestions"""
-    tools = LabelTools(Mock())
+    labels = ['Type/Feature', 'Priority/Medium', 'Complexity/Medium', 'Efforts/XS', 'Efforts/S', 'Efforts/M', 'Efforts/L', 'Efforts/XL']
+    tools = _create_tools_with_labels(labels)
 
     # XS effort
     context = "Tiny fix that takes 1 hour"
@@ -145,7 +282,8 @@ async def test_suggest_labels_efforts():
 @pytest.mark.asyncio
 async def test_suggest_labels_components():
     """Test component detection in suggestions"""
-    tools = LabelTools(Mock())
+    labels = ['Type/Feature', 'Priority/Medium', 'Complexity/Medium', 'Component/Backend', 'Component/Frontend', 'Component/API', 'Component/Database']
+    tools = _create_tools_with_labels(labels)
 
     # Backend component
     context = "Update backend API service"
@@ -167,7 +305,8 @@ async def test_suggest_labels_components():
 @pytest.mark.asyncio
 async def test_suggest_labels_tech_stack():
     """Test tech stack detection in suggestions"""
-    tools = LabelTools(Mock())
+    labels = ['Type/Feature', 'Priority/Medium', 'Complexity/Medium', 'Tech/Python', 'Tech/FastAPI', 'Tech/Docker', 'Tech/PostgreSQL']
+    tools = _create_tools_with_labels(labels)
 
     # Python
     context = "Update Python FastAPI endpoint"
@@ -189,7 +328,8 @@ async def test_suggest_labels_tech_stack():
 @pytest.mark.asyncio
 async def test_suggest_labels_source():
     """Test source detection in suggestions"""
-    tools = LabelTools(Mock())
+    labels = ['Type/Feature', 'Priority/Medium', 'Complexity/Medium', 'Source/Development', 'Source/Staging', 'Source/Production']
+    tools = _create_tools_with_labels(labels)
 
     # Development
     context = "Issue found in development environment"
@@ -205,7 +345,8 @@ async def test_suggest_labels_source():
 @pytest.mark.asyncio
 async def test_suggest_labels_risk():
     """Test risk detection in suggestions"""
-    tools = LabelTools(Mock())
+    labels = ['Type/Feature', 'Priority/Medium', 'Complexity/Medium', 'Risk/High', 'Risk/Low']
+    tools = _create_tools_with_labels(labels)
 
     # High risk
     context = "Breaking change to major API"
@@ -221,7 +362,15 @@ async def test_suggest_labels_risk():
 @pytest.mark.asyncio
 async def test_suggest_labels_multiple_categories():
     """Test that suggestions span multiple categories"""
-    tools = LabelTools(Mock())
+    labels = [
+        'Type/Bug', 'Type/Feature',
+        'Priority/Critical', 'Priority/Medium',
+        'Complexity/Complex', 'Complexity/Medium',
+        'Component/Backend', 'Component/API', 'Component/Auth',
+        'Tech/FastAPI', 'Tech/PostgreSQL',
+        'Source/Production'
+    ]
+    tools = _create_tools_with_labels(labels)
 
     context = """
     Urgent critical bug in production backend API service.
@@ -245,6 +394,33 @@ async def test_suggest_labels_multiple_categories():
 
     # Should have Source
     assert any('Source/' in label for label in suggestions)
+
+
+@pytest.mark.asyncio
+async def test_suggest_labels_empty_repo():
+    """Test suggestions when no repo specified and no labels available"""
+    mock_client = Mock()
+    mock_client.repo = None
+    tools = LabelTools(mock_client)
+
+    context = "Fix a bug"
+    suggestions = await tools.suggest_labels(context)
+
+    # Should return empty list when no repo
+    assert suggestions == []
+
+
+@pytest.mark.asyncio
+async def test_suggest_labels_no_matching_labels():
+    """Test suggestions return empty when no matching labels exist"""
+    labels = ['Custom/Label', 'Other/Thing']  # No standard labels
+    tools = _create_tools_with_labels(labels)
+
+    context = "Fix a bug"
+    suggestions = await tools.suggest_labels(context)
+
+    # Should return empty list since no Type/Bug or similar exists
+    assert len(suggestions) == 0
 
 
 @pytest.mark.asyncio
