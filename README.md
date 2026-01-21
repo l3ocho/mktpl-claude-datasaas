@@ -182,28 +182,7 @@ The wizard handles everything:
 /project-sync
 ```
 
-See [docs/CONFIGURATION.md](./docs/CONFIGURATION.md) for detailed instructions.
-
-### Manual Setup (Alternative)
-
-If you prefer manual setup:
-
-```bash
-mkdir -p ~/.config/claude
-
-# System-level: Gitea credentials
-cat > ~/.config/claude/gitea.env << 'EOF'
-GITEA_URL=https://gitea.example.com
-GITEA_TOKEN=your_token
-EOF
-chmod 600 ~/.config/claude/gitea.env
-
-# Project-level: Repository specification
-cat > .env << 'EOF'
-GITEA_ORG=your-organization
-GITEA_REPO=your-repository-name
-EOF
-```
+See [docs/CONFIGURATION.md](./docs/CONFIGURATION.md) for manual setup and advanced options.
 
 ## Verifying Plugin Installation
 
