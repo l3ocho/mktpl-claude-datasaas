@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 #
-# setup.sh - Initial setup for lm-claude-plugins
+# setup.sh - Initial setup for Leo Claude Marketplace
 #
 # Usage: ./scripts/setup.sh
 #
@@ -265,7 +265,7 @@ print_report() {
 # --- Main ---
 main() {
     echo "=============================================="
-    echo "  lm-claude-plugins Setup (v3.0.0)"
+    echo "  Leo Claude Marketplace Setup (v3.0.0)"
     echo "=============================================="
     echo ""
 

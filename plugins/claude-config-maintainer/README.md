@@ -12,7 +12,7 @@ CLAUDE.md files provide instructions to Claude Code when working with a project.
 
 ## Installation
 
-This plugin is part of the support-claude-mktplace collection. Install the marketplace and the plugin will be available.
+This plugin is part of the Leo Claude Marketplace. Install the marketplace and the plugin will be available.
 
 ## Commands
 
@@ -96,4 +96,4 @@ Target score: **70+** for effective Claude Code usage.
 
 ## Contributing
 
-This plugin is part of the personal-projects/support-claude-mktplace repository.
+This plugin is part of the personal-projects/leo-claude-mktplace repository.

@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to lm-claude-plugins will be documented in this file.
+All notable changes to the Leo Claude Marketplace will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
@@ -45,7 +45,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - `docs/CONFIGURATION.md` - Centralized configuration guide for all plugins
 
 ### Changed
-- **BREAKING:** Marketplace renamed from `claude-code-marketplace` to `lm-claude-plugins`
+- **BREAKING:** Marketplace renamed from `claude-code-marketplace` to `leo-claude-mktplace`
 - **BREAKING:** MCP servers moved from plugin directories to shared `mcp-servers/` at repository root
 - All plugins now have `category`, `tags`, and `license` fields in marketplace.json
 - Plugin MCP dependencies now use symlinks to shared servers

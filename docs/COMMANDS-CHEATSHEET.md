@@ -1,6 +1,6 @@
 # Plugin Commands Cheat Sheet
 
-Quick reference for all commands in the Claude Code Marketplace.
+Quick reference for all commands in the Leo Claude Marketplace.
 
 ---
 

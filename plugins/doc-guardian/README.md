@@ -37,10 +37,10 @@ doc-guardian watches your code changes and automatically:
 
 ## Installation
 
-This plugin is part of the claude-code-marketplace.
+This plugin is part of the Leo Claude Marketplace.
 
 ```bash
-/plugin marketplace add https://gitea.hotserv.cloud/personal-projects/support-claude-mktplace.git
+/plugin marketplace add https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git
 /plugin install doc-guardian
 ```
 

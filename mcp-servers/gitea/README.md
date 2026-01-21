@@ -389,7 +389,7 @@ def list_issues(self, state='open', labels=None, repo=None):
 
 ## License
 
-MIT License - Part of the Claude Code Marketplace project.
+MIT License - Part of the Leo Claude Marketplace project.
 
 ## Related Documentation
 
@@ -406,7 +406,7 @@ For issues or questions:
 
 ---
 
-**Built for**: Claude Code Marketplace - Project Management Plugins
+**Built for**: Leo Claude Marketplace - Project Management Plugins
 **Phase**: 1 (Complete)
 **Status**: ✅ Production Ready
 **Last Updated**: 2025-01-06

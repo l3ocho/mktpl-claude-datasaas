@@ -7,7 +7,7 @@ description: Dynamic reference for Gitea label taxonomy (organization + reposito
 
 **Status:** ✅ Synced with Gitea
 **Last synced:** 2025-11-21 (via automated testing)
-**Source:** Gitea (personal-projects/support-claude-mktplace)
+**Source:** Gitea (personal-projects/leo-claude-mktplace)
 
 ## Overview
 

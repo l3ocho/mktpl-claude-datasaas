@@ -1,6 +1,6 @@
 # Configuration Guide
 
-Centralized configuration documentation for all plugins and MCP servers in the lm-claude-plugins marketplace.
+Centralized configuration documentation for all plugins and MCP servers in the Leo Claude Marketplace.
 
 ## Overview
 
