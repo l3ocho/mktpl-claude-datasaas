@@ -16,6 +16,5 @@
     "branch",
     "automation"
   ],
-  "commands": ["./commands/"],
-  "agents": ["./agents/"]
+  "commands": ["./commands/"]
 }
