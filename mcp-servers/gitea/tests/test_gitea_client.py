@@ -222,3 +222,47 @@ def test_no_repo_specified_error(gitea_client):
             client.list_issues()
 
         assert "Repository not specified" in str(exc_info.value)
+
+
+# ========================================
+# ORGANIZATION DETECTION TESTS
+# ========================================
+
+def test_is_organization_true(gitea_client):
+    """Test _is_organization returns True for valid organization"""
+    mock_response = Mock()
+    mock_response.status_code = 200
+
+    with patch.object(gitea_client.session, 'get', return_value=mock_response):
+        result = gitea_client._is_organization('personal-projects')
+
+        assert result is True
+        gitea_client.session.get.assert_called_once_with(
+            'https://test.com/api/v1/orgs/personal-projects'
+        )
+
+
+def test_is_organization_false(gitea_client):
+    """Test _is_organization returns False for user account"""
+    mock_response = Mock()
+    mock_response.status_code = 404
+
+    with patch.object(gitea_client.session, 'get', return_value=mock_response):
+        result = gitea_client._is_organization('lmiranda')
+
+        assert result is False
+
+
+def test_is_org_repo_uses_orgs_endpoint(gitea_client):
+    """Test is_org_repo uses /orgs endpoint instead of owner.type"""
+    mock_response = Mock()
+    mock_response.status_code = 200
+
+    with patch.object(gitea_client.session, 'get', return_value=mock_response):
+        result = gitea_client.is_org_repo('personal-projects/repo')
+
+        assert result is True
+        # Should call /orgs/personal-projects, not /repos/.../
+        gitea_client.session.get.assert_called_once_with(
+            'https://test.com/api/v1/orgs/personal-projects'
+        )

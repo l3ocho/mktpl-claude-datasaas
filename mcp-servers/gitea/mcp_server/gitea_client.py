@@ -554,10 +554,33 @@ class GiteaClient:
         return response.json()
 
     def is_org_repo(self, repo: Optional[str] = None) -> bool:
-        """Check if repository belongs to an organization (not a user)."""
-        info = self.get_repo_info(repo)
-        owner_type = info.get('owner', {}).get('type', '')
-        return owner_type.lower() == 'organization'
+        """
+        Check if repository belongs to an organization (not a user).
+
+        Uses the /orgs/{owner} endpoint to reliably detect organizations,
+        as the owner.type field in repo info may be null in some Gitea versions.
+        """
+        owner, _ = self._parse_repo(repo)
+        return self._is_organization(owner)
+
+    def _is_organization(self, owner: str) -> bool:
+        """
+        Check if an owner is an organization by querying the orgs endpoint.
+
+        Args:
+            owner: The owner name to check
+
+        Returns:
+            True if owner is an organization, False if user or unknown
+        """
+        url = f"{self.base_url}/orgs/{owner}"
+        try:
+            response = self.session.get(url)
+            # 200 = organization exists, 404 = not an organization (user account)
+            return response.status_code == 200
+        except Exception as e:
+            logger.warning(f"Failed to check if {owner} is organization: {e}")
+            return False
 
     def get_branch_protection(
         self,
