@@ -110,8 +110,14 @@ class GiteaClient:
 
     def _resolve_label_ids(self, label_names: List[str], owner: str, repo: str) -> List[int]:
         """Convert label names to label IDs."""
-        org_labels = self.get_org_labels(owner)
-        repo_labels = self.get_labels(f"{owner}/{repo}")
+        full_repo = f"{owner}/{repo}"
+
+        # Only fetch org labels if repo belongs to an organization
+        org_labels = []
+        if self.is_org_repo(full_repo):
+            org_labels = self.get_org_labels(owner)
+
+        repo_labels = self.get_labels(full_repo)
         all_labels = org_labels + repo_labels
         label_map = {label['name']: label['id'] for label in all_labels}
         label_ids = []
