@@ -4,10 +4,13 @@ Configuration loader for Gitea MCP Server.
 Implements hybrid configuration system:
 - System-level: ~/.config/claude/gitea.env (credentials)
 - Project-level: .env (repository specification)
+- Auto-detection: Falls back to git remote URL parsing
 """
 from pathlib import Path
 from dotenv import load_dotenv
 import os
+import re
+import subprocess
 import logging
 from typing import Dict, Optional
 
@@ -59,6 +62,12 @@ class GiteaConfig:
         self.api_token = os.getenv('GITEA_API_TOKEN')
         self.repo = os.getenv('GITEA_REPO')  # Optional, must be owner/repo format
 
+        # Auto-detect repo from git remote if not specified
+        if not self.repo:
+            self.repo = self._detect_repo_from_git()
+            if self.repo:
+                logger.info(f"Auto-detected repository from git remote: {self.repo}")
+
         # Detect mode
         if self.repo:
             self.mode = 'project'
@@ -96,3 +105,71 @@ class GiteaConfig:
                 f"Missing required configuration: {', '.join(missing)}\n"
                 "Check your ~/.config/claude/gitea.env file"
             )
+
+    def _detect_repo_from_git(self) -> Optional[str]:
+        """
+        Auto-detect repository from git remote origin URL.
+
+        Supports URL formats:
+        - SSH: ssh://git@host:port/owner/repo.git
+        - SSH short: git@host:owner/repo.git
+        - HTTPS: https://host/owner/repo.git
+        - HTTP: http://host/owner/repo.git
+
+        Returns:
+            Repository in 'owner/repo' format, or None if detection fails
+        """
+        try:
+            result = subprocess.run(
+                ['git', 'remote', 'get-url', 'origin'],
+                capture_output=True,
+                text=True,
+                timeout=5
+            )
+            if result.returncode != 0:
+                logger.debug("No git remote 'origin' found")
+                return None
+
+            url = result.stdout.strip()
+            return self._parse_git_url(url)
+
+        except subprocess.TimeoutExpired:
+            logger.warning("Git command timed out")
+            return None
+        except FileNotFoundError:
+            logger.debug("Git not available")
+            return None
+        except Exception as e:
+            logger.debug(f"Failed to detect repo from git: {e}")
+            return None
+
+    def _parse_git_url(self, url: str) -> Optional[str]:
+        """
+        Parse git URL to extract owner/repo.
+
+        Args:
+            url: Git remote URL
+
+        Returns:
+            Repository in 'owner/repo' format, or None if parsing fails
+        """
+        # Remove .git suffix if present
+        url = re.sub(r'\.git$', '', url)
+
+        # SSH format: ssh://git@host:port/owner/repo
+        ssh_match = re.match(r'ssh://[^/]+/(.+/.+)$', url)
+        if ssh_match:
+            return ssh_match.group(1)
+
+        # SSH short format: git@host:owner/repo
+        ssh_short_match = re.match(r'git@[^:]+:(.+/.+)$', url)
+        if ssh_short_match:
+            return ssh_short_match.group(1)
+
+        # HTTPS/HTTP format: https://host/owner/repo
+        http_match = re.match(r'https?://[^/]+/(.+/.+)$', url)
+        if http_match:
+            return http_match.group(1)
+
+        logger.warning(f"Could not parse git URL: {url}")
+        return None
