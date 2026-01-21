@@ -149,3 +149,65 @@ def test_mode_detection_company(tmp_path, monkeypatch):
 
     assert result['mode'] == 'company'
     assert result['repo'] is None
+
+
+# ========================================
+# GIT URL PARSING TESTS
+# ========================================
+
+def test_parse_git_url_ssh_format():
+    """Test parsing SSH format git URL"""
+    config = GiteaConfig()
+
+    # SSH with port: ssh://git@host:port/owner/repo.git
+    url = "ssh://git@hotserv.tailc9b278.ts.net:2222/personal-projects/personal-portfolio.git"
+    result = config._parse_git_url(url)
+    assert result == "personal-projects/personal-portfolio"
+
+
+def test_parse_git_url_ssh_short_format():
+    """Test parsing SSH short format git URL"""
+    config = GiteaConfig()
+
+    # SSH short: git@host:owner/repo.git
+    url = "git@github.com:owner/repo.git"
+    result = config._parse_git_url(url)
+    assert result == "owner/repo"
+
+
+def test_parse_git_url_https_format():
+    """Test parsing HTTPS format git URL"""
+    config = GiteaConfig()
+
+    # HTTPS: https://host/owner/repo.git
+    url = "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git"
+    result = config._parse_git_url(url)
+    assert result == "personal-projects/leo-claude-mktplace"
+
+
+def test_parse_git_url_http_format():
+    """Test parsing HTTP format git URL"""
+    config = GiteaConfig()
+
+    # HTTP: http://host/owner/repo.git
+    url = "http://gitea.hotserv.cloud/personal-projects/repo.git"
+    result = config._parse_git_url(url)
+    assert result == "personal-projects/repo"
+
+
+def test_parse_git_url_without_git_suffix():
+    """Test parsing git URL without .git suffix"""
+    config = GiteaConfig()
+
+    url = "https://github.com/owner/repo"
+    result = config._parse_git_url(url)
+    assert result == "owner/repo"
+
+
+def test_parse_git_url_invalid_format():
+    """Test parsing invalid git URL returns None"""
+    config = GiteaConfig()
+
+    url = "not-a-valid-url"
+    result = config._parse_git_url(url)
+    assert result is None
