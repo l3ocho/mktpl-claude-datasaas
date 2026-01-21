@@ -199,6 +199,45 @@ GITEA_REPO=your-repository-name
 EOF
 ```
 
+## Verifying Plugin Installation
+
+After installing plugins, the `/plugin` command may show `(no content)` - this is normal Claude Code behavior and doesn't indicate an error.
+
+**To verify a plugin is installed correctly:**
+
+1. **Check installed plugins list:**
+   ```
+   /plugin list
+   ```
+   Look for `✔ plugin-name · Installed`
+
+2. **Test a plugin command directly:**
+   ```
+   /git-flow:git-status
+   /projman:sprint-status
+   /clarity-assist:clarify
+   ```
+   If the command executes and shows output, the plugin is working.
+
+3. **Check for loading errors:**
+   ```
+   /plugin list
+   ```
+   Look for any `Plugin Loading Errors` section - this indicates manifest issues.
+
+**Command format:** All plugin commands use the format `/plugin-name:command-name`
+
+| Plugin | Test Command |
+|--------|--------------|
+| git-flow | `/git-flow:git-status` |
+| projman | `/projman:sprint-status` |
+| pr-review | `/pr-review:pr-summary` |
+| clarity-assist | `/clarity-assist:clarify` |
+| doc-guardian | `/doc-guardian:doc-audit` |
+| code-sentinel | `/code-sentinel:security-scan` |
+| claude-config-maintainer | `/claude-config-maintainer:config-analyze` |
+| cmdb-assistant | `/cmdb-assistant:cmdb-search` |
+
 ## Repository Structure
 
 ```
