@@ -17,6 +17,5 @@
     "multi-agent"
   ],
   "commands": ["./commands/"],
-  "agents": ["./agents/"],
   "mcpServers": ["./.mcp.json"]
 }

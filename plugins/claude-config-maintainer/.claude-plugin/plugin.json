@@ -16,7 +16,5 @@
     "claude-md",
     "developer-tools"
   ],
-  "entryPoint": "agents/maintainer.md",
-  "commands": ["./commands/"],
-  "agents": ["./agents/"]
+  "commands": ["./commands/"]
 }

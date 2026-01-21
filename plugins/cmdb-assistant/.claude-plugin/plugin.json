@@ -18,6 +18,5 @@
     "dcim"
   ],
   "commands": ["./commands/"],
-  "agents": ["./agents/"],
-  "mcpServers": "./.mcp.json"
+  "mcpServers": ["./.mcp.json"]
 }
