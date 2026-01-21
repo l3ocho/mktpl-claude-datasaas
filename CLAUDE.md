@@ -5,7 +5,7 @@ This file provides guidance to Claude Code when working with code in this reposi
 ## Project Overview
 
 **Repository:** leo-claude-mktplace
-**Version:** 3.0.0
+**Version:** 3.0.1
 **Status:** Production Ready
 
 A plugin marketplace for Claude Code containing:
