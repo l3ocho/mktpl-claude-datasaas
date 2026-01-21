@@ -16,6 +16,5 @@
     "requirements",
     "methodology"
   ],
-  "commands": ["./commands/"],
-  "agents": ["./agents/"]
+  "commands": ["./commands/"]
 }
