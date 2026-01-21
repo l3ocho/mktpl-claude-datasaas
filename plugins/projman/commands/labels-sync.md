@@ -4,45 +4,92 @@ description: Fetch and validate label taxonomy from Gitea, create missing requir
 
 # Sync Label Taxonomy from Gitea
 
-This command fetches the current label taxonomy from Gitea (organization + repository labels), validates that required labels exist, and creates any missing ones. Labels are fetched dynamically - no local files are created or modified.
+This command fetches the current label taxonomy from Gitea (organization + repository labels), validates that required labels exist, and creates any missing ones.
 
-## Why Label Sync Matters
+## CRITICAL: Execution Steps
 
-The label taxonomy is **dynamic** - new labels may be added to Gitea over time:
-- Organization-level labels (shared across all repos)
-- Repository-specific labels (unique to this project)
+You MUST follow these steps in order. Do NOT skip any step.
 
-**Dynamic approach:** Never hardcode labels. Always fetch from Gitea and adapt suggestions accordingly.
+### Step 1: Detect Repository from Git Remote
 
-## What This Command Does
+Run this Bash command to get the git remote URL:
 
-1. **Auto-Detect Repository** - Automatically detects repo from git remote (or uses explicit `repo` param)
-2. **Check Owner Type** - Determines if owner is organization or user account
-3. **Fetch Current Labels** - Uses `get_labels` MCP tool to fetch all labels (org + repo)
-4. **Display Current Taxonomy** - Shows organization and repository label counts
-5. **Identify Missing Required Labels** - Checks for required labels (Type/*, Priority/*, etc.)
-6. **Create Missing Labels** - Automatically creates any missing required labels
-7. **Report Status** - Summarizes what was found and created
+```bash
+git remote get-url origin
+```
 
-**Note:** This command executes autonomously without user prompts. It fetches labels, reports findings, and creates missing labels automatically.
+Parse the output to extract `owner/repo`:
+- SSH format `ssh://git@host:port/owner/repo.git` → extract `owner/repo`
+- SSH short `git@host:owner/repo.git` → extract `owner/repo`
+- HTTPS `https://host/owner/repo.git` → extract `owner/repo`
 
-## MCP Tools Used
+Store this as `REPO_NAME` for all subsequent MCP calls.
 
-**Gitea Tools:**
-- `get_labels` - Fetch all labels (organization + repository)
-- `create_label` - Create missing required labels
-- `validate_repo_org` - Verify repository belongs to organization
+### Step 2: Validate Repository Organization
 
-## Required Label Categories
+Call MCP tool with the detected repo:
 
-At minimum, these label categories must exist:
+```
+mcp__plugin_projman_gitea__validate_repo_org(repo=REPO_NAME)
+```
 
+This determines if the owner is an organization or user account.
+
+### Step 3: Fetch Labels from Gitea
+
+Call MCP tool with the detected repo:
+
+```
+mcp__plugin_projman_gitea__get_labels(repo=REPO_NAME)
+```
+
+This returns both organization labels (if org-owned) and repository labels.
+
+### Step 4: Display Current Taxonomy
+
+Show the user:
+- Total organization labels count
+- Total repository labels count
+- Labels grouped by category (Type/*, Priority/*, etc.)
+
+### Step 5: Check Required Labels
+
+Verify these required label categories exist:
 - **Type/***: Bug, Feature, Refactor, Documentation, Test, Chore
 - **Priority/***: Low, Medium, High, Critical
 - **Complexity/***: Simple, Medium, Complex
-- **Efforts/***: XS, S, M, L, XL
+- **Effort/***: XS, S, M, L, XL (note: may be "Effort" or "Efforts")
 
-If any required labels are missing, the command will offer to create them.
+### Step 6: Create Missing Labels (if any)
+
+For each missing required label, call:
+
+```
+mcp__plugin_projman_gitea__create_label(repo=REPO_NAME, name="Type: Bug", color="d73a4a")
+```
+
+Use the label format that matches existing labels in the repo (slash `/` or colon-space `: `).
+
+### Step 7: Report Results
+
+Summarize what was found and created.
+
+## DO NOT
+
+- **DO NOT** call MCP tools without the `repo` parameter - they will fail
+- **DO NOT** create any local files - this command only interacts with Gitea
+- **DO NOT** ask the user questions - execute autonomously
+- **DO NOT** create a "labels reference file" - labels are fetched dynamically from Gitea
+
+## MCP Tools Used
+
+All tools require the `repo` parameter in `owner/repo` format:
+
+| Tool | Purpose |
+|------|---------|
+| `validate_repo_org(repo=...)` | Check if owner is organization or user |
+| `get_labels(repo=...)` | Fetch all labels (org + repo) |
+| `create_label(repo=..., name=..., color=...)` | Create missing labels |
 
 ## Expected Output
 
@@ -50,7 +97,7 @@ If any required labels are missing, the command will offer to create them.
 Label Taxonomy Sync
 ===================
 
-Auto-detecting repository from git remote...
+Detecting repository from git remote...
 Repository: personal-projects/your-repo-name
 Owner type: Organization
 
@@ -62,189 +109,51 @@ Current Label Taxonomy:
 - Total: 43 labels
 
 Organization Labels by Category:
-  Agent/*: 2 labels
-  Complexity/*: 3 labels
-  Efforts/*: 5 labels
-  Priority/*: 4 labels
-  Risk/*: 3 labels
-  Source/*: 4 labels
   Type/*: 6 labels
+  Priority/*: 4 labels
+  Complexity/*: 3 labels
+  Effort/*: 5 labels
+  ...
 
 Repository Labels by Category:
   Component/*: 9 labels
   Tech/*: 7 labels
 
 Required Labels Check:
-  Type/*: 6/6 present
-  Priority/*: 4/4 present
-  Complexity/*: 3/3 present
-  Efforts/*: 5/5 present
+  Type/*: 6/6 present ✓
+  Priority/*: 4/4 present ✓
+  Complexity/*: 3/3 present ✓
+  Effort/*: 5/5 present ✓
 
 All required labels present. Label taxonomy is ready for use.
 ```
 
-## Label Taxonomy Structure
+## Label Format Detection
 
-Labels are organized by namespace:
+Labels may use different naming conventions:
+- Slash format: `Type/Bug`, `Priority/High`
+- Colon-space format: `Type: Bug`, `Priority: High`
 
-**Organization Labels (28):**
-- `Agent/*` (2): Agent/Human, Agent/Claude
-- `Complexity/*` (3): Simple, Medium, Complex
-- `Efforts/*` (5): XS, S, M, L, XL
-- `Priority/*` (4): Low, Medium, High, Critical
-- `Risk/*` (3): Low, Medium, High
-- `Source/*` (4): Development, Staging, Production, Customer
-- `Type/*` (6): Bug, Feature, Refactor, Documentation, Test, Chore
+When creating missing labels, match the format used by existing labels in the repository.
 
-**Repository Labels (16):**
-- `Component/*` (9): Backend, Frontend, API, Database, Auth, Deploy, Testing, Docs, Infra
-- `Tech/*` (7): Python, JavaScript, Docker, PostgreSQL, Redis, Vue, FastAPI
+## Troubleshooting
 
-## Label Reference
+**Error: Use 'owner/repo' format**
+- You forgot to pass the `repo` parameter to the MCP tool
+- Go back to Step 1 and detect the repo from git remote
 
-The plugin includes a static reference file at `skills/label-taxonomy/labels-reference.md` that documents the expected label taxonomy and suggestion logic.
+**Empty organization labels**
+- If owner is a user account (not org), organization labels will be empty
+- This is expected - user accounts only have repository-level labels
 
-**Important:** This reference file is part of the plugin package and serves as documentation. The `/labels-sync` command fetches labels dynamically from Gitea - it does not modify the reference file.
-
-**Dynamic Approach:** Labels are always fetched fresh from Gitea using `get_labels`. The reference file provides context for the `suggest_labels` logic but is not the source of truth.
-
-Example reference file structure:
-
-```markdown
-# Label Taxonomy Reference
-
-Last synced: 2025-01-18 14:30 UTC
-Source: Gitea (bandit/your-repo-name)
-
-## Organization Labels (28)
-
-### Agent (2)
-- Agent/Human - Work performed by human developers
-- Agent/Claude - Work performed by Claude Code
-
-### Type (6)
-- Type/Bug - Bug fixes and error corrections
-- Type/Feature - New features and enhancements
-- Type/Refactor - Code restructuring and architectural changes
-- Type/Documentation - Documentation updates
-- Type/Test - Testing-related work
-- Type/Chore - Maintenance and tooling tasks
-
-...
-
-## Repository Labels (16)
-
-### Component (9)
-- Component/Backend - Backend service code
-- Component/Frontend - User interface code
-- Component/API - API endpoints and contracts
-...
-
-## Suggestion Logic
-
-When suggesting labels, consider:
-
-**Type Detection:**
-- Keywords "bug", "fix", "error" -> Type/Bug
-- Keywords "feature", "add", "implement" -> Type/Feature
-- Keywords "refactor", "extract", "restructure" -> Type/Refactor
-...
-```
+**Git remote not found**
+- Ensure you're running in a directory with a git repository
+- Check that the `origin` remote is configured
 
 ## When to Run
 
 Run `/labels-sync` when:
 - Setting up the plugin for the first time
 - You notice missing labels in suggestions
-- New labels are added to Gitea (announced by team)
-- Quarterly maintenance (check for changes)
+- New labels are added to Gitea
 - After major taxonomy updates
-
-## Integration with Other Commands
-
-The updated taxonomy is used by:
-- `/sprint-plan` - Planner agent uses `suggest_labels` with current taxonomy
-- All commands that create or update issues
-
-## Example Usage
-
-**Example 1: All labels present**
-```
-User: /labels-sync
-
-Auto-detecting repository...
-Repository: personal-projects/my-project
-Owner type: Organization
-
-Fetching labels from Gitea...
-
-Current Label Taxonomy:
-- Organization Labels: 27
-- Repository Labels: 16
-- Total: 43 labels
-
-Required Labels Check:
-  Type/*: 6/6 present
-  Priority/*: 4/4 present
-  Complexity/*: 3/3 present
-  Efforts/*: 5/5 present
-
-All required labels present. Label taxonomy is ready for use.
-```
-
-**Example 2: Missing required labels (auto-created)**
-```
-User: /labels-sync
-
-Auto-detecting repository...
-Repository: personal-projects/new-project
-Owner type: User (no organization labels available)
-
-Fetching labels from Gitea...
-
-Current Label Taxonomy:
-- Organization Labels: 0 (user account - no org labels)
-- Repository Labels: 3
-- Total: 3 labels
-
-Required Labels Check:
-  Type/*: 0/6 - MISSING: Bug, Feature, Refactor, Documentation, Test, Chore
-  Priority/*: 0/4 - MISSING: Low, Medium, High, Critical
-  Complexity/*: 0/3 - MISSING: Simple, Medium, Complex
-  Efforts/*: 0/5 - MISSING: XS, S, M, L, XL
-
-Creating missing required labels...
-  Created: Type/Bug (#d73a4a)
-  Created: Type/Feature (#0075ca)
-  ... (18 total labels created)
-
-Label taxonomy initialized. All required labels now present.
-```
-
-## Troubleshooting
-
-**Error: Cannot fetch labels from Gitea**
-- Check your Gitea configuration in `~/.config/claude/gitea.env`
-- Verify your API token has `read:org` and `repo` permissions
-- Ensure you're connected to the network
-
-**Error: Use 'owner/repo' format**
-- Ensure you're running from a directory with a git remote configured
-- Or pass the `repo` parameter explicitly: `GITEA_REPO=owner/repo` in `.env`
-
-**Organization labels empty for org-owned repo**
-- Verify the organization has labels configured in Gitea
-- Check if the owner is truly an organization (not a user account)
-- User accounts don't have organization-level labels
-
-**User-owned repo (no org labels)**
-- This is expected behavior - user accounts can only have repository-level labels
-- The plugin will work with repo labels only and create missing required labels
-
-## Best Practices
-
-1. **Sync at sprint start** - Ensure labels are current before planning
-2. **Review changes** - Always review what changed before confirming
-3. **Create missing required labels** - Don't skip this step
-4. **Update planning** - After sync, consider if new labels affect current sprint
-5. **Communicate changes** - Let team know when new labels are available
