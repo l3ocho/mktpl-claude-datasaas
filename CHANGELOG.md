@@ -4,6 +4,26 @@ All notable changes to the Leo Claude Marketplace will be documented in this fil
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [3.1.1] - 2026-01-22
+
+### Added
+- **git-flow:** `/commit-sync` now prunes stale remote-tracking branches with `git fetch --prune`
+- **git-flow:** `/commit-sync` detects and reports local branches with deleted upstreams
+- **git-flow:** `/branch-cleanup` now handles stale branches (upstream gone) separately from merged branches
+- **git-flow:** New `GIT_CLEANUP_STALE` environment variable for stale branch cleanup control
+
+### Changed
+- **All hooks:** Added `[plugin-name]` prefix to all hook messages for better identification
+  - `[projman]`, `[pr-review]`, `[code-sentinel]`, `[doc-guardian]` prefixes
+- **doc-guardian:** Hook now notification-only (no file reads or blocking operations)
+  - Suggests running `/doc-sync` instead of performing inline checks
+  - Significantly reduces workflow interruption
+
+### Fixed
+- doc-guardian hook no longer stalls workflow with deep file analysis
+
+---
+
 ## [3.1.0] - 2026-01-21
 
 ### Added
