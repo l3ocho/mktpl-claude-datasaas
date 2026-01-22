@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "prompt",
-            "prompt": "[doc-guardian] QUICK drift check (DO NOT block workflow):\n\n1. ONLY check if the modified file is referenced in README.md, CLAUDE.md, or API docs in the SAME directory\n2. Do NOT read files or perform deep analysis - just note potential drift based on file name/path\n3. If potential drift: output a single line like '[doc-guardian] Note: {filename} changed - may affect {doc}. Run /doc-sync to verify.'\n4. If no obvious drift: say nothing\n\nIMPORTANT: This is notification-only. Do NOT read documentation files, do NOT make changes, do NOT use any tools. Just a quick mental check based on the file path."
+            "prompt": "[doc-guardian] NON-BLOCKING drift note:\n\nLook at the file path. If it might affect documentation, output ONLY:\n'[doc-guardian] {filename} modified - consider /doc-sync later'\n\nOtherwise say nothing. Do NOT analyze, do NOT read files, do NOT stop working. Maximum 15 words, then continue immediately."
           }
         ]
       }
