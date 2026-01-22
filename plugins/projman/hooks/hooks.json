@@ -3,7 +3,7 @@
     "SessionStart": [
       {
         "type": "prompt",
-        "prompt": "Silently check if the project's git remote matches the .env configuration:\n\n1. Read .env to get GITEA_ORG and GITEA_REPO values\n2. Run: git remote get-url origin\n3. Extract org and repo from the remote URL\n4. Compare with .env values\n\nIf mismatch detected:\n- Display a brief warning: 'Repository location mismatch detected. Git remote shows <org>/<repo> but .env has <old-org>/<old-repo>. Run /project-sync to update.'\n\nIf match or no .env exists: Stay silent, do not interrupt.\n\nThis check should be quick and non-blocking."
+        "prompt": "Perform silent startup checks:\n\n1. Check if MCP venvs exist at the installed marketplace location. If the marketplace is installed but venvs are missing, warn the user to run setup.sh from that location.\n\n2. Check if the project git remote matches .env configuration (GITEA_ORG/GITEA_REPO). If mismatch, warn about /project-sync.\n\nStay silent if all checks pass or not applicable. Be quick and non-blocking."
       }
     ]
   }

@@ -178,7 +178,9 @@ Sync configuration with current git remote.
 
 **When to use:** After moving or renaming a repository
 
-**Note:** A SessionStart hook automatically detects mismatches and warns you to run `/project-sync`.
+**Note:** A SessionStart hook automatically checks for:
+1. Missing MCP venvs at the installed marketplace location (warns to run setup.sh)
+2. Repository config mismatches (warns to run `/project-sync`)
 
 ### `/review`
 Pre-sprint-close code quality review.
