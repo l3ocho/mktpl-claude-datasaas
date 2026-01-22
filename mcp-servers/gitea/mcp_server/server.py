@@ -220,6 +220,10 @@ class GiteaMCPServer:
                             "context": {
                                 "type": "string",
                                 "description": "Issue title + description or sprint context"
+                            },
+                            "repo": {
+                                "type": "string",
+                                "description": "Repository name (owner/repo format)"
                             }
                         },
                         "required": ["context"]
