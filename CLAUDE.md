@@ -28,18 +28,22 @@ A plugin marketplace for Claude Code containing:
 # Validate marketplace compliance
 ./scripts/validate-marketplace.sh
 
-# Setup commands (in a target project with plugin installed)
-/initial-setup    # First time: full setup wizard
-/project-init     # New project: quick config
-/project-sync     # After repo move: sync config
-
-# Run projman commands
-/sprint-plan      # Start sprint planning
-/sprint-status    # Check progress
-/review           # Pre-close code quality review
-/test-check       # Verify tests before close
-/sprint-close     # Complete sprint
+# After updates
+./scripts/post-update.sh   # Rebuild venvs, verify symlinks
 ```
+
+### Plugin Commands by Category
+
+| Category | Commands |
+|----------|----------|
+| **Setup** | `/initial-setup`, `/project-init`, `/project-sync` |
+| **Sprint** | `/sprint-plan`, `/sprint-start`, `/sprint-status`, `/sprint-close` |
+| **Quality** | `/review`, `/test-check`, `/test-gen` |
+| **PR Review** | `/pr-review:initial-setup`, `/pr-review:project-init` |
+| **Docs** | `/doc-audit`, `/doc-sync` |
+| **Security** | `/security-scan`, `/refactor`, `/refactor-dry` |
+| **Config** | `/config-analyze`, `/config-optimize` |
+| **Debug** | `/debug-report`, `/debug-review` |
 
 ## Repository Structure
 
@@ -208,42 +212,47 @@ Stored in Gitea Wiki under `lessons-learned/sprints/`.
 | Document | Purpose |
 |----------|---------|
 | `docs/CANONICAL-PATHS.md` | **Single source of truth** for paths |
-| `docs/COMMANDS-CHEATSHEET.md` | All commands quick reference with workflow examples |
+| `docs/COMMANDS-CHEATSHEET.md` | All commands quick reference |
 | `docs/CONFIGURATION.md` | Centralized setup guide |
+| `docs/DEBUGGING-CHECKLIST.md` | Systematic troubleshooting guide |
 | `docs/UPDATING.md` | Update guide for the marketplace |
-| `plugins/projman/CONFIGURATION.md` | Quick reference (links to central) |
+| `plugins/projman/CONFIGURATION.md` | Projman quick reference (links to central) |
 | `plugins/projman/README.md` | Projman full documentation |
 
-## Versioning and Changelog Rules
+## Installation Paths
 
-### Version Display
-**The marketplace version is displayed ONLY in the main `README.md` title.**
+Understanding where files live is critical for debugging:
 
-- Format: `# Leo Claude Marketplace - vX.Y.Z`
-- Do NOT add version numbers to individual plugin documentation titles
-- Do NOT add version numbers to configuration guides
-- Do NOT add version numbers to CLAUDE.md or other docs
+| Context | Path | Purpose |
+|---------|------|---------|
+| **Source** | `~/claude-plugins-work/` | Development - edit here |
+| **Installed** | `~/.claude/plugins/marketplaces/leo-claude-mktplace/` | Runtime - Claude uses this |
+| **Cache** | `~/.claude/` | Plugin metadata and settings |
 
-### Changelog Maintenance (MANDATORY)
-**`CHANGELOG.md` is the authoritative source for version history.**
+**Key insight:** Edits to source require reinstall/update to take effect at runtime.
 
-When releasing a new version:
-1. Update main `README.md` title with new version
-2. Update `CHANGELOG.md` with:
-   - Version number and date: `## [X.Y.Z] - YYYY-MM-DD`
-   - **Added**: New features, commands, files
-   - **Changed**: Modifications to existing functionality
-   - **Fixed**: Bug fixes
-   - **Removed**: Deleted features, files, deprecated items
-3. Update `marketplace.json` metadata version
-4. Update plugin `plugin.json` versions if plugin-specific changes
+## Debugging & Troubleshooting
 
-### Version Format
-- Follow [Semantic Versioning](https://semver.org/): MAJOR.MINOR.PATCH
-- MAJOR: Breaking changes
-- MINOR: New features, backward compatible
-- PATCH: Bug fixes, minor improvements
+See `docs/DEBUGGING-CHECKLIST.md` for systematic troubleshooting.
+
+**Common Issues:**
+| Symptom | Likely Cause | Fix |
+|---------|--------------|-----|
+| "X MCP servers failed" | Missing venv in installed path | `cd ~/.claude/plugins/marketplaces/leo-claude-mktplace && ./scripts/setup.sh` |
+| MCP tools not available | Symlink broken or venv missing | Run `/debug-report` to diagnose |
+| Changes not taking effect | Editing source, not installed | Reinstall plugin or edit installed path |
+
+**Debug Commands:**
+- `/debug-report` - Run full diagnostics, create issue if needed
+- `/debug-review` - Investigate and propose fixes
+
+## Versioning Rules
+
+- Version displayed ONLY in main `README.md` title: `# Leo Claude Marketplace - vX.Y.Z`
+- `CHANGELOG.md` is authoritative for version history
+- Follow [SemVer](https://semver.org/): MAJOR.MINOR.PATCH
+- On release: Update README title → CHANGELOG → marketplace.json → plugin.json files
 
 ---
 
-**Last Updated:** 2026-01-20
+**Last Updated:** 2026-01-22
