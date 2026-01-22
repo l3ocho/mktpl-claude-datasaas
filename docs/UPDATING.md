@@ -4,15 +4,32 @@ This guide covers how to update your local installation when new versions are re
 
 ---
 
-## Quick Update
+## ⚠️ CRITICAL: Run Setup in Installed Location
+
+When Claude Code installs a marketplace, it copies files to `~/.claude/plugins/marketplaces/` but **does NOT create Python virtual environments**. You must run setup manually after installation or update.
+
+**After installing or updating the marketplace:**
 
 ```bash
-# 1. Pull latest changes
+cd ~/.claude/plugins/marketplaces/leo-claude-mktplace && ./scripts/setup.sh
+```
+
+This creates the required `.venv` directories for MCP servers. Without this step, **all MCP servers will fail to start**.
+
+---
+
+## Quick Update (Source Repository)
+
+```bash
+# 1. Pull latest changes to source
 cd /path/to/leo-claude-mktplace
 git pull origin main
 
-# 2. Run post-update script
+# 2. Run post-update script (updates source repo venvs)
 ./scripts/post-update.sh
+
+# 3. CRITICAL: Run setup in installed marketplace location
+cd ~/.claude/plugins/marketplaces/leo-claude-mktplace && ./scripts/setup.sh
 ```
 
 **Then restart your Claude Code session** to load any changes.
@@ -132,10 +149,34 @@ deactivate
 
 ### MCP server won't start after update
 
+**Most common cause:** Virtual environments don't exist in the installed marketplace.
+
+```bash
+# Fix: Run setup in installed location
+cd ~/.claude/plugins/marketplaces/leo-claude-mktplace && ./scripts/setup.sh
+```
+
+If that doesn't work:
+
 1. Check Python version: `python3 --version` (requires 3.10+)
-2. Verify venv exists: `ls mcp-servers/gitea/.venv`
-3. Restart Claude Code session
-4. Check logs for specific errors
+2. Verify venv exists in INSTALLED location:
+   ```bash
+   ls ~/.claude/plugins/marketplaces/leo-claude-mktplace/mcp-servers/gitea/.venv
+   ls ~/.claude/plugins/marketplaces/leo-claude-mktplace/mcp-servers/netbox/.venv
+   ```
+3. If missing, the symlinks won't resolve. Run setup.sh as shown above.
+4. Restart Claude Code session
+5. Check logs for specific errors
+
+### "X MCP servers failed" on startup
+
+This almost always means the venvs don't exist in the installed marketplace:
+
+```bash
+cd ~/.claude/plugins/marketplaces/leo-claude-mktplace && ./scripts/setup.sh
+```
+
+Then restart Claude Code.
 
 ### New commands not available
 
