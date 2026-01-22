@@ -3,7 +3,7 @@
     "SessionStart": [
       {
         "type": "prompt",
-        "prompt": "Perform silent startup checks:\n\n1. Check if MCP venvs exist at the installed marketplace location. If the marketplace is installed but venvs are missing, warn the user to run setup.sh from that location.\n\n2. Check if the project git remote matches .env configuration (GITEA_ORG/GITEA_REPO). If mismatch, warn about /project-sync.\n\nStay silent if all checks pass or not applicable. Be quick and non-blocking."
+        "prompt": "[pr-review] Perform silent startup checks:\n\n1. Check if MCP venvs exist at the installed marketplace location. If the marketplace is installed but venvs are missing, warn the user: '[pr-review] MCP venvs missing - run setup.sh from installed marketplace location'.\n\n2. Check if the project git remote matches .env configuration (GITEA_ORG/GITEA_REPO). If mismatch, warn: '[pr-review] Git remote mismatch - run /project-sync'.\n\nStay silent if all checks pass or not applicable. Be quick and non-blocking."
       }
     ]
   }
