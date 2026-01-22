@@ -195,6 +195,74 @@ Does this analysis match your understanding of the problem?
 
 Do NOT proceed until user approves.
 
+### Step 9.5: Search Lessons Learned
+
+Before proposing a fix, search for relevant lessons from past fixes.
+
+**1. Extract search tags from the issue:**
+
+```
+SEARCH_TAGS = []
+# Add tool names
+for each failed_tool in issue:
+  SEARCH_TAGS.append(tool_name)  # e.g., "get_labels", "validate_repo_org"
+
+# Add error category
+SEARCH_TAGS.append(error_category)  # e.g., "parameter-format", "authentication"
+
+# Add component if identifiable
+if error relates to MCP server:
+  SEARCH_TAGS.append("mcp")
+if error relates to command:
+  SEARCH_TAGS.append("command")
+```
+
+**2. Search lessons learned:**
+
+```
+mcp__plugin_projman_gitea__search_lessons(
+  repo=REPO_NAME,
+  tags=SEARCH_TAGS,
+  limit=5
+)
+```
+
+**3. Also search by error keywords:**
+
+```
+mcp__plugin_projman_gitea__search_lessons(
+  repo=REPO_NAME,
+  query=[key error message words],
+  limit=5
+)
+```
+
+**4. Display relevant lessons (if any):**
+
+```
+Related Lessons Learned
+=======================
+
+Found [N] relevant lessons from past fixes:
+
+📚 Lesson: "Sprint 14 - Parameter validation in MCP tools"
+   Tags: mcp, get_labels, parameter-format
+   Summary: Always validate repo parameter format before API calls
+   Prevention: Add format check at function entry
+
+📚 Lesson: "Sprint 12 - Graceful fallback for missing config"
+   Tags: configuration, fallback
+   Summary: Commands should work even without .env
+   Prevention: Check for env vars, use sensible defaults
+
+These lessons may inform your fix approach.
+```
+
+If no lessons found, display:
+```
+No related lessons found. This may be a new type of issue.
+```
+
 ### Step 10: Propose Fix Approach
 
 Based on the analysis, propose a specific fix:
@@ -342,7 +410,118 @@ Next Steps:
   1. Review and merge PR #81
   2. In test project, pull latest plugin version
   3. Run /debug-report to verify fix
-  4. If passing, close issue #80
+  4. Come back and run Step 15 to close issue and capture lesson
+```
+
+### Step 15: Verify, Close, and Capture Lesson
+
+**This step runs AFTER the user has verified the fix works.**
+
+When user returns and confirms the fix is working:
+
+**1. Close the issue:**
+
+```
+mcp__plugin_projman_gitea__update_issue(
+  repo=REPO_NAME,
+  issue_number=ISSUE_NUMBER,
+  state="closed"
+)
+```
+
+**2. Ask about lesson capture:**
+
+Use AskUserQuestion:
+
+```
+This fix addressed [ERROR_TYPE] in [COMPONENT].
+
+Would you like to capture this as a lesson learned?
+
+Options:
+- Yes, capture lesson (helps avoid similar issues in future)
+- No, skip (trivial fix or already documented)
+```
+
+**3. If user chooses Yes, auto-generate lesson content:**
+
+```
+LESSON_TITLE = "Sprint [N] - [Brief description of fix]"
+  # Example: "Sprint 17 - MCP parameter validation"
+
+LESSON_CONTENT = """
+## Context
+
+[What was happening when the issue occurred]
+- Command/tool being used: [FAILED_TOOL]
+- Error encountered: [ERROR_MESSAGE]
+
+## Problem
+
+[Root cause identified during investigation]
+
+## Solution
+
+[What was changed to fix it]
+- Files modified: [LIST]
+- PR: #[PR_NUMBER]
+
+## Prevention
+
+[How to avoid this in the future]
+
+## Related
+
+- Issue: #[ISSUE_NUMBER]
+- PR: #[PR_NUMBER]
+"""
+
+LESSON_TAGS = [
+  tool_name,        # e.g., "get_labels"
+  error_category,   # e.g., "parameter-format"
+  component,        # e.g., "mcp", "command"
+  "bug-fix"
+]
+```
+
+**4. Show lesson preview and ask for approval:**
+
+```
+Lesson Preview
+==============
+
+Title: [LESSON_TITLE]
+Tags: [LESSON_TAGS]
+
+Content:
+[LESSON_CONTENT]
+
+Save this lesson? (Y/N/Edit)
+```
+
+**5. If approved, create the lesson:**
+
+```
+mcp__plugin_projman_gitea__create_lesson(
+  repo=REPO_NAME,
+  title=LESSON_TITLE,
+  content=LESSON_CONTENT,
+  tags=LESSON_TAGS,
+  category="sprints"
+)
+```
+
+**6. Report completion:**
+
+```
+Issue Closed & Lesson Captured
+==============================
+
+Issue #[N]: CLOSED
+Lesson: "[LESSON_TITLE]" saved to wiki
+
+This lesson will be surfaced in future /debug-review
+sessions when similar errors are encountered.
 ```
 
 ## DO NOT
@@ -350,8 +529,9 @@ Next Steps:
 - **DO NOT** skip reading relevant files - this is MANDATORY
 - **DO NOT** proceed past approval gates without user confirmation
 - **DO NOT** guess at fixes without evidence from code
-- **DO NOT** close issues - let user verify fix works first
+- **DO NOT** close issues until user confirms fix works (Step 15)
 - **DO NOT** commit directly to development or main branches
+- **DO NOT** skip the lessons learned search - past fixes inform better solutions
 
 ## If Investigation Finds No Bug
 
