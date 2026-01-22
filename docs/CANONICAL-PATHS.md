@@ -18,6 +18,7 @@ leo-claude-mktplace/
 │   ├── architecture/           # Draw.io diagrams and specs
 │   ├── CANONICAL-PATHS.md      # This file - single source of truth
 │   ├── CONFIGURATION.md        # Centralized configuration guide
+│   ├── DEBUGGING-CHECKLIST.md  # Systematic troubleshooting guide
 │   ├── UPDATING.md             # Update guide
 │   └── workflows/              # Workflow documentation
 ├── hooks/                      # Shared hooks (if any)
@@ -103,6 +104,10 @@ leo-claude-mktplace/
 │       ├── skills/
 │       └── claude-md-integration.md
 ├── scripts/                    # Setup and maintenance scripts
+│   ├── setup.sh                # Initial setup (create venvs, config templates)
+│   ├── post-update.sh          # Post-update (rebuild venvs, verify symlinks)
+│   ├── check-venv.sh           # Check if venvs exist (for hooks)
+│   └── validate-marketplace.sh # Marketplace compliance validation
 ├── CLAUDE.md
 ├── README.md
 ├── LICENSE
@@ -156,6 +161,7 @@ The symlink target is relative: `../../../mcp-servers/{server}`
 | Update guide | `docs/UPDATING.md` |
 | Configuration guide | `docs/CONFIGURATION.md` |
 | Commands cheat sheet | `docs/COMMANDS-CHEATSHEET.md` |
+| Debugging checklist | `docs/DEBUGGING-CHECKLIST.md` |
 
 ---
 
