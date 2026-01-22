@@ -184,6 +184,10 @@ Use this exact template:
 
 ### Step 6: Create Issue in Marketplace
 
+**First, check if MCP tools are available.** Attempt to use an MCP tool. If you receive "tool not found", "not in function list", or similar error, the MCP server is not accessible in this session - use the curl fallback.
+
+#### Option A: MCP Available (preferred)
+
 ```
 mcp__plugin_projman_gitea__create_issue(
   repo=MARKETPLACE_REPO,
@@ -194,6 +198,81 @@ mcp__plugin_projman_gitea__create_issue(
 ```
 
 If labels don't exist, create issue without labels.
+
+#### Option B: MCP Unavailable - Use curl Fallback
+
+If MCP tools are not available (the very issue you may be diagnosing), use this fallback:
+
+**1. Check for Gitea credentials:**
+
+```bash
+if [[ -f ~/.config/claude/gitea.env ]]; then
+  source ~/.config/claude/gitea.env
+  echo "Credentials found. API URL: $GITEA_API_URL"
+else
+  echo "No credentials at ~/.config/claude/gitea.env"
+fi
+```
+
+**2. If credentials exist, create issue via curl with proper JSON escaping:**
+
+Create secure temp files and save content:
+
+```bash
+# Create temp files with restrictive permissions
+DIAG_TITLE=$(mktemp -p /tmp -m 600 diag-title.XXXXXX)
+DIAG_BODY=$(mktemp -p /tmp -m 600 diag-body.XXXXXX)
+DIAG_PAYLOAD=$(mktemp -p /tmp -m 600 diag-payload.XXXXXX)
+
+# Save title
+echo "[Diagnostic] [summary of main failure]" > "$DIAG_TITLE"
+
+# Save body (paste Step 5 content) - heredoc delimiter prevents shell expansion
+cat > "$DIAG_BODY" << 'DIAGNOSTIC_EOF'
+[Paste the full issue content from Step 5 here]
+DIAGNOSTIC_EOF
+```
+
+Construct JSON safely using jq's --rawfile (avoids command substitution):
+
+```bash
+# Build JSON payload using jq with --rawfile for safe content handling
+jq -n \
+  --rawfile title "$DIAG_TITLE" \
+  --rawfile body "$DIAG_BODY" \
+  '{title: ($title | rtrimstr("\n")), body: $body}' > "$DIAG_PAYLOAD"
+
+# Create issue using the JSON file
+curl -s -X POST "${GITEA_API_URL}/repos/${MARKETPLACE_REPO}/issues" \
+  -H "Authorization: token ${GITEA_API_TOKEN}" \
+  -H "Content-Type: application/json" \
+  -d @"$DIAG_PAYLOAD" | jq '.html_url // .'
+
+# Secure cleanup
+rm -f "$DIAG_TITLE" "$DIAG_BODY" "$DIAG_PAYLOAD"
+```
+
+**3. If no credentials found, save report locally:**
+
+```bash
+REPORT_FILE=$(mktemp -p /tmp -m 600 diagnostic-report-XXXXXX.md)
+cat > "$REPORT_FILE" << 'DIAGNOSTIC_EOF'
+[Paste the full issue content from Step 5 here]
+DIAGNOSTIC_EOF
+echo "Report saved to: $REPORT_FILE"
+```
+
+Then inform the user:
+
+```
+MCP tools are unavailable and no Gitea credentials found at ~/.config/claude/gitea.env.
+
+Diagnostic report saved to: [REPORT_FILE]
+
+To create the issue manually:
+1. Configure credentials: See docs/CONFIGURATION.md
+2. Or create issue directly at: http://gitea.hotserv.cloud/[MARKETPLACE_REPO]/issues/new
+```
 
 ### Step 7: Report to User
 
@@ -258,5 +337,6 @@ and I can create a manual bug report.
 - If not a git repo, ask user for the repository path
 
 **MCP tools not available**
-- The projman plugin may not be properly installed
-- Check if .mcp.json exists and is configured
+- Use the curl fallback in Step 6, Option B
+- Requires Gitea credentials at `~/.config/claude/gitea.env`
+- If no credentials, report will be saved locally for manual submission
