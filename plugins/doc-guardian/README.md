@@ -11,10 +11,10 @@ Documentation gets outdated. Functions get renamed, configs change, versions bum
 
 ## Solution
 
-doc-guardian watches your code changes and automatically:
-1. Detects when changes affect documentation
-2. Queues updates silently (doesn't interrupt your flow)
-3. Syncs all doc changes in a single commit when ready
+doc-guardian monitors your code changes via hooks:
+1. Detects when changes might affect documentation
+2. Alerts you to potential drift (doesn't interrupt your flow)
+3. Provides commands to audit and sync docs when ready
 
 ## Commands
 
@@ -25,8 +25,7 @@ doc-guardian watches your code changes and automatically:
 
 ## Hooks
 
-- **PostToolUse (Write\|Edit)**: Silently checks if code changes affect docs
-- **Stop**: Reminds you of pending doc updates before session ends
+- **PostToolUse (Write|Edit)**: Silently checks if code changes affect docs
 
 ## What It Detects
 
