@@ -312,7 +312,12 @@ git push -u origin fix/issue-[NUMBER]-[brief-description]
 
 3. Create PR via API or MCP tools
 
-4. Add comment to original issue:
+4. **Switch back to development branch** (required for MCP issue operations):
+```bash
+git checkout development
+```
+
+5. Add comment to original issue:
 ```
 mcp__plugin_projman_gitea__add_comment(
   repo=REPO_NAME,
