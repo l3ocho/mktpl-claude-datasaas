@@ -20,6 +20,8 @@ Quick reference for all commands in the Leo Claude Marketplace.
 | **projman** | `/project-sync` | | X | Sync config with git remote after repo move/rename |
 | **projman** | *SessionStart hook* | X | | Detects git remote vs .env mismatch, warns to run /project-sync |
 | **projman** | `/test-gen` | | X | Generate comprehensive tests for specified code |
+| **projman** | `/debug-report` | | X | Run diagnostics and create structured issue in marketplace |
+| **projman** | `/debug-review` | | X | Investigate diagnostic issues and propose fixes with approval gates |
 | **git-flow** | `/commit` | | X | Create commit with auto-generated conventional message |
 | **git-flow** | `/commit-push` | | X | Commit and push to remote in one operation |
 | **git-flow** | `/commit-merge` | | X | Commit current changes, then merge into target branch |
@@ -40,7 +42,6 @@ Quick reference for all commands in the Leo Claude Marketplace.
 | **doc-guardian** | `/doc-audit` | | X | Full documentation audit - scans for doc drift |
 | **doc-guardian** | `/doc-sync` | | X | Synchronize pending documentation updates |
 | **doc-guardian** | *PostToolUse hook* | X | | Silently detects doc drift on Write/Edit |
-| **doc-guardian** | *Stop hook* | X | | Offers to sync docs at session end |
 | **code-sentinel** | `/security-scan` | | X | Full security audit (SQL injection, XSS, secrets, etc.) |
 | **code-sentinel** | `/refactor` | | X | Apply refactoring patterns to improve code |
 | **code-sentinel** | `/refactor-dry` | | X | Preview refactoring without applying changes |
@@ -78,7 +79,6 @@ Quick reference for all commands in the Leo Claude Marketplace.
 | **projman** | SessionStart | Checks git remote vs .env; warns if mismatch detected |
 | **pr-review** | SessionStart | Checks git remote vs .env; warns if mismatch detected |
 | **doc-guardian** | PostToolUse (Write/Edit) | Silently tracks documentation drift |
-| **doc-guardian** | Stop | Prompts to sync if drift detected |
 | **code-sentinel** | PreToolUse (Write/Edit) | Scans for security issues; blocks critical vulnerabilities |
 | **project-hygiene** | PostToolUse (Write/Edit) | Cleans temp files, warns about misplaced files |
 
@@ -214,4 +214,4 @@ Ensure credentials are configured in `~/.config/claude/gitea.env` or `~/.config/
 
 ---
 
-*Last Updated: 2026-01-21*
+*Last Updated: 2026-01-22*
