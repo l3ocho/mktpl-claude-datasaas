@@ -232,6 +232,39 @@ Generate tests for specified code.
 
 **When to use:** When adding new code that needs test coverage
 
+## Debug Workflow Commands
+
+These commands enable a cross-repository debugging workflow between your project and the marketplace.
+
+### `/debug-report`
+Run diagnostics and create structured issue in marketplace repository.
+
+**What it does:**
+- Runs MCP tool diagnostics (validate_repo_org, get_labels, list_issues, etc.)
+- Captures error messages and hypothesis
+- Creates a structured issue in the marketplace repository
+- Tags with `Source: Diagnostic` label
+
+**When to use:** When MCP tools fail in your project, run this to report the issue to the marketplace for investigation.
+
+### `/debug-review`
+Investigate diagnostic issues and propose fixes with human approval.
+
+**What it does:**
+- Fetches open diagnostic issues from marketplace
+- Lets you select which issue to investigate
+- Maps errors to relevant source files
+- Reads code and analyzes root cause
+- Proposes fixes with THREE mandatory approval gates
+- Creates PR with fix after approval
+
+**Approval Gates:**
+1. Analysis confirmation - Does the investigation match your understanding?
+2. Fix approach - Proceed with proposed changes?
+3. PR creation - Create pull request?
+
+**When to use:** In the marketplace repo, to investigate and fix issues reported by `/debug-report`.
+
 ## Code Quality Commands
 
 The `/review` and `/test-check` commands complement the Executor agent by catching issues before work is marked complete. Run both commands before `/sprint-close` for a complete quality check.
@@ -447,9 +480,13 @@ projman/
 │   ├── sprint-close.md
 │   ├── labels-sync.md
 │   ├── initial-setup.md
+│   ├── project-init.md
+│   ├── project-sync.md
 │   ├── review.md
 │   ├── test-check.md
-│   └── test-gen.md
+│   ├── test-gen.md
+│   ├── debug-report.md
+│   └── debug-review.md
 ├── agents/                  # Agent prompts
 │   ├── planner.md
 │   ├── orchestrator.md
