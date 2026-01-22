@@ -3,7 +3,10 @@
     "gitea": {
       "command": "${CLAUDE_PLUGIN_ROOT}/mcp-servers/gitea/.venv/bin/python",
       "args": ["-m", "mcp_server.server"],
-      "cwd": "${CLAUDE_PLUGIN_ROOT}/mcp-servers/gitea"
+      "cwd": "${CLAUDE_PLUGIN_ROOT}/mcp-servers/gitea",
+      "env": {
+        "PYTHONPATH": "${CLAUDE_PLUGIN_ROOT}/mcp-servers/gitea"
+      }
     }
   }
 }
