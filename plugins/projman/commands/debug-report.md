@@ -259,94 +259,89 @@ Use this exact template:
 
 ### Step 7: Create Issue in Marketplace
 
-**First, check if MCP tools are available.** Attempt to use an MCP tool. If you receive "tool not found", "not in function list", or similar error, the MCP server is not accessible in this session - use the curl fallback.
+**IMPORTANT:** Always use curl to create issues in the marketplace repo. This avoids branch protection restrictions and MCP context issues that can block issue creation when working on protected branches.
 
-#### Option A: MCP Available (preferred)
-
-**If ASSOCIATE_WITH_SPRINT is true:**
-
-```
-mcp__plugin_projman_gitea__create_issue(
-  repo=MARKETPLACE_REPO,
-  title="[Diagnostic] [summary of main failure]",
-  body=[generated content from Step 6],
-  labels=FINAL_LABELS,
-  milestone=ACTIVE_SPRINT.id
-)
-```
-
-**If ASSOCIATE_WITH_SPRINT is false (standalone fix):**
-
-```
-mcp__plugin_projman_gitea__create_issue(
-  repo=MARKETPLACE_REPO,
-  title="[Diagnostic] [summary of main failure]",
-  body=[generated content from Step 6],
-  labels=FINAL_LABELS
-)
-```
-
-If some labels don't exist, create issue with available labels only.
-
-#### Option B: MCP Unavailable - Use curl Fallback
-
-If MCP tools are not available (the very issue you may be diagnosing), use this fallback:
-
-**1. Check for Gitea credentials:**
+**1. Load Gitea credentials:**
 
 ```bash
 if [[ -f ~/.config/claude/gitea.env ]]; then
   source ~/.config/claude/gitea.env
-  echo "Credentials found. API URL: $GITEA_API_URL"
+  echo "Credentials loaded. API URL: $GITEA_API_URL"
 else
-  echo "No credentials at ~/.config/claude/gitea.env"
+  echo "ERROR: No credentials at ~/.config/claude/gitea.env"
 fi
 ```
 
-**2. If credentials exist, create issue via curl with proper JSON escaping:**
+**2. Fetch label IDs from marketplace repo:**
 
-Create secure temp files and save content:
+The diagnostic labels to apply are:
+- `Source/Diagnostic` (always)
+- `Type/Bug` (always)
+
+```bash
+# Fetch all labels and extract IDs for our target labels
+LABELS_JSON=$(curl -s "${GITEA_API_URL}/repos/${MARKETPLACE_REPO}/labels" \
+  -H "Authorization: token ${GITEA_API_TOKEN}")
+
+# Extract label IDs (handles both org and repo labels)
+SOURCE_DIAG_ID=$(echo "$LABELS_JSON" | jq -r '.[] | select(.name == "Source/Diagnostic") | .id')
+TYPE_BUG_ID=$(echo "$LABELS_JSON" | jq -r '.[] | select(.name == "Type/Bug") | .id')
+
+# Build label array (only include IDs that were found)
+LABEL_IDS="[]"
+if [[ -n "$SOURCE_DIAG_ID" && -n "$TYPE_BUG_ID" ]]; then
+  LABEL_IDS="[$SOURCE_DIAG_ID, $TYPE_BUG_ID]"
+elif [[ -n "$SOURCE_DIAG_ID" ]]; then
+  LABEL_IDS="[$SOURCE_DIAG_ID]"
+elif [[ -n "$TYPE_BUG_ID" ]]; then
+  LABEL_IDS="[$TYPE_BUG_ID]"
+fi
+
+echo "Label IDs to apply: $LABEL_IDS"
+```
+
+**3. Create issue with labels via curl:**
 
 ```bash
 # Create temp files with restrictive permissions
-DIAG_TITLE=$(mktemp -p /tmp -m 600 diag-title.XXXXXX)
-DIAG_BODY=$(mktemp -p /tmp -m 600 diag-body.XXXXXX)
-DIAG_PAYLOAD=$(mktemp -p /tmp -m 600 diag-payload.XXXXXX)
+DIAG_TITLE=$(mktemp -t diag-title.XXXXXX)
+DIAG_BODY=$(mktemp -t diag-body.XXXXXX)
+DIAG_PAYLOAD=$(mktemp -t diag-payload.XXXXXX)
 
 # Save title
 echo "[Diagnostic] [summary of main failure]" > "$DIAG_TITLE"
 
-# Save body (paste Step 5 content) - heredoc delimiter prevents shell expansion
+# Save body (paste Step 6 content) - heredoc delimiter prevents shell expansion
 cat > "$DIAG_BODY" << 'DIAGNOSTIC_EOF'
-[Paste the full issue content from Step 5 here]
+[Paste the full issue content from Step 6 here]
 DIAGNOSTIC_EOF
-```
 
-Construct JSON safely using jq's --rawfile (avoids command substitution):
-
-```bash
-# Build JSON payload using jq with --rawfile for safe content handling
+# Build JSON payload with labels using jq
 jq -n \
   --rawfile title "$DIAG_TITLE" \
   --rawfile body "$DIAG_BODY" \
-  '{title: ($title | rtrimstr("\n")), body: $body}' > "$DIAG_PAYLOAD"
+  --argjson labels "$LABEL_IDS" \
+  '{title: ($title | rtrimstr("\n")), body: $body, labels: $labels}' > "$DIAG_PAYLOAD"
 
 # Create issue using the JSON file
-curl -s -X POST "${GITEA_API_URL}/repos/${MARKETPLACE_REPO}/issues" \
+RESULT=$(curl -s -X POST "${GITEA_API_URL}/repos/${MARKETPLACE_REPO}/issues" \
   -H "Authorization: token ${GITEA_API_TOKEN}" \
   -H "Content-Type: application/json" \
-  -d @"$DIAG_PAYLOAD" | jq '.html_url // .'
+  -d @"$DIAG_PAYLOAD")
+
+# Extract and display the issue URL
+echo "$RESULT" | jq -r '.html_url // "Error: " + (.message // "Unknown error")'
 
 # Secure cleanup
 rm -f "$DIAG_TITLE" "$DIAG_BODY" "$DIAG_PAYLOAD"
 ```
 
-**3. If no credentials found, save report locally:**
+**4. If no credentials found, save report locally:**
 
 ```bash
-REPORT_FILE=$(mktemp -p /tmp -m 600 diagnostic-report-XXXXXX.md)
+REPORT_FILE=$(mktemp -t diagnostic-report-XXXXXX.md)
 cat > "$REPORT_FILE" << 'DIAGNOSTIC_EOF'
-[Paste the full issue content from Step 5 here]
+[Paste the full issue content from Step 6 here]
 DIAGNOSTIC_EOF
 echo "Report saved to: $REPORT_FILE"
 ```
@@ -354,7 +349,7 @@ echo "Report saved to: $REPORT_FILE"
 Then inform the user:
 
 ```
-MCP tools are unavailable and no Gitea credentials found at ~/.config/claude/gitea.env.
+No Gitea credentials found at ~/.config/claude/gitea.env.
 
 Diagnostic report saved to: [REPORT_FILE]
 
@@ -395,6 +390,7 @@ Next Steps:
 - **DO NOT** skip any diagnostic test
 - **DO NOT** call MCP tools without the `repo` parameter
 - **DO NOT** ask user questions during execution - run autonomously
+- **DO NOT** use MCP tools to create issues in the marketplace - always use curl (avoids branch restrictions)
 
 ## If All Tests Pass
 
@@ -425,7 +421,12 @@ and I can create a manual bug report.
 - Check if in a git repository: `git rev-parse --git-dir`
 - If not a git repo, ask user for the repository path
 
-**MCP tools not available**
-- Use the curl fallback in Step 6, Option B
-- Requires Gitea credentials at `~/.config/claude/gitea.env`
-- If no credentials, report will be saved locally for manual submission
+**Gitea credentials not found**
+- Credentials must be at `~/.config/claude/gitea.env`
+- If missing, the report will be saved locally for manual submission
+- See docs/CONFIGURATION.md for setup instructions
+
+**Labels not applied to issue**
+- Verify labels exist in the marketplace repo: `Source/Diagnostic`, `Type/Bug`
+- Check the label fetch output in Step 7.2 for errors
+- If labels don't exist, create them first with `/labels-sync` in the marketplace repo

@@ -343,6 +343,15 @@ class LabelTools:
                 None,
                 lambda: self.gitea.create_org_label(owner, name, color, description)
             )
+            # Handle unexpected response types (API may return list or non-dict)
+            if not isinstance(result, dict):
+                logger.error(f"Unexpected API response type for org label: {type(result)} - {result}")
+                return {
+                    'name': name,
+                    'error': True,
+                    'reason': f"API returned {type(result).__name__} instead of dict: {result}",
+                    'level': 'organization'
+                }
             result['level'] = 'organization'
             result['skipped'] = False
             logger.info(f"Created organization label '{name}' in {owner}")
@@ -352,6 +361,15 @@ class LabelTools:
                 None,
                 lambda: self.gitea.create_label(name, color, description, target_repo)
             )
+            # Handle unexpected response types (API may return list or non-dict)
+            if not isinstance(result, dict):
+                logger.error(f"Unexpected API response type for repo label: {type(result)} - {result}")
+                return {
+                    'name': name,
+                    'error': True,
+                    'reason': f"API returned {type(result).__name__} instead of dict: {result}",
+                    'level': 'repository'
+                }
             result['level'] = 'repository'
             result['skipped'] = False
             logger.info(f"Created repository label '{name}' in {target_repo}")
