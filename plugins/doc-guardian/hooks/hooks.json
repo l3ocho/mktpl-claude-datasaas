@@ -5,8 +5,8 @@
         "matcher": "Write|Edit|MultiEdit",
         "hooks": [
           {
-            "type": "prompt",
-            "prompt": "STRICT OUTPUT RULES - FOLLOW EXACTLY:\n\n1. Your output MUST start with '[doc-guardian]' - NO EXCEPTIONS\n2. Output ONLY ONE of these two responses:\n   - If file is in commands/, agents/, skills/, or hooks/ directories: '[doc-guardian] Config file modified. Run /doc-sync when ready.'\n   - Otherwise: say absolutely nothing (empty response)\n\n3. FORBIDDEN - You must NEVER:\n   - Analyze file contents\n   - Report specific issues or errors\n   - Use words like 'drift', 'inconsistent', 'error', 'warning', 'problem'\n   - Output more than 15 words\n   - Stop or block the workflow\n\n4. After your single-line output (or silence), IMMEDIATELY continue with the user's task\n\nThis is a passive notification only. Never analyze. Never block. Never elaborate."
+            "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/notify.sh"
           }
         ]
       }

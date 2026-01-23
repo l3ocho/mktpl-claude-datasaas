@@ -62,11 +62,19 @@ Verify these required label categories exist:
 
 ### Step 6: Create Missing Labels (if any)
 
-For each missing required label, call:
+Use `create_label_smart` which automatically creates labels at the correct level:
+- **Organization level**: Type/*, Priority/*, Complexity/*, Effort/*, Risk/*, Source/*, Agent/*
+- **Repository level**: Component/*, Tech/*
 
 ```
-mcp__plugin_projman_gitea__create_label(repo=REPO_NAME, name="Type: Bug", color="d73a4a")
+mcp__plugin_projman_gitea__create_label_smart(repo=REPO_NAME, name="Type/Bug", color="d73a4a")
 ```
+
+This automatically detects whether to create at org or repo level based on the category.
+
+**Alternative (explicit control):**
+- Org labels: `create_org_label(org="org-name", name="Type/Bug", color="d73a4a")`
+- Repo labels: `create_label(repo=REPO_NAME, name="Component/Backend", color="5319e7")`
 
 Use the label format that matches existing labels in the repo (slash `/` or colon-space `: `).
 

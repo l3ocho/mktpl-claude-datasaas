@@ -5,14 +5,14 @@ This file provides guidance to Claude Code when working with code in this reposi
 ## Project Overview
 
 **Repository:** leo-claude-mktplace
-**Version:** 3.0.1
+**Version:** 3.1.2
 **Status:** Production Ready
 
 A plugin marketplace for Claude Code containing:
 
 | Plugin | Description | Version |
 |--------|-------------|---------|
-| `projman` | Sprint planning and project management with Gitea integration | 3.0.0 |
+| `projman` | Sprint planning and project management with Gitea integration | 3.1.0 |
 | `git-flow` | Git workflow automation with smart commits and branch management | 1.0.0 |
 | `pr-review` | Multi-agent PR review with confidence scoring | 1.0.0 |
 | `clarity-assist` | Prompt optimization with ND-friendly accommodations | 1.0.0 |
@@ -59,7 +59,7 @@ leo-claude-mktplace/
 │   │   ├── .claude-plugin/plugin.json
 │   │   ├── .mcp.json
 │   │   ├── mcp-servers/gitea -> ../../../mcp-servers/gitea  # SYMLINK
-│   │   ├── commands/             # 12 commands (incl. setup)
+│   │   ├── commands/             # 13 commands (incl. setup, debug)
 │   │   ├── hooks/                # SessionStart mismatch detection
 │   │   ├── agents/               # 4 agents
 │   │   └── skills/label-taxonomy/
@@ -255,4 +255,4 @@ See `docs/DEBUGGING-CHECKLIST.md` for systematic troubleshooting.
 
 ---
 
-**Last Updated:** 2026-01-22
+**Last Updated:** 2026-01-23

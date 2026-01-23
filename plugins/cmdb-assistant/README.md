@@ -111,6 +111,7 @@ cmdb-assistant/
 │   └── plugin.json          # Plugin manifest
 ├── .mcp.json                 # MCP server configuration
 ├── commands/
+│   ├── initial-setup.md     # Setup wizard
 │   ├── cmdb-search.md       # Search command
 │   ├── cmdb-device.md       # Device management
 │   ├── cmdb-ip.md           # IP management

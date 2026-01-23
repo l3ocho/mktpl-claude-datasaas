@@ -5,8 +5,8 @@
         "matcher": "Write|Edit|MultiEdit",
         "hooks": [
           {
-            "type": "prompt",
-            "prompt": "[code-sentinel] SECURITY CHECK - STRICT OUTPUT FORMAT:\n\nSKIP entirely for: *.md, *.json, *.yml, *.yaml, *.txt, README, CHANGELOG, LICENSE, docs/*\n\nFor CODE files (.py, .js, .ts, .sh, etc.), check for:\n- eval()/exec() with user input\n- SQL string concatenation\n- shell=True with user input\n- Hardcoded secrets (actual keys/passwords, not placeholders)\n- Pickle/marshal deserialization of untrusted data\n- innerHTML/dangerouslySetInnerHTML with user content\n\nOutput Format (MANDATORY):\n- Critical found: '[code-sentinel] BLOCKED: {10 words max}'\n- Warning found: '[code-sentinel] Warning: {brief reason}. Proceeding.'\n- Clean/config files: Say nothing (empty response)\n\nALL outputs MUST start with '[code-sentinel]' - NO EXCEPTIONS.\nNEVER block docs/config. NEVER do lengthy analysis."
+            "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/security-check.sh"
           }
         ]
       }

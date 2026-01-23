@@ -2,7 +2,7 @@
 
 **This file defines ALL valid paths in this repository. No exceptions. No inference. No assumptions.**
 
-Last Updated: 2026-01-20 (v3.0.0)
+Last Updated: 2026-01-23 (v3.1.2)
 
 ---
 
@@ -17,10 +17,10 @@ leo-claude-mktplace/
 ├── docs/                       # All documentation
 │   ├── architecture/           # Draw.io diagrams and specs
 │   ├── CANONICAL-PATHS.md      # This file - single source of truth
+│   ├── COMMANDS-CHEATSHEET.md  # All commands quick reference
 │   ├── CONFIGURATION.md        # Centralized configuration guide
 │   ├── DEBUGGING-CHECKLIST.md  # Systematic troubleshooting guide
-│   ├── UPDATING.md             # Update guide
-│   └── workflows/              # Workflow documentation
+│   └── UPDATING.md             # Update guide
 ├── hooks/                      # Shared hooks (if any)
 ├── mcp-servers/                # SHARED MCP servers (v3.0.0+)
 │   ├── gitea/                  # Gitea MCP server
@@ -156,7 +156,6 @@ The symlink target is relative: `../../../mcp-servers/{server}`
 | Type | Location |
 |------|----------|
 | Architecture diagrams | `docs/architecture/` |
-| Workflow docs | `docs/workflows/` |
 | This file | `docs/CANONICAL-PATHS.md` |
 | Update guide | `docs/UPDATING.md` |
 | Configuration guide | `docs/CONFIGURATION.md` |
