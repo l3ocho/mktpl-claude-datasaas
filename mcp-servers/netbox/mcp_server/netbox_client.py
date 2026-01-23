@@ -4,6 +4,7 @@ NetBox API client for interacting with NetBox REST API.
 Provides a generic HTTP client with methods for all standard REST operations.
 Individual tool modules use this client for their specific endpoints.
 """
+import json
 import requests
 import logging
 from typing import List, Dict, Optional, Any, Union
@@ -83,7 +84,20 @@ class NetBoxClient:
         if response.status_code == 204 or not response.content:
             return None
 
-        return response.json()
+        # Parse JSON with diagnostic error handling
+        try:
+            return response.json()
+        except json.JSONDecodeError as e:
+            logger.error(
+                f"JSON decode failed. Status: {response.status_code}, "
+                f"Content-Length: {len(response.content)}, "
+                f"Content preview: {response.content[:200]!r}"
+            )
+            raise ValueError(
+                f"Invalid JSON response from NetBox: {e}. "
+                f"Status code: {response.status_code}, "
+                f"Content length: {len(response.content)} bytes"
+            ) from e
 
     def list(
         self,
