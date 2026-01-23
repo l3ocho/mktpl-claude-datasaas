@@ -70,12 +70,14 @@ cat ~/.config/claude/netbox.env 2>/dev/null || echo "FILE_NOT_FOUND"
 ### Step 3.3: Gather NetBox Information
 
 Use AskUserQuestion:
-- Question: "What is your NetBox server URL? (e.g., https://netbox.company.com)"
+- Question: "What is your NetBox API URL? (e.g., https://netbox.company.com/api)"
 - Header: "NetBox URL"
 - Options:
   - "Other (I'll provide the URL)"
 
 Ask user to provide the URL.
+
+**Important:** The URL must include `/api` at the end. If the user provides a URL without `/api`, append it automatically.
 
 ### Step 3.4: Create Configuration File
 
@@ -120,8 +122,10 @@ Use AskUserQuestion:
 ### Step 4.1: Test Configuration (if token was added)
 
 ```bash
-source ~/.config/claude/netbox.env && curl -s -o /dev/null -w "%{http_code}" -H "Authorization: Token $NETBOX_API_TOKEN" "$NETBOX_API_URL/api/"
+source ~/.config/claude/netbox.env && curl -s -o /dev/null -w "%{http_code}" -H "Authorization: Token $NETBOX_API_TOKEN" "$NETBOX_API_URL/"
 ```
+
+**Note:** The URL already includes `/api`, so we just append `/` for the root API endpoint.
 
 Report result:
 - 200: Success
