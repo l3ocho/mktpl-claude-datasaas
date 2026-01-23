@@ -326,7 +326,13 @@ TOOL_DEFINITIONS = {
             'status': {'type': 'string', 'description': 'Device status'},
             'rack': {'type': 'integer', 'description': 'Rack ID'},
             'position': {'type': 'number', 'description': 'Position in rack'},
-            'serial': {'type': 'string', 'description': 'Serial number'}
+            'serial': {'type': 'string', 'description': 'Serial number'},
+            'platform': {'type': 'integer', 'description': 'Platform ID'},
+            'primary_ip4': {'type': 'integer', 'description': 'Primary IPv4 address ID'},
+            'primary_ip6': {'type': 'integer', 'description': 'Primary IPv6 address ID'},
+            'asset_tag': {'type': 'string', 'description': 'Asset tag'},
+            'description': {'type': 'string', 'description': 'Description'},
+            'comments': {'type': 'string', 'description': 'Comments'}
         },
         'required': ['name', 'device_type', 'role', 'site']
     },
@@ -335,7 +341,17 @@ TOOL_DEFINITIONS = {
         'properties': {
             'id': {'type': 'integer', 'description': 'Device ID'},
             'name': {'type': 'string', 'description': 'New name'},
-            'status': {'type': 'string', 'description': 'New status'}
+            'status': {'type': 'string', 'description': 'New status'},
+            'platform': {'type': 'integer', 'description': 'Platform ID'},
+            'primary_ip4': {'type': 'integer', 'description': 'Primary IPv4 address ID'},
+            'primary_ip6': {'type': 'integer', 'description': 'Primary IPv6 address ID'},
+            'serial': {'type': 'string', 'description': 'Serial number'},
+            'asset_tag': {'type': 'string', 'description': 'Asset tag'},
+            'site': {'type': 'integer', 'description': 'Site ID'},
+            'rack': {'type': 'integer', 'description': 'Rack ID'},
+            'position': {'type': 'number', 'description': 'Position in rack'},
+            'description': {'type': 'string', 'description': 'Description'},
+            'comments': {'type': 'string', 'description': 'Comments'}
         },
         'required': ['id']
     },
