@@ -275,6 +275,7 @@ class LabelTools:
     ) -> Dict:
         """
         Create a label at the appropriate level (org or repo) based on category.
+        Skips if label already exists (checks both org and repo levels).
 
         Organization labels: Agent, Complexity, Effort, Priority, Risk, Source, Type
         Repository labels: Component, Tech
@@ -286,13 +287,48 @@ class LabelTools:
             repo: Repository in 'owner/repo' format
 
         Returns:
-            Created label dictionary with 'level' key indicating where it was created
+            Created label dictionary with 'level' key, or 'skipped' if already exists
         """
         loop = asyncio.get_event_loop()
 
         target_repo = repo or self.gitea.repo
         if not target_repo or '/' not in target_repo:
             raise ValueError("Use 'owner/repo' format (e.g. 'org/repo-name')")
+
+        owner = target_repo.split('/')[0]
+        is_org = await loop.run_in_executor(
+            None,
+            lambda: self.gitea.is_org_repo(target_repo)
+        )
+
+        # Fetch existing labels to check for duplicates
+        existing_labels = await self.get_labels(target_repo)
+        all_existing = existing_labels.get('organization', []) + existing_labels.get('repository', [])
+        existing_names = [label['name'].lower() for label in all_existing]
+
+        # Normalize the new label name for comparison
+        name_normalized = name.lower()
+
+        # Also check for format variations (Type/Bug vs Type: Bug)
+        name_variations = [name_normalized]
+        if '/' in name:
+            name_variations.append(name.replace('/', ': ').lower())
+            name_variations.append(name.replace('/', ':').lower())
+        elif ': ' in name:
+            name_variations.append(name.replace(': ', '/').lower())
+        elif ':' in name:
+            name_variations.append(name.replace(':', '/').lower())
+
+        # Check if label already exists in any format
+        for variation in name_variations:
+            if variation in existing_names:
+                logger.info(f"Label '{name}' already exists (found as '{variation}'), skipping")
+                return {
+                    'name': name,
+                    'skipped': True,
+                    'reason': f"Label already exists",
+                    'level': 'existing'
+                }
 
         # Parse category from label name
         category = None
@@ -301,13 +337,6 @@ class LabelTools:
         elif ':' in name:
             category = name.split(':')[0].strip().lower().rstrip('s')
 
-        # Determine level
-        owner = target_repo.split('/')[0]
-        is_org = await loop.run_in_executor(
-            None,
-            lambda: self.gitea.is_org_repo(target_repo)
-        )
-
         # If it's an org repo and the category is an org-level category, create at org level
         if is_org and category in self.ORG_LABEL_CATEGORIES:
             result = await loop.run_in_executor(
@@ -315,6 +344,7 @@ class LabelTools:
                 lambda: self.gitea.create_org_label(owner, name, color, description)
             )
             result['level'] = 'organization'
+            result['skipped'] = False
             logger.info(f"Created organization label '{name}' in {owner}")
         else:
             # Create at repo level
@@ -323,6 +353,7 @@ class LabelTools:
                 lambda: self.gitea.create_label(name, color, description, target_repo)
             )
             result['level'] = 'repository'
+            result['skipped'] = False
             logger.info(f"Created repository label '{name}' in {target_repo}")
 
         return result

@@ -78,3 +78,8 @@ main() {
 }
 
 main "$@"
+
+# Clear plugin cache to ensure fresh hooks are loaded
+echo "Clearing plugin cache..."
+rm -rf ~/.claude/plugins/cache/leo-claude-mktplace/
+echo "Cache cleared"
