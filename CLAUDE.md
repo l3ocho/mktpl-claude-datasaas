@@ -1,6 +1,46 @@
 # CLAUDE.md
 
 This file provides guidance to Claude Code when working with code in this repository.
+## ⛔ MANDATORY BEHAVIOR RULES - READ FIRST
+
+**These rules are NON-NEGOTIABLE. Violating them wastes the user's time and money.**
+
+### 1. WHEN USER ASKS YOU TO CHECK SOMETHING - CHECK EVERYTHING
+- Search ALL locations, not just where you think it is
+- Check cache directories: `~/.claude/plugins/cache/`
+- Check installed: `~/.claude/plugins/marketplaces/`
+- Check source: `~/claude-plugins-work/`
+- **NEVER say "no" or "that's not the issue" without exhaustive verification**
+
+### 2. WHEN USER SAYS SOMETHING IS WRONG - BELIEVE THEM
+- The user knows their system better than you
+- Investigate thoroughly before disagreeing
+- If user suspects cache, CHECK THE CACHE
+- If user suspects a file, READ THE FILE
+- **Your confidence is often wrong. User's instincts are often right.**
+
+### 3. NEVER SAY "DONE" WITHOUT VERIFICATION
+- Run the actual command/script to verify
+- Show the output to the user
+- Check ALL affected locations
+- **"Done" means VERIFIED WORKING, not "I made changes"**
+
+### 4. SHOW EXACTLY WHAT USER ASKS FOR
+- If user asks for messages, show the MESSAGES
+- If user asks for code, show the CODE
+- If user asks for output, show the OUTPUT
+- **Don't interpret or summarize unless asked**
+
+### 5. AFTER PLUGIN UPDATES - ALWAYS CLEAR CACHE
+```bash
+rm -rf ~/.claude/plugins/cache/leo-claude-mktplace/
+./scripts/verify-hooks.sh
+```
+
+**FAILURE TO FOLLOW THESE RULES = WASTED USER TIME = UNACCEPTABLE**
+
+---
+
 
 ## Project Overview
 
