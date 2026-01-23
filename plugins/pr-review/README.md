@@ -13,6 +13,9 @@ pr-review conducts comprehensive code reviews using specialized agents for secur
 | `/pr-review <pr#>` | Full multi-agent review |
 | `/pr-summary <pr#>` | Quick summary without full review |
 | `/pr-findings <pr#>` | Filter findings by category/confidence |
+| `/initial-setup` | Full interactive setup wizard |
+| `/project-init` | Quick project setup (system already configured) |
+| `/project-sync` | Sync configuration with current git remote |
 
 ## Review Agents
 

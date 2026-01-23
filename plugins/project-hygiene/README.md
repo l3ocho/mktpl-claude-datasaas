@@ -20,7 +20,7 @@ claude plugin install project-hygiene
 
 ## How It Works
 
-The plugin registers a `task-completed` hook that runs after Claude completes any task. It:
+The plugin registers a `PostToolUse` hook (on Write and Edit tools) that runs after Claude modifies files. It:
 
 1. Scans for and deletes known temporary file patterns
 2. Removes temporary directories (`__pycache__`, `.pytest_cache`, etc.)

@@ -19,7 +19,7 @@ AI-guided sprint planning with full Gitea integration. Transforms a proven 15-sp
 - Branch-aware security (development/staging/production)
 - Pre-sprint-close code quality review and test verification
 
-**Commands:** `/sprint-plan`, `/sprint-start`, `/sprint-status`, `/sprint-close`, `/labels-sync`, `/initial-setup`, `/project-init`, `/project-sync`, `/review`, `/test-check`, `/test-gen`
+**Commands:** `/sprint-plan`, `/sprint-start`, `/sprint-status`, `/sprint-close`, `/labels-sync`, `/initial-setup`, `/project-init`, `/project-sync`, `/review`, `/test-check`, `/test-gen`, `/debug-report`, `/debug-review`
 
 #### [git-flow](./plugins/git-flow/README.md) *NEW in v3.0.0*
 **Git Workflow Automation**
@@ -257,6 +257,7 @@ leo-claude-mktplace/
 | [COMMANDS-CHEATSHEET.md](./docs/COMMANDS-CHEATSHEET.md) | All commands quick reference |
 | [UPDATING.md](./docs/UPDATING.md) | Update guide for the marketplace |
 | [CANONICAL-PATHS.md](./docs/CANONICAL-PATHS.md) | Authoritative path reference |
+| [DEBUGGING-CHECKLIST.md](./docs/DEBUGGING-CHECKLIST.md) | Systematic troubleshooting guide |
 | [CHANGELOG.md](./CHANGELOG.md) | Version history |
 
 ## License
