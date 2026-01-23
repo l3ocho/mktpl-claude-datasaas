@@ -3,7 +3,7 @@
     "SessionStart": [
       {
         "type": "prompt",
-        "prompt": "[projman] Perform silent startup checks:\n\n1. Check if MCP venvs exist at the installed marketplace location. If the marketplace is installed but venvs are missing, warn the user: '[projman] MCP venvs missing - run setup.sh from installed marketplace location'.\n\n2. Check if the project git remote matches .env configuration (GITEA_ORG/GITEA_REPO). If mismatch, warn: '[projman] Git remote mismatch - run /project-sync'.\n\nStay silent if all checks pass or not applicable. Be quick and non-blocking."
+        "prompt": "STARTUP CHECK - STRICT OUTPUT FORMAT:\n\nALL outputs MUST start with '[projman]' - NO EXCEPTIONS.\n\nPerform quick silent checks:\n1. If MCP venvs missing: '[projman] MCP venvs missing - run setup.sh from installed marketplace'\n2. If git remote != .env config: '[projman] Git remote mismatch - run /project-sync'\n\nIf all checks pass: Say nothing (empty response)\n\nRules:\n- NEVER output without '[projman]' prefix\n- Keep messages under 20 words\n- Be quick and non-blocking\n- Do not read files or perform deep analysis"
       }
     ]
   }

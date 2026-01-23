@@ -10,7 +10,7 @@ git-flow streamlines common git operations with smart defaults, conventional com
 
 | Command | Description |
 |---------|-------------|
-| `/commit` | Create commit with auto-generated conventional message |
+| `/commit` | Create commit with auto-generated conventional message (with protected branch detection) |
 | `/commit-push` | Commit and push in one operation |
 | `/commit-merge` | Commit and merge into target branch |
 | `/commit-sync` | Full sync: commit, push, and rebase on base branch |
@@ -79,7 +79,7 @@ chore/update-dependencies
 
 ### Safety Checks
 
-- Warns before commits to protected branches
+- **Protected branch detection**: Before committing, checks if you're on a protected branch (main, master, development, staging, production by default). Offers to create a feature branch automatically instead of committing directly to protected branches.
 - Confirms force push operations
 - Prevents accidental branch deletion
 

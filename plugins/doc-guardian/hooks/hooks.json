@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "prompt",
-            "prompt": "[doc-guardian] NON-BLOCKING drift note:\n\nLook at the file path. If it might affect documentation, output ONLY:\n'[doc-guardian] {filename} modified - consider /doc-sync later'\n\nOtherwise say nothing. Do NOT analyze, do NOT read files, do NOT stop working. Maximum 15 words, then continue immediately."
+            "prompt": "STRICT OUTPUT RULES - FOLLOW EXACTLY:\n\n1. Your output MUST start with '[doc-guardian]' - NO EXCEPTIONS\n2. Output ONLY ONE of these two responses:\n   - If file is in commands/, agents/, skills/, or hooks/ directories: '[doc-guardian] Config file modified. Run /doc-sync when ready.'\n   - Otherwise: say absolutely nothing (empty response)\n\n3. FORBIDDEN - You must NEVER:\n   - Analyze file contents\n   - Report specific issues or errors\n   - Use words like 'drift', 'inconsistent', 'error', 'warning', 'problem'\n   - Output more than 15 words\n   - Stop or block the workflow\n\n4. After your single-line output (or silence), IMMEDIATELY continue with the user's task\n\nThis is a passive notification only. Never analyze. Never block. Never elaborate."
           }
         ]
       }
