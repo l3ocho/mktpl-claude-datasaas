@@ -259,3 +259,70 @@ class LabelTools:
             return lookup[category_lower][value_lower]
 
         return None
+
+    # Organization-level label categories (workflow labels shared across repos)
+    ORG_LABEL_CATEGORIES = {'agent', 'complexity', 'effort', 'efforts', 'priority', 'risk', 'source', 'type'}
+
+    # Repository-level label categories (project-specific labels)
+    REPO_LABEL_CATEGORIES = {'component', 'tech'}
+
+    async def create_label_smart(
+        self,
+        name: str,
+        color: str,
+        description: Optional[str] = None,
+        repo: Optional[str] = None
+    ) -> Dict:
+        """
+        Create a label at the appropriate level (org or repo) based on category.
+
+        Organization labels: Agent, Complexity, Effort, Priority, Risk, Source, Type
+        Repository labels: Component, Tech
+
+        Args:
+            name: Label name (e.g., 'Type/Bug', 'Component/Backend')
+            color: Hex color code
+            description: Optional label description
+            repo: Repository in 'owner/repo' format
+
+        Returns:
+            Created label dictionary with 'level' key indicating where it was created
+        """
+        loop = asyncio.get_event_loop()
+
+        target_repo = repo or self.gitea.repo
+        if not target_repo or '/' not in target_repo:
+            raise ValueError("Use 'owner/repo' format (e.g. 'org/repo-name')")
+
+        # Parse category from label name
+        category = None
+        if '/' in name:
+            category = name.split('/')[0].lower().rstrip('s')
+        elif ':' in name:
+            category = name.split(':')[0].strip().lower().rstrip('s')
+
+        # Determine level
+        owner = target_repo.split('/')[0]
+        is_org = await loop.run_in_executor(
+            None,
+            lambda: self.gitea.is_org_repo(target_repo)
+        )
+
+        # If it's an org repo and the category is an org-level category, create at org level
+        if is_org and category in self.ORG_LABEL_CATEGORIES:
+            result = await loop.run_in_executor(
+                None,
+                lambda: self.gitea.create_org_label(owner, name, color, description)
+            )
+            result['level'] = 'organization'
+            logger.info(f"Created organization label '{name}' in {owner}")
+        else:
+            # Create at repo level
+            result = await loop.run_in_executor(
+                None,
+                lambda: self.gitea.create_label(name, color, description, target_repo)
+            )
+            result['level'] = 'repository'
+            logger.info(f"Created repository label '{name}' in {target_repo}")
+
+        return result

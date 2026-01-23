@@ -622,13 +622,65 @@ class GiteaMCPServer:
                 ),
                 Tool(
                     name="create_label",
-                    description="Create a new label in the repository",
+                    description="Create a new label in the repository (for repo-specific labels like Component/*, Tech/*)",
                     inputSchema={
                         "type": "object",
                         "properties": {
                             "name": {
                                 "type": "string",
-                                "description": "Label name"
+                                "description": "Label name (e.g., 'Component/Backend', 'Tech/Python')"
+                            },
+                            "color": {
+                                "type": "string",
+                                "description": "Label color (hex code)"
+                            },
+                            "description": {
+                                "type": "string",
+                                "description": "Label description"
+                            },
+                            "repo": {
+                                "type": "string",
+                                "description": "Repository name (owner/repo format)"
+                            }
+                        },
+                        "required": ["name", "color"]
+                    }
+                ),
+                Tool(
+                    name="create_org_label",
+                    description="Create a new label at organization level (for workflow labels like Type/*, Priority/*, Complexity/*, Effort/*)",
+                    inputSchema={
+                        "type": "object",
+                        "properties": {
+                            "org": {
+                                "type": "string",
+                                "description": "Organization name"
+                            },
+                            "name": {
+                                "type": "string",
+                                "description": "Label name (e.g., 'Type/Bug', 'Priority/High')"
+                            },
+                            "color": {
+                                "type": "string",
+                                "description": "Label color (hex code)"
+                            },
+                            "description": {
+                                "type": "string",
+                                "description": "Label description"
+                            }
+                        },
+                        "required": ["org", "name", "color"]
+                    }
+                ),
+                Tool(
+                    name="create_label_smart",
+                    description="Create a label at the appropriate level (org or repo) based on category. Org: Type/*, Priority/*, Complexity/*, Effort/*, Risk/*, Source/*, Agent/*. Repo: Component/*, Tech/*",
+                    inputSchema={
+                        "type": "object",
+                        "properties": {
+                            "name": {
+                                "type": "string",
+                                "description": "Label name (e.g., 'Type/Bug', 'Component/Backend')"
                             },
                             "color": {
                                 "type": "string",
@@ -875,6 +927,20 @@ class GiteaMCPServer:
                     )
                 elif name == "create_label":
                     result = self.client.create_label(
+                        arguments['name'],
+                        arguments['color'],
+                        arguments.get('description'),
+                        arguments.get('repo')
+                    )
+                elif name == "create_org_label":
+                    result = self.client.create_org_label(
+                        arguments['org'],
+                        arguments['name'],
+                        arguments['color'],
+                        arguments.get('description')
+                    )
+                elif name == "create_label_smart":
+                    result = await self.label_tools.create_label_smart(
                         arguments['name'],
                         arguments['color'],
                         arguments.get('description'),
