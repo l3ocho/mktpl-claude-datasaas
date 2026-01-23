@@ -621,6 +621,40 @@ class GiteaClient:
         response.raise_for_status()
         return response.json()
 
+    def create_org_label(
+        self,
+        org: str,
+        name: str,
+        color: str,
+        description: Optional[str] = None
+    ) -> Dict:
+        """
+        Create a new label at the organization level.
+
+        Organization labels are shared across all repositories in the org.
+        Use this for workflow labels (Type, Priority, Complexity, Effort, etc.)
+
+        Args:
+            org: Organization name
+            name: Label name (e.g., 'Type/Bug', 'Priority/High')
+            color: Hex color code (with or without #)
+            description: Optional label description
+
+        Returns:
+            Created label dictionary
+        """
+        url = f"{self.base_url}/orgs/{org}/labels"
+        data = {
+            'name': name,
+            'color': color.lstrip('#')  # Remove # if present
+        }
+        if description:
+            data['description'] = description
+        logger.info(f"Creating organization label '{name}' in {org}")
+        response = self.session.post(url, json=data)
+        response.raise_for_status()
+        return response.json()
+
     # ========================================
     # PULL REQUEST OPERATIONS
     # ========================================

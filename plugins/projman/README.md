@@ -13,7 +13,7 @@ Projman transforms a proven 15-sprint workflow into a distributable Claude Code 
 - **Milestones** - Sprint milestone management and tracking
 - **Lessons Learned** - Systematic capture and search via Gitea Wiki
 - **Branch-Aware Security** - Prevents accidental changes on production branches
-- **Three-Agent Model** - Planner, Orchestrator, and Executor agents
+- **Four-Agent Model** - Planner, Orchestrator, Executor, and Code Reviewer agents
 - **CLI Tools Blocked** - All operations via MCP tools only (no `tea` or `gh`)
 
 ## Quick Start
@@ -461,20 +461,8 @@ projman/
 ├── .claude-plugin/
 │   └── plugin.json          # Plugin manifest
 ├── .mcp.json                # MCP server configuration
-├── mcp-servers/             # Bundled MCP server
-│   └── gitea/
-│       ├── .venv/
-│       ├── requirements.txt
-│       ├── mcp_server/
-│       │   ├── server.py
-│       │   ├── gitea_client.py
-│       │   └── tools/
-│       │       ├── issues.py
-│       │       ├── labels.py
-│       │       ├── wiki.py
-│       │       ├── milestones.py
-│       │       └── dependencies.py
-│       └── tests/
+├── mcp-servers/
+│   └── gitea -> ../../../mcp-servers/gitea  # SYMLINK to shared MCP server
 ├── commands/                # Slash commands
 │   ├── sprint-plan.md
 │   ├── sprint-start.md
