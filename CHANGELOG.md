@@ -14,10 +14,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   - Resolves issue where commits to protected branches would fail on push
 
 ### Changed
-- **doc-guardian:** Hook completely rewritten to be truly non-blocking
-  - Removed all analysis logic that could trigger workflow stoppage
-  - Now outputs only minimal notification for config file changes
-  - Forbidden words list prevents accidental blocking output
+- **doc-guardian:** Hook switched from `prompt` type to `command` type
+  - Prompt hooks unreliable - Claude ignores explicit instructions
+  - New `notify.sh` bash script guarantees exact output behavior
+  - Only notifies for config file changes (commands/, agents/, skills/, hooks/)
+  - Silent exit for all other files - no blocking possible
 - **All hooks:** Stricter plugin prefix enforcement
   - All prompts now mandate `[plugin-name]` prefix with "NO EXCEPTIONS" rule
   - Simplified output formats with word limits
@@ -25,8 +26,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Fixed
 - Protected branch workflow: Claude no longer commits directly to protected branches and then fails on push (fixes #109)
-- doc-guardian hook no longer blocks workflow with drift analysis (fixes #110)
-- Hook messages now consistently show plugin name prefix (fixes #110)
+- doc-guardian hook no longer blocks workflow - switched to command hook that can't be overridden by model (fixes #110)
 
 ---
 
