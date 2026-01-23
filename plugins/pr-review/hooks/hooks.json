@@ -2,8 +2,8 @@
   "hooks": {
     "SessionStart": [
       {
-        "type": "prompt",
-        "prompt": "STARTUP CHECK - STRICT OUTPUT FORMAT:\n\nALL outputs MUST start with '[pr-review]' - NO EXCEPTIONS.\n\nPerform quick silent checks:\n1. If MCP venvs missing: '[pr-review] MCP venvs missing - run setup.sh from installed marketplace'\n2. If git remote != .env config: '[pr-review] Git remote mismatch - run /pr-review:project-sync'\n\nIf all checks pass: Say nothing (empty response)\n\nRules:\n- NEVER output without '[pr-review]' prefix\n- Keep messages under 20 words\n- Be quick and non-blocking\n- Do not read files or perform deep analysis"
+        "type": "command",
+        "command": "${CLAUDE_PLUGIN_ROOT}/hooks/startup-check.sh"
       }
     ]
   }
