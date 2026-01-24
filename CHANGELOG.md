@@ -4,6 +4,45 @@ All notable changes to the Leo Claude Marketplace will be documented in this fil
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [Unreleased]
+
+### Added
+- **git-flow:** `/commit` now detects protected branches before committing
+  - Warns when on protected branch (main, master, development, staging, production)
+  - Offers to create feature branch automatically instead of committing directly
+  - Configurable via `GIT_PROTECTED_BRANCHES` environment variable
+- **netbox:** Platform and primary_ip parameters added to device update tools
+- **claude-config-maintainer:** Auto-enforce mandatory behavior rules via SessionStart hook
+- **scripts:** `release.sh` - Versioning workflow script for consistent releases
+- **scripts:** `verify-hooks.sh` - Verify all hooks are command type
+
+### Changed
+- **doc-guardian:** Hook switched from `prompt` type to `command` type
+  - Prompt hooks unreliable - Claude ignores explicit instructions
+  - New `notify.sh` bash script guarantees exact output behavior
+  - Only notifies for config file changes (commands/, agents/, skills/, hooks/)
+  - Silent exit for all other files - no blocking possible
+- **All hooks:** Converted to command type with stricter plugin prefix enforcement
+  - All hooks now mandate `[plugin-name]` prefix with "NO EXCEPTIONS" rule
+  - Simplified output formats with word limits
+  - Consistent structure across projman, pr-review, code-sentinel, doc-guardian
+- **CLAUDE.md:** Replaced destructive "ALWAYS CLEAR CACHE" rule with "VERIFY AND RESTART"
+  - Cache clearing mid-session breaks MCP tools
+  - Added guidance for proper plugin development workflow
+
+### Fixed
+- **cmdb-assistant:** Complete MCP tool schemas for update operations (#138)
+- **netbox:** Shorten tool names to meet 64-char API limit (#134)
+- **cmdb-assistant:** Correct NetBox API URL format in setup wizard (#132)
+- **gitea/projman:** Type safety for `create_label_smart`, curl-based debug-report (#124)
+- **netbox:** Add diagnostic logging for JSON parse errors (#121)
+- **labels:** Add duplicate check before creating labels (#116)
+- **hooks:** Convert ALL hooks to command type with proper prefixes (#114)
+- Protected branch workflow: Claude no longer commits directly to protected branches (fixes #109)
+- doc-guardian hook no longer blocks workflow (fixes #110)
+
+---
+
 ## [3.1.1] - 2026-01-22
 
 ### Added
