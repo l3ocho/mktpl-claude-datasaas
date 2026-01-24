@@ -1,4 +1,4 @@
-# Leo Claude Marketplace - v3.1.1
+# Leo Claude Marketplace - v3.2.0
 
 A collection of Claude Code plugins for project management, infrastructure automation, and development workflows.
 
@@ -106,11 +106,11 @@ Full Gitea API integration for project management.
 
 | Category | Tools |
 |----------|-------|
-| Issues | `list_issues`, `get_issue`, `create_issue`, `update_issue`, `add_comment` |
-| Labels | `get_labels`, `suggest_labels`, `create_label` |
-| Wiki | `list_wiki_pages`, `get_wiki_page`, `create_wiki_page`, `create_lesson`, `search_lessons` |
-| Milestones | `list_milestones`, `get_milestone`, `create_milestone`, `update_milestone` |
-| Dependencies | `list_issue_dependencies`, `create_issue_dependency`, `get_execution_order` |
+| Issues | `list_issues`, `get_issue`, `create_issue`, `update_issue`, `add_comment`, `aggregate_issues` |
+| Labels | `get_labels`, `suggest_labels`, `create_label`, `create_label_smart` |
+| Wiki | `list_wiki_pages`, `get_wiki_page`, `create_wiki_page`, `update_wiki_page`, `create_lesson`, `search_lessons` |
+| Milestones | `list_milestones`, `get_milestone`, `create_milestone`, `update_milestone`, `delete_milestone` |
+| Dependencies | `list_issue_dependencies`, `create_issue_dependency`, `remove_issue_dependency`, `get_execution_order` |
 | **Pull Requests** | `list_pull_requests`, `get_pull_request`, `get_pr_diff`, `get_pr_comments`, `create_pr_review`, `add_pr_comment` *(NEW in v3.0.0)* |
 | Validation | `validate_repo_org`, `get_branch_protection` |
 
@@ -245,7 +245,8 @@ leo-claude-mktplace/
 ├── docs/                          # Documentation
 │   ├── CANONICAL-PATHS.md         # Path reference
 │   └── CONFIGURATION.md           # Setup guide
-└── scripts/                       # Setup scripts
+├── scripts/                       # Setup scripts
+└── CHANGELOG.md                   # Version history
 ```
 
 ## Documentation

@@ -15,11 +15,11 @@ for f in $(find ~/.claude -name "hooks.json" 2>/dev/null); do
     fi
 done
 
-# Check cache specifically
+# Note about cache (informational only - do NOT clear mid-session)
 if [ -d ~/.claude/plugins/cache/leo-claude-mktplace ]; then
-    echo "❌ CACHE EXISTS: ~/.claude/plugins/cache/leo-claude-mktplace"
-    echo "   Run: rm -rf ~/.claude/plugins/cache/leo-claude-mktplace/"
-    FAILED=1
+    echo "ℹ️  Cache exists: ~/.claude/plugins/cache/leo-claude-mktplace"
+    echo "   (This is normal - do NOT clear mid-session or MCP tools will break)"
+    echo "   To apply plugin changes: restart Claude Code session"
 fi
 
 # Verify installed hooks are command type
