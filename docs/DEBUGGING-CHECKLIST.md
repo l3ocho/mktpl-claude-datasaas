@@ -197,6 +197,51 @@ echo -e "\n=== Config Files ==="
 
 ---
 
+## Cache Clearing: When It's Safe vs Destructive
+
+**⚠️ CRITICAL: Never clear plugin cache mid-session.**
+
+### Why Cache Clearing Breaks MCP Tools
+
+When Claude Code starts a session:
+1. MCP tools are loaded from the cache directory
+2. Tool definitions include **absolute paths** to the venv (e.g., `~/.claude/plugins/cache/.../venv/`)
+3. These paths are cached in the session memory
+4. Deleting the cache removes the venv, but the session still references the old paths
+5. Any MCP tool making HTTP requests fails with TLS certificate errors
+
+### When Cache Clearing is SAFE
+
+| Scenario | Safe? | Action |
+|----------|-------|--------|
+| Before starting Claude Code | ✅ Yes | Clear cache, then start session |
+| Between sessions | ✅ Yes | Clear cache after `/exit`, before next session |
+| During a session | ❌ NO | Never - will break MCP tools |
+| After plugin source edits | ❌ NO | Restart session instead |
+
+### Recovery: MCP Tools Broken Mid-Session
+
+If you accidentally cleared cache during a session and MCP tools fail:
+
+```
+Error: Could not find a suitable TLS CA certificate bundle, invalid path:
+/home/.../.claude/plugins/cache/.../certifi/cacert.pem
+```
+
+**Fix:**
+1. Exit the current session (`/exit` or Ctrl+C)
+2. Start a new Claude Code session
+3. MCP tools will reload from the reinstalled cache
+
+### Correct Workflow for Plugin Development
+
+1. Make changes to plugin source files
+2. Run `./scripts/verify-hooks.sh` (verifies hook types)
+3. Tell user: "Please restart Claude Code for changes to take effect"
+4. **Do NOT clear cache** - session restart handles reloading
+
+---
+
 ## Automated Diagnostics
 
 Use these commands for automated checking:

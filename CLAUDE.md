@@ -31,11 +31,16 @@ This file provides guidance to Claude Code when working with code in this reposi
 - If user asks for output, show the OUTPUT
 - **Don't interpret or summarize unless asked**
 
-### 5. AFTER PLUGIN UPDATES - ALWAYS CLEAR CACHE
-```bash
-rm -rf ~/.claude/plugins/cache/leo-claude-mktplace/
-./scripts/verify-hooks.sh
-```
+### 5. AFTER PLUGIN UPDATES - VERIFY AND RESTART
+
+**⚠️ DO NOT clear cache mid-session** - this breaks MCP tools that are already loaded.
+
+1. Run `./scripts/verify-hooks.sh` to check hook types
+2. If changes affect MCP servers or hooks, inform the user:
+   > "Plugin changes require a session restart to take effect. Please restart Claude Code."
+3. Cache clearing is ONLY safe **before** starting a new session (not during)
+
+See `docs/DEBUGGING-CHECKLIST.md` for details on cache timing.
 
 **FAILURE TO FOLLOW THESE RULES = WASTED USER TIME = UNACCEPTABLE**
 
@@ -125,7 +130,9 @@ leo-claude-mktplace/
 │   └── project-hygiene/
 ├── scripts/
 │   ├── setup.sh, post-update.sh
-│   └── validate-marketplace.sh   # Marketplace compliance validation
+│   ├── validate-marketplace.sh   # Marketplace compliance validation
+│   ├── verify-hooks.sh           # Verify all hooks are command type
+│   └── check-venv.sh             # Check MCP server venvs exist
 └── docs/
     ├── CANONICAL-PATHS.md        # Single source of truth for paths
     └── CONFIGURATION.md          # Centralized configuration guide
@@ -172,12 +179,12 @@ leo-claude-mktplace/
 
 | Category | Tools |
 |----------|-------|
-| Issues | `list_issues`, `get_issue`, `create_issue`, `update_issue`, `add_comment` |
-| Labels | `get_labels`, `suggest_labels`, `create_label` |
-| Milestones | `list_milestones`, `get_milestone`, `create_milestone`, `update_milestone` |
-| Dependencies | `list_issue_dependencies`, `create_issue_dependency`, `get_execution_order` |
-| Wiki | `list_wiki_pages`, `get_wiki_page`, `create_wiki_page`, `create_lesson`, `search_lessons` |
-| **Pull Requests** | `list_pull_requests`, `get_pull_request`, `get_pr_diff`, `get_pr_comments`, `create_pr_review`, `add_pr_comment` *(NEW v3.0.0)* |
+| Issues | `list_issues`, `get_issue`, `create_issue`, `update_issue`, `add_comment`, `aggregate_issues` |
+| Labels | `get_labels`, `suggest_labels`, `create_label`, `create_label_smart` |
+| Milestones | `list_milestones`, `get_milestone`, `create_milestone`, `update_milestone`, `delete_milestone` |
+| Dependencies | `list_issue_dependencies`, `create_issue_dependency`, `remove_issue_dependency`, `get_execution_order` |
+| Wiki | `list_wiki_pages`, `get_wiki_page`, `create_wiki_page`, `update_wiki_page`, `create_lesson`, `search_lessons` |
+| **Pull Requests** | `list_pull_requests`, `get_pull_request`, `get_pr_diff`, `get_pr_comments`, `create_pr_review`, `add_pr_comment` |
 | Validation | `validate_repo_org`, `get_branch_protection` |
 
 ### Hybrid Configuration
