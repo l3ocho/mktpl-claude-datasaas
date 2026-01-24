@@ -773,16 +773,17 @@ TOOL_DEFINITIONS = {
         'properties': {'id': {'type': 'integer', 'description': 'Provider ID'}},
         'required': ['id']
     },
-    'circuits_list_circuit_types': {
+    # NOTE: circuit_types tools shortened to meet 28-char limit
+    'circ_list_types': {
         'description': 'List all circuit types in NetBox',
         'properties': {'name': {'type': 'string', 'description': 'Filter by name'}}
     },
-    'circuits_get_circuit_type': {
+    'circ_get_type': {
         'description': 'Get a specific circuit type by ID',
         'properties': {'id': {'type': 'integer', 'description': 'Circuit type ID'}},
         'required': ['id']
     },
-    'circuits_create_circuit_type': {
+    'circ_create_type': {
         'description': 'Create a new circuit type',
         'properties': {
             'name': {'type': 'string', 'description': 'Type name'},
@@ -825,19 +826,20 @@ TOOL_DEFINITIONS = {
         'properties': {'id': {'type': 'integer', 'description': 'Circuit ID'}},
         'required': ['id']
     },
-    'circuits_list_circuit_terminations': {
+    # NOTE: circuit_terminations tools shortened to meet 28-char limit
+    'circ_list_terminations': {
         'description': 'List all circuit terminations in NetBox',
         'properties': {
             'circuit_id': {'type': 'integer', 'description': 'Filter by circuit ID'},
             'site_id': {'type': 'integer', 'description': 'Filter by site ID'}
         }
     },
-    'circuits_get_circuit_termination': {
+    'circ_get_termination': {
         'description': 'Get a specific circuit termination by ID',
         'properties': {'id': {'type': 'integer', 'description': 'Termination ID'}},
         'required': ['id']
     },
-    'circuits_create_circuit_termination': {
+    'circ_create_termination': {
         'description': 'Create a new circuit termination',
         'properties': {
             'circuit': {'type': 'integer', 'description': 'Circuit ID'},
@@ -848,16 +850,18 @@ TOOL_DEFINITIONS = {
     },
 
     # ==================== Virtualization Tools ====================
-    'virtualization_list_cluster_types': {
+    # NOTE: Tool names shortened from 'virtualization_' to 'virt_' to meet
+    # 28-char limit (Claude API 64-char limit minus 36-char prefix)
+    'virt_list_cluster_types': {
         'description': 'List all cluster types in NetBox',
         'properties': {'name': {'type': 'string', 'description': 'Filter by name'}}
     },
-    'virtualization_get_cluster_type': {
+    'virt_get_cluster_type': {
         'description': 'Get a specific cluster type by ID',
         'properties': {'id': {'type': 'integer', 'description': 'Cluster type ID'}},
         'required': ['id']
     },
-    'virtualization_create_cluster_type': {
+    'virt_create_cluster_type': {
         'description': 'Create a new cluster type',
         'properties': {
             'name': {'type': 'string', 'description': 'Type name'},
@@ -865,16 +869,16 @@ TOOL_DEFINITIONS = {
         },
         'required': ['name', 'slug']
     },
-    'virtualization_list_cluster_groups': {
+    'virt_list_cluster_groups': {
         'description': 'List all cluster groups in NetBox',
         'properties': {'name': {'type': 'string', 'description': 'Filter by name'}}
     },
-    'virtualization_get_cluster_group': {
+    'virt_get_cluster_group': {
         'description': 'Get a specific cluster group by ID',
         'properties': {'id': {'type': 'integer', 'description': 'Cluster group ID'}},
         'required': ['id']
     },
-    'virtualization_create_cluster_group': {
+    'virt_create_cluster_group': {
         'description': 'Create a new cluster group',
         'properties': {
             'name': {'type': 'string', 'description': 'Group name'},
@@ -882,7 +886,7 @@ TOOL_DEFINITIONS = {
         },
         'required': ['name', 'slug']
     },
-    'virtualization_list_clusters': {
+    'virt_list_clusters': {
         'description': 'List all clusters in NetBox',
         'properties': {
             'name': {'type': 'string', 'description': 'Filter by name'},
@@ -891,12 +895,12 @@ TOOL_DEFINITIONS = {
             'site_id': {'type': 'integer', 'description': 'Filter by site ID'}
         }
     },
-    'virtualization_get_cluster': {
+    'virt_get_cluster': {
         'description': 'Get a specific cluster by ID',
         'properties': {'id': {'type': 'integer', 'description': 'Cluster ID'}},
         'required': ['id']
     },
-    'virtualization_create_cluster': {
+    'virt_create_cluster': {
         'description': 'Create a new cluster',
         'properties': {
             'name': {'type': 'string', 'description': 'Cluster name'},
@@ -907,17 +911,17 @@ TOOL_DEFINITIONS = {
         },
         'required': ['name', 'type']
     },
-    'virtualization_update_cluster': {
+    'virt_update_cluster': {
         'description': 'Update an existing cluster',
         'properties': {'id': {'type': 'integer', 'description': 'Cluster ID'}},
         'required': ['id']
     },
-    'virtualization_delete_cluster': {
+    'virt_delete_cluster': {
         'description': 'Delete a cluster',
         'properties': {'id': {'type': 'integer', 'description': 'Cluster ID'}},
         'required': ['id']
     },
-    'virtualization_list_virtual_machines': {
+    'virt_list_vms': {
         'description': 'List all virtual machines in NetBox',
         'properties': {
             'name': {'type': 'string', 'description': 'Filter by name'},
@@ -926,12 +930,12 @@ TOOL_DEFINITIONS = {
             'status': {'type': 'string', 'description': 'Filter by status'}
         }
     },
-    'virtualization_get_virtual_machine': {
+    'virt_get_vm': {
         'description': 'Get a specific virtual machine by ID',
         'properties': {'id': {'type': 'integer', 'description': 'VM ID'}},
         'required': ['id']
     },
-    'virtualization_create_virtual_machine': {
+    'virt_create_vm': {
         'description': 'Create a new virtual machine',
         'properties': {
             'name': {'type': 'string', 'description': 'VM name'},
@@ -944,29 +948,29 @@ TOOL_DEFINITIONS = {
         },
         'required': ['name']
     },
-    'virtualization_update_virtual_machine': {
+    'virt_update_vm': {
         'description': 'Update an existing virtual machine',
         'properties': {'id': {'type': 'integer', 'description': 'VM ID'}},
         'required': ['id']
     },
-    'virtualization_delete_virtual_machine': {
+    'virt_delete_vm': {
         'description': 'Delete a virtual machine',
         'properties': {'id': {'type': 'integer', 'description': 'VM ID'}},
         'required': ['id']
     },
-    'virtualization_list_vm_interfaces': {
+    'virt_list_vm_ifaces': {
         'description': 'List all VM interfaces in NetBox',
         'properties': {
             'virtual_machine_id': {'type': 'integer', 'description': 'Filter by VM ID'},
             'name': {'type': 'string', 'description': 'Filter by name'}
         }
     },
-    'virtualization_get_vm_interface': {
+    'virt_get_vm_iface': {
         'description': 'Get a specific VM interface by ID',
         'properties': {'id': {'type': 'integer', 'description': 'Interface ID'}},
         'required': ['id']
     },
-    'virtualization_create_vm_interface': {
+    'virt_create_vm_iface': {
         'description': 'Create a new VM interface',
         'properties': {
             'virtual_machine': {'type': 'integer', 'description': 'VM ID'},
@@ -1104,16 +1108,18 @@ TOOL_DEFINITIONS = {
     },
 
     # ==================== Wireless Tools ====================
-    'wireless_list_wireless_lan_groups': {
+    # NOTE: Tool names shortened from 'wireless_' to 'wlan_' to meet
+    # 28-char limit (Claude API 64-char limit minus 36-char prefix)
+    'wlan_list_groups': {
         'description': 'List all wireless LAN groups in NetBox',
         'properties': {'name': {'type': 'string', 'description': 'Filter by name'}}
     },
-    'wireless_get_wireless_lan_group': {
+    'wlan_get_group': {
         'description': 'Get a specific wireless LAN group by ID',
         'properties': {'id': {'type': 'integer', 'description': 'WLAN group ID'}},
         'required': ['id']
     },
-    'wireless_create_wireless_lan_group': {
+    'wlan_create_group': {
         'description': 'Create a new wireless LAN group',
         'properties': {
             'name': {'type': 'string', 'description': 'Group name'},
@@ -1121,7 +1127,7 @@ TOOL_DEFINITIONS = {
         },
         'required': ['name', 'slug']
     },
-    'wireless_list_wireless_lans': {
+    'wlan_list_lans': {
         'description': 'List all wireless LANs in NetBox',
         'properties': {
             'ssid': {'type': 'string', 'description': 'Filter by SSID'},
@@ -1129,12 +1135,12 @@ TOOL_DEFINITIONS = {
             'status': {'type': 'string', 'description': 'Filter by status'}
         }
     },
-    'wireless_get_wireless_lan': {
+    'wlan_get_lan': {
         'description': 'Get a specific wireless LAN by ID',
         'properties': {'id': {'type': 'integer', 'description': 'WLAN ID'}},
         'required': ['id']
     },
-    'wireless_create_wireless_lan': {
+    'wlan_create_lan': {
         'description': 'Create a new wireless LAN',
         'properties': {
             'ssid': {'type': 'string', 'description': 'SSID'},
@@ -1144,14 +1150,14 @@ TOOL_DEFINITIONS = {
         },
         'required': ['ssid']
     },
-    'wireless_list_wireless_links': {
+    'wlan_list_links': {
         'description': 'List all wireless links in NetBox',
         'properties': {
             'ssid': {'type': 'string', 'description': 'Filter by SSID'},
             'status': {'type': 'string', 'description': 'Filter by status'}
         }
     },
-    'wireless_get_wireless_link': {
+    'wlan_get_link': {
         'description': 'Get a specific wireless link by ID',
         'properties': {'id': {'type': 'integer', 'description': 'Link ID'}},
         'required': ['id']
@@ -1257,6 +1263,52 @@ TOOL_DEFINITIONS = {
 }
 
 
+# Map shortened tool names to (category, method_name) for routing.
+# This is necessary because tool names were shortened to meet the 28-character
+# limit imposed by Claude API's 64-character tool name limit minus the
+# 36-character prefix used by Claude Code for MCP tools.
+TOOL_NAME_MAP = {
+    # Virtualization tools (virt_ -> virtualization category)
+    'virt_list_cluster_types': ('virtualization', 'list_cluster_types'),
+    'virt_get_cluster_type': ('virtualization', 'get_cluster_type'),
+    'virt_create_cluster_type': ('virtualization', 'create_cluster_type'),
+    'virt_list_cluster_groups': ('virtualization', 'list_cluster_groups'),
+    'virt_get_cluster_group': ('virtualization', 'get_cluster_group'),
+    'virt_create_cluster_group': ('virtualization', 'create_cluster_group'),
+    'virt_list_clusters': ('virtualization', 'list_clusters'),
+    'virt_get_cluster': ('virtualization', 'get_cluster'),
+    'virt_create_cluster': ('virtualization', 'create_cluster'),
+    'virt_update_cluster': ('virtualization', 'update_cluster'),
+    'virt_delete_cluster': ('virtualization', 'delete_cluster'),
+    'virt_list_vms': ('virtualization', 'list_virtual_machines'),
+    'virt_get_vm': ('virtualization', 'get_virtual_machine'),
+    'virt_create_vm': ('virtualization', 'create_virtual_machine'),
+    'virt_update_vm': ('virtualization', 'update_virtual_machine'),
+    'virt_delete_vm': ('virtualization', 'delete_virtual_machine'),
+    'virt_list_vm_ifaces': ('virtualization', 'list_vm_interfaces'),
+    'virt_get_vm_iface': ('virtualization', 'get_vm_interface'),
+    'virt_create_vm_iface': ('virtualization', 'create_vm_interface'),
+
+    # Circuits tools (circ_ -> circuits category, for shortened names only)
+    'circ_list_types': ('circuits', 'list_circuit_types'),
+    'circ_get_type': ('circuits', 'get_circuit_type'),
+    'circ_create_type': ('circuits', 'create_circuit_type'),
+    'circ_list_terminations': ('circuits', 'list_circuit_terminations'),
+    'circ_get_termination': ('circuits', 'get_circuit_termination'),
+    'circ_create_termination': ('circuits', 'create_circuit_termination'),
+
+    # Wireless tools (wlan_ -> wireless category)
+    'wlan_list_groups': ('wireless', 'list_wireless_lan_groups'),
+    'wlan_get_group': ('wireless', 'get_wireless_lan_group'),
+    'wlan_create_group': ('wireless', 'create_wireless_lan_group'),
+    'wlan_list_lans': ('wireless', 'list_wireless_lans'),
+    'wlan_get_lan': ('wireless', 'get_wireless_lan'),
+    'wlan_create_lan': ('wireless', 'create_wireless_lan'),
+    'wlan_list_links': ('wireless', 'list_wireless_links'),
+    'wlan_get_link': ('wireless', 'get_wireless_link'),
+}
+
+
 class NetBoxMCPServer:
     """MCP Server for NetBox integration"""
 
@@ -1330,12 +1382,21 @@ class NetBoxMCPServer:
                 )]
 
     async def _route_tool(self, name: str, arguments: dict):
-        """Route tool call to appropriate handler."""
-        parts = name.split('_', 1)
-        if len(parts) != 2:
-            raise ValueError(f"Invalid tool name format: {name}")
+        """Route tool call to appropriate handler.
 
-        category, method_name = parts[0], parts[1]
+        Tool names may be shortened (e.g., 'virt_list_vms' instead of
+        'virtualization_list_virtual_machines') to meet the 28-character
+        limit. TOOL_NAME_MAP handles the translation to actual method names.
+        """
+        # Check if this is a mapped short name
+        if name in TOOL_NAME_MAP:
+            category, method_name = TOOL_NAME_MAP[name]
+        else:
+            # Fall back to original logic for unchanged tools
+            parts = name.split('_', 1)
+            if len(parts) != 2:
+                raise ValueError(f"Invalid tool name format: {name}")
+            category, method_name = parts[0], parts[1]
 
         # Map category to tool class
         tool_map = {
