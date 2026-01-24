@@ -4,32 +4,6 @@ All notable changes to the Leo Claude Marketplace will be documented in this fil
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## [3.1.2] - 2026-01-23
-
-### Added
-- **git-flow:** `/commit` now detects protected branches before committing
-  - Warns when on protected branch (main, master, development, staging, production)
-  - Offers to create feature branch automatically instead of committing directly
-  - Configurable via `GIT_PROTECTED_BRANCHES` environment variable
-  - Resolves issue where commits to protected branches would fail on push
-
-### Changed
-- **doc-guardian:** Hook switched from `prompt` type to `command` type
-  - Prompt hooks unreliable - Claude ignores explicit instructions
-  - New `notify.sh` bash script guarantees exact output behavior
-  - Only notifies for config file changes (commands/, agents/, skills/, hooks/)
-  - Silent exit for all other files - no blocking possible
-- **All hooks:** Stricter plugin prefix enforcement
-  - All prompts now mandate `[plugin-name]` prefix with "NO EXCEPTIONS" rule
-  - Simplified output formats with word limits
-  - Consistent structure across projman, pr-review, code-sentinel, doc-guardian
-
-### Fixed
-- Protected branch workflow: Claude no longer commits directly to protected branches and then fails on push (fixes #109)
-- doc-guardian hook no longer blocks workflow - switched to command hook that can't be overridden by model (fixes #110)
-
----
-
 ## [3.1.1] - 2026-01-22
 
 ### Added
