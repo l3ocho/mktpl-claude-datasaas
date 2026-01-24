@@ -286,13 +286,56 @@ See `docs/DEBUGGING-CHECKLIST.md` for systematic troubleshooting.
 - `/debug-report` - Run full diagnostics, create issue if needed
 - `/debug-review` - Investigate and propose fixes
 
-## Versioning Rules
+## Versioning Workflow
 
-- Version displayed ONLY in main `README.md` title: `# Leo Claude Marketplace - vX.Y.Z`
-- `CHANGELOG.md` is authoritative for version history
-- Follow [SemVer](https://semver.org/): MAJOR.MINOR.PATCH
-- On release: Update README title → CHANGELOG → marketplace.json → plugin.json files
+This project follows [SemVer](https://semver.org/) and [Keep a Changelog](https://keepachangelog.com).
+
+### Version Locations (must stay in sync)
+
+| Location | Format | Example |
+|----------|--------|---------|
+| Git tags | `vX.Y.Z` | `v3.2.0` |
+| README.md title | `# Leo Claude Marketplace - vX.Y.Z` | `v3.2.0` |
+| marketplace.json | `"version": "X.Y.Z"` | `3.2.0` |
+| CHANGELOG.md | `## [X.Y.Z] - YYYY-MM-DD` | `[3.2.0] - 2026-01-24` |
+
+### During Development
+
+**All changes go under `[Unreleased]` in CHANGELOG.md.** Never create a versioned section until release time.
+
+```markdown
+## [Unreleased]
+
+### Added
+- New feature description
+
+### Fixed
+- Bug fix description
+```
+
+### Creating a Release
+
+Use the release script to ensure consistency:
+
+```bash
+./scripts/release.sh 3.2.0
+```
+
+The script will:
+1. Validate `[Unreleased]` section has content
+2. Replace `[Unreleased]` with `[3.2.0] - YYYY-MM-DD`
+3. Update README.md title
+4. Update marketplace.json version
+5. Commit and create git tag
+
+### SemVer Guidelines
+
+| Change Type | Version Bump | Example |
+|-------------|--------------|---------|
+| Bug fixes only | PATCH (x.y.**Z**) | 3.1.1 → 3.1.2 |
+| New features (backwards compatible) | MINOR (x.**Y**.0) | 3.1.2 → 3.2.0 |
+| Breaking changes | MAJOR (**X**.0.0) | 3.2.0 → 4.0.0 |
 
 ---
 
-**Last Updated:** 2026-01-23
+**Last Updated:** 2026-01-24
