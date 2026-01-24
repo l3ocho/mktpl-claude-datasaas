@@ -103,7 +103,19 @@ TOOL_DEFINITIONS = {
         'properties': {
             'id': {'type': 'integer', 'description': 'Site ID'},
             'name': {'type': 'string', 'description': 'New name'},
-            'status': {'type': 'string', 'description': 'New status'}
+            'slug': {'type': 'string', 'description': 'New slug'},
+            'status': {'type': 'string', 'description': 'Status'},
+            'region': {'type': 'integer', 'description': 'Region ID'},
+            'group': {'type': 'integer', 'description': 'Site group ID'},
+            'tenant': {'type': 'integer', 'description': 'Tenant ID'},
+            'facility': {'type': 'string', 'description': 'Facility name'},
+            'time_zone': {'type': 'string', 'description': 'Time zone'},
+            'description': {'type': 'string', 'description': 'Description'},
+            'physical_address': {'type': 'string', 'description': 'Physical address'},
+            'shipping_address': {'type': 'string', 'description': 'Shipping address'},
+            'latitude': {'type': 'number', 'description': 'Latitude'},
+            'longitude': {'type': 'number', 'description': 'Longitude'},
+            'comments': {'type': 'string', 'description': 'Comments'}
         },
         'required': ['id']
     },
@@ -136,7 +148,14 @@ TOOL_DEFINITIONS = {
     },
     'dcim_update_location': {
         'description': 'Update an existing location',
-        'properties': {'id': {'type': 'integer', 'description': 'Location ID'}},
+        'properties': {
+            'id': {'type': 'integer', 'description': 'Location ID'},
+            'name': {'type': 'string', 'description': 'New name'},
+            'slug': {'type': 'string', 'description': 'New slug'},
+            'site': {'type': 'integer', 'description': 'Site ID'},
+            'parent': {'type': 'integer', 'description': 'Parent location ID'},
+            'description': {'type': 'string', 'description': 'Description'}
+        },
         'required': ['id']
     },
     'dcim_delete_location': {
@@ -171,7 +190,18 @@ TOOL_DEFINITIONS = {
     },
     'dcim_update_rack': {
         'description': 'Update an existing rack',
-        'properties': {'id': {'type': 'integer', 'description': 'Rack ID'}},
+        'properties': {
+            'id': {'type': 'integer', 'description': 'Rack ID'},
+            'name': {'type': 'string', 'description': 'New name'},
+            'site': {'type': 'integer', 'description': 'Site ID'},
+            'location': {'type': 'integer', 'description': 'Location ID'},
+            'status': {'type': 'string', 'description': 'Status'},
+            'role': {'type': 'integer', 'description': 'Role ID'},
+            'tenant': {'type': 'integer', 'description': 'Tenant ID'},
+            'u_height': {'type': 'integer', 'description': 'Rack height in U'},
+            'description': {'type': 'string', 'description': 'Description'},
+            'comments': {'type': 'string', 'description': 'Comments'}
+        },
         'required': ['id']
     },
     'dcim_delete_rack': {
@@ -198,7 +228,12 @@ TOOL_DEFINITIONS = {
     },
     'dcim_update_manufacturer': {
         'description': 'Update an existing manufacturer',
-        'properties': {'id': {'type': 'integer', 'description': 'Manufacturer ID'}},
+        'properties': {
+            'id': {'type': 'integer', 'description': 'Manufacturer ID'},
+            'name': {'type': 'string', 'description': 'New name'},
+            'slug': {'type': 'string', 'description': 'New slug'},
+            'description': {'type': 'string', 'description': 'Description'}
+        },
         'required': ['id']
     },
     'dcim_delete_manufacturer': {
@@ -230,7 +265,16 @@ TOOL_DEFINITIONS = {
     },
     'dcim_update_device_type': {
         'description': 'Update an existing device type',
-        'properties': {'id': {'type': 'integer', 'description': 'Device type ID'}},
+        'properties': {
+            'id': {'type': 'integer', 'description': 'Device type ID'},
+            'manufacturer': {'type': 'integer', 'description': 'Manufacturer ID'},
+            'model': {'type': 'string', 'description': 'Model name'},
+            'slug': {'type': 'string', 'description': 'New slug'},
+            'u_height': {'type': 'number', 'description': 'Height in rack units'},
+            'is_full_depth': {'type': 'boolean', 'description': 'Is full depth'},
+            'description': {'type': 'string', 'description': 'Description'},
+            'comments': {'type': 'string', 'description': 'Comments'}
+        },
         'required': ['id']
     },
     'dcim_delete_device_type': {
@@ -259,7 +303,14 @@ TOOL_DEFINITIONS = {
     },
     'dcim_update_device_role': {
         'description': 'Update an existing device role',
-        'properties': {'id': {'type': 'integer', 'description': 'Device role ID'}},
+        'properties': {
+            'id': {'type': 'integer', 'description': 'Device role ID'},
+            'name': {'type': 'string', 'description': 'New name'},
+            'slug': {'type': 'string', 'description': 'New slug'},
+            'color': {'type': 'string', 'description': 'Hex color code'},
+            'vm_role': {'type': 'boolean', 'description': 'Can be assigned to VMs'},
+            'description': {'type': 'string', 'description': 'Description'}
+        },
         'required': ['id']
     },
     'dcim_delete_device_role': {
@@ -290,7 +341,13 @@ TOOL_DEFINITIONS = {
     },
     'dcim_update_platform': {
         'description': 'Update an existing platform',
-        'properties': {'id': {'type': 'integer', 'description': 'Platform ID'}},
+        'properties': {
+            'id': {'type': 'integer', 'description': 'Platform ID'},
+            'name': {'type': 'string', 'description': 'New name'},
+            'slug': {'type': 'string', 'description': 'New slug'},
+            'manufacturer': {'type': 'integer', 'description': 'Manufacturer ID'},
+            'description': {'type': 'string', 'description': 'Description'}
+        },
         'required': ['id']
     },
     'dcim_delete_platform': {
@@ -386,7 +443,18 @@ TOOL_DEFINITIONS = {
     },
     'dcim_update_interface': {
         'description': 'Update an existing interface',
-        'properties': {'id': {'type': 'integer', 'description': 'Interface ID'}},
+        'properties': {
+            'id': {'type': 'integer', 'description': 'Interface ID'},
+            'name': {'type': 'string', 'description': 'New name'},
+            'type': {'type': 'string', 'description': 'Interface type'},
+            'enabled': {'type': 'boolean', 'description': 'Interface enabled'},
+            'mtu': {'type': 'integer', 'description': 'MTU'},
+            'mac_address': {'type': 'string', 'description': 'MAC address'},
+            'description': {'type': 'string', 'description': 'Description'},
+            'mode': {'type': 'string', 'description': 'VLAN mode'},
+            'untagged_vlan': {'type': 'integer', 'description': 'Untagged VLAN ID'},
+            'tagged_vlans': {'type': 'array', 'description': 'Tagged VLAN IDs'}
+        },
         'required': ['id']
     },
     'dcim_delete_interface': {
@@ -420,7 +488,15 @@ TOOL_DEFINITIONS = {
     },
     'dcim_update_cable': {
         'description': 'Update an existing cable',
-        'properties': {'id': {'type': 'integer', 'description': 'Cable ID'}},
+        'properties': {
+            'id': {'type': 'integer', 'description': 'Cable ID'},
+            'type': {'type': 'string', 'description': 'Cable type'},
+            'status': {'type': 'string', 'description': 'Cable status'},
+            'label': {'type': 'string', 'description': 'Cable label'},
+            'color': {'type': 'string', 'description': 'Cable color'},
+            'length': {'type': 'number', 'description': 'Cable length'},
+            'length_unit': {'type': 'string', 'description': 'Length unit'}
+        },
         'required': ['id']
     },
     'dcim_delete_cable': {
@@ -508,7 +584,15 @@ TOOL_DEFINITIONS = {
     },
     'ipam_update_vrf': {
         'description': 'Update an existing VRF',
-        'properties': {'id': {'type': 'integer', 'description': 'VRF ID'}},
+        'properties': {
+            'id': {'type': 'integer', 'description': 'VRF ID'},
+            'name': {'type': 'string', 'description': 'New name'},
+            'rd': {'type': 'string', 'description': 'Route distinguisher'},
+            'tenant': {'type': 'integer', 'description': 'Tenant ID'},
+            'enforce_unique': {'type': 'boolean', 'description': 'Enforce unique IPs'},
+            'description': {'type': 'string', 'description': 'Description'},
+            'comments': {'type': 'string', 'description': 'Comments'}
+        },
         'required': ['id']
     },
     'ipam_delete_vrf': {
@@ -547,7 +631,19 @@ TOOL_DEFINITIONS = {
     },
     'ipam_update_prefix': {
         'description': 'Update an existing prefix',
-        'properties': {'id': {'type': 'integer', 'description': 'Prefix ID'}},
+        'properties': {
+            'id': {'type': 'integer', 'description': 'Prefix ID'},
+            'prefix': {'type': 'string', 'description': 'Prefix in CIDR notation'},
+            'status': {'type': 'string', 'description': 'Status'},
+            'site': {'type': 'integer', 'description': 'Site ID'},
+            'vrf': {'type': 'integer', 'description': 'VRF ID'},
+            'vlan': {'type': 'integer', 'description': 'VLAN ID'},
+            'role': {'type': 'integer', 'description': 'Role ID'},
+            'tenant': {'type': 'integer', 'description': 'Tenant ID'},
+            'is_pool': {'type': 'boolean', 'description': 'Is a pool'},
+            'description': {'type': 'string', 'description': 'Description'},
+            'comments': {'type': 'string', 'description': 'Comments'}
+        },
         'required': ['id']
     },
     'ipam_delete_prefix': {
@@ -598,7 +694,18 @@ TOOL_DEFINITIONS = {
     },
     'ipam_update_ip_address': {
         'description': 'Update an existing IP address',
-        'properties': {'id': {'type': 'integer', 'description': 'IP address ID'}},
+        'properties': {
+            'id': {'type': 'integer', 'description': 'IP address ID'},
+            'address': {'type': 'string', 'description': 'IP address with prefix length'},
+            'status': {'type': 'string', 'description': 'Status'},
+            'vrf': {'type': 'integer', 'description': 'VRF ID'},
+            'tenant': {'type': 'integer', 'description': 'Tenant ID'},
+            'dns_name': {'type': 'string', 'description': 'DNS name'},
+            'description': {'type': 'string', 'description': 'Description'},
+            'comments': {'type': 'string', 'description': 'Comments'},
+            'assigned_object_type': {'type': 'string', 'description': 'Object type to assign to'},
+            'assigned_object_id': {'type': 'integer', 'description': 'Object ID to assign to'}
+        },
         'required': ['id']
     },
     'ipam_delete_ip_address': {
@@ -663,7 +770,18 @@ TOOL_DEFINITIONS = {
     },
     'ipam_update_vlan': {
         'description': 'Update an existing VLAN',
-        'properties': {'id': {'type': 'integer', 'description': 'VLAN ID'}},
+        'properties': {
+            'id': {'type': 'integer', 'description': 'VLAN ID'},
+            'vid': {'type': 'integer', 'description': 'VLAN ID number'},
+            'name': {'type': 'string', 'description': 'VLAN name'},
+            'status': {'type': 'string', 'description': 'Status'},
+            'site': {'type': 'integer', 'description': 'Site ID'},
+            'group': {'type': 'integer', 'description': 'VLAN group ID'},
+            'tenant': {'type': 'integer', 'description': 'Tenant ID'},
+            'role': {'type': 'integer', 'description': 'Role ID'},
+            'description': {'type': 'string', 'description': 'Description'},
+            'comments': {'type': 'string', 'description': 'Comments'}
+        },
         'required': ['id']
     },
     'ipam_delete_vlan': {
@@ -913,7 +1031,17 @@ TOOL_DEFINITIONS = {
     },
     'virt_update_cluster': {
         'description': 'Update an existing cluster',
-        'properties': {'id': {'type': 'integer', 'description': 'Cluster ID'}},
+        'properties': {
+            'id': {'type': 'integer', 'description': 'Cluster ID'},
+            'name': {'type': 'string', 'description': 'New name'},
+            'type': {'type': 'integer', 'description': 'Cluster type ID'},
+            'group': {'type': 'integer', 'description': 'Cluster group ID'},
+            'site': {'type': 'integer', 'description': 'Site ID'},
+            'status': {'type': 'string', 'description': 'Status'},
+            'tenant': {'type': 'integer', 'description': 'Tenant ID'},
+            'description': {'type': 'string', 'description': 'Description'},
+            'comments': {'type': 'string', 'description': 'Comments'}
+        },
         'required': ['id']
     },
     'virt_delete_cluster': {
@@ -950,7 +1078,23 @@ TOOL_DEFINITIONS = {
     },
     'virt_update_vm': {
         'description': 'Update an existing virtual machine',
-        'properties': {'id': {'type': 'integer', 'description': 'VM ID'}},
+        'properties': {
+            'id': {'type': 'integer', 'description': 'VM ID'},
+            'name': {'type': 'string', 'description': 'New name'},
+            'status': {'type': 'string', 'description': 'Status'},
+            'cluster': {'type': 'integer', 'description': 'Cluster ID'},
+            'site': {'type': 'integer', 'description': 'Site ID'},
+            'role': {'type': 'integer', 'description': 'Role ID'},
+            'tenant': {'type': 'integer', 'description': 'Tenant ID'},
+            'platform': {'type': 'integer', 'description': 'Platform ID'},
+            'vcpus': {'type': 'number', 'description': 'Number of vCPUs'},
+            'memory': {'type': 'integer', 'description': 'Memory in MB'},
+            'disk': {'type': 'integer', 'description': 'Disk in GB'},
+            'primary_ip4': {'type': 'integer', 'description': 'Primary IPv4 address ID'},
+            'primary_ip6': {'type': 'integer', 'description': 'Primary IPv6 address ID'},
+            'description': {'type': 'string', 'description': 'Description'},
+            'comments': {'type': 'string', 'description': 'Comments'}
+        },
         'required': ['id']
     },
     'virt_delete_vm': {
