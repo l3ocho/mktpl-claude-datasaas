@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+*Changes staged for the next release*
+
+---
+
+## [3.2.0] - 2026-01-24
+
 ### Added
 - **git-flow:** `/commit` now detects protected branches before committing
   - Warns when on protected branch (main, master, development, staging, production)
