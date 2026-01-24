@@ -4,7 +4,7 @@ description: Run diagnostics and create structured issue in marketplace reposito
 
 # Debug Report
 
-Run diagnostic checks on projman MCP tools and create a structured issue in the marketplace repository for investigation.
+Create structured issues in the marketplace repository - either from automated diagnostic tests OR from user-reported problems.
 
 ## Prerequisites
 
@@ -19,6 +19,101 @@ If not configured, ask the user for the marketplace repository path.
 ## CRITICAL: Execution Steps
 
 You MUST follow these steps in order. Do NOT skip any step.
+
+### Step 0: Select Report Mode
+
+Use AskUserQuestion to determine what the user wants to report:
+
+```
+What would you like to report?
+
+[ ] Run automated diagnostics - Test MCP tools and report failures
+[ ] Report an issue I experienced - Describe a problem with any plugin command
+```
+
+Store the selection as `REPORT_MODE`:
+- "automated" → Continue to Step 1
+- "user-reported" → Skip to Step 0.1
+
+---
+
+### Step 0.1: Gather User Feedback (User-Reported Mode Only)
+
+If `REPORT_MODE` is "user-reported", gather structured feedback.
+
+**Question 1: What were you trying to do?**
+
+Use AskUserQuestion:
+```
+Which plugin/command were you using?
+
+[ ] projman (sprint planning, issues, labels)
+[ ] git-flow (commits, branches)
+[ ] pr-review (pull request review)
+[ ] cmdb-assistant (NetBox integration)
+[ ] doc-guardian (documentation)
+[ ] code-sentinel (security, refactoring)
+[ ] Other - I'll describe it
+```
+
+Store as `AFFECTED_PLUGIN`.
+
+Then ask for the specific command (free text):
+```
+What command or tool were you using? (e.g., /sprint-plan, virt_update_vm)
+```
+
+Store as `AFFECTED_COMMAND`.
+
+**Question 2: What was your goal?**
+
+```
+Briefly describe what you were trying to accomplish:
+```
+
+Store as `USER_GOAL`.
+
+**Question 3: What went wrong?**
+
+Use AskUserQuestion:
+```
+What type of problem did you encounter?
+
+[ ] Error message - Command failed with an error
+[ ] Missing feature - Tool doesn't support what I need
+[ ] Unexpected behavior - It worked but did the wrong thing
+[ ] Documentation issue - Instructions were unclear or wrong
+[ ] Other - I'll describe it
+```
+
+Store as `PROBLEM_TYPE`.
+
+Then ask for details (free text):
+```
+Describe what happened. Include any error messages if applicable:
+```
+
+Store as `PROBLEM_DESCRIPTION`.
+
+**Question 4: Expected vs Actual**
+
+```
+What did you expect to happen?
+```
+
+Store as `EXPECTED_BEHAVIOR`.
+
+**Question 5: Workaround (optional)**
+
+```
+Did you find a workaround? If so, describe it (or skip):
+```
+
+Store as `WORKAROUND` (may be empty).
+
+After gathering feedback, continue to Step 1 for context gathering, then skip to Step 5.1.
+
+---
 
 ### Step 1: Gather Project Context
 
@@ -91,7 +186,9 @@ grep PROJMAN_MARKETPLACE_REPO .env
 
 Store as `MARKETPLACE_REPO`. If not found, ask the user.
 
-### Step 3: Run Diagnostic Suite
+### Step 3: Run Diagnostic Suite (Automated Mode Only)
+
+**Skip this step if `REPORT_MODE` is "user-reported"** → Go to Step 5.1
 
 Run each MCP tool with explicit `repo` parameter. Record success/failure and full response.
 
@@ -131,7 +228,9 @@ For each test, record:
 - Status: PASS or FAIL
 - Response or error message
 
-### Step 4: Analyze Results
+### Step 4: Analyze Results (Automated Mode Only)
+
+**Skip this step if `REPORT_MODE` is "user-reported"** → Go to Step 5.1
 
 Count failures and categorize errors:
 
@@ -145,7 +244,9 @@ Count failures and categorize errors:
 
 For each failure, write a hypothesis about the likely cause.
 
-### Step 5: Generate Smart Labels
+### Step 5: Generate Smart Labels (Automated Mode Only)
+
+**Skip this step if `REPORT_MODE` is "user-reported"** → Go to Step 5.1
 
 Generate appropriate labels based on the diagnostic results.
 
@@ -180,7 +281,53 @@ The final label set should include:
 - **Always**: `Type: Bug`, `Source: Diagnostic`, `Agent: Claude`
 - **If detected**: `Component: *`, `Complexity: *`, `Risk: *`, `Priority: *`
 
-### Step 6: Generate Issue Content
+After generating labels, continue to Step 6.
+
+---
+
+### Step 5.1: Generate Labels (User-Reported Mode Only)
+
+**Only execute this step if `REPORT_MODE` is "user-reported"**
+
+**1. Map problem type to labels:**
+
+| PROBLEM_TYPE | Labels |
+|--------------|--------|
+| Error message | `Type: Bug` |
+| Missing feature | `Type: Enhancement` |
+| Unexpected behavior | `Type: Bug` |
+| Documentation issue | `Type: Documentation` |
+| Other | `Type: Bug` (default) |
+
+**2. Map plugin to component:**
+
+| AFFECTED_PLUGIN | Component Label |
+|-----------------|-----------------|
+| projman | `Component: Commands` |
+| git-flow | `Component: Commands` |
+| pr-review | `Component: Commands` |
+| cmdb-assistant | `Component: API` |
+| doc-guardian | `Component: Commands` |
+| code-sentinel | `Component: Commands` |
+| Other | *(no component label)* |
+
+**3. Build final labels:**
+
+```
+BASE_LABELS = ["Source: User-Reported", "Agent: Claude"]
+TYPE_LABEL = [mapped from PROBLEM_TYPE]
+COMPONENT_LABEL = [mapped from AFFECTED_PLUGIN, if any]
+
+FINAL_LABELS = BASE_LABELS + TYPE_LABEL + COMPONENT_LABEL
+```
+
+After generating labels, continue to Step 6.1.
+
+---
+
+### Step 6: Generate Issue Content (Automated Mode Only)
+
+**Skip this step if `REPORT_MODE` is "user-reported"** → Go to Step 6.1
 
 Use this exact template:
 
@@ -254,8 +401,85 @@ Use this exact template:
 
 ---
 
-*Generated by /debug-report - Labels: Type: Bug, Source: Diagnostic, Agent: Claude*
+*Generated by /debug-report (automated) - Labels: Type: Bug, Source: Diagnostic, Agent: Claude*
 ```
+
+After generating content, continue to Step 7.
+
+---
+
+### Step 6.1: Generate Issue Content (User-Reported Mode Only)
+
+**Only execute this step if `REPORT_MODE` is "user-reported"**
+
+Use this template for user-reported issues:
+
+```markdown
+## User-Reported Issue
+
+**Reported**: [ISO timestamp]
+**Reporter**: Claude Code via /debug-report (user feedback)
+
+## Context
+
+| Field | Value |
+|-------|-------|
+| Plugin | `[AFFECTED_PLUGIN]` |
+| Command/Tool | `[AFFECTED_COMMAND]` |
+| Repository | `[PROJECT_REPO]` |
+| Working Directory | `[WORKING_DIR]` |
+| Branch | `[CURRENT_BRANCH]` |
+
+## Problem Description
+
+### Goal
+[USER_GOAL]
+
+### What Happened
+**Problem Type**: [PROBLEM_TYPE]
+
+[PROBLEM_DESCRIPTION]
+
+### Expected Behavior
+[EXPECTED_BEHAVIOR]
+
+## Workaround
+[WORKAROUND if provided, otherwise "None identified"]
+
+## Investigation Hints
+
+Based on the affected plugin/command, relevant files to check:
+
+[Generate based on AFFECTED_PLUGIN:]
+
+**projman:**
+- `plugins/projman/commands/[AFFECTED_COMMAND].md`
+- `mcp-servers/gitea/mcp_server/tools/*.py`
+
+**git-flow:**
+- `plugins/git-flow/commands/[AFFECTED_COMMAND].md`
+
+**pr-review:**
+- `plugins/pr-review/commands/[AFFECTED_COMMAND].md`
+- `mcp-servers/gitea/mcp_server/tools/pull_requests.py`
+
+**cmdb-assistant:**
+- `plugins/cmdb-assistant/commands/[AFFECTED_COMMAND].md`
+- `mcp-servers/netbox/mcp_server/tools/*.py`
+- `mcp-servers/netbox/mcp_server/server.py` (tool schemas)
+
+**doc-guardian / code-sentinel:**
+- `plugins/[plugin]/commands/[AFFECTED_COMMAND].md`
+- `plugins/[plugin]/hooks/*.md`
+
+---
+
+*Generated by /debug-report (user feedback) - Labels: [FINAL_LABELS]*
+```
+
+After generating content, continue to Step 7.
+
+---
 
 ### Step 7: Create Issue in Marketplace
 
@@ -274,33 +498,42 @@ fi
 
 **2. Fetch label IDs from marketplace repo:**
 
-The diagnostic labels to apply are:
+Labels depend on `REPORT_MODE`:
+
+**Automated mode:**
 - `Source/Diagnostic` (always)
 - `Type/Bug` (always)
 
+**User-reported mode:**
+- `Source/User-Reported` (always)
+- Type label from Step 5.1 (Bug, Enhancement, or Documentation)
+- Component label from Step 5.1 (if applicable)
+
 ```bash
-# Fetch all labels and extract IDs for our target labels
+# Fetch all labels from marketplace repo
 LABELS_JSON=$(curl -s "${GITEA_API_URL}/repos/${MARKETPLACE_REPO}/labels" \
   -H "Authorization: token ${GITEA_API_TOKEN}")
 
-# Extract label IDs (handles both org and repo labels)
-SOURCE_DIAG_ID=$(echo "$LABELS_JSON" | jq -r '.[] | select(.name == "Source/Diagnostic") | .id')
-TYPE_BUG_ID=$(echo "$LABELS_JSON" | jq -r '.[] | select(.name == "Type/Bug") | .id')
+# Extract label IDs based on FINAL_LABELS from Step 5 or 5.1
+# Build LABEL_IDS array with IDs of labels that exist in the repo
+# Example for automated mode:
+SOURCE_ID=$(echo "$LABELS_JSON" | jq -r '.[] | select(.name == "Source/Diagnostic") | .id')
+TYPE_ID=$(echo "$LABELS_JSON" | jq -r '.[] | select(.name == "Type/Bug") | .id')
 
-# Build label array (only include IDs that were found)
-LABEL_IDS="[]"
-if [[ -n "$SOURCE_DIAG_ID" && -n "$TYPE_BUG_ID" ]]; then
-  LABEL_IDS="[$SOURCE_DIAG_ID, $TYPE_BUG_ID]"
-elif [[ -n "$SOURCE_DIAG_ID" ]]; then
-  LABEL_IDS="[$SOURCE_DIAG_ID]"
-elif [[ -n "$TYPE_BUG_ID" ]]; then
-  LABEL_IDS="[$TYPE_BUG_ID]"
-fi
+# Example for user-reported mode (adjust based on FINAL_LABELS):
+# SOURCE_ID=$(echo "$LABELS_JSON" | jq -r '.[] | select(.name == "Source/User-Reported") | .id')
+# TYPE_ID=$(echo "$LABELS_JSON" | jq -r '.[] | select(.name == "[TYPE_LABEL]") | .id')
 
+# Build label array from found IDs
+LABEL_IDS="[$(echo "$SOURCE_ID,$TYPE_ID" | sed 's/,,*/,/g; s/^,//; s/,$//')]"
 echo "Label IDs to apply: $LABEL_IDS"
 ```
 
 **3. Create issue with labels via curl:**
+
+**Title format depends on `REPORT_MODE`:**
+- Automated: `[Diagnostic] [summary of main failure]`
+- User-reported: `[AFFECTED_PLUGIN] [brief summary of PROBLEM_DESCRIPTION]`
 
 ```bash
 # Create temp files with restrictive permissions
@@ -308,12 +541,14 @@ DIAG_TITLE=$(mktemp -t diag-title.XXXXXX)
 DIAG_BODY=$(mktemp -t diag-body.XXXXXX)
 DIAG_PAYLOAD=$(mktemp -t diag-payload.XXXXXX)
 
-# Save title
-echo "[Diagnostic] [summary of main failure]" > "$DIAG_TITLE"
+# Save title (format depends on REPORT_MODE)
+# Automated: "[Diagnostic] [summary of main failure]"
+# User-reported: "[AFFECTED_PLUGIN] [brief summary]"
+echo "[Title based on REPORT_MODE]" > "$DIAG_TITLE"
 
-# Save body (paste Step 6 content) - heredoc delimiter prevents shell expansion
+# Save body (paste Step 6 or 6.1 content) - heredoc delimiter prevents shell expansion
 cat > "$DIAG_BODY" << 'DIAGNOSTIC_EOF'
-[Paste the full issue content from Step 6 here]
+[Paste the full issue content from Step 6 or 6.1 here]
 DIAGNOSTIC_EOF
 
 # Build JSON payload with labels using jq
@@ -360,8 +595,9 @@ To create the issue manually:
 
 ### Step 8: Report to User
 
-Display summary:
+Display summary based on `REPORT_MODE`:
 
+**Automated Mode:**
 ```
 Debug Report Complete
 =====================
@@ -383,18 +619,38 @@ Next Steps:
   3. Select issue #[N] to investigate
 ```
 
+**User-Reported Mode:**
+```
+Issue Report Complete
+=====================
+
+Plugin: [AFFECTED_PLUGIN]
+Command: [AFFECTED_COMMAND]
+Problem: [PROBLEM_TYPE]
+
+Issue Created: [issue URL]
+
+Your feedback has been captured. The development team will
+investigate and may follow up with questions.
+
+Next Steps:
+  1. Switch to marketplace repo: cd [marketplace path]
+  2. Run: /debug-review
+  3. Select issue #[N] to investigate
+```
+
 ## DO NOT
 
 - **DO NOT** attempt to fix anything - only report
-- **DO NOT** create issues if all tests pass (just report success)
-- **DO NOT** skip any diagnostic test
+- **DO NOT** create issues if all automated tests pass (unless in user-reported mode)
+- **DO NOT** skip any diagnostic test in automated mode
 - **DO NOT** call MCP tools without the `repo` parameter
-- **DO NOT** ask user questions during execution - run autonomously
+- **DO NOT** skip user questions in user-reported mode - gather complete feedback
 - **DO NOT** use MCP tools to create issues in the marketplace - always use curl (avoids branch restrictions)
 
-## If All Tests Pass
+## If All Tests Pass (Automated Mode Only)
 
-If all 5 tests pass, report success without creating an issue:
+If all 5 tests pass in automated mode, report success without creating an issue:
 
 ```
 Debug Report Complete
@@ -407,8 +663,8 @@ Failed: 0
 
 All diagnostics passed. No issues to report.
 
-If you're experiencing a specific problem, please describe it
-and I can create a manual bug report.
+If you're experiencing a specific problem, run /debug-report again
+and select "Report an issue I experienced" to describe it.
 ```
 
 ## Troubleshooting
