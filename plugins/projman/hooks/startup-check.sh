@@ -1,6 +1,6 @@
 #!/bin/bash
 # projman startup check hook
-# Checks for common issues at session start
+# Checks for common issues AND suggests sprint planning proactively
 # All output MUST have [projman] prefix
 
 PREFIX="[projman]"
@@ -26,5 +26,41 @@ if [[ -f ".env" ]]; then
     fi
 fi
 
-# All checks passed - say nothing
+# Check for open issues (suggests sprint planning)
+# Only if .env exists with valid GITEA config
+if [[ -f ".env" ]]; then
+    GITEA_API_URL=$(grep -E "^GITEA_API_URL=" ~/.config/claude/gitea.env 2>/dev/null | cut -d'=' -f2 | tr -d '"' || true)
+    GITEA_API_TOKEN=$(grep -E "^GITEA_API_TOKEN=" ~/.config/claude/gitea.env 2>/dev/null | cut -d'=' -f2 | tr -d '"' || true)
+    GITEA_REPO=$(grep -E "^GITEA_REPO=" .env 2>/dev/null | cut -d'=' -f2 | tr -d '"' || true)
+
+    if [[ -n "$GITEA_API_URL" && -n "$GITEA_API_TOKEN" && -n "$GITEA_REPO" ]]; then
+        # Quick check for open issues without milestone (unplanned work)
+        OPEN_ISSUES=$(curl -s -m 5 \
+            -H "Authorization: token $GITEA_API_TOKEN" \
+            "${GITEA_API_URL}/repos/${GITEA_REPO}/issues?state=open&milestone=none&limit=1" 2>/dev/null | \
+            grep -c '"number"' || echo "0")
+
+        if [[ "$OPEN_ISSUES" -gt 0 ]]; then
+            # Count total unplanned issues
+            TOTAL_UNPLANNED=$(curl -s -m 5 \
+                -H "Authorization: token $GITEA_API_TOKEN" \
+                "${GITEA_API_URL}/repos/${GITEA_REPO}/issues?state=open&milestone=none" 2>/dev/null | \
+                grep -c '"number"' || echo "?")
+            echo "$PREFIX ${TOTAL_UNPLANNED} open issues without milestone - consider /sprint-plan"
+        fi
+    fi
+fi
+
+# Check for CHANGELOG.md [Unreleased] content (version management)
+if [[ -f "CHANGELOG.md" ]]; then
+    # Check if there's content under [Unreleased] that hasn't been released
+    UNRELEASED_CONTENT=$(sed -n '/## \[Unreleased\]/,/## \[/p' CHANGELOG.md 2>/dev/null | grep -E '^### (Added|Changed|Fixed|Removed|Deprecated)' | head -1 || true)
+    if [[ -n "$UNRELEASED_CONTENT" ]]; then
+        UNRELEASED_LINES=$(sed -n '/## \[Unreleased\]/,/## \[/p' CHANGELOG.md 2>/dev/null | grep -E '^- ' | wc -l | tr -d ' ')
+        if [[ "$UNRELEASED_LINES" -gt 0 ]]; then
+            echo "$PREFIX ${UNRELEASED_LINES} unreleased changes in CHANGELOG - consider version bump"
+        fi
+    fi
+fi
+
 exit 0
