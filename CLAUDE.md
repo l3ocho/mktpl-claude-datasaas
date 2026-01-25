@@ -164,9 +164,11 @@ leo-claude-mktplace/
 - **CLI tools forbidden** - Use MCP tools exclusively (never `tea`, `gh`, etc.)
 
 #### ⚠️ plugin.json Format Rules (CRITICAL)
-- **Hooks MUST be inline** - NEVER use `"hooks": "path/to/file.json"`
+- **Hooks in separate file** - Use `hooks/hooks.json` (auto-discovered), NOT inline in plugin.json
+- **NEVER reference hooks** - Don't add `"hooks": "..."` field to plugin.json at all
 - **Agents auto-discover** - NEVER add `"agents": ["./agents/"]` - .md files found automatically
 - **Always validate** - Run `./scripts/validate-marketplace.sh` before committing
+- **Working examples:** projman, pr-review, claude-config-maintainer all use `hooks/hooks.json`
 - See lesson: `lessons/patterns/plugin-manifest-validation---hooks-and-agents-format-requirements`
 
 ### Hooks (Valid Events Only)
