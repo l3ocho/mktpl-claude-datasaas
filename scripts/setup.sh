@@ -116,6 +116,15 @@ verify_symlinks() {
         log_error "pr-review/gitea symlink missing"
         log_todo "Run: ln -s ../../../mcp-servers/gitea plugins/pr-review/mcp-servers/gitea"
     fi
+
+    # Check data-platform -> data-platform symlink
+    local dataplatform_link="$REPO_ROOT/plugins/data-platform/mcp-servers/data-platform"
+    if [[ -L "$dataplatform_link" ]]; then
+        log_success "data-platform symlink exists"
+    else
+        log_error "data-platform symlink missing"
+        log_todo "Run: ln -s ../../../mcp-servers/data-platform plugins/data-platform/mcp-servers/data-platform"
+    fi
 }
 
 # --- Section 3: Config File Templates ---
@@ -177,6 +186,22 @@ GIT_CO_AUTHOR=true
 EOF
         chmod 600 "$config_dir/git-flow.env"
         log_success "git-flow.env template created"
+    fi
+
+    # PostgreSQL config (for data-platform, optional)
+    if [[ -f "$config_dir/postgres.env" ]]; then
+        log_skip "postgres.env already exists"
+    else
+        cat > "$config_dir/postgres.env" << 'EOF'
+# PostgreSQL Configuration (for data-platform plugin)
+# Update with your PostgreSQL connection URL
+# This is OPTIONAL - pandas tools work without it
+
+POSTGRES_URL=postgresql://user:password@localhost:5432/database
+EOF
+        chmod 600 "$config_dir/postgres.env"
+        log_success "postgres.env template created"
+        log_todo "Edit ~/.config/claude/postgres.env with your PostgreSQL credentials (optional)"
     fi
 }
 
@@ -283,6 +308,7 @@ main() {
     # Shared MCP servers at repository root
     setup_shared_mcp "gitea"
     setup_shared_mcp "netbox"
+    setup_shared_mcp "data-platform"
 
     # Verify symlinks from plugins to shared MCP servers
     verify_symlinks

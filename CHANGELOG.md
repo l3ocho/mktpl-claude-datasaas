@@ -6,7 +6,36 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
-*Changes staged for the next release*
+### Added
+
+#### New Plugin: data-platform v1.0.0
+- **pandas MCP Tools** (14 tools): DataFrame operations with Arrow IPC data_ref persistence
+  - `read_csv`, `read_parquet`, `read_json` - Load data with chunking support
+  - `to_csv`, `to_parquet` - Export to various formats
+  - `describe`, `head`, `tail` - Data exploration
+  - `filter`, `select`, `groupby`, `join` - Data transformation
+  - `list_data`, `drop_data` - Memory management
+
+- **PostgreSQL MCP Tools** (10 tools): Database operations with asyncpg connection pooling
+  - `pg_connect`, `pg_query`, `pg_execute` - Core database operations
+  - `pg_tables`, `pg_columns`, `pg_schemas` - Schema exploration
+  - `st_tables`, `st_geometry_type`, `st_srid`, `st_extent` - PostGIS spatial support
+
+- **dbt MCP Tools** (8 tools): Build tool wrapper with pre-execution validation
+  - `dbt_parse` - Pre-flight validation (catches dbt 1.9+ deprecations)
+  - `dbt_run`, `dbt_test`, `dbt_build` - Execution with auto-validation
+  - `dbt_compile`, `dbt_ls`, `dbt_docs_generate`, `dbt_lineage` - Analysis tools
+
+- **Commands**: `/ingest`, `/profile`, `/schema`, `/explain`, `/lineage`, `/run`
+- **Agents**: `data-ingestion` (loading/transformation), `data-analysis` (exploration/profiling)
+- **SessionStart Hook**: Graceful PostgreSQL connection check (non-blocking warning)
+
+- **Key Features**:
+  - data_ref system for DataFrame persistence across tool calls
+  - 100k row limit with chunking support for large datasets
+  - Hybrid configuration (system: `~/.config/claude/postgres.env`, project: `.env`)
+  - Auto-detection of dbt projects
+  - Arrow IPC format for efficient memory management
 
 ---
 

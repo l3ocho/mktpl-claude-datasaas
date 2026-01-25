@@ -1,0 +1,10 @@
+{
+  "mcpServers": {
+    "data-platform": {
+      "type": "stdio",
+      "command": "${CLAUDE_PLUGIN_ROOT}/mcp-servers/data-platform/.venv/bin/python",
+      "args": ["-m", "mcp_server.server"],
+      "cwd": "${CLAUDE_PLUGIN_ROOT}/mcp-servers/data-platform"
+    }
+  }
+}
