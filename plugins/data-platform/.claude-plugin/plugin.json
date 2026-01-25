@@ -18,8 +18,14 @@
     "etl",
     "dataframe"
   ],
-  "hooks": "hooks/hooks.json",
+  "hooks": {
+    "SessionStart": [
+      {
+        "type": "command",
+        "command": "${CLAUDE_PLUGIN_ROOT}/hooks/startup-check.sh"
+      }
+    ]
+  },
   "commands": ["./commands/"],
-  "agents": ["./agents/"],
   "mcpServers": ["./.mcp.json"]
 }
