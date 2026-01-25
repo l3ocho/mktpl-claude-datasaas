@@ -96,6 +96,21 @@ Full CRUD operations for network infrastructure management directly from Claude 
 
 **Commands:** `/initial-setup`, `/cmdb-search`, `/cmdb-device`, `/cmdb-ip`, `/cmdb-site`
 
+### Data Engineering
+
+#### [data-platform](./plugins/data-platform/README.md) *NEW*
+**pandas, PostgreSQL/PostGIS, and dbt Integration**
+
+Comprehensive data engineering toolkit with persistent DataFrame storage.
+
+- 14 pandas tools with Arrow IPC data_ref system
+- 10 PostgreSQL/PostGIS tools with connection pooling
+- 8 dbt tools with automatic pre-validation
+- 100k row limit with chunking support
+- Auto-detection of dbt projects
+
+**Commands:** `/ingest`, `/profile`, `/schema`, `/explain`, `/lineage`, `/run`
+
 ## MCP Servers
 
 MCP servers are **shared at repository root** with **symlinks** from plugins that use them.
@@ -125,6 +140,17 @@ Comprehensive NetBox REST API integration for infrastructure management.
 | Circuits | Providers, Circuits, Terminations |
 | Virtualization | Clusters, VMs, Interfaces |
 | Extras | Tags, Custom Fields, Audit Log |
+
+### Data Platform MCP Server (shared) *NEW*
+
+pandas, PostgreSQL/PostGIS, and dbt integration for data engineering.
+
+| Category | Tools |
+|----------|-------|
+| pandas | `read_csv`, `read_parquet`, `read_json`, `to_csv`, `to_parquet`, `describe`, `head`, `tail`, `filter`, `select`, `groupby`, `join`, `list_data`, `drop_data` |
+| PostgreSQL | `pg_connect`, `pg_query`, `pg_execute`, `pg_tables`, `pg_columns`, `pg_schemas` |
+| PostGIS | `st_tables`, `st_geometry_type`, `st_srid`, `st_extent` |
+| dbt | `dbt_parse`, `dbt_run`, `dbt_test`, `dbt_build`, `dbt_compile`, `dbt_ls`, `dbt_docs_generate`, `dbt_lineage` |
 
 ## Installation
 
@@ -222,6 +248,7 @@ After installing plugins, the `/plugin` command may show `(no content)` - this i
 | code-sentinel | `/code-sentinel:security-scan` |
 | claude-config-maintainer | `/claude-config-maintainer:config-analyze` |
 | cmdb-assistant | `/cmdb-assistant:cmdb-search` |
+| data-platform | `/data-platform:ingest` |
 
 ## Repository Structure
 
@@ -231,12 +258,14 @@ leo-claude-mktplace/
 │   └── marketplace.json
 ├── mcp-servers/                   # SHARED MCP servers (v3.0.0+)
 │   ├── gitea/                     # Gitea MCP (issues, PRs, wiki)
-│   └── netbox/                    # NetBox MCP (CMDB)
+│   ├── netbox/                    # NetBox MCP (CMDB)
+│   └── data-platform/             # Data engineering (pandas, PostgreSQL, dbt)
 ├── plugins/                       # All plugins
 │   ├── projman/                   # Sprint management
-│   ├── git-flow/                  # Git workflow automation (NEW)
-│   ├── pr-review/                 # PR review (NEW)
-│   ├── clarity-assist/            # Prompt optimization (NEW)
+│   ├── git-flow/                  # Git workflow automation
+│   ├── pr-review/                 # PR review
+│   ├── clarity-assist/            # Prompt optimization
+│   ├── data-platform/             # Data engineering (NEW)
 │   ├── claude-config-maintainer/  # CLAUDE.md optimization
 │   ├── cmdb-assistant/            # NetBox CMDB integration
 │   ├── doc-guardian/              # Documentation drift detection

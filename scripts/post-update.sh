@@ -67,6 +67,7 @@ main() {
     # Shared MCP servers at repository root (v3.0.0+)
     update_mcp_server "gitea"
     update_mcp_server "netbox"
+    update_mcp_server "data-platform"
 
     check_changelog
 

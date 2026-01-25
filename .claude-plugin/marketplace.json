@@ -149,6 +149,22 @@
       "category": "development",
       "tags": ["code-review", "pull-requests", "security", "quality"],
       "license": "MIT"
+    },
+    {
+      "name": "data-platform",
+      "version": "1.0.0",
+      "description": "Data engineering tools with pandas, PostgreSQL/PostGIS, and dbt integration",
+      "source": "./plugins/data-platform",
+      "author": {
+        "name": "Leo Miranda",
+        "email": "leobmiranda@gmail.com"
+      },
+      "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/data-platform/README.md",
+      "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
+      "mcpServers": ["./.mcp.json"],
+      "category": "data",
+      "tags": ["pandas", "postgresql", "postgis", "dbt", "data-engineering", "etl"],
+      "license": "MIT"
     }
   ]
 }
