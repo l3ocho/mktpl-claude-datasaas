@@ -163,6 +163,12 @@ leo-claude-mktplace/
 - **MCP server venv path**: `${CLAUDE_PLUGIN_ROOT}/mcp-servers/{name}/.venv/bin/python`
 - **CLI tools forbidden** - Use MCP tools exclusively (never `tea`, `gh`, etc.)
 
+#### ⚠️ plugin.json Format Rules (CRITICAL)
+- **Hooks MUST be inline** - NEVER use `"hooks": "path/to/file.json"`
+- **Agents auto-discover** - NEVER add `"agents": ["./agents/"]` - .md files found automatically
+- **Always validate** - Run `./scripts/validate-marketplace.sh` before committing
+- See lesson: `lessons/patterns/plugin-manifest-validation---hooks-and-agents-format-requirements`
+
 ### Hooks (Valid Events Only)
 `PreToolUse`, `PostToolUse`, `UserPromptSubmit`, `SessionStart`, `SessionEnd`, `Notification`, `Stop`, `SubagentStop`, `PreCompact`
 
