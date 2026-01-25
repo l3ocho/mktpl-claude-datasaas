@@ -22,6 +22,7 @@ Quick reference for all commands in the Leo Claude Marketplace.
 | **projman** | `/test-gen` | | X | Generate comprehensive tests for specified code |
 | **projman** | `/debug-report` | | X | Run diagnostics and create structured issue in marketplace |
 | **projman** | `/debug-review` | | X | Investigate diagnostic issues and propose fixes with approval gates |
+| **projman** | `/suggest-version` | | X | Analyze CHANGELOG and recommend semantic version bump |
 | **git-flow** | `/commit` | | X | Create commit with auto-generated conventional message |
 | **git-flow** | `/commit-push` | | X | Commit and push to remote in one operation |
 | **git-flow** | `/commit-merge` | | X | Commit current changes, then merge into target branch |
@@ -55,6 +56,14 @@ Quick reference for all commands in the Leo Claude Marketplace.
 | **cmdb-assistant** | `/cmdb-ip` | | X | Manage IP addresses and prefixes |
 | **cmdb-assistant** | `/cmdb-site` | | X | Manage sites, locations, racks, and regions |
 | **project-hygiene** | *PostToolUse hook* | X | | Removes temp files, warns about unexpected root files |
+| **data-platform** | `/ingest` | | X | Load data from CSV, Parquet, JSON into DataFrame |
+| **data-platform** | `/profile` | | X | Generate data profiling report with statistics |
+| **data-platform** | `/schema` | | X | Explore database schemas, tables, columns |
+| **data-platform** | `/explain` | | X | Explain query execution plan |
+| **data-platform** | `/lineage` | | X | Show dbt model lineage and dependencies |
+| **data-platform** | `/run` | | X | Run dbt models with validation |
+| **data-platform** | `/initial-setup` | | X | Setup wizard for data-platform MCP servers |
+| **data-platform** | *SessionStart hook* | X | | Checks PostgreSQL connection (non-blocking warning) |
 
 ---
 
@@ -62,12 +71,13 @@ Quick reference for all commands in the Leo Claude Marketplace.
 
 | Category | Plugins | Primary Use |
 |----------|---------|-------------|
-| **Setup** | projman, pr-review, cmdb-assistant | `/initial-setup`, `/project-init` |
+| **Setup** | projman, pr-review, cmdb-assistant, data-platform | `/initial-setup`, `/project-init` |
 | **Task Planning** | projman, clarity-assist | Sprint management, requirement clarification |
 | **Code Quality** | code-sentinel, pr-review | Security scanning, PR reviews |
 | **Documentation** | doc-guardian, claude-config-maintainer | Doc sync, CLAUDE.md maintenance |
 | **Git Operations** | git-flow | Commits, branches, workflow automation |
 | **Infrastructure** | cmdb-assistant | NetBox CMDB management |
+| **Data Engineering** | data-platform | pandas, PostgreSQL, dbt operations |
 | **Maintenance** | project-hygiene | Automatic cleanup |
 
 ---
@@ -76,11 +86,12 @@ Quick reference for all commands in the Leo Claude Marketplace.
 
 | Plugin | Hook Event | Behavior |
 |--------|------------|----------|
-| **projman** | SessionStart | Checks git remote vs .env; warns if mismatch detected |
+| **projman** | SessionStart | Checks git remote vs .env; warns if mismatch detected; suggests sprint planning if issues exist |
 | **pr-review** | SessionStart | Checks git remote vs .env; warns if mismatch detected |
-| **doc-guardian** | PostToolUse (Write/Edit) | Silently tracks documentation drift |
+| **doc-guardian** | PostToolUse (Write/Edit) | Tracks documentation drift; auto-updates dependent docs |
 | **code-sentinel** | PreToolUse (Write/Edit) | Scans for security issues; blocks critical vulnerabilities |
 | **project-hygiene** | PostToolUse (Write/Edit) | Cleans temp files, warns about misplaced files |
+| **data-platform** | SessionStart | Checks PostgreSQL connection; non-blocking warning if unavailable |
 
 ---
 
@@ -162,6 +173,19 @@ Managing infrastructure with CMDB:
 4. /cmdb-site view Y         # Check site info
 ```
 
+### Example 6b: Data Engineering Workflow
+
+Working with data pipelines:
+
+```
+1. /ingest file.csv          # Load data into DataFrame
+2. /profile                  # Generate data profiling report
+3. /schema                   # Explore database schemas
+4. /lineage model_name       # View dbt model dependencies
+5. /run model_name           # Execute dbt models
+6. /explain "SELECT ..."     # Analyze query execution plan
+```
+
 ### Example 7: First-Time Setup (New Machine)
 
 Setting up the marketplace for the first time:
@@ -209,9 +233,10 @@ Some plugins require MCP server connectivity:
 | projman | Gitea | Issues, PRs, wiki, labels, milestones |
 | pr-review | Gitea | PR operations and reviews |
 | cmdb-assistant | NetBox | Infrastructure CMDB |
+| data-platform | pandas, PostgreSQL, dbt | DataFrames, database queries, dbt builds |
 
-Ensure credentials are configured in `~/.config/claude/gitea.env` or `~/.config/claude/netbox.env`.
+Ensure credentials are configured in `~/.config/claude/gitea.env`, `~/.config/claude/netbox.env`, or `~/.config/claude/postgres.env`.
 
 ---
 
-*Last Updated: 2026-01-22*
+*Last Updated: 2026-01-25*

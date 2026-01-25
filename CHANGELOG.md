@@ -4,6 +4,25 @@ All notable changes to the Leo Claude Marketplace will be documented in this fil
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [Unreleased]
+
+### Added
+- **projman:** `/suggest-version` command - Analyzes CHANGELOG and recommends semantic version bump
+- **projman:** SessionStart hook now suggests sprint planning when open issues exist without milestone
+- **projman:** SessionStart hook now warns about unreleased CHANGELOG entries
+
+### Changed
+- **doc-guardian:** Hook now tracks documentation dependencies and queues specific files needing updates
+  - Outputs which specific docs need updating (e.g., "commands changed → update needed: docs/COMMANDS-CHEATSHEET.md README.md")
+  - Maintains queue file (`.doc-guardian-queue`) for batch processing
+- **docs:** COMMANDS-CHEATSHEET.md updated with data-platform plugin (7 commands + hook)
+
+### Fixed
+- Documentation drift: COMMANDS-CHEATSHEET.md was missing data-platform plugin added in v4.0.0
+- Proactive sprint planning: projman now suggests `/sprint-plan` at session start when unplanned issues exist
+
+---
+
 ## [4.0.0] - 2026-01-25
 
 ### Added

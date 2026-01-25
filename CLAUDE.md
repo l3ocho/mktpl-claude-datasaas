@@ -50,7 +50,7 @@ See `docs/DEBUGGING-CHECKLIST.md` for details on cache timing.
 ## Project Overview
 
 **Repository:** leo-claude-mktplace
-**Version:** 3.1.2
+**Version:** 4.0.0
 **Status:** Production Ready
 
 A plugin marketplace for Claude Code containing:
@@ -65,6 +65,7 @@ A plugin marketplace for Claude Code containing:
 | `code-sentinel` | Security scanning and code refactoring tools | 1.0.0 |
 | `claude-config-maintainer` | CLAUDE.md optimization and maintenance | 1.0.0 |
 | `cmdb-assistant` | NetBox CMDB integration for infrastructure management | 1.0.0 |
+| `data-platform` | pandas, PostgreSQL, and dbt integration for data engineering | 1.0.0 |
 | `project-hygiene` | Post-task cleanup automation via hooks | 0.1.0 |
 
 ## Quick Start
@@ -84,10 +85,12 @@ A plugin marketplace for Claude Code containing:
 | **Setup** | `/initial-setup`, `/project-init`, `/project-sync` |
 | **Sprint** | `/sprint-plan`, `/sprint-start`, `/sprint-status`, `/sprint-close` |
 | **Quality** | `/review`, `/test-check`, `/test-gen` |
+| **Versioning** | `/suggest-version` |
 | **PR Review** | `/pr-review:initial-setup`, `/pr-review:project-init` |
 | **Docs** | `/doc-audit`, `/doc-sync` |
 | **Security** | `/security-scan`, `/refactor`, `/refactor-dry` |
 | **Config** | `/config-analyze`, `/config-optimize` |
+| **Data** | `/ingest`, `/profile`, `/schema`, `/explain`, `/lineage`, `/run` |
 | **Debug** | `/debug-report`, `/debug-review` |
 
 ## Repository Structure
@@ -104,8 +107,8 @@ leo-claude-mktplace/
 │   │   ├── .claude-plugin/plugin.json
 │   │   ├── .mcp.json
 │   │   ├── mcp-servers/gitea -> ../../../mcp-servers/gitea  # SYMLINK
-│   │   ├── commands/             # 13 commands (incl. setup, debug)
-│   │   ├── hooks/                # SessionStart mismatch detection
+│   │   ├── commands/             # 14 commands (incl. setup, debug, suggest-version)
+│   │   ├── hooks/                # SessionStart: mismatch detection + sprint suggestions
 │   │   ├── agents/               # 4 agents
 │   │   └── skills/label-taxonomy/
 │   ├── git-flow/                 # Git workflow automation
@@ -119,10 +122,17 @@ leo-claude-mktplace/
 │   │   ├── commands/             # 6 commands (incl. setup)
 │   │   ├── hooks/                # SessionStart mismatch detection
 │   │   └── agents/               # 5 agents
-│   ├── clarity-assist/           # Prompt optimization (NEW v3.0.0)
+│   ├── clarity-assist/           # Prompt optimization
 │   │   ├── .claude-plugin/plugin.json
 │   │   ├── commands/             # 2 commands
 │   │   └── agents/
+│   ├── data-platform/            # Data engineering (NEW v4.0.0)
+│   │   ├── .claude-plugin/plugin.json
+│   │   ├── .mcp.json
+│   │   ├── mcp-servers/          # pandas, postgresql, dbt MCPs
+│   │   ├── commands/             # 7 commands
+│   │   ├── hooks/                # SessionStart PostgreSQL check
+│   │   └── agents/               # 2 agents
 │   ├── doc-guardian/             # Documentation drift detection
 │   ├── code-sentinel/            # Security scanning & refactoring
 │   ├── claude-config-maintainer/
