@@ -168,6 +168,12 @@ if [[ ! -d "$ROOT_DIR/mcp-servers/netbox" ]]; then
 fi
 echo "✓ Shared netbox MCP server exists"
 
+if [[ ! -d "$ROOT_DIR/mcp-servers/data-platform" ]]; then
+    echo "ERROR: Shared data-platform MCP server not found at mcp-servers/data-platform/"
+    exit 1
+fi
+echo "✓ Shared data-platform MCP server exists"
+
 # Check symlinks for plugins that use MCP servers
 check_mcp_symlink() {
     local plugin_name="$1"
@@ -194,6 +200,9 @@ check_mcp_symlink "pr-review" "gitea"
 
 # Plugins with netbox MCP dependency
 check_mcp_symlink "cmdb-assistant" "netbox"
+
+# Plugins with data-platform MCP dependency
+check_mcp_symlink "data-platform" "data-platform"
 
 echo ""
 echo "=== All validations passed ==="
