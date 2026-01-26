@@ -12,6 +12,7 @@ from mcp.server.stdio import stdio_server
 from mcp.types import Tool, TextContent
 
 from .parse_tools import ParseTools
+from .validation_tools import ValidationTools
 
 # Suppress noisy MCP validation warnings on stderr
 logging.basicConfig(level=logging.INFO)
@@ -26,10 +27,11 @@ class ContractValidatorMCPServer:
     def __init__(self):
         self.server = Server("contract-validator-mcp")
         self.parse_tools = ParseTools()
+        self.validation_tools = ValidationTools()
 
     async def initialize(self):
         """Initialize server."""
-        logger.info("Contract Validator MCP Server initialized with parse tools")
+        logger.info("Contract Validator MCP Server initialized with parse and validation tools")
 
     def setup_tools(self):
         """Register all available tools with the MCP server"""
@@ -223,34 +225,21 @@ class ContractValidatorMCPServer:
         """Parse agents from CLAUDE.md"""
         return await self.parse_tools.parse_claude_md_agents(claude_md_path)
 
-    # Placeholder implementations - to be completed in subsequent issues
+    # Validation tool implementations (Issue #187)
 
     async def _validate_compatibility(self, plugin_a: str, plugin_b: str) -> dict:
-        """Validate compatibility between plugins (placeholder)"""
-        return {
-            "status": "not_implemented",
-            "message": "Implementation pending - Issue #187",
-            "plugin_a": plugin_a,
-            "plugin_b": plugin_b
-        }
+        """Validate compatibility between plugins"""
+        return await self.validation_tools.validate_compatibility(plugin_a, plugin_b)
 
     async def _validate_agent_refs(self, agent_name: str, claude_md_path: str, plugin_paths: list = None) -> dict:
-        """Validate agent tool references (placeholder)"""
-        return {
-            "status": "not_implemented",
-            "message": "Implementation pending - Issue #187",
-            "agent_name": agent_name,
-            "claude_md_path": claude_md_path
-        }
+        """Validate agent tool references"""
+        return await self.validation_tools.validate_agent_refs(agent_name, claude_md_path, plugin_paths)
 
     async def _validate_data_flow(self, agent_name: str, claude_md_path: str) -> dict:
-        """Validate agent data flow (placeholder)"""
-        return {
-            "status": "not_implemented",
-            "message": "Implementation pending - Issue #187",
-            "agent_name": agent_name,
-            "claude_md_path": claude_md_path
-        }
+        """Validate agent data flow"""
+        return await self.validation_tools.validate_data_flow(agent_name, claude_md_path)
+
+    # Placeholder implementations - to be completed in subsequent issues
 
     async def _generate_compatibility_report(self, marketplace_path: str, format: str = "markdown") -> dict:
         """Generate compatibility report (placeholder)"""
