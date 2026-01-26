@@ -357,6 +357,11 @@ Let's capture lessons learned. I'll ask some questions:
 ```markdown
 # Sprint {N} - {Clear Title}
 
+## Metadata
+- **Implementation:** [Change VXX.X.X (Impl N)](wiki-link)
+- **Issues:** #XX, #XX
+- **Sprint:** Sprint N
+
 ## Context
 Brief background - what were you doing?
 
@@ -373,11 +378,37 @@ How can future sprints avoid this or optimize it?
 technology, component, issue-type, pattern
 ```
 
+**IMPORTANT:** Always include the Metadata section with implementation link for traceability.
+
 **D. Save to Gitea Wiki**
+
+Include the implementation reference in lesson content:
 ```
 create_lesson(
     title="Sprint 18 - Claude Code Infinite Loop on Validation Errors",
-    content="[Full lesson content]",
+    content="""
+# Sprint 18 - Claude Code Infinite Loop on Validation Errors
+
+## Metadata
+- **Implementation:** [Change V1.2.0 (Impl 1)](wiki-link)
+- **Issues:** #45, #46
+- **Sprint:** Sprint 18
+
+## Context
+[Lesson context...]
+
+## Problem
+[What went wrong...]
+
+## Solution
+[How it was solved...]
+
+## Prevention
+[How to avoid in future...]
+
+## Tags
+testing, claude-code, validation, python
+""",
     tags=["testing", "claude-code", "validation", "python"],
     category="sprints"
 )

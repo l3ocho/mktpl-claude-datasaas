@@ -89,6 +89,11 @@ Lessons should follow this structure:
 ```markdown
 # Sprint X - [Lesson Title]
 
+## Metadata
+- **Implementation:** [Change VXX.X.X (Impl N)](wiki-link)
+- **Issues:** #45, #46, #47
+- **Sprint:** Sprint X
+
 ## Context
 [What were you trying to do? What was the sprint goal?]
 
@@ -105,11 +110,18 @@ Lessons should follow this structure:
 [Comma-separated tags for search: technology, component, type]
 ```
 
+**IMPORTANT:** Always include the Implementation link in the Metadata section. This enables bidirectional traceability between lessons and the work that generated them.
+
 ## Example Lessons Learned
 
 **Example 1: Technical Gotcha**
 ```markdown
 # Sprint 16 - Claude Code Infinite Loop on Validation Errors
+
+## Metadata
+- **Implementation:** [Change V1.2.0 (Impl 1)](https://gitea.example.com/org/repo/wiki/Change-V1.2.0%3A-Proposal-(Implementation-1))
+- **Issues:** #45, #46
+- **Sprint:** Sprint 16
 
 ## Context
 Implementing input validation for authentication API endpoints.
@@ -136,6 +148,11 @@ testing, claude-code, validation, python, pytest, debugging
 **Example 2: Architectural Decision**
 ```markdown
 # Sprint 14 - Extracting Services Too Early
+
+## Metadata
+- **Implementation:** [Change V2.0.0 (Impl 1)](https://gitea.example.com/org/repo/wiki/Change-V2.0.0%3A-Proposal-(Implementation-1))
+- **Issues:** #32, #33, #34
+- **Sprint:** Sprint 14
 
 ## Context
 Planning to extract Intuit Engine service from monolith.
