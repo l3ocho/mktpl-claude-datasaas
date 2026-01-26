@@ -15,6 +15,7 @@ from .config import VizPlatformConfig
 from .dmc_tools import DMCTools
 from .chart_tools import ChartTools
 from .layout_tools import LayoutTools
+from .theme_tools import ThemeTools
 
 # Suppress noisy MCP validation warnings on stderr
 logging.basicConfig(level=logging.INFO)
@@ -32,8 +33,8 @@ class VizPlatformMCPServer:
         self.dmc_tools = DMCTools()
         self.chart_tools = ChartTools()
         self.layout_tools = LayoutTools()
+        self.theme_tools = ThemeTools()
         # Tool handlers will be added in subsequent issues
-        # self.theme_tools = None
         # self.page_tools = None
 
     async def initialize(self):
@@ -280,10 +281,93 @@ class VizPlatformMCPServer:
             ))
 
             # Theme tools (Issue #175)
-            # - theme_create
-            # - theme_extend
-            # - theme_validate
-            # - theme_export_css
+            tools.append(Tool(
+                name="theme_create",
+                description=(
+                    "Create a new design theme with tokens. "
+                    "Tokens include colors, spacing, typography, radii. "
+                    "Missing tokens are filled from defaults."
+                ),
+                inputSchema={
+                    "type": "object",
+                    "properties": {
+                        "name": {
+                            "type": "string",
+                            "description": "Unique theme name"
+                        },
+                        "tokens": {
+                            "type": "object",
+                            "description": (
+                                "Design tokens: colors (primary, background, text), "
+                                "spacing (xs-xl), typography (fontFamily, fontSize), radii (sm-xl)"
+                            )
+                        }
+                    },
+                    "required": ["name", "tokens"]
+                }
+            ))
+
+            tools.append(Tool(
+                name="theme_extend",
+                description=(
+                    "Create a new theme by extending an existing one. "
+                    "Only specify the tokens you want to override."
+                ),
+                inputSchema={
+                    "type": "object",
+                    "properties": {
+                        "base_theme": {
+                            "type": "string",
+                            "description": "Theme to extend (e.g., 'default')"
+                        },
+                        "overrides": {
+                            "type": "object",
+                            "description": "Token overrides to apply"
+                        },
+                        "new_name": {
+                            "type": "string",
+                            "description": "Name for the new theme (optional)"
+                        }
+                    },
+                    "required": ["base_theme", "overrides"]
+                }
+            ))
+
+            tools.append(Tool(
+                name="theme_validate",
+                description=(
+                    "Validate a theme for completeness. "
+                    "Checks for required tokens and common issues."
+                ),
+                inputSchema={
+                    "type": "object",
+                    "properties": {
+                        "theme_name": {
+                            "type": "string",
+                            "description": "Theme to validate"
+                        }
+                    },
+                    "required": ["theme_name"]
+                }
+            ))
+
+            tools.append(Tool(
+                name="theme_export_css",
+                description=(
+                    "Export a theme as CSS custom properties. "
+                    "Generates :root CSS variables for all tokens."
+                ),
+                inputSchema={
+                    "type": "object",
+                    "properties": {
+                        "theme_name": {
+                            "type": "string",
+                            "description": "Theme to export"
+                        }
+                    },
+                    "required": ["theme_name"]
+                }
+            ))
 
             # Page tools (Issue #176)
             # - page_create
@@ -407,7 +491,62 @@ class VizPlatformMCPServer:
                         text=json.dumps(result, indent=2)
                     )]
 
-                # Theme tools (Issue #175)
+                # Theme tools
+                elif name == "theme_create":
+                    theme_name = arguments.get('name')
+                    tokens = arguments.get('tokens', {})
+                    if not theme_name:
+                        return [TextContent(
+                            type="text",
+                            text=json.dumps({"error": "name is required"}, indent=2)
+                        )]
+                    result = await self.theme_tools.theme_create(theme_name, tokens)
+                    return [TextContent(
+                        type="text",
+                        text=json.dumps(result, indent=2)
+                    )]
+
+                elif name == "theme_extend":
+                    base_theme = arguments.get('base_theme')
+                    overrides = arguments.get('overrides', {})
+                    new_name = arguments.get('new_name')
+                    if not base_theme:
+                        return [TextContent(
+                            type="text",
+                            text=json.dumps({"error": "base_theme is required"}, indent=2)
+                        )]
+                    result = await self.theme_tools.theme_extend(base_theme, overrides, new_name)
+                    return [TextContent(
+                        type="text",
+                        text=json.dumps(result, indent=2)
+                    )]
+
+                elif name == "theme_validate":
+                    theme_name = arguments.get('theme_name')
+                    if not theme_name:
+                        return [TextContent(
+                            type="text",
+                            text=json.dumps({"error": "theme_name is required"}, indent=2)
+                        )]
+                    result = await self.theme_tools.theme_validate(theme_name)
+                    return [TextContent(
+                        type="text",
+                        text=json.dumps(result, indent=2)
+                    )]
+
+                elif name == "theme_export_css":
+                    theme_name = arguments.get('theme_name')
+                    if not theme_name:
+                        return [TextContent(
+                            type="text",
+                            text=json.dumps({"error": "theme_name is required"}, indent=2)
+                        )]
+                    result = await self.theme_tools.theme_export_css(theme_name)
+                    return [TextContent(
+                        type="text",
+                        text=json.dumps(result, indent=2)
+                    )]
+
                 # Page tools (Issue #176)
 
                 raise ValueError(f"Unknown tool: {name}")
