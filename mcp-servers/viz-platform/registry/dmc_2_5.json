@@ -1,0 +1,668 @@
+{
+  "version": "2.5.1",
+  "generated": "2026-01-26",
+  "mantine_version": "7.x",
+  "categories": {
+    "buttons": ["Button", "ButtonGroup", "ActionIcon", "ActionIconGroup", "CopyButton", "CloseButton", "UnstyledButton"],
+    "inputs": [
+      "TextInput", "PasswordInput", "NumberInput", "Textarea", "Select", "MultiSelect",
+      "Checkbox", "CheckboxGroup", "CheckboxCard", "Switch", "Radio", "RadioGroup", "RadioCard",
+      "Slider", "RangeSlider", "ColorInput", "ColorPicker", "Autocomplete", "TagsInput",
+      "PinInput", "Rating", "SegmentedControl", "Chip", "ChipGroup", "JsonInput",
+      "NativeSelect", "FileInput", "Combobox"
+    ],
+    "navigation": ["Anchor", "Breadcrumbs", "Burger", "NavLink", "Pagination", "Stepper", "Tabs", "TabsList", "TabsTab", "TabsPanel"],
+    "feedback": ["Alert", "Loader", "Notification", "NotificationContainer", "Progress", "RingProgress", "Skeleton"],
+    "overlays": ["Modal", "Drawer", "DrawerStack", "Popover", "HoverCard", "Tooltip", "FloatingTooltip", "Menu", "MenuTarget", "MenuDropdown", "MenuItem", "Affix"],
+    "typography": ["Text", "Title", "Highlight", "Mark", "Code", "CodeHighlight", "Blockquote", "List", "ListItem", "Kbd"],
+    "layout": [
+      "AppShell", "AppShellHeader", "AppShellNavbar", "AppShellAside", "AppShellFooter", "AppShellMain", "AppShellSection",
+      "Container", "Center", "Stack", "Group", "Flex", "Grid", "GridCol", "SimpleGrid",
+      "Paper", "Card", "CardSection", "Box", "Space", "Divider", "AspectRatio", "ScrollArea"
+    ],
+    "data_display": [
+      "Accordion", "AccordionItem", "AccordionControl", "AccordionPanel",
+      "Avatar", "AvatarGroup", "Badge", "Image", "BackgroundImage",
+      "Indicator", "Spoiler", "Table", "ThemeIcon", "Timeline", "TimelineItem", "Tree"
+    ],
+    "charts": ["AreaChart", "BarChart", "LineChart", "PieChart", "DonutChart", "RadarChart", "ScatterChart", "BubbleChart", "CompositeChart", "Sparkline"],
+    "dates": ["DatePicker", "DateTimePicker", "DateInput", "DatePickerInput", "MonthPicker", "YearPicker", "TimePicker", "TimeInput", "Calendar", "MiniCalendar", "DatesProvider"]
+  },
+  "components": {
+    "Button": {
+      "description": "Button component for user interactions",
+      "props": {
+        "children": {"type": "any", "description": "Button content"},
+        "variant": {"type": "string", "enum": ["filled", "light", "outline", "transparent", "white", "subtle", "default", "gradient"], "default": "filled"},
+        "color": {"type": "string", "default": "blue", "description": "Key of theme.colors or CSS color"},
+        "size": {"type": "string", "enum": ["xs", "sm", "md", "lg", "xl", "compact-xs", "compact-sm", "compact-md", "compact-lg", "compact-xl"], "default": "sm"},
+        "radius": {"type": "string", "enum": ["xs", "sm", "md", "lg", "xl"], "default": "sm"},
+        "disabled": {"type": "boolean", "default": false},
+        "loading": {"type": "boolean", "default": false},
+        "loaderProps": {"type": "object"},
+        "leftSection": {"type": "any", "description": "Content on the left side of label"},
+        "rightSection": {"type": "any", "description": "Content on the right side of label"},
+        "fullWidth": {"type": "boolean", "default": false},
+        "gradient": {"type": "object", "description": "Gradient for gradient variant"},
+        "justify": {"type": "string", "enum": ["center", "start", "end", "space-between"], "default": "center"},
+        "autoContrast": {"type": "boolean", "default": false},
+        "n_clicks": {"type": "integer", "default": 0, "description": "Dash callback trigger"}
+      }
+    },
+    "ActionIcon": {
+      "description": "Icon button without text label",
+      "props": {
+        "children": {"type": "any", "required": true, "description": "Icon element"},
+        "variant": {"type": "string", "enum": ["filled", "light", "outline", "transparent", "white", "subtle", "default", "gradient"], "default": "subtle"},
+        "color": {"type": "string", "default": "gray"},
+        "size": {"type": "string", "enum": ["xs", "sm", "md", "lg", "xl"], "default": "md"},
+        "radius": {"type": "string", "enum": ["xs", "sm", "md", "lg", "xl"], "default": "sm"},
+        "disabled": {"type": "boolean", "default": false},
+        "loading": {"type": "boolean", "default": false},
+        "autoContrast": {"type": "boolean", "default": false},
+        "n_clicks": {"type": "integer", "default": 0}
+      }
+    },
+    "TextInput": {
+      "description": "Text input field",
+      "props": {
+        "value": {"type": "string", "default": ""},
+        "placeholder": {"type": "string"},
+        "label": {"type": "any"},
+        "description": {"type": "any"},
+        "error": {"type": "any"},
+        "disabled": {"type": "boolean", "default": false},
+        "required": {"type": "boolean", "default": false},
+        "size": {"type": "string", "enum": ["xs", "sm", "md", "lg", "xl"], "default": "sm"},
+        "radius": {"type": "string", "enum": ["xs", "sm", "md", "lg", "xl"], "default": "sm"},
+        "variant": {"type": "string", "enum": ["default", "filled", "unstyled"], "default": "default"},
+        "leftSection": {"type": "any"},
+        "rightSection": {"type": "any"},
+        "withAsterisk": {"type": "boolean", "default": false},
+        "debounce": {"type": "integer", "description": "Debounce delay in ms"},
+        "leftSectionPointerEvents": {"type": "string", "enum": ["none", "all"], "default": "none"},
+        "rightSectionPointerEvents": {"type": "string", "enum": ["none", "all"], "default": "none"}
+      }
+    },
+    "NumberInput": {
+      "description": "Numeric input with optional controls",
+      "props": {
+        "value": {"type": "number"},
+        "placeholder": {"type": "string"},
+        "label": {"type": "any"},
+        "description": {"type": "any"},
+        "error": {"type": "any"},
+        "disabled": {"type": "boolean", "default": false},
+        "required": {"type": "boolean", "default": false},
+        "min": {"type": "number"},
+        "max": {"type": "number"},
+        "step": {"type": "number", "default": 1},
+        "hideControls": {"type": "boolean", "default": false},
+        "size": {"type": "string", "enum": ["xs", "sm", "md", "lg", "xl"], "default": "sm"},
+        "radius": {"type": "string", "enum": ["xs", "sm", "md", "lg", "xl"], "default": "sm"},
+        "allowNegative": {"type": "boolean", "default": true},
+        "allowDecimal": {"type": "boolean", "default": true},
+        "clampBehavior": {"type": "string", "enum": ["strict", "blur", "none"], "default": "blur"},
+        "decimalScale": {"type": "integer"},
+        "fixedDecimalScale": {"type": "boolean", "default": false},
+        "thousandSeparator": {"type": "string"},
+        "decimalSeparator": {"type": "string"},
+        "prefix": {"type": "string"},
+        "suffix": {"type": "string"}
+      }
+    },
+    "Select": {
+      "description": "Dropdown select input",
+      "props": {
+        "value": {"type": "string"},
+        "data": {"type": "array", "required": true, "description": "Array of options: strings or {value, label} objects"},
+        "placeholder": {"type": "string"},
+        "label": {"type": "any"},
+        "description": {"type": "any"},
+        "error": {"type": "any"},
+        "disabled": {"type": "boolean", "default": false},
+        "required": {"type": "boolean", "default": false},
+        "searchable": {"type": "boolean", "default": false},
+        "clearable": {"type": "boolean", "default": false},
+        "nothingFoundMessage": {"type": "string"},
+        "size": {"type": "string", "enum": ["xs", "sm", "md", "lg", "xl"], "default": "sm"},
+        "radius": {"type": "string", "enum": ["xs", "sm", "md", "lg", "xl"], "default": "sm"},
+        "maxDropdownHeight": {"type": "number", "default": 250},
+        "allowDeselect": {"type": "boolean", "default": true},
+        "checkIconPosition": {"type": "string", "enum": ["left", "right"], "default": "left"},
+        "comboboxProps": {"type": "object"},
+        "withScrollArea": {"type": "boolean", "default": true}
+      }
+    },
+    "MultiSelect": {
+      "description": "Multiple selection dropdown",
+      "props": {
+        "value": {"type": "array", "default": []},
+        "data": {"type": "array", "required": true},
+        "placeholder": {"type": "string"},
+        "label": {"type": "any"},
+        "description": {"type": "any"},
+        "error": {"type": "any"},
+        "disabled": {"type": "boolean", "default": false},
+        "required": {"type": "boolean", "default": false},
+        "searchable": {"type": "boolean", "default": false},
+        "clearable": {"type": "boolean", "default": false},
+        "maxValues": {"type": "integer"},
+        "hidePickedOptions": {"type": "boolean", "default": false},
+        "size": {"type": "string", "enum": ["xs", "sm", "md", "lg", "xl"], "default": "sm"},
+        "radius": {"type": "string", "enum": ["xs", "sm", "md", "lg", "xl"], "default": "sm"},
+        "maxDropdownHeight": {"type": "number", "default": 250},
+        "withCheckIcon": {"type": "boolean", "default": true}
+      }
+    },
+    "Checkbox": {
+      "description": "Checkbox input",
+      "props": {
+        "checked": {"type": "boolean", "default": false},
+        "label": {"type": "any"},
+        "description": {"type": "any"},
+        "error": {"type": "any"},
+        "disabled": {"type": "boolean", "default": false},
+        "indeterminate": {"type": "boolean", "default": false},
+        "size": {"type": "string", "enum": ["xs", "sm", "md", "lg", "xl"], "default": "sm"},
+        "radius": {"type": "string", "enum": ["xs", "sm", "md", "lg", "xl"], "default": "sm"},
+        "color": {"type": "string", "default": "blue"},
+        "labelPosition": {"type": "string", "enum": ["left", "right"], "default": "right"},
+        "autoContrast": {"type": "boolean", "default": false},
+        "icon": {"type": "any"},
+        "iconColor": {"type": "string"}
+      }
+    },
+    "Switch": {
+      "description": "Toggle switch input",
+      "props": {
+        "checked": {"type": "boolean", "default": false},
+        "label": {"type": "any"},
+        "description": {"type": "any"},
+        "error": {"type": "any"},
+        "disabled": {"type": "boolean", "default": false},
+        "size": {"type": "string", "enum": ["xs", "sm", "md", "lg", "xl"], "default": "sm"},
+        "radius": {"type": "string", "enum": ["xs", "sm", "md", "lg", "xl"], "default": "xl"},
+        "color": {"type": "string", "default": "blue"},
+        "onLabel": {"type": "any"},
+        "offLabel": {"type": "any"},
+        "thumbIcon": {"type": "any"},
+        "labelPosition": {"type": "string", "enum": ["left", "right"], "default": "right"}
+      }
+    },
+    "Slider": {
+      "description": "Slider input for numeric values",
+      "props": {
+        "value": {"type": "number"},
+        "min": {"type": "number", "default": 0},
+        "max": {"type": "number", "default": 100},
+        "step": {"type": "number", "default": 1},
+        "label": {"type": "any"},
+        "disabled": {"type": "boolean", "default": false},
+        "marks": {"type": "array"},
+        "size": {"type": "string", "enum": ["xs", "sm", "md", "lg", "xl"], "default": "md"},
+        "radius": {"type": "string", "enum": ["xs", "sm", "md", "lg", "xl"], "default": "xl"},
+        "color": {"type": "string", "default": "blue"},
+        "showLabelOnHover": {"type": "boolean", "default": true},
+        "labelAlwaysOn": {"type": "boolean", "default": false},
+        "thumbLabel": {"type": "string"},
+        "precision": {"type": "integer", "default": 0},
+        "inverted": {"type": "boolean", "default": false},
+        "thumbSize": {"type": "number"},
+        "restrictToMarks": {"type": "boolean", "default": false}
+      }
+    },
+    "Alert": {
+      "description": "Alert component for feedback messages",
+      "props": {
+        "children": {"type": "any"},
+        "title": {"type": "any"},
+        "color": {"type": "string", "default": "blue"},
+        "variant": {"type": "string", "enum": ["filled", "light", "outline", "default", "transparent", "white"], "default": "light"},
+        "radius": {"type": "string", "enum": ["xs", "sm", "md", "lg", "xl"], "default": "sm"},
+        "icon": {"type": "any"},
+        "withCloseButton": {"type": "boolean", "default": false},
+        "closeButtonLabel": {"type": "string"},
+        "autoContrast": {"type": "boolean", "default": false}
+      }
+    },
+    "Loader": {
+      "description": "Loading indicator",
+      "props": {
+        "color": {"type": "string", "default": "blue"},
+        "size": {"type": "string", "enum": ["xs", "sm", "md", "lg", "xl"], "default": "md"},
+        "type": {"type": "string", "enum": ["oval", "bars", "dots"], "default": "oval"}
+      }
+    },
+    "Progress": {
+      "description": "Progress bar",
+      "props": {
+        "value": {"type": "number", "required": true},
+        "color": {"type": "string", "default": "blue"},
+        "size": {"type": "string", "enum": ["xs", "sm", "md", "lg", "xl"], "default": "md"},
+        "radius": {"type": "string", "enum": ["xs", "sm", "md", "lg", "xl"], "default": "sm"},
+        "striped": {"type": "boolean", "default": false},
+        "animated": {"type": "boolean", "default": false},
+        "autoContrast": {"type": "boolean", "default": false},
+        "transitionDuration": {"type": "number", "default": 100}
+      }
+    },
+    "Modal": {
+      "description": "Modal dialog overlay",
+      "props": {
+        "children": {"type": "any"},
+        "opened": {"type": "boolean", "required": true},
+        "title": {"type": "any"},
+        "size": {"type": "string", "enum": ["xs", "sm", "md", "lg", "xl", "auto"], "default": "md"},
+        "radius": {"type": "string", "enum": ["xs", "sm", "md", "lg", "xl"], "default": "sm"},
+        "centered": {"type": "boolean", "default": false},
+        "fullScreen": {"type": "boolean", "default": false},
+        "withCloseButton": {"type": "boolean", "default": true},
+        "closeOnClickOutside": {"type": "boolean", "default": true},
+        "closeOnEscape": {"type": "boolean", "default": true},
+        "overlayProps": {"type": "object"},
+        "padding": {"type": "string", "enum": ["xs", "sm", "md", "lg", "xl"], "default": "md"},
+        "transitionProps": {"type": "object"},
+        "zIndex": {"type": "number", "default": 200},
+        "trapFocus": {"type": "boolean", "default": true},
+        "returnFocus": {"type": "boolean", "default": true},
+        "lockScroll": {"type": "boolean", "default": true}
+      }
+    },
+    "Drawer": {
+      "description": "Sliding panel drawer",
+      "props": {
+        "children": {"type": "any"},
+        "opened": {"type": "boolean", "required": true},
+        "title": {"type": "any"},
+        "position": {"type": "string", "enum": ["left", "right", "top", "bottom"], "default": "left"},
+        "size": {"type": "string", "enum": ["xs", "sm", "md", "lg", "xl"], "default": "md"},
+        "radius": {"type": "string", "enum": ["xs", "sm", "md", "lg", "xl"]},
+        "withCloseButton": {"type": "boolean", "default": true},
+        "closeOnClickOutside": {"type": "boolean", "default": true},
+        "closeOnEscape": {"type": "boolean", "default": true},
+        "overlayProps": {"type": "object"},
+        "padding": {"type": "string", "enum": ["xs", "sm", "md", "lg", "xl"], "default": "md"},
+        "zIndex": {"type": "number", "default": 200},
+        "offset": {"type": "number", "default": 0},
+        "trapFocus": {"type": "boolean", "default": true},
+        "returnFocus": {"type": "boolean", "default": true},
+        "lockScroll": {"type": "boolean", "default": true}
+      }
+    },
+    "Tooltip": {
+      "description": "Tooltip on hover",
+      "props": {
+        "children": {"type": "any", "required": true},
+        "label": {"type": "any", "required": true},
+        "position": {"type": "string", "enum": ["top", "right", "bottom", "left", "top-start", "top-end", "right-start", "right-end", "bottom-start", "bottom-end", "left-start", "left-end"], "default": "top"},
+        "color": {"type": "string"},
+        "radius": {"type": "string", "enum": ["xs", "sm", "md", "lg", "xl"], "default": "sm"},
+        "withArrow": {"type": "boolean", "default": false},
+        "arrowSize": {"type": "number", "default": 4},
+        "arrowOffset": {"type": "number", "default": 5},
+        "offset": {"type": "number", "default": 5},
+        "multiline": {"type": "boolean", "default": false},
+        "disabled": {"type": "boolean", "default": false},
+        "openDelay": {"type": "number", "default": 0},
+        "closeDelay": {"type": "number", "default": 0},
+        "transitionProps": {"type": "object"},
+        "zIndex": {"type": "number", "default": 300}
+      }
+    },
+    "Text": {
+      "description": "Text component with styling",
+      "props": {
+        "children": {"type": "any"},
+        "size": {"type": "string", "enum": ["xs", "sm", "md", "lg", "xl"]},
+        "c": {"type": "string", "description": "Color"},
+        "fw": {"type": "number", "description": "Font weight"},
+        "fs": {"type": "string", "enum": ["normal", "italic"], "description": "Font style"},
+        "td": {"type": "string", "enum": ["none", "underline", "line-through"], "description": "Text decoration"},
+        "tt": {"type": "string", "enum": ["none", "capitalize", "uppercase", "lowercase"], "description": "Text transform"},
+        "ta": {"type": "string", "enum": ["left", "center", "right", "justify"], "description": "Text align"},
+        "lineClamp": {"type": "integer"},
+        "truncate": {"type": "boolean", "default": false},
+        "inherit": {"type": "boolean", "default": false},
+        "gradient": {"type": "object"},
+        "span": {"type": "boolean", "default": false},
+        "lh": {"type": "string", "description": "Line height"}
+      }
+    },
+    "Title": {
+      "description": "Heading component",
+      "props": {
+        "children": {"type": "any"},
+        "order": {"type": "integer", "enum": [1, 2, 3, 4, 5, 6], "default": 1},
+        "size": {"type": "string"},
+        "c": {"type": "string", "description": "Color"},
+        "ta": {"type": "string", "enum": ["left", "center", "right", "justify"]},
+        "td": {"type": "string", "enum": ["none", "underline", "line-through"]},
+        "tt": {"type": "string", "enum": ["none", "capitalize", "uppercase", "lowercase"]},
+        "lineClamp": {"type": "integer"},
+        "truncate": {"type": "boolean", "default": false}
+      }
+    },
+    "Stack": {
+      "description": "Vertical stack layout",
+      "props": {
+        "children": {"type": "any"},
+        "gap": {"type": "string", "enum": ["xs", "sm", "md", "lg", "xl"], "default": "md"},
+        "align": {"type": "string", "enum": ["stretch", "center", "flex-start", "flex-end"], "default": "stretch"},
+        "justify": {"type": "string", "enum": ["flex-start", "flex-end", "center", "space-between", "space-around", "space-evenly"], "default": "flex-start"}
+      }
+    },
+    "Group": {
+      "description": "Horizontal group layout",
+      "props": {
+        "children": {"type": "any"},
+        "gap": {"type": "string", "enum": ["xs", "sm", "md", "lg", "xl"], "default": "md"},
+        "align": {"type": "string", "enum": ["stretch", "center", "flex-start", "flex-end"], "default": "center"},
+        "justify": {"type": "string", "enum": ["flex-start", "flex-end", "center", "space-between", "space-around"], "default": "flex-start"},
+        "grow": {"type": "boolean", "default": false},
+        "wrap": {"type": "string", "enum": ["wrap", "nowrap", "wrap-reverse"], "default": "wrap"},
+        "preventGrowOverflow": {"type": "boolean", "default": true}
+      }
+    },
+    "Flex": {
+      "description": "Flexbox container",
+      "props": {
+        "children": {"type": "any"},
+        "gap": {"type": "string", "enum": ["xs", "sm", "md", "lg", "xl"]},
+        "rowGap": {"type": "string", "enum": ["xs", "sm", "md", "lg", "xl"]},
+        "columnGap": {"type": "string", "enum": ["xs", "sm", "md", "lg", "xl"]},
+        "align": {"type": "string", "enum": ["stretch", "center", "flex-start", "flex-end", "baseline"]},
+        "justify": {"type": "string", "enum": ["flex-start", "flex-end", "center", "space-between", "space-around", "space-evenly"]},
+        "wrap": {"type": "string", "enum": ["wrap", "nowrap", "wrap-reverse"], "default": "nowrap"},
+        "direction": {"type": "string", "enum": ["row", "column", "row-reverse", "column-reverse"], "default": "row"}
+      }
+    },
+    "Grid": {
+      "description": "Grid layout component",
+      "props": {
+        "children": {"type": "any"},
+        "columns": {"type": "integer", "default": 12},
+        "gutter": {"type": "string", "enum": ["xs", "sm", "md", "lg", "xl"], "default": "md"},
+        "grow": {"type": "boolean", "default": false},
+        "justify": {"type": "string", "enum": ["flex-start", "flex-end", "center", "space-between", "space-around"], "default": "flex-start"},
+        "align": {"type": "string", "enum": ["stretch", "center", "flex-start", "flex-end"], "default": "stretch"},
+        "overflow": {"type": "string", "enum": ["visible", "hidden"], "default": "visible"}
+      }
+    },
+    "SimpleGrid": {
+      "description": "Simple grid with equal columns",
+      "props": {
+        "children": {"type": "any"},
+        "cols": {"type": "integer", "default": 1},
+        "spacing": {"type": "string", "enum": ["xs", "sm", "md", "lg", "xl"], "default": "md"},
+        "verticalSpacing": {"type": "string", "enum": ["xs", "sm", "md", "lg", "xl"]}
+      }
+    },
+    "Container": {
+      "description": "Centered container with max-width",
+      "props": {
+        "children": {"type": "any"},
+        "size": {"type": "string", "enum": ["xs", "sm", "md", "lg", "xl"], "default": "md"},
+        "fluid": {"type": "boolean", "default": false}
+      }
+    },
+    "Paper": {
+      "description": "Paper surface component",
+      "props": {
+        "children": {"type": "any"},
+        "shadow": {"type": "string", "enum": ["xs", "sm", "md", "lg", "xl"]},
+        "radius": {"type": "string", "enum": ["xs", "sm", "md", "lg", "xl"], "default": "sm"},
+        "p": {"type": "string", "enum": ["xs", "sm", "md", "lg", "xl"], "description": "Padding"},
+        "withBorder": {"type": "boolean", "default": false}
+      }
+    },
+    "Card": {
+      "description": "Card container",
+      "props": {
+        "children": {"type": "any"},
+        "shadow": {"type": "string", "enum": ["xs", "sm", "md", "lg", "xl"], "default": "sm"},
+        "radius": {"type": "string", "enum": ["xs", "sm", "md", "lg", "xl"], "default": "sm"},
+        "padding": {"type": "string", "enum": ["xs", "sm", "md", "lg", "xl"], "default": "md"},
+        "withBorder": {"type": "boolean", "default": false}
+      }
+    },
+    "Tabs": {
+      "description": "Tabbed interface",
+      "props": {
+        "children": {"type": "any"},
+        "value": {"type": "string"},
+        "defaultValue": {"type": "string"},
+        "orientation": {"type": "string", "enum": ["horizontal", "vertical"], "default": "horizontal"},
+        "variant": {"type": "string", "enum": ["default", "outline", "pills"], "default": "default"},
+        "color": {"type": "string", "default": "blue"},
+        "radius": {"type": "string", "enum": ["xs", "sm", "md", "lg", "xl"], "default": "sm"},
+        "placement": {"type": "string", "enum": ["left", "right"], "default": "left"},
+        "grow": {"type": "boolean", "default": false},
+        "inverted": {"type": "boolean", "default": false},
+        "keepMounted": {"type": "boolean", "default": true},
+        "activateTabWithKeyboard": {"type": "boolean", "default": true},
+        "allowTabDeactivation": {"type": "boolean", "default": false},
+        "autoContrast": {"type": "boolean", "default": false}
+      }
+    },
+    "Accordion": {
+      "description": "Collapsible content panels",
+      "props": {
+        "children": {"type": "any"},
+        "value": {"type": "any"},
+        "defaultValue": {"type": "any"},
+        "multiple": {"type": "boolean", "default": false},
+        "variant": {"type": "string", "enum": ["default", "contained", "filled", "separated"], "default": "default"},
+        "radius": {"type": "string", "enum": ["xs", "sm", "md", "lg", "xl"], "default": "sm"},
+        "chevronPosition": {"type": "string", "enum": ["left", "right"], "default": "right"},
+        "disableChevronRotation": {"type": "boolean", "default": false},
+        "transitionDuration": {"type": "number", "default": 200},
+        "chevronSize": {"type": "any"},
+        "order": {"type": "integer", "enum": [2, 3, 4, 5, 6]}
+      }
+    },
+    "Badge": {
+      "description": "Badge for status or labels",
+      "props": {
+        "children": {"type": "any"},
+        "color": {"type": "string", "default": "blue"},
+        "variant": {"type": "string", "enum": ["filled", "light", "outline", "dot", "gradient", "default", "transparent", "white"], "default": "filled"},
+        "size": {"type": "string", "enum": ["xs", "sm", "md", "lg", "xl"], "default": "md"},
+        "radius": {"type": "string", "enum": ["xs", "sm", "md", "lg", "xl"], "default": "xl"},
+        "fullWidth": {"type": "boolean", "default": false},
+        "leftSection": {"type": "any"},
+        "rightSection": {"type": "any"},
+        "autoContrast": {"type": "boolean", "default": false},
+        "circle": {"type": "boolean", "default": false}
+      }
+    },
+    "Avatar": {
+      "description": "User avatar image",
+      "props": {
+        "src": {"type": "string"},
+        "alt": {"type": "string"},
+        "children": {"type": "any", "description": "Fallback content"},
+        "color": {"type": "string", "default": "gray"},
+        "size": {"type": "string", "enum": ["xs", "sm", "md", "lg", "xl"], "default": "md"},
+        "radius": {"type": "string", "enum": ["xs", "sm", "md", "lg", "xl"], "default": "xl"},
+        "variant": {"type": "string", "enum": ["filled", "light", "outline", "gradient", "default", "transparent", "white"], "default": "filled"},
+        "autoContrast": {"type": "boolean", "default": false}
+      }
+    },
+    "Image": {
+      "description": "Image with fallback",
+      "props": {
+        "src": {"type": "string"},
+        "alt": {"type": "string"},
+        "w": {"type": "any", "description": "Width"},
+        "h": {"type": "any", "description": "Height"},
+        "radius": {"type": "string", "enum": ["xs", "sm", "md", "lg", "xl"]},
+        "fit": {"type": "string", "enum": ["contain", "cover", "fill", "none", "scale-down"], "default": "cover"},
+        "fallbackSrc": {"type": "string"}
+      }
+    },
+    "Table": {
+      "description": "Data table component",
+      "props": {
+        "children": {"type": "any"},
+        "data": {"type": "object", "description": "Table data object with head, body, foot"},
+        "striped": {"type": "boolean", "default": false},
+        "highlightOnHover": {"type": "boolean", "default": false},
+        "withTableBorder": {"type": "boolean", "default": false},
+        "withColumnBorders": {"type": "boolean", "default": false},
+        "withRowBorders": {"type": "boolean", "default": true},
+        "verticalSpacing": {"type": "string", "enum": ["xs", "sm", "md", "lg", "xl"], "default": "xs"},
+        "horizontalSpacing": {"type": "string", "enum": ["xs", "sm", "md", "lg", "xl"], "default": "xs"},
+        "captionSide": {"type": "string", "enum": ["top", "bottom"], "default": "bottom"},
+        "stickyHeader": {"type": "boolean", "default": false},
+        "stickyHeaderOffset": {"type": "number", "default": 0}
+      }
+    },
+    "AreaChart": {
+      "description": "Area chart for time series data",
+      "props": {
+        "data": {"type": "array", "required": true},
+        "dataKey": {"type": "string", "required": true, "description": "X-axis data key"},
+        "series": {"type": "array", "required": true, "description": "Array of {name, color} objects"},
+        "h": {"type": "any", "description": "Chart height"},
+        "w": {"type": "any", "description": "Chart width"},
+        "curveType": {"type": "string", "enum": ["bump", "linear", "natural", "monotone", "step", "stepBefore", "stepAfter"], "default": "monotone"},
+        "connectNulls": {"type": "boolean", "default": true},
+        "withDots": {"type": "boolean", "default": true},
+        "withGradient": {"type": "boolean", "default": true},
+        "withLegend": {"type": "boolean", "default": false},
+        "withTooltip": {"type": "boolean", "default": true},
+        "withXAxis": {"type": "boolean", "default": true},
+        "withYAxis": {"type": "boolean", "default": true},
+        "gridAxis": {"type": "string", "enum": ["x", "y", "xy", "none"], "default": "x"},
+        "tickLine": {"type": "string", "enum": ["x", "y", "xy", "none"], "default": "y"},
+        "strokeDasharray": {"type": "string"},
+        "fillOpacity": {"type": "number", "default": 0.2},
+        "splitColors": {"type": "array"},
+        "areaChartProps": {"type": "object"},
+        "type": {"type": "string", "enum": ["default", "stacked", "percent", "split"], "default": "default"}
+      }
+    },
+    "BarChart": {
+      "description": "Bar chart for categorical data",
+      "props": {
+        "data": {"type": "array", "required": true},
+        "dataKey": {"type": "string", "required": true},
+        "series": {"type": "array", "required": true},
+        "h": {"type": "any"},
+        "w": {"type": "any"},
+        "orientation": {"type": "string", "enum": ["horizontal", "vertical"], "default": "vertical"},
+        "withLegend": {"type": "boolean", "default": false},
+        "withTooltip": {"type": "boolean", "default": true},
+        "withXAxis": {"type": "boolean", "default": true},
+        "withYAxis": {"type": "boolean", "default": true},
+        "gridAxis": {"type": "string", "enum": ["x", "y", "xy", "none"], "default": "x"},
+        "tickLine": {"type": "string", "enum": ["x", "y", "xy", "none"], "default": "y"},
+        "barProps": {"type": "object"},
+        "type": {"type": "string", "enum": ["default", "stacked", "percent", "waterfall"], "default": "default"}
+      }
+    },
+    "LineChart": {
+      "description": "Line chart for trends",
+      "props": {
+        "data": {"type": "array", "required": true},
+        "dataKey": {"type": "string", "required": true},
+        "series": {"type": "array", "required": true},
+        "h": {"type": "any"},
+        "w": {"type": "any"},
+        "curveType": {"type": "string", "enum": ["bump", "linear", "natural", "monotone", "step", "stepBefore", "stepAfter"], "default": "monotone"},
+        "connectNulls": {"type": "boolean", "default": true},
+        "withDots": {"type": "boolean", "default": true},
+        "withLegend": {"type": "boolean", "default": false},
+        "withTooltip": {"type": "boolean", "default": true},
+        "withXAxis": {"type": "boolean", "default": true},
+        "withYAxis": {"type": "boolean", "default": true},
+        "gridAxis": {"type": "string", "enum": ["x", "y", "xy", "none"], "default": "x"},
+        "strokeWidth": {"type": "number", "default": 2}
+      }
+    },
+    "PieChart": {
+      "description": "Pie chart for proportions",
+      "props": {
+        "data": {"type": "array", "required": true, "description": "Array of {name, value, color} objects"},
+        "h": {"type": "any"},
+        "w": {"type": "any"},
+        "withLabels": {"type": "boolean", "default": false},
+        "withLabelsLine": {"type": "boolean", "default": true},
+        "withTooltip": {"type": "boolean", "default": true},
+        "labelsPosition": {"type": "string", "enum": ["inside", "outside"], "default": "outside"},
+        "labelsType": {"type": "string", "enum": ["value", "percent"], "default": "value"},
+        "strokeWidth": {"type": "number", "default": 1},
+        "strokeColor": {"type": "string"},
+        "startAngle": {"type": "number", "default": 0},
+        "endAngle": {"type": "number", "default": 360}
+      }
+    },
+    "DonutChart": {
+      "description": "Donut chart (pie with hole)",
+      "props": {
+        "data": {"type": "array", "required": true},
+        "h": {"type": "any"},
+        "w": {"type": "any"},
+        "withLabels": {"type": "boolean", "default": false},
+        "withLabelsLine": {"type": "boolean", "default": true},
+        "withTooltip": {"type": "boolean", "default": true},
+        "thickness": {"type": "number", "default": 20},
+        "chartLabel": {"type": "any"},
+        "strokeWidth": {"type": "number", "default": 1},
+        "strokeColor": {"type": "string"},
+        "startAngle": {"type": "number", "default": 0},
+        "endAngle": {"type": "number", "default": 360},
+        "paddingAngle": {"type": "number", "default": 0}
+      }
+    },
+    "DatePicker": {
+      "description": "Date picker calendar",
+      "props": {
+        "value": {"type": "string"},
+        "type": {"type": "string", "enum": ["default", "range", "multiple"], "default": "default"},
+        "defaultValue": {"type": "any"},
+        "allowDeselect": {"type": "boolean", "default": false},
+        "allowSingleDateInRange": {"type": "boolean", "default": false},
+        "numberOfColumns": {"type": "integer", "default": 1},
+        "columnsToScroll": {"type": "integer", "default": 1},
+        "ariaLabels": {"type": "object"},
+        "hideOutsideDates": {"type": "boolean", "default": false},
+        "hideWeekdays": {"type": "boolean", "default": false},
+        "weekendDays": {"type": "array", "default": [0, 6]},
+        "renderDay": {"type": "any"},
+        "minDate": {"type": "string"},
+        "maxDate": {"type": "string"},
+        "size": {"type": "string", "enum": ["xs", "sm", "md", "lg", "xl"], "default": "sm"}
+      }
+    },
+    "DatePickerInput": {
+      "description": "Date picker input field",
+      "props": {
+        "value": {"type": "string"},
+        "label": {"type": "any"},
+        "description": {"type": "any"},
+        "error": {"type": "any"},
+        "placeholder": {"type": "string"},
+        "clearable": {"type": "boolean", "default": false},
+        "type": {"type": "string", "enum": ["default", "range", "multiple"], "default": "default"},
+        "valueFormat": {"type": "string", "default": "MMMM D, YYYY"},
+        "size": {"type": "string", "enum": ["xs", "sm", "md", "lg", "xl"], "default": "sm"},
+        "radius": {"type": "string", "enum": ["xs", "sm", "md", "lg", "xl"], "default": "sm"},
+        "disabled": {"type": "boolean", "default": false},
+        "required": {"type": "boolean", "default": false},
+        "minDate": {"type": "string"},
+        "maxDate": {"type": "string"},
+        "popoverProps": {"type": "object"},
+        "dropdownType": {"type": "string", "enum": ["popover", "modal"], "default": "popover"}
+      }
+    },
+    "DatesProvider": {
+      "description": "Provider for date localization settings",
+      "props": {
+        "children": {"type": "any", "required": true},
+        "settings": {"type": "object", "description": "Locale and formatting settings"}
+      }
+    }
+  }
+}

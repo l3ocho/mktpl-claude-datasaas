@@ -66,6 +66,7 @@ A plugin marketplace for Claude Code containing:
 | `claude-config-maintainer` | CLAUDE.md optimization and maintenance | 1.0.0 |
 | `cmdb-assistant` | NetBox CMDB integration for infrastructure management | 1.0.0 |
 | `data-platform` | pandas, PostgreSQL, and dbt integration for data engineering | 1.0.0 |
+| `viz-platform` | DMC validation, Plotly charts, and theming for dashboards | 1.0.0 |
 | `project-hygiene` | Post-task cleanup automation via hooks | 0.1.0 |
 
 ## Quick Start
@@ -91,6 +92,7 @@ A plugin marketplace for Claude Code containing:
 | **Security** | `/security-scan`, `/refactor`, `/refactor-dry` |
 | **Config** | `/config-analyze`, `/config-optimize` |
 | **Data** | `/ingest`, `/profile`, `/schema`, `/explain`, `/lineage`, `/run` |
+| **Visualization** | `/component`, `/chart`, `/dashboard`, `/theme`, `/theme-new`, `/theme-css` |
 | **Debug** | `/debug-report`, `/debug-review` |
 
 ## Repository Structure
@@ -101,7 +103,8 @@ leo-claude-mktplace/
 │   └── marketplace.json          # Marketplace manifest
 ├── mcp-servers/                  # SHARED MCP servers (v3.0.0+)
 │   ├── gitea/                    # Gitea MCP (issues, PRs, wiki)
-│   └── netbox/                   # NetBox MCP (CMDB)
+│   ├── netbox/                   # NetBox MCP (CMDB)
+│   └── viz-platform/             # DMC validation, charts, themes
 ├── plugins/
 │   ├── projman/                  # Sprint management
 │   │   ├── .claude-plugin/plugin.json
@@ -133,6 +136,13 @@ leo-claude-mktplace/
 │   │   ├── commands/             # 7 commands
 │   │   ├── hooks/                # SessionStart PostgreSQL check
 │   │   └── agents/               # 2 agents
+│   ├── viz-platform/             # Visualization (NEW v4.0.0)
+│   │   ├── .claude-plugin/plugin.json
+│   │   ├── .mcp.json
+│   │   ├── mcp-servers/          # viz-platform MCP
+│   │   ├── commands/             # 7 commands
+│   │   ├── hooks/                # SessionStart DMC check
+│   │   └── agents/               # 3 agents
 │   ├── doc-guardian/             # Documentation drift detection
 │   ├── code-sentinel/            # Security scanning & refactoring
 │   ├── claude-config-maintainer/

@@ -1,0 +1,10 @@
+{
+  "hooks": [
+    {
+      "event": "SessionStart",
+      "type": "command",
+      "command": "echo 'viz-platform plugin loaded'",
+      "timeout": 5000
+    }
+  ]
+}
