@@ -11,6 +11,8 @@ from mcp.server import Server
 from mcp.server.stdio import stdio_server
 from mcp.types import Tool, TextContent
 
+from .parse_tools import ParseTools
+
 # Suppress noisy MCP validation warnings on stderr
 logging.basicConfig(level=logging.INFO)
 logging.getLogger("root").setLevel(logging.ERROR)
@@ -23,10 +25,11 @@ class ContractValidatorMCPServer:
 
     def __init__(self):
         self.server = Server("contract-validator-mcp")
+        self.parse_tools = ParseTools()
 
     async def initialize(self):
         """Initialize server."""
-        logger.info("Contract Validator MCP Server initialized")
+        logger.info("Contract Validator MCP Server initialized with parse tools")
 
     def setup_tools(self):
         """Register all available tools with the MCP server"""
@@ -210,23 +213,17 @@ class ContractValidatorMCPServer:
                     text=json.dumps({"error": str(e)}, indent=2)
                 )]
 
-    # Placeholder implementations - to be completed in subsequent issues
+    # Parse tool implementations (Issue #186)
 
     async def _parse_plugin_interface(self, plugin_path: str) -> dict:
-        """Parse plugin interface from README.md (placeholder)"""
-        return {
-            "status": "not_implemented",
-            "message": "Implementation pending - Issue #186",
-            "plugin_path": plugin_path
-        }
+        """Parse plugin interface from README.md"""
+        return await self.parse_tools.parse_plugin_interface(plugin_path)
 
     async def _parse_claude_md_agents(self, claude_md_path: str) -> dict:
-        """Parse agents from CLAUDE.md (placeholder)"""
-        return {
-            "status": "not_implemented",
-            "message": "Implementation pending - Issue #186",
-            "claude_md_path": claude_md_path
-        }
+        """Parse agents from CLAUDE.md"""
+        return await self.parse_tools.parse_claude_md_agents(claude_md_path)
+
+    # Placeholder implementations - to be completed in subsequent issues
 
     async def _validate_compatibility(self, plugin_a: str, plugin_b: str) -> dict:
         """Validate compatibility between plugins (placeholder)"""
