@@ -67,6 +67,7 @@ A plugin marketplace for Claude Code containing:
 | `cmdb-assistant` | NetBox CMDB integration for infrastructure management | 1.0.0 |
 | `data-platform` | pandas, PostgreSQL, and dbt integration for data engineering | 1.0.0 |
 | `viz-platform` | DMC validation, Plotly charts, and theming for dashboards | 1.0.0 |
+| `contract-validator` | Cross-plugin compatibility validation and agent verification | 1.0.0 |
 | `project-hygiene` | Post-task cleanup automation via hooks | 0.1.0 |
 
 ## Quick Start
@@ -93,6 +94,7 @@ A plugin marketplace for Claude Code containing:
 | **Config** | `/config-analyze`, `/config-optimize` |
 | **Data** | `/ingest`, `/profile`, `/schema`, `/explain`, `/lineage`, `/run` |
 | **Visualization** | `/component`, `/chart`, `/dashboard`, `/theme`, `/theme-new`, `/theme-css` |
+| **Validation** | `/validate-contracts`, `/check-agent`, `/list-interfaces` |
 | **Debug** | `/debug-report`, `/debug-review` |
 
 ## Repository Structure

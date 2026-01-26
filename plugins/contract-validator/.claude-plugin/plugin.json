@@ -1,0 +1,22 @@
+{
+  "name": "contract-validator",
+  "version": "1.0.0",
+  "description": "Cross-plugin compatibility validation and Claude.md agent verification",
+  "author": {
+    "name": "Leo Miranda",
+    "email": "leobmiranda@gmail.com"
+  },
+  "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/contract-validator/README.md",
+  "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
+  "license": "MIT",
+  "keywords": [
+    "validation",
+    "contracts",
+    "compatibility",
+    "agents",
+    "interfaces",
+    "cross-plugin"
+  ],
+  "commands": ["./commands/"],
+  "mcpServers": ["./.mcp.json"]
+}
