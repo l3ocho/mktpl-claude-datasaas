@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+---
+
+## [4.1.0] - 2026-01-26
+
 ### Added
 - **projman:** Wiki-based planning workflow enhancement (V04.1.0)
   - Flexible input source detection in `/sprint-plan` (file, wiki, or conversation)
