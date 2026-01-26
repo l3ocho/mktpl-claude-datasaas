@@ -6,7 +6,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+---
+
+## [4.1.0] - 2026-01-26
+
 ### Added
+- **projman:** Wiki-based planning workflow enhancement (V04.1.0)
+  - Flexible input source detection in `/sprint-plan` (file, wiki, or conversation)
+  - Wiki proposal and implementation page creation during sprint planning
+  - Wiki reference linking in created issues
+  - Wiki status updates in `/sprint-close` (Implemented/Partial/Failed)
+  - Metadata section in lessons learned with implementation link for traceability
+  - New `/proposal-status` command for viewing proposal/implementation tree
 - **projman:** `/suggest-version` command - Analyzes CHANGELOG and recommends semantic version bump
 - **projman:** SessionStart hook now suggests sprint planning when open issues exist without milestone
 - **projman:** SessionStart hook now warns about unreleased CHANGELOG entries
@@ -20,6 +31,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Fixed
 - Documentation drift: COMMANDS-CHEATSHEET.md was missing data-platform plugin added in v4.0.0
 - Proactive sprint planning: projman now suggests `/sprint-plan` at session start when unplanned issues exist
+
+### Known Issues
+- **MCP Bug #160:** `update_wiki_page` tool renames pages to "unnamed" when page_name contains URL-encoded characters (`:` → `%3A`). Workaround: use `create_wiki_page` to overwrite instead.
 
 ---
 

@@ -54,13 +54,23 @@ The orchestrator agent will guide you through:
    - If partial: Keep status as "In Progress", note completed implementations
    - Add summary of what was accomplished
 
-7. **Git Operations**
-   - Commit any remaining work
+7. **Update CHANGELOG** (MANDATORY)
+   - Add all sprint changes to `[Unreleased]` section in CHANGELOG.md
+   - Categorize: Added, Changed, Fixed, Removed, Deprecated
+   - Include plugin prefix (e.g., `- **projman:** New feature`)
+
+8. **Version Check**
+   - Run `/suggest-version` to analyze changes and recommend version bump
+   - If release warranted: run `./scripts/release.sh X.Y.Z`
+   - Ensures version numbers stay in sync across files
+
+9. **Git Operations**
+   - Commit any remaining work (including CHANGELOG updates)
    - Merge feature branches if needed
    - Clean up merged branches
-   - Tag sprint completion
+   - Tag sprint completion (if release created)
 
-8. **Close Milestone**
+10. **Close Milestone**
    - Use `update_milestone` to close the sprint milestone
    - Document final completion status
 
