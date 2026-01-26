@@ -13,6 +13,7 @@ from mcp.types import Tool, TextContent
 
 from .parse_tools import ParseTools
 from .validation_tools import ValidationTools
+from .report_tools import ReportTools
 
 # Suppress noisy MCP validation warnings on stderr
 logging.basicConfig(level=logging.INFO)
@@ -28,10 +29,11 @@ class ContractValidatorMCPServer:
         self.server = Server("contract-validator-mcp")
         self.parse_tools = ParseTools()
         self.validation_tools = ValidationTools()
+        self.report_tools = ReportTools()
 
     async def initialize(self):
         """Initialize server."""
-        logger.info("Contract Validator MCP Server initialized with parse and validation tools")
+        logger.info("Contract Validator MCP Server initialized")
 
     def setup_tools(self):
         """Register all available tools with the MCP server"""
@@ -239,26 +241,15 @@ class ContractValidatorMCPServer:
         """Validate agent data flow"""
         return await self.validation_tools.validate_data_flow(agent_name, claude_md_path)
 
-    # Placeholder implementations - to be completed in subsequent issues
+    # Report tool implementations (Issue #188)
 
     async def _generate_compatibility_report(self, marketplace_path: str, format: str = "markdown") -> dict:
-        """Generate compatibility report (placeholder)"""
-        return {
-            "status": "not_implemented",
-            "message": "Implementation pending - Issue #188",
-            "marketplace_path": marketplace_path,
-            "format": format
-        }
+        """Generate comprehensive compatibility report"""
+        return await self.report_tools.generate_compatibility_report(marketplace_path, format)
 
     async def _list_issues(self, marketplace_path: str, severity: str = "all", issue_type: str = "all") -> dict:
-        """List validation issues (placeholder)"""
-        return {
-            "status": "not_implemented",
-            "message": "Implementation pending - Issue #188",
-            "marketplace_path": marketplace_path,
-            "severity": severity,
-            "issue_type": issue_type
-        }
+        """List validation issues with filtering"""
+        return await self.report_tools.list_issues(marketplace_path, severity, issue_type)
 
     async def run(self):
         """Run the MCP server"""
