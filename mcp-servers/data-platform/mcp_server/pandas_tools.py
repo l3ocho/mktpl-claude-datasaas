@@ -330,7 +330,7 @@ class PandasTools:
             return {'error': f'DataFrame not found: {data_ref}'}
 
         try:
-            filtered = df.query(condition)
+            filtered = df.query(condition).reset_index(drop=True)
             result_name = name or f"{data_ref}_filtered"
             return self._check_and_store(
                 filtered,
