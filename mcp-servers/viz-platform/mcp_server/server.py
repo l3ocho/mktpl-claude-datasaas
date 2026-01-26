@@ -13,6 +13,7 @@ from mcp.types import Tool, TextContent
 
 from .config import VizPlatformConfig
 from .dmc_tools import DMCTools
+from .chart_tools import ChartTools
 
 # Suppress noisy MCP validation warnings on stderr
 logging.basicConfig(level=logging.INFO)
@@ -28,8 +29,8 @@ class VizPlatformMCPServer:
         self.server = Server("viz-platform-mcp")
         self.config = None
         self.dmc_tools = DMCTools()
+        self.chart_tools = ChartTools()
         # Tool handlers will be added in subsequent issues
-        # self.chart_tools = None
         # self.layout_tools = None
         # self.theme_tools = None
         # self.page_tools = None
@@ -134,8 +135,66 @@ class VizPlatformMCPServer:
             ))
 
             # Chart tools (Issue #173)
-            # - chart_create
-            # - chart_configure_interaction
+            tools.append(Tool(
+                name="chart_create",
+                description=(
+                    "Create a Plotly chart for data visualization. "
+                    "Supports line, bar, scatter, pie, heatmap, histogram, and area charts. "
+                    "Automatically applies theme colors when a theme is active."
+                ),
+                inputSchema={
+                    "type": "object",
+                    "properties": {
+                        "chart_type": {
+                            "type": "string",
+                            "enum": ["line", "bar", "scatter", "pie", "heatmap", "histogram", "area"],
+                            "description": "Type of chart to create"
+                        },
+                        "data": {
+                            "type": "object",
+                            "description": (
+                                "Data for the chart. For most charts: {x: [], y: []}. "
+                                "For pie: {labels: [], values: []}. "
+                                "For heatmap: {x: [], y: [], z: [[]]}"
+                            )
+                        },
+                        "options": {
+                            "type": "object",
+                            "description": (
+                                "Optional settings: title, x_label, y_label, color, "
+                                "showlegend, height, width, horizontal (for bar)"
+                            )
+                        }
+                    },
+                    "required": ["chart_type", "data"]
+                }
+            ))
+
+            tools.append(Tool(
+                name="chart_configure_interaction",
+                description=(
+                    "Configure interactions on an existing chart. "
+                    "Add hover templates, enable click data capture, selection modes, "
+                    "and zoom behavior for Dash callback integration."
+                ),
+                inputSchema={
+                    "type": "object",
+                    "properties": {
+                        "figure": {
+                            "type": "object",
+                            "description": "Plotly figure JSON to modify"
+                        },
+                        "interactions": {
+                            "type": "object",
+                            "description": (
+                                "Interaction config: hover_template (string), "
+                                "click_data (bool), selection ('box'|'lasso'), zoom (bool)"
+                            )
+                        }
+                    },
+                    "required": ["figure", "interactions"]
+                }
+            ))
 
             # Layout tools (Issue #174)
             # - layout_create
@@ -196,7 +255,36 @@ class VizPlatformMCPServer:
                         text=json.dumps(result, indent=2)
                     )]
 
-                # Chart tools (Issue #173)
+                # Chart tools
+                elif name == "chart_create":
+                    chart_type = arguments.get('chart_type')
+                    data = arguments.get('data', {})
+                    options = arguments.get('options', {})
+                    if not chart_type:
+                        return [TextContent(
+                            type="text",
+                            text=json.dumps({"error": "chart_type is required"}, indent=2)
+                        )]
+                    result = await self.chart_tools.chart_create(chart_type, data, options)
+                    return [TextContent(
+                        type="text",
+                        text=json.dumps(result, indent=2)
+                    )]
+
+                elif name == "chart_configure_interaction":
+                    figure = arguments.get('figure')
+                    interactions = arguments.get('interactions', {})
+                    if not figure:
+                        return [TextContent(
+                            type="text",
+                            text=json.dumps({"error": "figure is required"}, indent=2)
+                        )]
+                    result = await self.chart_tools.chart_configure_interaction(figure, interactions)
+                    return [TextContent(
+                        type="text",
+                        text=json.dumps(result, indent=2)
+                    )]
+
                 # Layout tools (Issue #174)
                 # Theme tools (Issue #175)
                 # Page tools (Issue #176)
