@@ -50,14 +50,14 @@ See `docs/DEBUGGING-CHECKLIST.md` for details on cache timing.
 ## Project Overview
 
 **Repository:** leo-claude-mktplace
-**Version:** 4.0.0
+**Version:** 4.1.0
 **Status:** Production Ready
 
 A plugin marketplace for Claude Code containing:
 
 | Plugin | Description | Version |
 |--------|-------------|---------|
-| `projman` | Sprint planning and project management with Gitea integration | 3.1.0 |
+| `projman` | Sprint planning and project management with Gitea integration | 3.2.0 |
 | `git-flow` | Git workflow automation with smart commits and branch management | 1.0.0 |
 | `pr-review` | Multi-agent PR review with confidence scoring | 1.0.0 |
 | `clarity-assist` | Prompt optimization with ND-friendly accommodations | 1.0.0 |
@@ -104,6 +104,7 @@ leo-claude-mktplace/
 ├── mcp-servers/                  # SHARED MCP servers (v3.0.0+)
 │   ├── gitea/                    # Gitea MCP (issues, PRs, wiki)
 │   ├── netbox/                   # NetBox MCP (CMDB)
+│   ├── data-platform/            # pandas, PostgreSQL, dbt
 │   └── viz-platform/             # DMC validation, charts, themes
 ├── plugins/
 │   ├── projman/                  # Sprint management

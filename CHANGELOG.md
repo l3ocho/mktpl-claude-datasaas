@@ -15,12 +15,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
     - Static JSON registry approach for fast, deterministic validation
   - **Chart Tools** (2 tools): `chart_create`, `chart_configure_interaction`
     - Plotly-based visualization with theme token support
-  - **Layout Tools** (3 tools): `layout_create`, `layout_add_filter`, `layout_set_grid`
+  - **Layout Tools** (5 tools): `layout_create`, `layout_add_filter`, `layout_set_grid`, `layout_get`, `layout_add_section`
     - Dashboard composition with responsive grid system
-  - **Theme Tools** (4 tools): `theme_create`, `theme_extend`, `theme_validate`, `theme_export_css`
+  - **Theme Tools** (6 tools): `theme_create`, `theme_extend`, `theme_validate`, `theme_export_css`, `theme_list`, `theme_activate`
     - Design token-based theming system
     - Dual storage: user-level (`~/.config/claude/themes/`) and project-level
-  - **Page Tools** (3 tools): `page_create`, `page_add_navbar`, `page_set_auth`
+  - **Page Tools** (5 tools): `page_create`, `page_add_navbar`, `page_set_auth`, `page_list`, `page_get_app_config`
     - Multi-page Dash app structure generation
   - **Commands**: `/chart`, `/dashboard`, `/theme`, `/theme-new`, `/theme-css`, `/component`, `/initial-setup`
   - **Agents**: `theme-setup`, `layout-builder`, `component-check`
