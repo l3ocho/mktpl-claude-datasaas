@@ -393,6 +393,8 @@ PR_REVIEW_AUTO_SUBMIT=false
 | **git-flow** | git-flow.env (optional) | .env (optional) | None needed |
 | **clarity-assist** | None | None | None needed |
 | **cmdb-assistant** | netbox.env | None | `/initial-setup` |
+| **data-platform** | postgres.env | .env (optional) | `/initial-setup` |
+| **viz-platform** | None | .env (optional DMC_VERSION) | `/initial-setup` |
 | **doc-guardian** | None | None | None needed |
 | **code-sentinel** | None | None | None needed |
 | **project-hygiene** | None | None | None needed |
