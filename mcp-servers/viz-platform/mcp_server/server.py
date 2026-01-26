@@ -16,6 +16,7 @@ from .dmc_tools import DMCTools
 from .chart_tools import ChartTools
 from .layout_tools import LayoutTools
 from .theme_tools import ThemeTools
+from .page_tools import PageTools
 
 # Suppress noisy MCP validation warnings on stderr
 logging.basicConfig(level=logging.INFO)
@@ -34,8 +35,7 @@ class VizPlatformMCPServer:
         self.chart_tools = ChartTools()
         self.layout_tools = LayoutTools()
         self.theme_tools = ThemeTools()
-        # Tool handlers will be added in subsequent issues
-        # self.page_tools = None
+        self.page_tools = PageTools()
 
     async def initialize(self):
         """Initialize server and load configuration."""
@@ -370,9 +370,86 @@ class VizPlatformMCPServer:
             ))
 
             # Page tools (Issue #176)
-            # - page_create
-            # - page_add_navbar
-            # - page_set_auth
+            tools.append(Tool(
+                name="page_create",
+                description=(
+                    "Create a new page for a multi-page Dash application. "
+                    "Defines page routing and can link to a layout."
+                ),
+                inputSchema={
+                    "type": "object",
+                    "properties": {
+                        "name": {
+                            "type": "string",
+                            "description": "Unique page name (identifier)"
+                        },
+                        "path": {
+                            "type": "string",
+                            "description": "URL path (e.g., '/', '/settings')"
+                        },
+                        "layout_ref": {
+                            "type": "string",
+                            "description": "Optional layout reference to use"
+                        },
+                        "title": {
+                            "type": "string",
+                            "description": "Page title (defaults to name)"
+                        }
+                    },
+                    "required": ["name", "path"]
+                }
+            ))
+
+            tools.append(Tool(
+                name="page_add_navbar",
+                description=(
+                    "Generate navigation component linking pages. "
+                    "Creates top or side navigation with DMC components."
+                ),
+                inputSchema={
+                    "type": "object",
+                    "properties": {
+                        "pages": {
+                            "type": "array",
+                            "items": {"type": "string"},
+                            "description": "List of page names to include"
+                        },
+                        "options": {
+                            "type": "object",
+                            "description": (
+                                "Navigation options: position (top|left|right), "
+                                "brand (app name), collapsible (bool)"
+                            )
+                        }
+                    },
+                    "required": ["pages"]
+                }
+            ))
+
+            tools.append(Tool(
+                name="page_set_auth",
+                description=(
+                    "Configure authentication for a page. "
+                    "Sets auth requirements, roles, and redirect behavior."
+                ),
+                inputSchema={
+                    "type": "object",
+                    "properties": {
+                        "page_ref": {
+                            "type": "string",
+                            "description": "Page name to configure"
+                        },
+                        "auth_config": {
+                            "type": "object",
+                            "description": (
+                                "Auth config: type (none|basic|oauth|custom), "
+                                "required (bool), roles (array), redirect (path)"
+                            )
+                        }
+                    },
+                    "required": ["page_ref", "auth_config"]
+                }
+            ))
 
             return tools
 
@@ -547,7 +624,50 @@ class VizPlatformMCPServer:
                         text=json.dumps(result, indent=2)
                     )]
 
-                # Page tools (Issue #176)
+                # Page tools
+                elif name == "page_create":
+                    page_name = arguments.get('name')
+                    path = arguments.get('path')
+                    layout_ref = arguments.get('layout_ref')
+                    title = arguments.get('title')
+                    if not page_name or not path:
+                        return [TextContent(
+                            type="text",
+                            text=json.dumps({"error": "name and path are required"}, indent=2)
+                        )]
+                    result = await self.page_tools.page_create(page_name, path, layout_ref, title)
+                    return [TextContent(
+                        type="text",
+                        text=json.dumps(result, indent=2)
+                    )]
+
+                elif name == "page_add_navbar":
+                    pages = arguments.get('pages', [])
+                    options = arguments.get('options', {})
+                    if not pages:
+                        return [TextContent(
+                            type="text",
+                            text=json.dumps({"error": "pages list is required"}, indent=2)
+                        )]
+                    result = await self.page_tools.page_add_navbar(pages, options)
+                    return [TextContent(
+                        type="text",
+                        text=json.dumps(result, indent=2)
+                    )]
+
+                elif name == "page_set_auth":
+                    page_ref = arguments.get('page_ref')
+                    auth_config = arguments.get('auth_config', {})
+                    if not page_ref:
+                        return [TextContent(
+                            type="text",
+                            text=json.dumps({"error": "page_ref is required"}, indent=2)
+                        )]
+                    result = await self.page_tools.page_set_auth(page_ref, auth_config)
+                    return [TextContent(
+                        type="text",
+                        text=json.dumps(result, indent=2)
+                    )]
 
                 raise ValueError(f"Unknown tool: {name}")
 
