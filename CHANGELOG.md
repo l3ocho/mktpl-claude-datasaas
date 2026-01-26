@@ -6,6 +6,32 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Added
+
+#### Sprint 1: viz-platform Plugin (Planned)
+- **viz-platform** v1.0.0 - Visualization tools with Dash Mantine Components validation and theming
+  - **DMC Tools** (3 tools): `list_components`, `get_component_props`, `validate_component`
+    - Version-locked component registry prevents Claude from hallucinating invalid props
+    - Static JSON registry approach for fast, deterministic validation
+  - **Chart Tools** (2 tools): `chart_create`, `chart_configure_interaction`
+    - Plotly-based visualization with theme token support
+  - **Layout Tools** (3 tools): `layout_create`, `layout_add_filter`, `layout_set_grid`
+    - Dashboard composition with responsive grid system
+  - **Theme Tools** (4 tools): `theme_create`, `theme_extend`, `theme_validate`, `theme_export_css`
+    - Design token-based theming system
+    - Dual storage: user-level (`~/.config/claude/themes/`) and project-level
+  - **Page Tools** (3 tools): `page_create`, `page_add_navbar`, `page_set_auth`
+    - Multi-page Dash app structure generation
+  - **Commands**: `/chart`, `/dashboard`, `/theme`, `/theme new`, `/theme css`, `/component`, `/initial-setup`
+  - **Agents**: `theme-setup`, `layout-builder`, `component-check`
+  - **SessionStart Hook**: DMC version check (non-blocking)
+
+**Sprint Planning:**
+- Milestone: Sprint 1 - viz-platform Plugin
+- Issues: #170-#182 (13 issues)
+- Wiki: [Sprint-1-viz-platform-Implementation-Plan](https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/wiki/Sprint-1-viz-platform-Implementation-Plan)
+- Reference: `docs/changes/CHANGE_V04_0_0_PROPOSAL_ORIGINAL.md` (Phases 4-5)
+
 ---
 
 ## [4.1.0] - 2026-01-26
