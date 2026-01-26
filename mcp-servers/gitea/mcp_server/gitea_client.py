@@ -239,8 +239,11 @@ class GiteaClient:
         repo: Optional[str] = None
     ) -> Dict:
         """Get a specific wiki page by name."""
+        from urllib.parse import quote
         owner, target_repo = self._parse_repo(repo)
-        url = f"{self.base_url}/repos/{owner}/{target_repo}/wiki/page/{page_name}"
+        # URL-encode the page_name to handle special characters like ':'
+        encoded_page_name = quote(page_name, safe='')
+        url = f"{self.base_url}/repos/{owner}/{target_repo}/wiki/page/{encoded_page_name}"
         logger.info(f"Getting wiki page '{page_name}' from {owner}/{target_repo}")
         response = self.session.get(url)
         response.raise_for_status()
@@ -271,9 +274,13 @@ class GiteaClient:
         repo: Optional[str] = None
     ) -> Dict:
         """Update an existing wiki page."""
+        from urllib.parse import quote
         owner, target_repo = self._parse_repo(repo)
-        url = f"{self.base_url}/repos/{owner}/{target_repo}/wiki/page/{page_name}"
+        # URL-encode the page_name to handle special characters like ':'
+        encoded_page_name = quote(page_name, safe='')
+        url = f"{self.base_url}/repos/{owner}/{target_repo}/wiki/page/{encoded_page_name}"
         data = {
+            'title': page_name,  # CRITICAL: include title to preserve page name
             'content_base64': self._encode_base64(content)
         }
         logger.info(f"Updating wiki page '{page_name}' in {owner}/{target_repo}")
@@ -287,8 +294,11 @@ class GiteaClient:
         repo: Optional[str] = None
     ) -> bool:
         """Delete a wiki page."""
+        from urllib.parse import quote
         owner, target_repo = self._parse_repo(repo)
-        url = f"{self.base_url}/repos/{owner}/{target_repo}/wiki/page/{page_name}"
+        # URL-encode the page_name to handle special characters like ':'
+        encoded_page_name = quote(page_name, safe='')
+        url = f"{self.base_url}/repos/{owner}/{target_repo}/wiki/page/{encoded_page_name}"
         logger.info(f"Deleting wiki page '{page_name}' from {owner}/{target_repo}")
         response = self.session.delete(url)
         response.raise_for_status()
