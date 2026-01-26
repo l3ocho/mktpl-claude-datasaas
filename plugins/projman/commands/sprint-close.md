@@ -41,13 +41,26 @@ The orchestrator agent will guide you through:
    - Create lessons in project wiki under `lessons-learned/sprints/`
    - Make lessons searchable for future sprints
 
-5. **Git Operations**
+5. **Update Wiki Implementation Page**
+   - Use `get_wiki_page` to fetch the current implementation page
+   - Update status from "In Progress" to "Implemented" (or "Partial"/"Failed")
+   - Add completion date
+   - Link to lessons learned created in step 4
+   - Use `update_wiki_page` to save changes
+
+6. **Update Wiki Proposal Page**
+   - Check if all implementations for this proposal are complete
+   - If all complete: Update proposal status to "Implemented"
+   - If partial: Keep status as "In Progress", note completed implementations
+   - Add summary of what was accomplished
+
+7. **Git Operations**
    - Commit any remaining work
    - Merge feature branches if needed
    - Clean up merged branches
    - Tag sprint completion
 
-6. **Close Milestone**
+8. **Close Milestone**
    - Use `update_milestone` to close the sprint milestone
    - Document final completion status
 
@@ -66,7 +79,8 @@ The orchestrator agent will guide you through:
 - `create_lesson` - Create lessons learned entry
 - `search_lessons` - Check for similar existing lessons
 - `list_wiki_pages` - Check existing lessons learned
-- `get_wiki_page` - Read existing lessons
+- `get_wiki_page` - Read existing lessons or implementation pages
+- `update_wiki_page` - Update implementation/proposal status
 
 ## Lesson Structure
 
