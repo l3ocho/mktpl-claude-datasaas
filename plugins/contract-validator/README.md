@@ -40,6 +40,7 @@ pip install -r requirements.txt
 
 | Command | Description |
 |---------|-------------|
+| `/initial-setup` | Interactive setup wizard |
 | `/validate-contracts` | Full marketplace compatibility validation |
 | `/check-agent` | Validate single agent definition |
 | `/list-interfaces` | Show all plugin interfaces |
