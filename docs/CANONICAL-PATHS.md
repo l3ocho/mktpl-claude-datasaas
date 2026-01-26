@@ -2,7 +2,7 @@
 
 **This file defines ALL valid paths in this repository. No exceptions. No inference. No assumptions.**
 
-Last Updated: 2026-01-26 (v4.1.0)
+Last Updated: 2026-01-26 (v5.0.0)
 
 ---
 
@@ -47,6 +47,15 @@ leo-claude-mktplace/
 │   │   │   ├── pandas_tools.py
 │   │   │   ├── postgres_tools.py
 │   │   │   └── dbt_tools.py
+│   │   ├── requirements.txt
+│   │   └── .venv/
+│   ├── contract-validator/     # Contract validation MCP (NEW v5.0.0)
+│   │   ├── mcp_server/
+│   │   │   ├── server.py
+│   │   │   ├── parse_tools.py
+│   │   │   ├── validation_tools.py
+│   │   │   └── report_tools.py
+│   │   ├── tests/
 │   │   ├── requirements.txt
 │   │   └── .venv/
 │   └── viz-platform/           # Visualization MCP (NEW v4.1.0)
@@ -134,6 +143,14 @@ leo-claude-mktplace/
 │   │   ├── commands/
 │   │   ├── agents/
 │   │   ├── hooks/
+│   │   └── claude-md-integration.md
+│   ├── contract-validator/     # NEW in v5.0.0
+│   │   ├── .claude-plugin/
+│   │   ├── .mcp.json
+│   │   ├── mcp-servers/
+│   │   │   └── contract-validator -> ../../../mcp-servers/contract-validator  # SYMLINK
+│   │   ├── commands/
+│   │   ├── agents/
 │   │   └── claude-md-integration.md
 │   └── viz-platform/           # NEW in v4.1.0
 │       ├── .claude-plugin/
@@ -269,6 +286,7 @@ plugins/cmdb-assistant/mcp-servers/netbox -> ../../../mcp-servers/netbox
 plugins/pr-review/mcp-servers/gitea -> ../../../mcp-servers/gitea
 plugins/data-platform/mcp-servers/data-platform -> ../../../mcp-servers/data-platform
 plugins/viz-platform/mcp-servers/viz-platform -> ../../../mcp-servers/viz-platform
+plugins/contract-validator/mcp-servers/contract-validator -> ../../../mcp-servers/contract-validator
 ```
 
 ---
@@ -277,6 +295,7 @@ plugins/viz-platform/mcp-servers/viz-platform -> ../../../mcp-servers/viz-platfo
 
 | Date | Change | By |
 |------|--------|-----|
+| 2026-01-26 | v5.0.0: Added contract-validator plugin and MCP server | Claude Code |
 | 2026-01-26 | v4.1.0: Added viz-platform plugin and MCP server | Claude Code |
 | 2026-01-25 | v4.0.0: Added data-platform plugin and MCP server | Claude Code |
 | 2026-01-20 | v3.0.0: MCP servers moved to root with symlinks | Claude Code |
