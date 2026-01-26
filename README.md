@@ -53,6 +53,19 @@ Analyze, optimize, and create CLAUDE.md configuration files for Claude Code proj
 
 **Commands:** `/config-analyze`, `/config-optimize`, `/config-init`
 
+#### [contract-validator](./plugins/contract-validator/README.md) *NEW in v5.0.0*
+**Cross-Plugin Compatibility Validation**
+
+Validate plugin marketplaces for command conflicts, tool overlaps, and broken agent references.
+
+- Interface parsing from plugin README.md files
+- Agent extraction from CLAUDE.md definitions
+- Pairwise compatibility checks between all plugins
+- Data flow validation for agent sequences
+- Markdown or JSON reports with actionable suggestions
+
+**Commands:** `/validate-contracts`, `/check-agent`, `/list-interfaces`, `/initial-setup`
+
 ### Productivity
 
 #### [clarity-assist](./plugins/clarity-assist/README.md) *NEW in v3.0.0*
@@ -98,7 +111,7 @@ Full CRUD operations for network infrastructure management directly from Claude 
 
 ### Data Engineering
 
-#### [data-platform](./plugins/data-platform/README.md) *NEW*
+#### [data-platform](./plugins/data-platform/README.md) *NEW in v4.0.0*
 **pandas, PostgreSQL/PostGIS, and dbt Integration**
 
 Comprehensive data engineering toolkit with persistent DataFrame storage.
@@ -113,7 +126,7 @@ Comprehensive data engineering toolkit with persistent DataFrame storage.
 
 ### Visualization
 
-#### [viz-platform](./plugins/viz-platform/README.md) *NEW*
+#### [viz-platform](./plugins/viz-platform/README.md) *NEW in v4.0.0*
 **Dash Mantine Components Validation and Theming**
 
 Visualization toolkit with version-locked component validation and design token theming.
@@ -157,7 +170,7 @@ Comprehensive NetBox REST API integration for infrastructure management.
 | Virtualization | Clusters, VMs, Interfaces |
 | Extras | Tags, Custom Fields, Audit Log |
 
-### Data Platform MCP Server (shared) *NEW*
+### Data Platform MCP Server (shared) *NEW in v4.0.0*
 
 pandas, PostgreSQL/PostGIS, and dbt integration for data engineering.
 
@@ -168,7 +181,7 @@ pandas, PostgreSQL/PostGIS, and dbt integration for data engineering.
 | PostGIS | `st_tables`, `st_geometry_type`, `st_srid`, `st_extent` |
 | dbt | `dbt_parse`, `dbt_run`, `dbt_test`, `dbt_build`, `dbt_compile`, `dbt_ls`, `dbt_docs_generate`, `dbt_lineage` |
 
-### Viz Platform MCP Server (shared) *NEW*
+### Viz Platform MCP Server (shared) *NEW in v4.0.0*
 
 Dash Mantine Components validation and visualization tools.
 
@@ -179,6 +192,16 @@ Dash Mantine Components validation and visualization tools.
 | Layout | `layout_create`, `layout_add_filter`, `layout_set_grid`, `layout_get`, `layout_add_section` |
 | Theme | `theme_create`, `theme_extend`, `theme_validate`, `theme_export_css`, `theme_list`, `theme_activate` |
 | Page | `page_create`, `page_add_navbar`, `page_set_auth`, `page_list`, `page_get_app_config` |
+
+### Contract Validator MCP Server (shared) *NEW in v5.0.0*
+
+Cross-plugin compatibility validation tools.
+
+| Category | Tools |
+|----------|-------|
+| Parse | `parse_plugin_interface`, `parse_claude_md_agents` |
+| Validation | `validate_compatibility`, `validate_agent_refs`, `validate_data_flow` |
+| Report | `generate_compatibility_report`, `list_issues` |
 
 ## Installation
 
@@ -278,6 +301,7 @@ After installing plugins, the `/plugin` command may show `(no content)` - this i
 | cmdb-assistant | `/cmdb-assistant:cmdb-search` |
 | data-platform | `/data-platform:ingest` |
 | viz-platform | `/viz-platform:chart` |
+| contract-validator | `/contract-validator:validate-contracts` |
 
 ## Repository Structure
 
@@ -289,14 +313,16 @@ leo-claude-mktplace/
 │   ├── gitea/                     # Gitea MCP (issues, PRs, wiki)
 │   ├── netbox/                    # NetBox MCP (CMDB)
 │   ├── data-platform/             # Data engineering (pandas, PostgreSQL, dbt)
-│   └── viz-platform/              # Visualization (DMC, Plotly, theming)
+│   ├── viz-platform/              # Visualization (DMC, Plotly, theming)
+│   └── contract-validator/        # Cross-plugin validation (v5.0.0)
 ├── plugins/                       # All plugins
 │   ├── projman/                   # Sprint management
 │   ├── git-flow/                  # Git workflow automation
 │   ├── pr-review/                 # PR review
 │   ├── clarity-assist/            # Prompt optimization
 │   ├── data-platform/             # Data engineering
-│   ├── viz-platform/              # Visualization (NEW)
+│   ├── viz-platform/              # Visualization
+│   ├── contract-validator/        # Cross-plugin validation (NEW)
 │   ├── claude-config-maintainer/  # CLAUDE.md optimization
 │   ├── cmdb-assistant/            # NetBox CMDB integration
 │   ├── doc-guardian/              # Documentation drift detection
