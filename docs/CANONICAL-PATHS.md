@@ -2,7 +2,7 @@
 
 **This file defines ALL valid paths in this repository. No exceptions. No inference. No assumptions.**
 
-Last Updated: 2026-01-23 (v3.1.2)
+Last Updated: 2026-01-26 (v4.1.0)
 
 ---
 
@@ -37,8 +37,31 @@ leo-claude-mktplace/
 │   │   │       └── pull_requests.py  # NEW in v3.0.0
 │   │   ├── requirements.txt
 │   │   └── .venv/
-│   └── netbox/                 # NetBox MCP server
+│   ├── netbox/                 # NetBox MCP server
+│   │   ├── mcp_server/
+│   │   ├── requirements.txt
+│   │   └── .venv/
+│   ├── data-platform/          # Data engineering MCP (NEW v4.0.0)
+│   │   ├── mcp_server/
+│   │   │   ├── server.py
+│   │   │   ├── pandas_tools.py
+│   │   │   ├── postgres_tools.py
+│   │   │   └── dbt_tools.py
+│   │   ├── requirements.txt
+│   │   └── .venv/
+│   └── viz-platform/           # Visualization MCP (NEW v4.1.0)
 │       ├── mcp_server/
+│       │   ├── server.py
+│       │   ├── config.py
+│       │   ├── component_registry.py
+│       │   ├── dmc_tools.py
+│       │   ├── chart_tools.py
+│       │   ├── layout_tools.py
+│       │   ├── theme_tools.py
+│       │   ├── theme_store.py
+│       │   └── page_tools.py
+│       ├── registry/           # DMC component JSON registries
+│       ├── tests/              # 94 tests
 │       ├── requirements.txt
 │       └── .venv/
 ├── plugins/                    # ALL plugins
@@ -94,14 +117,32 @@ leo-claude-mktplace/
 │   │   ├── agents/
 │   │   ├── skills/
 │   │   └── claude-md-integration.md
-│   └── pr-review/              # NEW in v3.0.0
+│   ├── pr-review/              # NEW in v3.0.0
+│   │   ├── .claude-plugin/
+│   │   ├── .mcp.json
+│   │   ├── mcp-servers/
+│   │   │   └── gitea -> ../../../mcp-servers/gitea  # SYMLINK
+│   │   ├── commands/
+│   │   ├── agents/
+│   │   ├── skills/
+│   │   └── claude-md-integration.md
+│   ├── data-platform/          # NEW in v4.0.0
+│   │   ├── .claude-plugin/
+│   │   ├── .mcp.json
+│   │   ├── mcp-servers/
+│   │   │   └── data-platform -> ../../../mcp-servers/data-platform  # SYMLINK
+│   │   ├── commands/
+│   │   ├── agents/
+│   │   ├── hooks/
+│   │   └── claude-md-integration.md
+│   └── viz-platform/           # NEW in v4.1.0
 │       ├── .claude-plugin/
 │       ├── .mcp.json
 │       ├── mcp-servers/
-│       │   └── gitea -> ../../../mcp-servers/gitea  # SYMLINK
+│       │   └── viz-platform -> ../../../mcp-servers/viz-platform  # SYMLINK
 │       ├── commands/
 │       ├── agents/
-│       ├── skills/
+│       ├── hooks/
 │       └── claude-md-integration.md
 ├── scripts/                    # Setup and maintenance scripts
 │   ├── setup.sh                # Initial setup (create venvs, config templates)
@@ -226,6 +267,8 @@ MCP servers are now **shared at repository root** with **symlinks** from plugins
 plugins/projman/mcp-servers/gitea -> ../../../mcp-servers/gitea
 plugins/cmdb-assistant/mcp-servers/netbox -> ../../../mcp-servers/netbox
 plugins/pr-review/mcp-servers/gitea -> ../../../mcp-servers/gitea
+plugins/data-platform/mcp-servers/data-platform -> ../../../mcp-servers/data-platform
+plugins/viz-platform/mcp-servers/viz-platform -> ../../../mcp-servers/viz-platform
 ```
 
 ---
@@ -234,6 +277,8 @@ plugins/pr-review/mcp-servers/gitea -> ../../../mcp-servers/gitea
 
 | Date | Change | By |
 |------|--------|-----|
+| 2026-01-26 | v4.1.0: Added viz-platform plugin and MCP server | Claude Code |
+| 2026-01-25 | v4.0.0: Added data-platform plugin and MCP server | Claude Code |
 | 2026-01-20 | v3.0.0: MCP servers moved to root with symlinks | Claude Code |
 | 2026-01-20 | v3.0.0: Added clarity-assist, git-flow, pr-review plugins | Claude Code |
 | 2026-01-20 | v3.0.0: Added docs/CONFIGURATION.md | Claude Code |

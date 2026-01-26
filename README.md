@@ -111,6 +111,22 @@ Comprehensive data engineering toolkit with persistent DataFrame storage.
 
 **Commands:** `/ingest`, `/profile`, `/schema`, `/explain`, `/lineage`, `/run`
 
+### Visualization
+
+#### [viz-platform](./plugins/viz-platform/README.md) *NEW*
+**Dash Mantine Components Validation and Theming**
+
+Visualization toolkit with version-locked component validation and design token theming.
+
+- 3 DMC tools with static JSON registry (prevents prop hallucination)
+- 2 Chart tools with Plotly and theme integration
+- 5 Layout tools for dashboard composition
+- 6 Theme tools with design token system
+- 5 Page tools for multi-page app structure
+- Dual theme storage: user-level and project-level
+
+**Commands:** `/chart`, `/dashboard`, `/theme`, `/theme-new`, `/theme-css`, `/component`, `/initial-setup`
+
 ## MCP Servers
 
 MCP servers are **shared at repository root** with **symlinks** from plugins that use them.
@@ -151,6 +167,18 @@ pandas, PostgreSQL/PostGIS, and dbt integration for data engineering.
 | PostgreSQL | `pg_connect`, `pg_query`, `pg_execute`, `pg_tables`, `pg_columns`, `pg_schemas` |
 | PostGIS | `st_tables`, `st_geometry_type`, `st_srid`, `st_extent` |
 | dbt | `dbt_parse`, `dbt_run`, `dbt_test`, `dbt_build`, `dbt_compile`, `dbt_ls`, `dbt_docs_generate`, `dbt_lineage` |
+
+### Viz Platform MCP Server (shared) *NEW*
+
+Dash Mantine Components validation and visualization tools.
+
+| Category | Tools |
+|----------|-------|
+| DMC | `list_components`, `get_component_props`, `validate_component` |
+| Chart | `chart_create`, `chart_configure_interaction` |
+| Layout | `layout_create`, `layout_add_filter`, `layout_set_grid`, `layout_get`, `layout_add_section` |
+| Theme | `theme_create`, `theme_extend`, `theme_validate`, `theme_export_css`, `theme_list`, `theme_activate` |
+| Page | `page_create`, `page_add_navbar`, `page_set_auth`, `page_list`, `page_get_app_config` |
 
 ## Installation
 
@@ -249,6 +277,7 @@ After installing plugins, the `/plugin` command may show `(no content)` - this i
 | claude-config-maintainer | `/claude-config-maintainer:config-analyze` |
 | cmdb-assistant | `/cmdb-assistant:cmdb-search` |
 | data-platform | `/data-platform:ingest` |
+| viz-platform | `/viz-platform:chart` |
 
 ## Repository Structure
 
@@ -259,13 +288,15 @@ leo-claude-mktplace/
 ├── mcp-servers/                   # SHARED MCP servers (v3.0.0+)
 │   ├── gitea/                     # Gitea MCP (issues, PRs, wiki)
 │   ├── netbox/                    # NetBox MCP (CMDB)
-│   └── data-platform/             # Data engineering (pandas, PostgreSQL, dbt)
+│   ├── data-platform/             # Data engineering (pandas, PostgreSQL, dbt)
+│   └── viz-platform/              # Visualization (DMC, Plotly, theming)
 ├── plugins/                       # All plugins
 │   ├── projman/                   # Sprint management
 │   ├── git-flow/                  # Git workflow automation
 │   ├── pr-review/                 # PR review
 │   ├── clarity-assist/            # Prompt optimization
-│   ├── data-platform/             # Data engineering (NEW)
+│   ├── data-platform/             # Data engineering
+│   ├── viz-platform/              # Visualization (NEW)
 │   ├── claude-config-maintainer/  # CLAUDE.md optimization
 │   ├── cmdb-assistant/            # NetBox CMDB integration
 │   ├── doc-guardian/              # Documentation drift detection

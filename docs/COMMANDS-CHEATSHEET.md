@@ -64,6 +64,14 @@ Quick reference for all commands in the Leo Claude Marketplace.
 | **data-platform** | `/run` | | X | Run dbt models with validation |
 | **data-platform** | `/initial-setup` | | X | Setup wizard for data-platform MCP servers |
 | **data-platform** | *SessionStart hook* | X | | Checks PostgreSQL connection (non-blocking warning) |
+| **viz-platform** | `/initial-setup` | | X | Setup wizard for viz-platform MCP server |
+| **viz-platform** | `/chart` | | X | Create Plotly charts with theme integration |
+| **viz-platform** | `/dashboard` | | X | Create dashboard layouts with filters and grids |
+| **viz-platform** | `/theme` | | X | Apply existing theme to visualizations |
+| **viz-platform** | `/theme-new` | | X | Create new custom theme with design tokens |
+| **viz-platform** | `/theme-css` | | X | Export theme as CSS custom properties |
+| **viz-platform** | `/component` | | X | Inspect DMC component props and validation |
+| **viz-platform** | *SessionStart hook* | X | | Checks DMC version (non-blocking warning) |
 
 ---
 
@@ -78,6 +86,7 @@ Quick reference for all commands in the Leo Claude Marketplace.
 | **Git Operations** | git-flow | Commits, branches, workflow automation |
 | **Infrastructure** | cmdb-assistant | NetBox CMDB management |
 | **Data Engineering** | data-platform | pandas, PostgreSQL, dbt operations |
+| **Visualization** | viz-platform | DMC validation, Plotly charts, theming |
 | **Maintenance** | project-hygiene | Automatic cleanup |
 
 ---
@@ -92,6 +101,7 @@ Quick reference for all commands in the Leo Claude Marketplace.
 | **code-sentinel** | PreToolUse (Write/Edit) | Scans for security issues; blocks critical vulnerabilities |
 | **project-hygiene** | PostToolUse (Write/Edit) | Cleans temp files, warns about misplaced files |
 | **data-platform** | SessionStart | Checks PostgreSQL connection; non-blocking warning if unavailable |
+| **viz-platform** | SessionStart | Checks DMC version; non-blocking warning if mismatch detected |
 
 ---
 
@@ -234,9 +244,10 @@ Some plugins require MCP server connectivity:
 | pr-review | Gitea | PR operations and reviews |
 | cmdb-assistant | NetBox | Infrastructure CMDB |
 | data-platform | pandas, PostgreSQL, dbt | DataFrames, database queries, dbt builds |
+| viz-platform | viz-platform | DMC validation, charts, layouts, themes, pages |
 
 Ensure credentials are configured in `~/.config/claude/gitea.env`, `~/.config/claude/netbox.env`, or `~/.config/claude/postgres.env`.
 
 ---
 
-*Last Updated: 2026-01-25*
+*Last Updated: 2026-01-26*
