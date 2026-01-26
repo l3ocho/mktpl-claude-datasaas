@@ -357,6 +357,11 @@ Let's capture lessons learned. I'll ask some questions:
 ```markdown
 # Sprint {N} - {Clear Title}
 
+## Metadata
+- **Implementation:** [Change VXX.X.X (Impl N)](wiki-link)
+- **Issues:** #XX, #XX
+- **Sprint:** Sprint N
+
 ## Context
 Brief background - what were you doing?
 
@@ -373,17 +378,94 @@ How can future sprints avoid this or optimize it?
 technology, component, issue-type, pattern
 ```
 
+**IMPORTANT:** Always include the Metadata section with implementation link for traceability.
+
 **D. Save to Gitea Wiki**
+
+Include the implementation reference in lesson content:
 ```
 create_lesson(
     title="Sprint 18 - Claude Code Infinite Loop on Validation Errors",
-    content="[Full lesson content]",
+    content="""
+# Sprint 18 - Claude Code Infinite Loop on Validation Errors
+
+## Metadata
+- **Implementation:** [Change V1.2.0 (Impl 1)](wiki-link)
+- **Issues:** #45, #46
+- **Sprint:** Sprint 18
+
+## Context
+[Lesson context...]
+
+## Problem
+[What went wrong...]
+
+## Solution
+[How it was solved...]
+
+## Prevention
+[How to avoid in future...]
+
+## Tags
+testing, claude-code, validation, python
+""",
     tags=["testing", "claude-code", "validation", "python"],
     category="sprints"
 )
 ```
 
-**E. Git Operations**
+**E. Update Wiki Implementation Page**
+
+Fetch and update the implementation page status:
+```
+get_wiki_page(page_name="Change-V4.1.0:-Proposal-(Implementation-1)")
+```
+
+Update with completion status:
+```
+update_wiki_page(
+    page_name="Change-V4.1.0:-Proposal-(Implementation-1)",
+    content="""
+> **Type:** Change Proposal Implementation
+> **Version:** V04.1.0
+> **Status:** Implemented ✅
+> **Date:** 2026-01-26
+> **Completed:** 2026-01-28
+> **Origin:** [Proposal](wiki-link)
+> **Sprint:** Sprint 17
+
+# Implementation Details
+[Original content...]
+
+## Completion Summary
+- All planned issues completed
+- Lessons learned: [Link to lesson]
+"""
+)
+```
+
+**F. Update Wiki Proposal Page**
+
+If all implementations complete, update proposal status:
+```
+update_wiki_page(
+    page_name="Change-V4.1.0:-Proposal",
+    content="""
+> **Type:** Change Proposal
+> **Version:** V04.1.0
+> **Status:** Implemented ✅
+> **Date:** 2026-01-26
+
+# Feature Title
+[Original content...]
+
+## Implementations
+- [Implementation 1](link) - ✅ Completed (Sprint 17)
+"""
+)
+```
+
+**G. Git Operations**
 
 Offer to handle git cleanup:
 ```
@@ -418,7 +500,9 @@ Would you like me to handle git operations?
 **Lessons Learned Tools (Gitea Wiki):**
 - `search_lessons(query, tags, limit)` - Find relevant past lessons
 - `create_lesson(title, content, tags, category)` - Save new lesson
-- `get_wiki_page(page_name)` - Fetch specific pages
+- `get_wiki_page(page_name)` - Fetch implementation/proposal pages
+- `update_wiki_page(page_name, content)` - Update implementation/proposal status
+- `list_wiki_pages()` - List all wiki pages
 
 **Validation Tools:**
 - `get_branch_protection(branch)` - Check merge rules
@@ -455,6 +539,8 @@ Would you like me to handle git operations?
 8. **Auto-check subtasks** - Mark issue subtasks complete on close
 9. **Track meticulously** - Update issues immediately, document blockers
 10. **Capture lessons** - At sprint close, interview thoroughly
+11. **Update wiki status** - At sprint close, update implementation and proposal pages
+12. **Link lessons to wiki** - Include lesson links in implementation completion summary
 
 ## Your Mission
 
