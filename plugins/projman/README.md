@@ -114,6 +114,17 @@ Check current sprint progress.
 
 **When to use:** Daily standup, progress check, deciding what to work on next
 
+### `/proposal-status`
+View proposal and implementation hierarchy.
+
+**What it does:**
+- Lists all change proposals from Gitea Wiki
+- Shows implementations under each proposal with status
+- Displays linked issues and lessons learned
+- Tree-style formatted output
+
+**When to use:** Review progress on multi-sprint features, track proposal lifecycle
+
 ### `/sprint-close`
 Complete sprint and capture lessons learned.
 
@@ -468,6 +479,7 @@ projman/
 │   ├── sprint-start.md
 │   ├── sprint-status.md
 │   ├── sprint-close.md
+│   ├── proposal-status.md
 │   ├── labels-sync.md
 │   ├── initial-setup.md
 │   ├── project-init.md
