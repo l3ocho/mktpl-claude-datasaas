@@ -14,6 +14,7 @@ from mcp.types import Tool, TextContent
 from .config import VizPlatformConfig
 from .dmc_tools import DMCTools
 from .chart_tools import ChartTools
+from .layout_tools import LayoutTools
 
 # Suppress noisy MCP validation warnings on stderr
 logging.basicConfig(level=logging.INFO)
@@ -30,8 +31,8 @@ class VizPlatformMCPServer:
         self.config = None
         self.dmc_tools = DMCTools()
         self.chart_tools = ChartTools()
+        self.layout_tools = LayoutTools()
         # Tool handlers will be added in subsequent issues
-        # self.layout_tools = None
         # self.theme_tools = None
         # self.page_tools = None
 
@@ -197,9 +198,86 @@ class VizPlatformMCPServer:
             ))
 
             # Layout tools (Issue #174)
-            # - layout_create
-            # - layout_add_filter
-            # - layout_set_grid
+            tools.append(Tool(
+                name="layout_create",
+                description=(
+                    "Create a new dashboard layout container. "
+                    "Templates available: dashboard, report, form, blank. "
+                    "Returns layout reference for use with other layout tools."
+                ),
+                inputSchema={
+                    "type": "object",
+                    "properties": {
+                        "name": {
+                            "type": "string",
+                            "description": "Unique name for the layout"
+                        },
+                        "template": {
+                            "type": "string",
+                            "enum": ["dashboard", "report", "form", "blank"],
+                            "description": "Layout template to use (default: blank)"
+                        }
+                    },
+                    "required": ["name"]
+                }
+            ))
+
+            tools.append(Tool(
+                name="layout_add_filter",
+                description=(
+                    "Add a filter control to a layout. "
+                    "Filter types: dropdown, multi_select, date_range, date, search, "
+                    "checkbox_group, radio_group, slider, range_slider."
+                ),
+                inputSchema={
+                    "type": "object",
+                    "properties": {
+                        "layout_ref": {
+                            "type": "string",
+                            "description": "Layout name to add filter to"
+                        },
+                        "filter_type": {
+                            "type": "string",
+                            "enum": ["dropdown", "multi_select", "date_range", "date",
+                                    "search", "checkbox_group", "radio_group", "slider", "range_slider"],
+                            "description": "Type of filter control"
+                        },
+                        "options": {
+                            "type": "object",
+                            "description": (
+                                "Filter options: label, data (for dropdown), placeholder, "
+                                "position (section name), value, etc."
+                            )
+                        }
+                    },
+                    "required": ["layout_ref", "filter_type", "options"]
+                }
+            ))
+
+            tools.append(Tool(
+                name="layout_set_grid",
+                description=(
+                    "Configure the grid system for a layout. "
+                    "Uses DMC Grid component patterns with 12 or 24 column system."
+                ),
+                inputSchema={
+                    "type": "object",
+                    "properties": {
+                        "layout_ref": {
+                            "type": "string",
+                            "description": "Layout name to configure"
+                        },
+                        "grid": {
+                            "type": "object",
+                            "description": (
+                                "Grid config: cols (1-24), spacing (xs|sm|md|lg|xl), "
+                                "breakpoints ({xs: cols, sm: cols, ...}), gutter"
+                            )
+                        }
+                    },
+                    "required": ["layout_ref", "grid"]
+                }
+            ))
 
             # Theme tools (Issue #175)
             # - theme_create
@@ -285,7 +363,50 @@ class VizPlatformMCPServer:
                         text=json.dumps(result, indent=2)
                     )]
 
-                # Layout tools (Issue #174)
+                # Layout tools
+                elif name == "layout_create":
+                    layout_name = arguments.get('name')
+                    template = arguments.get('template')
+                    if not layout_name:
+                        return [TextContent(
+                            type="text",
+                            text=json.dumps({"error": "name is required"}, indent=2)
+                        )]
+                    result = await self.layout_tools.layout_create(layout_name, template)
+                    return [TextContent(
+                        type="text",
+                        text=json.dumps(result, indent=2)
+                    )]
+
+                elif name == "layout_add_filter":
+                    layout_ref = arguments.get('layout_ref')
+                    filter_type = arguments.get('filter_type')
+                    options = arguments.get('options', {})
+                    if not layout_ref or not filter_type:
+                        return [TextContent(
+                            type="text",
+                            text=json.dumps({"error": "layout_ref and filter_type are required"}, indent=2)
+                        )]
+                    result = await self.layout_tools.layout_add_filter(layout_ref, filter_type, options)
+                    return [TextContent(
+                        type="text",
+                        text=json.dumps(result, indent=2)
+                    )]
+
+                elif name == "layout_set_grid":
+                    layout_ref = arguments.get('layout_ref')
+                    grid = arguments.get('grid', {})
+                    if not layout_ref:
+                        return [TextContent(
+                            type="text",
+                            text=json.dumps({"error": "layout_ref is required"}, indent=2)
+                        )]
+                    result = await self.layout_tools.layout_set_grid(layout_ref, grid)
+                    return [TextContent(
+                        type="text",
+                        text=json.dumps(result, indent=2)
+                    )]
+
                 # Theme tools (Issue #175)
                 # Page tools (Issue #176)
 
