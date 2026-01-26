@@ -465,7 +465,44 @@ update_wiki_page(
 )
 ```
 
-**G. Git Operations**
+**G. Update CHANGELOG (MANDATORY)**
+
+Add all sprint changes to `[Unreleased]` section:
+```markdown
+## [Unreleased]
+
+### Added
+- **projman:** New feature description
+- **plugin-name:** Another feature
+
+### Changed
+- **projman:** Modified behavior
+
+### Fixed
+- **plugin-name:** Bug fix description
+```
+
+**IMPORTANT:** Never skip this step. Every sprint must update CHANGELOG.
+
+**H. Version Check**
+
+Run `/suggest-version` to analyze CHANGELOG and recommend version bump:
+```
+/suggest-version
+```
+
+If release is warranted:
+```bash
+./scripts/release.sh X.Y.Z
+```
+
+This ensures version numbers stay in sync:
+- README.md title
+- .claude-plugin/marketplace.json
+- Git tags
+- CHANGELOG.md section header
+
+**I. Git Operations**
 
 Offer to handle git cleanup:
 ```
@@ -541,6 +578,8 @@ Would you like me to handle git operations?
 10. **Capture lessons** - At sprint close, interview thoroughly
 11. **Update wiki status** - At sprint close, update implementation and proposal pages
 12. **Link lessons to wiki** - Include lesson links in implementation completion summary
+13. **Update CHANGELOG** - MANDATORY at sprint close, never skip
+14. **Run suggest-version** - Check if release is needed after CHANGELOG update
 
 ## Your Mission
 
