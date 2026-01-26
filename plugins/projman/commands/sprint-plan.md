@@ -47,15 +47,34 @@ Verify all required labels exist using `get_labels`:
 
 **If labels are missing:** Use `create_label` to create them.
 
-### 4. docs/changes/ Folder Check
+### 4. Input Source Detection
 
-Verify the project has a `docs/changes/` folder for sprint input files.
+The planner supports flexible input sources for sprint planning:
 
-**If folder does NOT exist:** Prompt user to create it.
+| Source | Detection | Action |
+|--------|-----------|--------|
+| **Local file** | `docs/changes/*.md` exists | Parse frontmatter, migrate to wiki, delete local |
+| **Existing wiki** | `Change VXX.X.X: Proposal` exists | Use as-is, create new implementation page |
+| **Conversation** | Neither file nor wiki exists | Create wiki from discussion context |
 
-**If sprint starts with discussion but no input file:**
-- Capture the discussion outputs
-- Create a change file: `docs/changes/sprint-XX-description.md`
+**Input File Format** (if using local file):
+```yaml
+---
+version: "4.1.0"        # or "sprint-17" for internal work
+title: "Feature Name"
+plugin: plugin-name     # optional
+type: feature           # feature | bugfix | refactor | infra
+---
+
+# Feature Description
+[Free-form content...]
+```
+
+**Detection Logic:**
+1. Check for `docs/changes/*.md` files
+2. Check for existing wiki proposal matching version
+3. If neither found, use conversation context
+4. If ambiguous, ask user which input to use
 
 ## Planning Workflow
 
@@ -66,36 +85,56 @@ The planner agent will:
    - Understand scope, priorities, and constraints
    - Never rush - take time to understand requirements fully
 
-2. **Search Relevant Lessons Learned**
+2. **Detect Input Source**
+   - Check for `docs/changes/*.md` files
+   - Check for existing wiki proposal by version
+   - If neither: use conversation context
+   - Ask user if multiple sources found
+
+3. **Search Relevant Lessons Learned**
    - Use the `search_lessons` MCP tool to find past experiences
    - Search by keywords and tags relevant to the sprint work
    - Review patterns and preventable mistakes from previous sprints
 
-3. **Architecture Analysis**
+4. **Create/Update Wiki Proposal**
+   - If local file: migrate content to wiki, create proposal page
+   - If conversation: create proposal from discussion
+   - If existing wiki: skip creation, use as-is
+   - **Page naming:** `Change VXX.X.X: Proposal` or `Change Sprint-NN: Proposal`
+
+5. **Create Wiki Implementation Page**
+   - Create `Change VXX.X.X: Proposal (Implementation N)`
+   - Include tags: Type, Version, Status=In Progress, Date, Origin
+   - Update proposal page with link to this implementation
+   - This page tracks THIS sprint's work on the proposal
+
+6. **Architecture Analysis**
    - Think through technical approach and edge cases
    - Identify architectural decisions needed
    - Consider dependencies and integration points
    - Review existing codebase architecture
 
-4. **Create Gitea Issues**
+7. **Create Gitea Issues**
    - Use the `create_issue` MCP tool for each planned task
    - Apply appropriate labels using `suggest_labels` tool
    - **Issue Title Format (MANDATORY):** `[Sprint XX] <type>: <description>`
+   - **Include wiki reference:** `Implementation: [Change VXX.X.X (Impl N)](wiki-link)`
    - Include acceptance criteria and technical notes
 
-5. **Set Up Dependencies**
+8. **Set Up Dependencies**
    - Use `create_issue_dependency` to establish task dependencies
    - This enables parallel execution planning
 
-6. **Create or Select Milestone**
+9. **Create or Select Milestone**
    - Use `create_milestone` to group sprint issues
    - Assign issues to the milestone
 
-7. **Generate Planning Document**
-   - Summarize architectural decisions
-   - List created issues with labels
-   - Document dependency graph
-   - Provide sprint overview
+10. **Cleanup & Summary**
+    - Delete local input file (wiki is now source of truth)
+    - Summarize architectural decisions
+    - List created issues with labels
+    - Document dependency graph
+    - Provide sprint overview with wiki links
 
 ## Issue Title Format (MANDATORY)
 
@@ -152,6 +191,8 @@ The planner agent will:
 - `search_lessons` - Search lessons learned from previous sprints
 - `list_wiki_pages` - List wiki pages
 - `get_wiki_page` - Fetch specific documentation page
+- `create_wiki_page` - Create new wiki page (proposals, implementations)
+- `update_wiki_page` - Update wiki page content
 
 ## Label Taxonomy
 
@@ -181,16 +222,17 @@ The planner agent is thoughtful and methodical:
 User: I want to plan a sprint for user authentication
 Planner: Great! Let me first run pre-planning validations...
 
-[Checks branch, repo org, labels, docs/changes folder]
+[Checks branch, repo org, labels]
+All validations passed.
 
-All validations passed. Now let me ask a few questions:
+[Checks for input sources]
+Found: docs/changes/v1.2.0-user-authentication.md
+
+I'll use this file as the planning input. Let me ask a few questions:
 
 1. What authentication method are you planning? (JWT, OAuth, session-based?)
 2. Are there any specific security requirements or compliance needs?
 3. Should this integrate with existing user management?
-4. What's the priority level for this sprint?
-
-Let me also search for relevant lessons learned about authentication...
 
 [Uses search_lessons to find past authentication work]
 
@@ -198,22 +240,23 @@ Based on previous experience, I found these relevant lessons:
 - Sprint 12: JWT token expiration handling edge cases
 - Sprint 8: OAuth integration pitfalls with third-party providers
 
-Now, let me analyze the architecture...
+[Creates wiki proposal and implementation pages]
+✓ Created: "Change V1.2.0: Proposal" (wiki)
+✓ Created: "Change V1.2.0: Proposal (Implementation 1)" (wiki)
+✓ Deleted: docs/changes/v1.2.0-user-authentication.md (migrated to wiki)
 
-[Creates issues with appropriate labels and dependencies]
+Now, let me analyze the architecture and create issues...
+
+[Creates issues with wiki references]
 
 Created 5 issues for the authentication sprint:
 - Issue #45: [Sprint 17] feat: Implement JWT token generation
   Labels: Type/Feature, Priority/High, Component/Auth, Tech/Python
-  Dependencies: None
+  Implementation: [Change V1.2.0 (Impl 1)](wiki-link)
 
 - Issue #46: [Sprint 17] feat: Build user login endpoint
   Labels: Type/Feature, Priority/High, Component/API, Tech/FastAPI
-  Dependencies: #45
-
-- Issue #47: [Sprint 17] feat: Create user registration form
-  Labels: Type/Feature, Priority/Medium, Component/Frontend, Tech/Vue
-  Dependencies: #46
+  Implementation: [Change V1.2.0 (Impl 1)](wiki-link)
 
 Dependency Graph:
 #45 -> #46 -> #47
@@ -222,20 +265,28 @@ Dependency Graph:
       #48
 
 Milestone: Sprint 17 - User Authentication (Due: 2025-02-01)
+Wiki: https://gitea.example.com/org/repo/wiki/Change-V1.2.0%3A-Proposal
 ```
 
 ## Getting Started
 
 Invoke the planner agent by providing your sprint goals. The agent will guide you through the planning process.
 
+**Input Options:**
+1. Create `docs/changes/vX.Y.Z-feature-name.md` with frontmatter before running
+2. Create wiki proposal page manually, then run `/sprint-plan`
+3. Just start a conversation - the planner will capture context and create wiki pages
+
 **Example:**
 > "I want to plan a sprint for extracting the Intuit Engine service from the monolith"
 
 The planner will then:
 1. Run pre-planning validations
-2. Ask clarifying questions
-3. Search lessons learned
-4. Create issues with proper naming and labels
-5. Set up dependencies
-6. Create milestone
-7. Generate planning summary
+2. Detect input source (file, wiki, or conversation)
+3. Ask clarifying questions
+4. Search lessons learned
+5. Create wiki proposal and implementation pages
+6. Create issues with wiki references
+7. Set up dependencies
+8. Create milestone
+9. Cleanup and generate planning summary
