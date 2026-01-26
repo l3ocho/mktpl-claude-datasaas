@@ -72,11 +72,16 @@ setup_shared_mcp() {
         log_success "$server_name venv created"
     fi
 
-    # Install/update dependencies
+    # Install/update dependencies and local package
     if [[ -f "requirements.txt" ]]; then
         source .venv/bin/activate
         pip install -q --upgrade pip
         pip install -q -r requirements.txt
+        # Install local package in editable mode (required for MCP server to work)
+        if [[ -f "pyproject.toml" ]]; then
+            pip install -q -e .
+            log_success "$server_name package installed (editable mode)"
+        fi
         deactivate
         log_success "$server_name dependencies installed"
     else
@@ -124,6 +129,24 @@ verify_symlinks() {
     else
         log_error "data-platform symlink missing"
         log_todo "Run: ln -s ../../../mcp-servers/data-platform plugins/data-platform/mcp-servers/data-platform"
+    fi
+
+    # Check viz-platform -> viz-platform symlink
+    local vizplatform_link="$REPO_ROOT/plugins/viz-platform/mcp-servers/viz-platform"
+    if [[ -L "$vizplatform_link" ]]; then
+        log_success "viz-platform symlink exists"
+    else
+        log_error "viz-platform symlink missing"
+        log_todo "Run: ln -s ../../../mcp-servers/viz-platform plugins/viz-platform/mcp-servers/viz-platform"
+    fi
+
+    # Check contract-validator -> contract-validator symlink
+    local contractvalidator_link="$REPO_ROOT/plugins/contract-validator/mcp-servers/contract-validator"
+    if [[ -L "$contractvalidator_link" ]]; then
+        log_success "contract-validator symlink exists"
+    else
+        log_error "contract-validator symlink missing"
+        log_todo "Run: ln -s ../../../mcp-servers/contract-validator plugins/contract-validator/mcp-servers/contract-validator"
     fi
 }
 
@@ -301,7 +324,7 @@ print_report() {
 # --- Main ---
 main() {
     echo "=============================================="
-    echo "  Leo Claude Marketplace Setup (v3.0.0)"
+    echo "  Leo Claude Marketplace Setup (v5.0.0)"
     echo "=============================================="
     echo ""
 
@@ -309,6 +332,8 @@ main() {
     setup_shared_mcp "gitea"
     setup_shared_mcp "netbox"
     setup_shared_mcp "data-platform"
+    setup_shared_mcp "viz-platform"
+    setup_shared_mcp "contract-validator"
 
     # Verify symlinks from plugins to shared MCP servers
     verify_symlinks
