@@ -12,6 +12,7 @@ from mcp.server.stdio import stdio_server
 from mcp.types import Tool, TextContent
 
 from .config import VizPlatformConfig
+from .dmc_tools import DMCTools
 
 # Suppress noisy MCP validation warnings on stderr
 logging.basicConfig(level=logging.INFO)
@@ -26,8 +27,8 @@ class VizPlatformMCPServer:
     def __init__(self):
         self.server = Server("viz-platform-mcp")
         self.config = None
+        self.dmc_tools = DMCTools()
         # Tool handlers will be added in subsequent issues
-        # self.dmc_tools = None
         # self.chart_tools = None
         # self.layout_tools = None
         # self.theme_tools = None
@@ -39,10 +40,16 @@ class VizPlatformMCPServer:
             config_loader = VizPlatformConfig()
             self.config = config_loader.load()
 
+            # Initialize DMC tools with detected version
+            dmc_version = self.config.get('dmc_version')
+            self.dmc_tools.initialize(dmc_version)
+
             # Log available capabilities
             caps = []
             if self.config.get('dmc_available'):
-                caps.append(f"DMC {self.config.get('dmc_version')}")
+                caps.append(f"DMC {dmc_version}")
+                if self.dmc_tools._initialized:
+                    caps.append(f"Registry loaded ({self.dmc_tools.registry.loaded_version})")
             else:
                 caps.append("DMC (not installed)")
 
@@ -61,9 +68,70 @@ class VizPlatformMCPServer:
             tools = []
 
             # DMC validation tools (Issue #172)
-            # - list_components
-            # - get_component_props
-            # - validate_component
+            tools.append(Tool(
+                name="list_components",
+                description=(
+                    "List available Dash Mantine Components. "
+                    "Returns components grouped by category with version info. "
+                    "Use this to discover what components are available before building UI."
+                ),
+                inputSchema={
+                    "type": "object",
+                    "properties": {
+                        "category": {
+                            "type": "string",
+                            "description": (
+                                "Optional category filter. Available categories: "
+                                "buttons, inputs, navigation, feedback, overlays, "
+                                "typography, layout, data_display, charts, dates"
+                            )
+                        }
+                    },
+                    "required": []
+                }
+            ))
+
+            tools.append(Tool(
+                name="get_component_props",
+                description=(
+                    "Get the props schema for a specific DMC component. "
+                    "Returns all available props with types, defaults, and allowed values. "
+                    "ALWAYS use this before creating a component to ensure valid props."
+                ),
+                inputSchema={
+                    "type": "object",
+                    "properties": {
+                        "component": {
+                            "type": "string",
+                            "description": "Component name (e.g., 'Button', 'TextInput', 'Select')"
+                        }
+                    },
+                    "required": ["component"]
+                }
+            ))
+
+            tools.append(Tool(
+                name="validate_component",
+                description=(
+                    "Validate component props before use. "
+                    "Checks for invalid props, type mismatches, and common mistakes. "
+                    "Returns errors and warnings with suggestions for fixes."
+                ),
+                inputSchema={
+                    "type": "object",
+                    "properties": {
+                        "component": {
+                            "type": "string",
+                            "description": "Component name to validate"
+                        },
+                        "props": {
+                            "type": "object",
+                            "description": "Props object to validate"
+                        }
+                    },
+                    "required": ["component", "props"]
+                }
+            ))
 
             # Chart tools (Issue #173)
             # - chart_create
@@ -91,11 +159,47 @@ class VizPlatformMCPServer:
         async def call_tool(name: str, arguments: dict) -> list[TextContent]:
             """Handle tool invocation."""
             try:
-                # Tool routing will be added as tools are implemented
-                # DMC tools
-                # if name == "list_components":
-                #     result = await self.dmc_tools.list_components(**arguments)
-                # ...
+                # DMC validation tools
+                if name == "list_components":
+                    result = await self.dmc_tools.list_components(
+                        category=arguments.get('category')
+                    )
+                    return [TextContent(
+                        type="text",
+                        text=json.dumps(result, indent=2)
+                    )]
+
+                elif name == "get_component_props":
+                    component = arguments.get('component')
+                    if not component:
+                        return [TextContent(
+                            type="text",
+                            text=json.dumps({"error": "component is required"}, indent=2)
+                        )]
+                    result = await self.dmc_tools.get_component_props(component)
+                    return [TextContent(
+                        type="text",
+                        text=json.dumps(result, indent=2)
+                    )]
+
+                elif name == "validate_component":
+                    component = arguments.get('component')
+                    props = arguments.get('props', {})
+                    if not component:
+                        return [TextContent(
+                            type="text",
+                            text=json.dumps({"error": "component is required"}, indent=2)
+                        )]
+                    result = await self.dmc_tools.validate_component(component, props)
+                    return [TextContent(
+                        type="text",
+                        text=json.dumps(result, indent=2)
+                    )]
+
+                # Chart tools (Issue #173)
+                # Layout tools (Issue #174)
+                # Theme tools (Issue #175)
+                # Page tools (Issue #176)
 
                 raise ValueError(f"Unknown tool: {name}")
 
