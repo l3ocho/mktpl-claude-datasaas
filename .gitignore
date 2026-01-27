@@ -31,6 +31,8 @@ venv/
 ENV/
 env/
 .venv/
+.venv
+**/.venv
 
 # PyCharm
 .idea/
