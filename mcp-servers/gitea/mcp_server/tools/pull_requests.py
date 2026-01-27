@@ -272,3 +272,42 @@ class PullRequestTools:
             None,
             lambda: self.gitea.add_pr_comment(pr_number, body, repo)
         )
+
+    async def create_pull_request(
+        self,
+        title: str,
+        body: str,
+        head: str,
+        base: str,
+        labels: Optional[List[str]] = None,
+        repo: Optional[str] = None
+    ) -> Dict:
+        """
+        Create a new pull request (async wrapper with branch check).
+
+        Args:
+            title: PR title
+            body: PR description/body
+            head: Source branch name (the branch with changes)
+            base: Target branch name (the branch to merge into)
+            labels: Optional list of label names
+            repo: Override configured repo (for PMO multi-repo)
+
+        Returns:
+            Created pull request dictionary
+
+        Raises:
+            PermissionError: If operation not allowed on current branch
+        """
+        if not self._check_branch_permissions('create_pull_request'):
+            branch = self._get_current_branch()
+            raise PermissionError(
+                f"Cannot create PR on branch '{branch}'. "
+                f"Switch to a development or feature branch to create PRs."
+            )
+
+        loop = asyncio.get_event_loop()
+        return await loop.run_in_executor(
+            None,
+            lambda: self.gitea.create_pull_request(title, body, head, base, labels, repo)
+        )

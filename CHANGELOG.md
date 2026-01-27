@@ -8,6 +8,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added
 
+#### Gitea MCP Server - create_pull_request Tool
+- **`create_pull_request`**: Create new pull requests via MCP
+  - Parameters: title, body, head (source branch), base (target branch), labels
+  - Branch-aware security: only allowed on development/feature branches
+  - Completes the PR lifecycle (was previously missing - only had list/get/review/comment)
+
 #### cmdb-assistant v1.1.0 - Data Quality Validation
 - **SessionStart Hook**: Tests NetBox API connectivity at session start
   - Warns if VMs exist without site assignment
