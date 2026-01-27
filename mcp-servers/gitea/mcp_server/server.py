@@ -844,6 +844,41 @@ class GiteaMCPServer:
                         },
                         "required": ["pr_number", "body"]
                     }
+                ),
+                Tool(
+                    name="create_pull_request",
+                    description="Create a new pull request",
+                    inputSchema={
+                        "type": "object",
+                        "properties": {
+                            "title": {
+                                "type": "string",
+                                "description": "PR title"
+                            },
+                            "body": {
+                                "type": "string",
+                                "description": "PR description/body"
+                            },
+                            "head": {
+                                "type": "string",
+                                "description": "Source branch name (the branch with changes)"
+                            },
+                            "base": {
+                                "type": "string",
+                                "description": "Target branch name (the branch to merge into)"
+                            },
+                            "labels": {
+                                "type": "array",
+                                "items": {"type": "string"},
+                                "description": "Optional list of label names"
+                            },
+                            "repo": {
+                                "type": "string",
+                                "description": "Repository name (owner/repo format)"
+                            }
+                        },
+                        "required": ["title", "body", "head", "base"]
+                    }
                 )
             ]
 
@@ -959,6 +994,8 @@ class GiteaMCPServer:
                     result = await self.pr_tools.create_pr_review(**arguments)
                 elif name == "add_pr_comment":
                     result = await self.pr_tools.add_pr_comment(**arguments)
+                elif name == "create_pull_request":
+                    result = await self.pr_tools.create_pull_request(**arguments)
                 else:
                     raise ValueError(f"Unknown tool: {name}")
 

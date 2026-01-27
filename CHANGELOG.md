@@ -4,6 +4,51 @@ All notable changes to the Leo Claude Marketplace will be documented in this fil
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [Unreleased]
+
+### Added
+
+#### Gitea MCP Server - create_pull_request Tool
+- **`create_pull_request`**: Create new pull requests via MCP
+  - Parameters: title, body, head (source branch), base (target branch), labels
+  - Branch-aware security: only allowed on development/feature branches
+  - Completes the PR lifecycle (was previously missing - only had list/get/review/comment)
+
+#### cmdb-assistant v1.1.0 - Data Quality Validation
+- **SessionStart Hook**: Tests NetBox API connectivity at session start
+  - Warns if VMs exist without site assignment
+  - Warns if devices exist without platform
+  - Non-blocking: displays warning, doesn't prevent work
+- **PreToolUse Hook**: Validates input parameters before VM/device operations
+  - Warns about missing site, tenant, platform
+  - Non-blocking: suggests best practices without blocking
+- **`/cmdb-audit` Command**: Comprehensive data quality analysis
+  - Scopes: all, vms, devices, naming, roles
+  - Identifies Critical/High/Medium/Low issues
+  - Provides prioritized remediation recommendations
+- **`/cmdb-register` Command**: Register current machine into NetBox
+  - Discovers system info: hostname, platform, hardware, network interfaces
+  - Discovers running apps: Docker containers, systemd services
+  - Creates device with interfaces, IPs, and sets primary IP
+  - Creates cluster and VMs for Docker containers
+- **`/cmdb-sync` Command**: Sync machine state with NetBox
+  - Compares current state with NetBox record
+  - Shows diff of changes (interfaces, IPs, containers)
+  - Updates with user confirmation
+  - Supports --full and --dry-run flags
+- **NetBox Best Practices Skill**: Reference documentation
+  - Dependency order for object creation
+  - Naming conventions (`{role}-{site}-{number}`, `{env}-{app}-{number}`)
+  - Role consolidation guidance
+  - Site/tenant/platform assignment requirements
+- **Agent Enhancement**: Updated cmdb-assistant agent with validation requirements
+  - Proactive suggestions for missing fields
+  - Naming convention checks
+  - Dependency order enforcement
+  - Duplicate prevention
+
+---
+
 ## [5.0.0] - 2026-01-26
 
 ### Added

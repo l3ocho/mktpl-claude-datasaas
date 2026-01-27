@@ -23,7 +23,7 @@ if [ -d ~/.claude/plugins/cache/leo-claude-mktplace ]; then
 fi
 
 # Verify installed hooks are command type
-for plugin in doc-guardian code-sentinel projman pr-review project-hygiene data-platform; do
+for plugin in doc-guardian code-sentinel projman pr-review project-hygiene data-platform cmdb-assistant; do
     HOOK_FILE=~/.claude/plugins/marketplaces/leo-claude-mktplace/plugins/$plugin/hooks/hooks.json
     if [ -f "$HOOK_FILE" ]; then
         if grep -q '"type": "command"' "$HOOK_FILE" || grep -q '"type":"command"' "$HOOK_FILE"; then

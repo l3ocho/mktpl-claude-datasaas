@@ -787,3 +787,42 @@ class GiteaClient:
         response = self.session.post(url, json=data)
         response.raise_for_status()
         return response.json()
+
+    def create_pull_request(
+        self,
+        title: str,
+        body: str,
+        head: str,
+        base: str,
+        labels: Optional[List[str]] = None,
+        repo: Optional[str] = None
+    ) -> Dict:
+        """
+        Create a new pull request.
+
+        Args:
+            title: PR title
+            body: PR description/body
+            head: Source branch name (the branch with changes)
+            base: Target branch name (the branch to merge into)
+            labels: Optional list of label names
+            repo: Repository in 'owner/repo' format
+
+        Returns:
+            Created pull request dictionary
+        """
+        owner, target_repo = self._parse_repo(repo)
+        url = f"{self.base_url}/repos/{owner}/{target_repo}/pulls"
+        data = {
+            'title': title,
+            'body': body,
+            'head': head,
+            'base': base
+        }
+        if labels:
+            label_ids = self._resolve_label_ids(labels, owner, target_repo)
+            data['labels'] = label_ids
+        logger.info(f"Creating PR '{title}' in {owner}/{target_repo}: {head} -> {base}")
+        response = self.session.post(url, json=data)
+        response.raise_for_status()
+        return response.json()
