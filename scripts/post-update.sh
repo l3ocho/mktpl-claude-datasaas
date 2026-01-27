@@ -29,19 +29,41 @@ update_mcp_server() {
     local server_name="$1"
     local server_path="$REPO_ROOT/mcp-servers/$server_name"
 
-    log_info "Updating $server_name dependencies..."
-
-    if [[ -d "$server_path/.venv" ]] && [[ -f "$server_path/requirements.txt" ]]; then
-        cd "$server_path"
-        source .venv/bin/activate
-        pip install -q --upgrade pip
-        pip install -q -r requirements.txt
-        deactivate
-        cd "$REPO_ROOT"
-        log_success "$server_name dependencies updated"
-    else
-        log_warn "$server_name not fully set up - run ./scripts/setup.sh first"
+    if [[ ! -d "$server_path" ]]; then
+        log_warn "$server_name directory not found at $server_path - skipping"
+        return 0
     fi
+
+    if [[ ! -f "$server_path/requirements.txt" ]]; then
+        log_warn "$server_name has no requirements.txt - skipping"
+        return 0
+    fi
+
+    cd "$server_path"
+
+    # Create venv if missing
+    if [[ ! -d ".venv" ]]; then
+        log_info "Creating $server_name venv (was missing)..."
+        python3 -m venv .venv
+        log_success "$server_name venv created"
+    else
+        log_info "Updating $server_name dependencies..."
+    fi
+
+    # Install/update dependencies
+    source .venv/bin/activate
+    pip install -q --upgrade pip
+    pip install -q -r requirements.txt
+
+    # Install local package in editable mode if pyproject.toml exists
+    if [[ -f "pyproject.toml" ]]; then
+        pip install -q -e .
+        log_success "$server_name package installed (editable mode)"
+    fi
+
+    deactivate
+    cd "$REPO_ROOT"
+    log_success "$server_name ready"
 }
 
 check_changelog() {
@@ -68,6 +90,8 @@ main() {
     update_mcp_server "gitea"
     update_mcp_server "netbox"
     update_mcp_server "data-platform"
+    update_mcp_server "viz-platform"
+    update_mcp_server "contract-validator"
 
     check_changelog
 
