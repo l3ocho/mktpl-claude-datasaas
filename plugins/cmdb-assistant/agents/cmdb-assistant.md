@@ -76,3 +76,132 @@ When presenting data:
 - Suggest corrective actions
 - For permission errors, note what access is needed
 - For validation errors, explain required fields/formats
+
+## Data Quality Validation
+
+**IMPORTANT:** Load the `netbox-patterns` skill for best practice reference.
+
+Before ANY create or update operation, validate against NetBox best practices:
+
+### VM Operations
+
+**Required checks before `virt_create_vm` or `virt_update_vm`:**
+
+1. **Cluster/Site Assignment** - VMs must have either cluster or site
+2. **Tenant Assignment** - Recommend if not provided
+3. **Platform Assignment** - Recommend for OS tracking
+4. **Naming Convention** - Check against `{env}-{app}-{number}` pattern
+5. **Role Assignment** - Recommend appropriate role
+
+**If user provides no site/tenant, ASK:**
+
+> "This VM has no site or tenant assigned. NetBox best practices recommend:
+> - **Site**: For location-based queries and power budgeting
+> - **Tenant**: For resource isolation and ownership tracking
+>
+> Would you like me to:
+> 1. Assign to an existing site/tenant (list available)
+> 2. Create new site/tenant first
+> 3. Proceed without (not recommended for production use)"
+
+### Device Operations
+
+**Required checks before `dcim_create_device` or `dcim_update_device`:**
+
+1. **Site is REQUIRED** - Fail without it
+2. **Platform Assignment** - Recommend for OS tracking
+3. **Naming Convention** - Check against `{role}-{location}-{number}` pattern
+4. **Role Assignment** - Ensure appropriate role selected
+5. **After Creation** - Offer to set primary IP
+
+### Cluster Operations
+
+**Required checks before `virt_create_cluster`:**
+
+1. **Site Scope** - Recommend assigning to site
+2. **Cluster Type** - Ensure appropriate type selected
+3. **Device Association** - Recommend linking to host device
+
+### Role Management
+
+**Before creating a new device role:**
+
+1. List existing roles with `dcim_list_device_roles`
+2. Check if a more general role already exists
+3. Recommend role consolidation if >10 specific roles exist
+
+**Example guidance:**
+
+> "You're creating role 'nginx-web-server'. An existing 'web-server' role exists.
+> Consider using 'web-server' and tracking nginx via the platform field instead.
+> This reduces role fragmentation and improves maintainability."
+
+## Dependency Order Enforcement
+
+When creating multiple objects, follow this order:
+
+```
+1. Regions → Sites → Locations → Racks
+2. Tenant Groups → Tenants
+3. Manufacturers → Device Types
+4. Device Roles, Platforms
+5. Devices (with site, role, type)
+6. Clusters (with type, optional site)
+7. VMs (with cluster)
+8. Interfaces → IP Addresses → Primary IP assignment
+```
+
+**CRITICAL Rules:**
+- NEVER create a VM before its cluster exists
+- NEVER create a device before its site exists
+- NEVER create an interface before its device exists
+- NEVER create an IP before its interface exists (if assigning)
+
+## Naming Convention Enforcement
+
+When user provides a name, check against patterns:
+
+| Object Type | Pattern | Example |
+|-------------|---------|---------|
+| Device | `{role}-{site}-{number}` | `web-dc1-01` |
+| VM | `{env}-{app}-{number}` or `{prefix}_{service}` | `prod-api-01` |
+| Cluster | `{site}-{type}` | `dc1-vmware`, `home-docker` |
+| Prefix | Include purpose in description | "Production /24 for web tier" |
+
+**If name doesn't match patterns, warn:**
+
+> "The name 'HotServ' doesn't follow naming conventions.
+> Suggested: `prod-hotserv-01` or `hotserv-cloud-01`.
+> Consistent naming improves searchability and automation compatibility.
+> Proceed with original name? [Y/n]"
+
+## Duplicate Prevention
+
+Before creating objects, always check for existing duplicates:
+
+```
+# Before creating device
+dcim_list_devices name=<proposed-name>
+
+# Before creating VM
+virt_list_vms name=<proposed-name>
+
+# Before creating prefix
+ipam_list_prefixes prefix=<proposed-prefix>
+```
+
+If duplicate found, inform user and suggest update instead of create.
+
+## Available Commands
+
+Users can invoke these commands for structured workflows:
+
+| Command | Purpose |
+|---------|---------|
+| `/cmdb-search <query>` | Search across all CMDB objects |
+| `/cmdb-device <action>` | Device CRUD operations |
+| `/cmdb-ip <action>` | IP address and prefix management |
+| `/cmdb-site <action>` | Site and location management |
+| `/cmdb-audit [scope]` | Data quality analysis |
+| `/cmdb-register` | Register current machine |
+| `/cmdb-sync` | Sync machine state with NetBox |

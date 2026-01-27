@@ -1,7 +1,7 @@
 {
   "name": "cmdb-assistant",
-  "version": "1.0.0",
-  "description": "NetBox CMDB integration for infrastructure management - query, create, update, and manage network devices, IP addresses, sites, and more",
+  "version": "1.1.0",
+  "description": "NetBox CMDB integration with data quality validation - query, create, update, and manage network devices, IP addresses, sites, and more with best practices enforcement",
   "author": {
     "name": "Leo Miranda",
     "email": "leobmiranda@gmail.com"
@@ -15,7 +15,9 @@
     "infrastructure",
     "network",
     "ipam",
-    "dcim"
+    "dcim",
+    "data-quality",
+    "validation"
   ],
   "commands": ["./commands/"],
   "mcpServers": ["./.mcp.json"]

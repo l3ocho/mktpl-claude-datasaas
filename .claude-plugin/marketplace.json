@@ -6,7 +6,7 @@
   },
   "metadata": {
     "description": "Project management plugins with Gitea and NetBox integrations",
-    "version": "5.0.0"
+    "version": "5.1.0"
   },
   "plugins": [
     {
@@ -75,8 +75,8 @@
     },
     {
       "name": "cmdb-assistant",
-      "version": "1.0.0",
-      "description": "NetBox CMDB integration for infrastructure management",
+      "version": "1.1.0",
+      "description": "NetBox CMDB integration with data quality validation and machine registration",
       "source": "./plugins/cmdb-assistant",
       "author": {
         "name": "Leo Miranda",
@@ -86,7 +86,7 @@
       "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
       "mcpServers": ["./.mcp.json"],
       "category": "infrastructure",
-      "tags": ["cmdb", "netbox", "dcim", "ipam"],
+      "tags": ["cmdb", "netbox", "dcim", "ipam", "data-quality", "validation"],
       "license": "MIT"
     },
     {
