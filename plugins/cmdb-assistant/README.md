@@ -2,6 +2,14 @@
 
 A Claude Code plugin for NetBox CMDB integration - query, create, update, and manage your network infrastructure directly from Claude Code.
 
+## What's New in v1.1.0
+
+- **Data Quality Validation**: Hooks for SessionStart and PreToolUse that check data quality and warn about missing fields
+- **Best Practices Skill**: Reference documentation for NetBox patterns (naming conventions, dependency order, role management)
+- **`/cmdb-audit`**: Analyze data quality across VMs, devices, naming conventions, and roles
+- **`/cmdb-register`**: Register the current machine into NetBox with all running applications (Docker containers, systemd services)
+- **`/cmdb-sync`**: Synchronize existing machine state with NetBox (detect drift, update with confirmation)
+
 ## Features
 
 - **Full CRUD Operations**: Create, read, update, and delete across all NetBox modules
@@ -9,6 +17,9 @@ A Claude Code plugin for NetBox CMDB integration - query, create, update, and ma
 - **IP Management**: Allocate IPs, manage prefixes, track VLANs
 - **Infrastructure Documentation**: Document servers, network devices, and connections
 - **Audit Trail**: Review changes and maintain infrastructure history
+- **Data Quality Validation**: Proactive checks for missing site, tenant, platform assignments
+- **Machine Registration**: Auto-discover and register servers with running applications
+- **Drift Detection**: Sync machine state and detect changes over time
 
 ## Installation
 
@@ -40,10 +51,14 @@ Add to your Claude Code plugins or marketplace configuration.
 
 | Command | Description |
 |---------|-------------|
+| `/initial-setup` | Interactive setup wizard for NetBox MCP server |
 | `/cmdb-search <query>` | Search for devices, IPs, sites, or any CMDB object |
 | `/cmdb-device <action>` | Manage network devices (list, create, update, delete) |
 | `/cmdb-ip <action>` | Manage IP addresses and prefixes |
 | `/cmdb-site <action>` | Manage sites and locations |
+| `/cmdb-audit [scope]` | Data quality analysis (all, vms, devices, naming, roles) |
+| `/cmdb-register` | Register current machine into NetBox with running apps |
+| `/cmdb-sync` | Sync machine state with NetBox (detect drift, update) |
 
 ## Agent
 
@@ -103,6 +118,15 @@ This plugin provides access to the full NetBox API:
 - **Wireless**: WLANs, Wireless Links
 - **Extras**: Tags, Custom Fields, Journal Entries, Audit Log
 
+## Hooks
+
+| Event | Purpose |
+|-------|---------|
+| `SessionStart` | Test NetBox connectivity, report data quality issues |
+| `PreToolUse` | Validate VM/device parameters before create/update |
+
+Hooks are **non-blocking** - they emit warnings but never prevent operations.
+
 ## Architecture
 
 ```
@@ -115,13 +139,23 @@ cmdb-assistant/
 │   ├── cmdb-search.md       # Search command
 │   ├── cmdb-device.md       # Device management
 │   ├── cmdb-ip.md           # IP management
-│   └── cmdb-site.md         # Site management
+│   ├── cmdb-site.md         # Site management
+│   ├── cmdb-audit.md        # Data quality audit (NEW)
+│   ├── cmdb-register.md     # Machine registration (NEW)
+│   └── cmdb-sync.md         # Machine sync (NEW)
+├── hooks/
+│   ├── hooks.json           # Hook configuration
+│   ├── startup-check.sh     # SessionStart validation
+│   └── validate-input.sh    # PreToolUse validation
+├── skills/
+│   └── netbox-patterns/
+│       └── SKILL.md         # NetBox best practices reference
 ├── agents/
 │   └── cmdb-assistant.md    # Main assistant agent
 └── README.md
 ```
 
-The plugin uses the shared NetBox MCP server at `../mcp-servers/netbox/`.
+The plugin uses the shared NetBox MCP server at `mcp-servers/netbox/`.
 
 ## Configuration
 
