@@ -66,7 +66,13 @@ class IssueTools:
             return operation in ['list_issues', 'get_issue', 'get_labels', 'create_issue']
 
         # Development branches (full access)
-        if branch in ['development', 'develop'] or branch.startswith(('feat/', 'feature/', 'dev/')):
+        # Include all common feature/fix branch patterns
+        dev_prefixes = (
+            'feat/', 'feature/', 'dev/',
+            'fix/', 'bugfix/', 'hotfix/',
+            'chore/', 'refactor/', 'docs/', 'test/'
+        )
+        if branch in ['development', 'develop'] or branch.startswith(dev_prefixes):
             return True
 
         # Unknown branch - be restrictive
