@@ -2,9 +2,8 @@
   "mcpServers": {
     "contract-validator": {
       "type": "stdio",
-      "command": "${CLAUDE_PLUGIN_ROOT}/mcp-servers/contract-validator/.venv/bin/python",
-      "args": ["-m", "mcp_server.server"],
-      "cwd": "${CLAUDE_PLUGIN_ROOT}/mcp-servers/contract-validator"
+      "command": "${CLAUDE_PLUGIN_ROOT}/mcp-servers/contract-validator/run.sh",
+      "args": []
     }
   }
 }

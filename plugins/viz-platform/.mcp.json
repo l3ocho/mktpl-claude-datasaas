@@ -2,9 +2,8 @@
   "mcpServers": {
     "viz-platform": {
       "type": "stdio",
-      "command": "${CLAUDE_PLUGIN_ROOT}/mcp-servers/viz-platform/.venv/bin/python",
-      "args": ["-m", "mcp_server.server"],
-      "cwd": "${CLAUDE_PLUGIN_ROOT}/mcp-servers/viz-platform"
+      "command": "${CLAUDE_PLUGIN_ROOT}/mcp-servers/viz-platform/run.sh",
+      "args": []
     }
   }
 }
