@@ -2,7 +2,7 @@
 
 **This file defines ALL valid paths in this repository. No exceptions. No inference. No assumptions.**
 
-Last Updated: 2026-01-26 (v5.0.0)
+Last Updated: 2026-01-27 (v5.1.0)
 
 ---
 
@@ -165,7 +165,11 @@ leo-claude-mktplace/
 │   ├── setup.sh                # Initial setup (create venvs, config templates)
 │   ├── post-update.sh          # Post-update (rebuild venvs, verify symlinks)
 │   ├── check-venv.sh           # Check if venvs exist (for hooks)
-│   └── validate-marketplace.sh # Marketplace compliance validation
+│   ├── validate-marketplace.sh # Marketplace compliance validation
+│   ├── verify-hooks.sh         # Verify all hooks use correct event types
+│   ├── setup-venvs.sh          # Setup/repair MCP server venvs
+│   ├── venv-repair.sh          # Repair broken venv symlinks
+│   └── release.sh              # Release automation with version bumping
 ├── CLAUDE.md
 ├── README.md
 ├── LICENSE

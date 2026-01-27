@@ -23,6 +23,7 @@ Quick reference for all commands in the Leo Claude Marketplace.
 | **projman** | `/debug-report` | | X | Run diagnostics and create structured issue in marketplace |
 | **projman** | `/debug-review` | | X | Investigate diagnostic issues and propose fixes with approval gates |
 | **projman** | `/suggest-version` | | X | Analyze CHANGELOG and recommend semantic version bump |
+| **projman** | `/proposal-status` | | X | View proposal and implementation hierarchy with status |
 | **git-flow** | `/commit` | | X | Create commit with auto-generated conventional message |
 | **git-flow** | `/commit-push` | | X | Commit and push to remote in one operation |
 | **git-flow** | `/commit-merge` | | X | Commit current changes, then merge into target branch |
@@ -55,6 +56,9 @@ Quick reference for all commands in the Leo Claude Marketplace.
 | **cmdb-assistant** | `/cmdb-device` | | X | Manage network devices (create, view, update, delete) |
 | **cmdb-assistant** | `/cmdb-ip` | | X | Manage IP addresses and prefixes |
 | **cmdb-assistant** | `/cmdb-site` | | X | Manage sites, locations, racks, and regions |
+| **cmdb-assistant** | `/cmdb-audit` | | X | Data quality analysis (VMs, devices, naming, roles) |
+| **cmdb-assistant** | `/cmdb-register` | | X | Register current machine into NetBox with running apps |
+| **cmdb-assistant** | `/cmdb-sync` | | X | Sync machine state with NetBox (detect drift, update) |
 | **project-hygiene** | *PostToolUse hook* | X | | Removes temp files, warns about unexpected root files |
 | **data-platform** | `/ingest` | | X | Load data from CSV, Parquet, JSON into DataFrame |
 | **data-platform** | `/profile` | | X | Generate data profiling report with statistics |

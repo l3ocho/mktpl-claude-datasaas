@@ -19,7 +19,7 @@ AI-guided sprint planning with full Gitea integration. Transforms a proven 15-sp
 - Branch-aware security (development/staging/production)
 - Pre-sprint-close code quality review and test verification
 
-**Commands:** `/sprint-plan`, `/sprint-start`, `/sprint-status`, `/sprint-close`, `/labels-sync`, `/initial-setup`, `/project-init`, `/project-sync`, `/review`, `/test-check`, `/test-gen`, `/debug-report`, `/debug-review`
+**Commands:** `/sprint-plan`, `/sprint-start`, `/sprint-status`, `/sprint-close`, `/labels-sync`, `/initial-setup`, `/project-init`, `/project-sync`, `/review`, `/test-check`, `/test-gen`, `/debug-report`, `/debug-review`, `/suggest-version`, `/proposal-status`
 
 #### [git-flow](./plugins/git-flow/README.md) *NEW in v3.0.0*
 **Git Workflow Automation**
@@ -107,7 +107,7 @@ Security vulnerability detection and code refactoring tools.
 
 Full CRUD operations for network infrastructure management directly from Claude Code.
 
-**Commands:** `/initial-setup`, `/cmdb-search`, `/cmdb-device`, `/cmdb-ip`, `/cmdb-site`
+**Commands:** `/initial-setup`, `/cmdb-search`, `/cmdb-device`, `/cmdb-ip`, `/cmdb-site`, `/cmdb-audit`, `/cmdb-register`, `/cmdb-sync`
 
 ### Data Engineering
 
