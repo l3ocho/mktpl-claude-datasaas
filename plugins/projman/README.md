@@ -278,6 +278,17 @@ Investigate diagnostic issues and propose fixes with human approval.
 
 **When to use:** In the marketplace repo, to investigate and fix issues reported by `/debug-report`.
 
+### `/suggest-version`
+Analyze CHANGELOG and recommend semantic version bump.
+
+**What it does:**
+- Reads CHANGELOG.md `[Unreleased]` section
+- Analyzes changes to determine bump type (major/minor/patch)
+- Applies SemVer rules: breaking changes → major, features → minor, fixes → patch
+- Returns recommended version with rationale
+
+**When to use:** Before creating a release to determine the appropriate version number.
+
 ## Code Quality Commands
 
 The `/review` and `/test-check` commands complement the Executor agent by catching issues before work is marked complete. Run both commands before `/sprint-close` for a complete quality check.
