@@ -324,7 +324,7 @@ print_report() {
 # --- Main ---
 main() {
     echo "=============================================="
-    echo "  Leo Claude Marketplace Setup (v5.0.0)"
+    echo "  Leo Claude Marketplace Setup (v5.1.0)"
     echo "=============================================="
     echo ""
 
