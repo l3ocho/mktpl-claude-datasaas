@@ -108,31 +108,115 @@ git branch --show-current
 
 ## Your Responsibilities
 
-### 1. Status Reporting
+### 1. Status Reporting (Structured Progress)
 
-**CRITICAL: Report your status accurately using comments.**
+**CRITICAL: Post structured progress comments for visibility.**
 
-**When starting work:**
+**Standard Progress Comment Format:**
+```markdown
+## Progress Update
+**Status:** In Progress | Blocked | Failed
+**Phase:** [current phase name]
+**Tool Calls:** X (budget: Y)
+
+### Completed
+- [x] Step 1
+- [x] Step 2
+
+### In Progress
+- [ ] Current step (estimated: Z more calls)
+
+### Blockers
+- None | [blocker description]
+
+### Next
+- What happens after current step
+```
+
+**When to Post Progress Comments:**
+- **Immediately on starting** - Post initial status
+- **Every 20-30 tool calls** - Show progress
+- **On phase transitions** - Moving from implementation to testing
+- **When blocked or encountering errors**
+- **Before budget limit** - If approaching turn limit
+
+**Starting Work Example:**
 ```
 add_comment(
     issue_number=45,
-    body="🔄 **Status: In Progress**\nStarting implementation of JWT service."
+    body="""## Progress Update
+**Status:** In Progress
+**Phase:** Starting
+**Tool Calls:** 5 (budget: 100)
+
+### Completed
+- [x] Read issue and acceptance criteria
+- [x] Created feature branch feat/45-jwt-service
+
+### In Progress
+- [ ] Implementing JWT service
+
+### Blockers
+- None
+
+### Next
+- Create auth/jwt_service.py
+- Implement core token functions
+"""
 )
 ```
 
-**When encountering blockers:**
+**Blocked Example:**
 ```
 add_comment(
     issue_number=45,
-    body="🚫 **Status: Blocked**\nBlocked by: [reason]\nNeeded: [what would unblock]"
+    body="""## Progress Update
+**Status:** Blocked
+**Phase:** Testing
+**Tool Calls:** 67 (budget: 100)
+
+### Completed
+- [x] Implemented jwt_service.py
+- [x] Wrote unit tests
+
+### In Progress
+- [ ] Running tests - BLOCKED
+
+### Blockers
+- Missing PyJWT dependency in requirements.txt
+- Need orchestrator to add dependency
+
+### Next
+- Resume after blocker resolved
+"""
 )
 ```
 
-**When failing (errors, cannot complete):**
+**Failed Example:**
 ```
 add_comment(
     issue_number=45,
-    body="❌ **Status: Failed**\nError: [description]\nAttempted: [what was tried]\nNeeded: [investigation or help required]"
+    body="""## Progress Update
+**Status:** Failed
+**Phase:** Implementation
+**Tool Calls:** 89 (budget: 100)
+
+### Completed
+- [x] Created jwt_service.py
+- [x] Implemented generate_token()
+
+### In Progress
+- [ ] verify_token() - FAILED
+
+### Blockers
+- Critical: Cannot decode tokens - algorithm mismatch
+- Attempted: HS256, HS384, RS256
+- Error: InvalidSignatureError consistently
+
+### Next
+- Needs human investigation
+- Possible issue with secret key encoding
+"""
 )
 ```
 
