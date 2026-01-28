@@ -49,10 +49,13 @@ DBT_PROFILES_DIR=~/.dbt
 | `/initial-setup` | Interactive setup wizard for PostgreSQL and dbt configuration |
 | `/ingest` | Load data from files or database |
 | `/profile` | Generate data profile and statistics |
+| `/data-quality` | Data quality assessment with pass/warn/fail scoring |
 | `/schema` | Show database/DataFrame schema |
 | `/explain` | Explain dbt model lineage |
-| `/lineage` | Visualize data dependencies |
+| `/lineage` | Visualize data dependencies (ASCII) |
+| `/lineage-viz` | Generate Mermaid flowchart for dbt lineage |
 | `/run` | Execute dbt models |
+| `/dbt-test` | Run dbt tests with formatted results |
 
 ## Agents
 

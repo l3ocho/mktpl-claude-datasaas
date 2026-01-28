@@ -22,6 +22,9 @@ doc-guardian monitors your code changes via hooks:
 |---------|-------------|
 | `/doc-audit` | Full project scan - reports all drift without changing anything |
 | `/doc-sync` | Apply all pending documentation updates in one commit |
+| `/changelog-gen` | Generate changelog from conventional commits in Keep-a-Changelog format |
+| `/doc-coverage` | Calculate documentation coverage percentage for functions and classes |
+| `/stale-docs` | Detect documentation files that are stale relative to their associated code |
 
 ## Hooks
 
@@ -33,6 +36,8 @@ doc-guardian monitors your code changes via hooks:
 - **Version Drift**: Python 3.9 in docs but 3.11 in pyproject.toml
 - **Missing Docs**: Public functions without docstrings
 - **Stale Examples**: CLI examples that no longer work
+- **Low Coverage**: Undocumented functions and classes
+- **Stale Files**: Documentation that hasn't been updated alongside code changes
 
 ## Installation
 

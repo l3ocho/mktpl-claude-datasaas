@@ -19,6 +19,7 @@ Contract-validator solves these by parsing plugin interfaces and validating comp
 - **Agent Extraction**: Parse CLAUDE.md Four-Agent Model tables and Agents sections
 - **Compatibility Checks**: Pairwise validation between all plugins in a marketplace
 - **Data Flow Validation**: Verify agent tool sequences have valid data producers/consumers
+- **Dependency Visualization**: Generate Mermaid flowcharts showing plugin relationships
 - **Comprehensive Reports**: Markdown or JSON reports with actionable suggestions
 
 ## Installation
@@ -44,6 +45,7 @@ pip install -r requirements.txt
 | `/validate-contracts` | Full marketplace compatibility validation |
 | `/check-agent` | Validate single agent definition |
 | `/list-interfaces` | Show all plugin interfaces |
+| `/dependency-graph` | Generate Mermaid flowchart of plugin dependencies |
 
 ## Agents
 
@@ -104,6 +106,16 @@ pip install -r requirements.txt
 # - get_execution_order ✓
 #
 # Data Flow: No issues detected
+```
+
+```
+/dependency-graph
+
+# Output: Mermaid flowchart showing:
+# - Plugins grouped by shared MCP servers
+# - Data flow from data-platform to viz-platform
+# - Required vs optional dependencies
+# - Command counts per plugin
 ```
 
 ## Issue Types

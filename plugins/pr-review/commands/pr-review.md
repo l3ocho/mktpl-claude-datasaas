@@ -46,14 +46,16 @@ Collect findings from all agents, each with:
 
 ### Step 4: Filter by Confidence
 
-Only display findings with confidence >= 0.5:
+Filter findings based on `PR_REVIEW_CONFIDENCE_THRESHOLD` (default: 0.7):
 
 | Confidence | Label | Description |
 |------------|-------|-------------|
 | 0.9 - 1.0 | HIGH | Definite issue, must address |
 | 0.7 - 0.89 | MEDIUM | Likely issue, should address |
 | 0.5 - 0.69 | LOW | Possible concern, consider addressing |
-| < 0.5 | (suppressed) | Too uncertain to report |
+| < threshold | (filtered) | Below configured threshold |
+
+**Note:** With the default threshold of 0.7, only MEDIUM and HIGH confidence findings are shown. Adjust `PR_REVIEW_CONFIDENCE_THRESHOLD` to include more or fewer findings.
 
 ### Step 5: Generate Report
 
@@ -135,5 +137,5 @@ Full review report with:
 
 | Variable | Default | Description |
 |----------|---------|-------------|
-| `PR_REVIEW_CONFIDENCE_THRESHOLD` | `0.5` | Minimum confidence to report |
+| `PR_REVIEW_CONFIDENCE_THRESHOLD` | `0.7` | Minimum confidence to report (0.0-1.0) |
 | `PR_REVIEW_AUTO_SUBMIT` | `false` | Auto-submit to Gitea |

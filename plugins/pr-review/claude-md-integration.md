@@ -15,6 +15,7 @@ This project uses the pr-review plugin for automated code review.
 | `/pr-review <pr#>` | Full multi-agent review |
 | `/pr-summary <pr#>` | Quick change summary |
 | `/pr-findings <pr#>` | Filter review findings |
+| `/pr-diff <pr#>` | View diff with inline comments |
 
 ### Review Categories
 
@@ -26,11 +27,16 @@ Reviews analyze:
 
 ### Confidence Threshold
 
-Findings below 0.5 confidence are suppressed.
+Configure via `PR_REVIEW_CONFIDENCE_THRESHOLD` (default: 0.7).
 
-- HIGH (0.9+): Definite issue
-- MEDIUM (0.7-0.89): Likely issue
-- LOW (0.5-0.69): Possible concern
+| Range | Label | Action |
+|-------|-------|--------|
+| 0.9 - 1.0 | HIGH | Must address |
+| 0.7 - 0.89 | MEDIUM | Should address |
+| 0.5 - 0.69 | LOW | Consider addressing |
+| < threshold | (filtered) | Not reported |
+
+With default threshold of 0.7, only MEDIUM and HIGH findings are shown.
 
 ### Verdict Rules
 

@@ -120,10 +120,13 @@ Focus on findings that:
 
 ### Respect Confidence Thresholds
 
-Never report findings below 0.5 confidence. Be transparent about uncertainty:
-- 0.9+ → "This is definitely an issue"
-- 0.7-0.89 → "This is likely an issue"
-- 0.5-0.69 → "This might be an issue"
+Filter findings based on `PR_REVIEW_CONFIDENCE_THRESHOLD` (default: 0.7). Be transparent about uncertainty:
+- 0.9+ → "This is definitely an issue" (HIGH)
+- 0.7-0.89 → "This is likely an issue" (MEDIUM)
+- 0.5-0.69 → "This might be an issue" (LOW)
+- < threshold → Filtered from output
+
+With the default threshold of 0.7, only MEDIUM and HIGH confidence findings are reported.
 
 ### Avoid Noise
 

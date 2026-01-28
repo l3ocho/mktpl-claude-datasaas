@@ -2,6 +2,12 @@
 
 A Claude Code plugin for NetBox CMDB integration - query, create, update, and manage your network infrastructure directly from Claude Code.
 
+## What's New in v1.2.0
+
+- **`/cmdb-topology`**: Generate Mermaid diagrams showing infrastructure topology (rack view, network view, site overview)
+- **`/change-audit`**: Query and analyze NetBox audit log for change tracking and compliance
+- **`/ip-conflicts`**: Detect IP address conflicts and overlapping prefixes
+
 ## What's New in v1.1.0
 
 - **Data Quality Validation**: Hooks for SessionStart and PreToolUse that check data quality and warn about missing fields
@@ -59,6 +65,9 @@ Add to your Claude Code plugins or marketplace configuration.
 | `/cmdb-audit [scope]` | Data quality analysis (all, vms, devices, naming, roles) |
 | `/cmdb-register` | Register current machine into NetBox with running apps |
 | `/cmdb-sync` | Sync machine state with NetBox (detect drift, update) |
+| `/cmdb-topology <view>` | Generate Mermaid diagrams (rack, network, site, full) |
+| `/change-audit [filters]` | Query NetBox audit log for change tracking |
+| `/ip-conflicts [scope]` | Detect IP conflicts and overlapping prefixes |
 
 ## Agent
 
@@ -140,9 +149,12 @@ cmdb-assistant/
 │   ├── cmdb-device.md       # Device management
 │   ├── cmdb-ip.md           # IP management
 │   ├── cmdb-site.md         # Site management
-│   ├── cmdb-audit.md        # Data quality audit (NEW)
-│   ├── cmdb-register.md     # Machine registration (NEW)
-│   └── cmdb-sync.md         # Machine sync (NEW)
+│   ├── cmdb-audit.md        # Data quality audit
+│   ├── cmdb-register.md     # Machine registration
+│   ├── cmdb-sync.md         # Machine sync
+│   ├── cmdb-topology.md     # Topology visualization (NEW)
+│   ├── change-audit.md      # Change audit log (NEW)
+│   └── ip-conflicts.md      # IP conflict detection (NEW)
 ├── hooks/
 │   ├── hooks.json           # Hook configuration
 │   ├── startup-check.sh     # SessionStart validation
