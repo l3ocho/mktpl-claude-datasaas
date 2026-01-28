@@ -443,6 +443,20 @@ If something isn't working after restart, check:
 
 ---
 
+## Visual Output
+
+When executing this command, display the plugin header:
+
+```
+╔══════════════════════════════════════════════════════════════════╗
+║  📋 PROJMAN                                                      ║
+║  ⚙️ SETUP                                                        ║
+║  Initial Setup Wizard                                            ║
+╚══════════════════════════════════════════════════════════════════╝
+```
+
+Then proceed with the setup workflow.
+
 ## Re-Running This Command
 
 This command is safe to run multiple times:

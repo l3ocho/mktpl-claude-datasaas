@@ -180,6 +180,20 @@ MCP tools will now use the new repository.
 
 ---
 
+## Visual Output
+
+When executing this command, display the plugin header:
+
+```
+╔══════════════════════════════════════════════════════════════════╗
+║  📋 PROJMAN                                                      ║
+║  ⚙️ SETUP                                                        ║
+║  Project Sync                                                    ║
+╚══════════════════════════════════════════════════════════════════╝
+```
+
+Then proceed with the sync workflow.
+
 ## Troubleshooting
 
 **"Repository not found" but it exists:**

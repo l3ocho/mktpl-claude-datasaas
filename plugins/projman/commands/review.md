@@ -74,6 +74,20 @@ Otherwise, review staged changes or changes in the last 5 commits.
 3. Compile findings into the structured report
 4. Provide recommendation: READY / NEEDS ATTENTION / BLOCK
 
+## Visual Output
+
+When executing this command, display the plugin header:
+
+```
+╔══════════════════════════════════════════════════════════════════╗
+║  📋 PROJMAN                                                      ║
+║  🏁 CLOSING                                                      ║
+║  Code Review                                                     ║
+╚══════════════════════════════════════════════════════════════════╝
+```
+
+Then proceed with the review workflow.
+
 ## Do NOT
 
 - Rewrite or refactor code automatically

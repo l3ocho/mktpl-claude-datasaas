@@ -686,3 +686,16 @@ and select "Report an issue I experienced" to describe it.
 - Verify labels exist in the marketplace repo: `Source/Diagnostic`, `Type/Bug`
 - Check the label fetch output in Step 7.2 for errors
 - If labels don't exist, create them first with `/labels-sync` in the marketplace repo
+
+## Visual Output
+
+When executing this command, display the plugin header:
+
+```
+╔══════════════════════════════════════════════════════════════════╗
+║  📋 PROJMAN                                                      ║
+║  Debug Report                                                    ║
+╚══════════════════════════════════════════════════════════════════╝
+```
+
+Then proceed with the diagnostic workflow.
