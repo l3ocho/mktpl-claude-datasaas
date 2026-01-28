@@ -135,9 +135,24 @@ class GiteaClient:
         body: Optional[str] = None,
         state: Optional[str] = None,
         labels: Optional[List[str]] = None,
+        milestone: Optional[int] = None,
         repo: Optional[str] = None
     ) -> Dict:
-        """Update existing issue. Repo must be 'owner/repo' format."""
+        """
+        Update existing issue.
+
+        Args:
+            issue_number: Issue number to update
+            title: New title (optional)
+            body: New body (optional)
+            state: New state - 'open' or 'closed' (optional)
+            labels: New labels (optional)
+            milestone: Milestone ID to assign (optional)
+            repo: Repository in 'owner/repo' format
+
+        Returns:
+            Updated issue dictionary
+        """
         owner, target_repo = self._parse_repo(repo)
         url = f"{self.base_url}/repos/{owner}/{target_repo}/issues/{issue_number}"
         data = {}
@@ -149,6 +164,8 @@ class GiteaClient:
             data['state'] = state
         if labels is not None:
             data['labels'] = labels
+        if milestone is not None:
+            data['milestone'] = milestone
         logger.info(f"Updating issue #{issue_number} in {owner}/{target_repo}")
         response = self.session.patch(url, json=data)
         response.raise_for_status()

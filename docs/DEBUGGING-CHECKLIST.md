@@ -2,7 +2,7 @@
 
 **Purpose:** Systematic approach to diagnose and fix plugin loading issues.
 
-Last Updated: 2026-01-22
+Last Updated: 2026-01-28
 
 ---
 
@@ -186,6 +186,47 @@ echo -e "\n=== Config Files ==="
 | Wrong path edits | Changes don't take effect | Edit installed path or reinstall after source changes |
 | Missing credentials | MCP connection errors | Create `~/.config/claude/gitea.env` with API credentials |
 | Invalid hook events | Hooks don't fire | Use only valid event names (see Step 7) |
+| Gitea issues not closing | Merged to non-default branch | Manually close issues (see below) |
+| MCP changes not taking effect | Session caching | Restart Claude Code session (see below) |
+
+### Gitea Auto-Close Behavior
+
+**Issue:** Using `Closes #XX` or `Fixes #XX` in commit/PR messages does NOT auto-close issues when merging to `development`.
+
+**Root Cause:** Gitea only auto-closes issues when merging to the **default branch** (typically `main` or `master`). Merging to `development`, `staging`, or any other branch will NOT trigger auto-close.
+
+**Workaround:**
+1. Use the Gitea MCP tool to manually close issues after merging to development:
+   ```
+   mcp__plugin_projman_gitea__update_issue(issue_number=XX, state="closed")
+   ```
+2. Or close issues via the Gitea web UI
+3. The auto-close keywords will still work when the changes are eventually merged to `main`
+
+**Recommendation:** Include the `Closes #XX` keywords in commits anyway - they'll work when the final merge to `main` happens.
+
+### MCP Session Restart Requirement
+
+**Issue:** Changes to MCP servers, hooks, or plugin configuration don't take effect immediately.
+
+**Root Cause:** Claude Code loads MCP tools and plugin configuration at session start. These are cached in session memory and not reloaded dynamically.
+
+**What requires a session restart:**
+- MCP server code changes (Python files in `mcp-servers/`)
+- Changes to `.mcp.json` files
+- Changes to `hooks/hooks.json`
+- Changes to `plugin.json`
+- Adding new MCP tools or modifying tool signatures
+
+**What does NOT require a restart:**
+- Command/skill markdown files (`.md`) - these are read on invocation
+- Agent markdown files - read when agent is invoked
+
+**Correct workflow after plugin changes:**
+1. Make changes to source files
+2. Run `./scripts/verify-hooks.sh` to validate
+3. Inform user: "Please restart Claude Code for changes to take effect"
+4. **Do NOT clear cache mid-session** - see "Cache Clearing" section
 
 ---
 

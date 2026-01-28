@@ -90,6 +90,10 @@ After clarification, you receive a structured specification:
 [List of assumptions]
 ```
 
+## Documentation
+
+- [Neurodivergent Support Guide](docs/ND-SUPPORT.md) - How clarity-assist supports ND users with executive function challenges and cognitive differences
+
 ## Integration
 
 For CLAUDE.md integration instructions, see `claude-md-integration.md`.

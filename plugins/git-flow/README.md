@@ -119,6 +119,10 @@ The git-assistant agent helps resolve merge conflicts with analysis and recommen
 → Status: Clean, up-to-date
 ```
 
+## Documentation
+
+- [Branching Strategy Guide](docs/BRANCHING-STRATEGY.md) - Detailed documentation of the `development -> staging -> main` promotion flow
+
 ## Integration
 
 For CLAUDE.md integration instructions, see `claude-md-integration.md`.
