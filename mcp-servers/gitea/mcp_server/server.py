@@ -26,6 +26,44 @@ logging.getLogger("mcp").setLevel(logging.ERROR)
 logger = logging.getLogger(__name__)
 
 
+def _coerce_types(arguments: dict) -> dict:
+    """
+    Coerce argument types to handle MCP serialization quirks.
+
+    MCP sometimes passes integers as strings and arrays as JSON strings.
+    This function normalizes them to the expected Python types.
+    """
+    coerced = {}
+    for key, value in arguments.items():
+        if value is None:
+            coerced[key] = value
+            continue
+
+        # Coerce integer fields
+        int_fields = {'issue_number', 'milestone_id', 'pr_number', 'depends_on', 'milestone', 'limit'}
+        if key in int_fields and isinstance(value, str):
+            try:
+                coerced[key] = int(value)
+                continue
+            except ValueError:
+                pass
+
+        # Coerce array fields that might be JSON strings
+        array_fields = {'labels', 'tags', 'issue_numbers', 'comments'}
+        if key in array_fields and isinstance(value, str):
+            try:
+                parsed = json.loads(value)
+                if isinstance(parsed, list):
+                    coerced[key] = parsed
+                    continue
+            except json.JSONDecodeError:
+                pass
+
+        coerced[key] = value
+
+    return coerced
+
+
 class GiteaMCPServer:
     """MCP Server for Gitea integration"""
 
@@ -87,6 +125,10 @@ class GiteaMCPServer:
                                 "type": "array",
                                 "items": {"type": "string"},
                                 "description": "Filter by labels"
+                            },
+                            "milestone": {
+                                "type": "string",
+                                "description": "Filter by milestone title (exact match)"
                             },
                             "repo": {
                                 "type": "string",
@@ -899,6 +941,9 @@ class GiteaMCPServer:
                 List of TextContent with results
             """
             try:
+                # Coerce types to handle MCP serialization quirks
+                arguments = _coerce_types(arguments)
+
                 # Route to appropriate tool handler
                 if name == "list_issues":
                     result = await self.issue_tools.list_issues(**arguments)

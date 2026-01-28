@@ -98,6 +98,7 @@ class IssueTools:
         self,
         state: str = 'open',
         labels: Optional[List[str]] = None,
+        milestone: Optional[str] = None,
         repo: Optional[str] = None
     ) -> List[Dict]:
         """
@@ -106,6 +107,7 @@ class IssueTools:
         Args:
             state: Issue state (open, closed, all)
             labels: Filter by labels
+            milestone: Filter by milestone title (exact match)
             repo: Override configured repo (for PMO multi-repo)
 
         Returns:
@@ -124,7 +126,7 @@ class IssueTools:
         loop = asyncio.get_event_loop()
         return await loop.run_in_executor(
             None,
-            lambda: self.gitea.list_issues(state, labels, repo)
+            lambda: self.gitea.list_issues(state, labels, milestone, repo)
         )
 
     async def get_issue(
