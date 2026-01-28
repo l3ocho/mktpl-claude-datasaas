@@ -50,7 +50,7 @@ See `docs/DEBUGGING-CHECKLIST.md` for details on cache timing.
 ## Project Overview
 
 **Repository:** leo-claude-mktplace
-**Version:** 5.2.0
+**Version:** 5.3.0
 **Status:** Production Ready
 
 A plugin marketplace for Claude Code containing:
@@ -377,4 +377,4 @@ The script will:
 
 ---
 
-**Last Updated:** 2026-01-24
+**Last Updated:** 2026-01-28
