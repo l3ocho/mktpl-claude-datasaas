@@ -7,6 +7,7 @@ Provides async wrappers for issue CRUD operations with:
 - Comprehensive error handling
 """
 import asyncio
+import os
 import subprocess
 import logging
 from typing import List, Dict, Optional
@@ -27,19 +28,34 @@ class IssueTools:
         """
         self.gitea = gitea_client
 
+    def _get_project_directory(self) -> Optional[str]:
+        """
+        Get the user's project directory from environment.
+
+        Returns:
+            Project directory path or None if not set
+        """
+        return os.environ.get('CLAUDE_PROJECT_DIR')
+
     def _get_current_branch(self) -> str:
         """
-        Get current git branch.
+        Get current git branch from user's project directory.
+
+        Uses CLAUDE_PROJECT_DIR environment variable to determine the correct
+        directory for git operations, avoiding the bug where git runs from
+        the installed plugin directory instead of the user's project.
 
         Returns:
             Current branch name or 'unknown' if not in a git repo
         """
         try:
+            project_dir = self._get_project_directory()
             result = subprocess.run(
                 ['git', 'rev-parse', '--abbrev-ref', 'HEAD'],
                 capture_output=True,
                 text=True,
-                check=True
+                check=True,
+                cwd=project_dir  # Run git in project directory, not plugin directory
             )
             return result.stdout.strip()
         except subprocess.CalledProcessError:
