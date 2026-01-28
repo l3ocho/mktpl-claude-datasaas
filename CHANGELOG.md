@@ -4,6 +4,53 @@ All notable changes to the Leo Claude Marketplace will be documented in this fil
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [5.3.0] - 2026-01-28
+
+### Added
+
+#### Sprint 6: Visual Branding Overhaul
+Consistent visual headers and progress tracking across all plugins.
+
+**Visual Output Headers (109 files):**
+- **Projman**: Double-line headers (╔═╗) with phase indicators (🎯 PLANNING, ⚡ EXECUTION, 🏁 CLOSING)
+- **Other Plugins**: Single-line headers (┌─┐) with plugin icons
+- **All 23 agents** updated with Visual Output Requirements section
+- **All 86 commands** updated with Visual Output section and header templates
+
+**Plugin Icon Registry:**
+| Plugin | Icon |
+|--------|------|
+| projman | 📋 |
+| code-sentinel | 🔒 |
+| doc-guardian | 📝 |
+| pr-review | 🔍 |
+| clarity-assist | 💬 |
+| git-flow | 🔀 |
+| cmdb-assistant | 🖥️ |
+| data-platform | 📊 |
+| viz-platform | 🎨 |
+| contract-validator | ✅ |
+| claude-config-maintainer | ⚙️ |
+
+**Wiki Branding Specification (4 pages):**
+- [branding/visual-spec](https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/wiki/branding%2Fvisual-spec) - Central specification
+- [branding/plugin-registry](https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/wiki/branding%2Fplugin-registry) - Icons and styles
+- [branding/header-templates](https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/wiki/branding%2Fheader-templates) - Copy-paste templates
+- [branding/progress-templates](https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/wiki/branding%2Fprogress-templates) - Sprint progress blocks
+
+### Fixed
+- **Docs:** Version sync - CLAUDE.md, marketplace.json, README.md now consistent
+- **Docs:** Added 18 missing commands from Sprint 4 & 5 to README.md and COMMANDS-CHEATSHEET.md
+- **MCP:** Registered `/sprint-diagram` as invokable skill
+
+**Sprint Completed:**
+- Milestone: Sprint 6 - Visual Branding Overhaul (closed 2026-01-28)
+- Issues: #272, #273, #274, #275, #276, #277, #278
+- PRs: #284, #285
+- Wiki: [Sprint 6 Lessons](https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/wiki/lessons/sprints/sprint-6---visual-branding-and-documentation-maintenance)
+
+---
+
 ## [5.2.0] - 2026-01-28
 
 ### Added
