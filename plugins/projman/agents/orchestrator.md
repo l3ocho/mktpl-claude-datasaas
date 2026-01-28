@@ -93,7 +93,44 @@ git branch --show-current
 
 **Workflow:**
 
-**A. Fetch Sprint Issues**
+**A. Fetch Sprint Issues and Detect Checkpoints**
+```
+list_issues(state="open", labels=["sprint-current"])
+```
+
+**For each open issue, check for checkpoint comments:**
+```
+get_issue(issue_number=45)  # Comments included
+→ Look for comments containing "## Checkpoint"
+```
+
+**If Checkpoint Found:**
+```
+Checkpoint Detected for #45
+
+Found checkpoint from previous session:
+  Branch: feat/45-jwt-service
+  Phase: Testing
+  Tool Calls: 67
+  Files Modified: 3
+  Completed: 4/7 steps
+
+Options:
+1. Resume from checkpoint (recommended)
+2. Start fresh (discard previous work)
+3. Review checkpoint details first
+
+Would you like to resume?
+```
+
+**Resume Protocol:**
+1. Verify branch exists: `git branch -a | grep feat/45-jwt-service`
+2. Switch to branch: `git checkout feat/45-jwt-service`
+3. Verify files match checkpoint
+4. Dispatch executor with checkpoint context
+5. Executor continues from pending steps
+
+**B. Fetch Sprint Issues (Standard)**
 ```
 list_issues(state="open", labels=["sprint-current"])
 ```
