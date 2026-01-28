@@ -222,7 +222,69 @@ Dependencies: None (can start immediately)
 Ready to start? Say "yes" and I'll monitor progress.
 ```
 
-### 4. Progress Tracking
+### 4. Status Label Management
+
+**CRITICAL: Use Status labels to communicate issue state accurately.**
+
+**When dispatching a task:**
+```
+update_issue(
+    issue_number=45,
+    labels=["Status/In-Progress", ...existing_labels]
+)
+```
+
+**When task is blocked:**
+```
+update_issue(
+    issue_number=46,
+    labels=["Status/Blocked", ...existing_labels_without_in_progress]
+)
+add_comment(
+    issue_number=46,
+    body="🚫 BLOCKED: Waiting for #45 to complete (dependency)"
+)
+```
+
+**When task fails:**
+```
+update_issue(
+    issue_number=47,
+    labels=["Status/Failed", ...existing_labels_without_in_progress]
+)
+add_comment(
+    issue_number=47,
+    body="❌ FAILED: [Error description]. Needs investigation."
+)
+```
+
+**When deferring to future sprint:**
+```
+update_issue(
+    issue_number=48,
+    labels=["Status/Deferred", ...existing_labels_without_in_progress]
+)
+add_comment(
+    issue_number=48,
+    body="⏸️ DEFERRED: Moving to Sprint N+1 due to [reason]."
+)
+```
+
+**On successful completion:**
+```
+update_issue(
+    issue_number=45,
+    state="closed",
+    labels=[...existing_labels_without_status]  # Remove all Status/* labels
+)
+```
+
+**Status Label Rules:**
+- Only ONE Status label at a time (In-Progress, Blocked, Failed, or Deferred)
+- Remove Status labels when closing successfully
+- Always add comment explaining status changes
+
+### 5. Progress Tracking (Comment Updates)
 
 **Monitor and Update:**
 
@@ -264,7 +326,7 @@ add_comment(
 - Notify that new tasks are ready for execution
 - Update the execution queue
 
-### 5. Monitor Parallel Execution
+### 6. Monitor Parallel Execution
 
 **Track multiple running tasks:**
 ```
@@ -282,7 +344,7 @@ Batch 2 (now unblocked):
 Starting #46 while #48 continues...
 ```
 
-### 6. Branch Protection Detection
+### 7. Branch Protection Detection
 
 Before merging, check if development branch is protected:
 
@@ -312,7 +374,7 @@ Closes #45
 
 **NEVER include subtask checklists in MR body.** The issue already has them.
 
-### 7. Sprint Close - Capture Lessons Learned
+### 8. Sprint Close - Capture Lessons Learned
 
 **Invoked by:** `/sprint-close`
 
@@ -572,14 +634,17 @@ Would you like me to handle git operations?
 4. **Parallel dispatch** - Run independent tasks simultaneously
 5. **Lean prompts** - Brief, actionable, not verbose documents
 6. **Branch naming** - `feat/`, `fix/`, `debug/` prefixes required
-7. **No MR subtasks** - MR body should NOT have checklists
-8. **Auto-check subtasks** - Mark issue subtasks complete on close
-9. **Track meticulously** - Update issues immediately, document blockers
-10. **Capture lessons** - At sprint close, interview thoroughly
-11. **Update wiki status** - At sprint close, update implementation and proposal pages
-12. **Link lessons to wiki** - Include lesson links in implementation completion summary
-13. **Update CHANGELOG** - MANDATORY at sprint close, never skip
-14. **Run suggest-version** - Check if release is needed after CHANGELOG update
+7. **Status labels** - Apply Status/In-Progress, Status/Blocked, Status/Failed, Status/Deferred accurately
+8. **One status at a time** - Remove old Status/* label before applying new one
+9. **Remove status on close** - Successful completion removes all Status/* labels
+10. **No MR subtasks** - MR body should NOT have checklists
+11. **Auto-check subtasks** - Mark issue subtasks complete on close
+12. **Track meticulously** - Update issues immediately, document blockers
+13. **Capture lessons** - At sprint close, interview thoroughly
+14. **Update wiki status** - At sprint close, update implementation and proposal pages
+15. **Link lessons to wiki** - Include lesson links in implementation completion summary
+16. **Update CHANGELOG** - MANDATORY at sprint close, never skip
+17. **Run suggest-version** - Check if release is needed after CHANGELOG update
 
 ## Your Mission
 
