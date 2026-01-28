@@ -53,6 +53,7 @@ class GiteaClient:
         self,
         state: str = 'open',
         labels: Optional[List[str]] = None,
+        milestone: Optional[str] = None,
         repo: Optional[str] = None
     ) -> List[Dict]:
         """
@@ -61,6 +62,7 @@ class GiteaClient:
         Args:
             state: Issue state (open, closed, all)
             labels: Filter by labels
+            milestone: Filter by milestone title (exact match)
             repo: Repository in 'owner/repo' format
 
         Returns:
@@ -71,6 +73,8 @@ class GiteaClient:
         params = {'state': state}
         if labels:
             params['labels'] = ','.join(labels)
+        if milestone:
+            params['milestones'] = milestone
         logger.info(f"Listing issues from {owner}/{target_repo} with state={state}")
         response = self.session.get(url, params=params)
         response.raise_for_status()
