@@ -6,6 +6,47 @@ description: Begin sprint execution with relevant lessons learned from previous 
 
 You are initiating sprint execution. The orchestrator agent will coordinate the work, analyze dependencies for parallel execution, search for relevant lessons learned, and guide you through the implementation process.
 
+## Sprint Approval Verification
+
+**CRITICAL: Sprint must be approved before execution.**
+
+The orchestrator checks for approval in the milestone description:
+
+```
+get_milestone(milestone_id=17)
+→ Check description for "## Sprint Approval" section
+```
+
+**If Approval Missing:**
+```
+⚠️ SPRINT NOT APPROVED
+
+Sprint 17 has not been approved for execution.
+The milestone description does not contain an approval record.
+
+Please run /sprint-plan to:
+1. Review the sprint scope
+2. Approve the execution plan
+
+Then run /sprint-start again.
+```
+
+**If Approval Found:**
+```
+✓ Sprint Approval Verified
+  Approved: 2026-01-28 14:30
+  Scope:
+    Branches: feat/45-*, feat/46-*, feat/47-*
+    Files: auth/*, api/routes/auth.py, tests/test_auth*
+
+Proceeding with execution within approved scope...
+```
+
+**Scope Enforcement:**
+- Agents can ONLY create branches matching approved patterns
+- Agents can ONLY modify files within approved paths
+- Operations outside scope require re-approval via `/sprint-plan`
+
 ## Branch Detection
 
 **CRITICAL:** Before proceeding, check the current git branch:
@@ -25,7 +66,18 @@ If you are on a production or staging branch, you MUST stop and ask the user to 
 
 The orchestrator agent will:
 
-1. **Fetch Sprint Issues**
+1. **Verify Sprint Approval**
+   - Check milestone description for `## Sprint Approval` section
+   - If no approval found, STOP and direct user to `/sprint-plan`
+   - If approval found, extract scope (branches, files)
+   - Agents operate ONLY within approved scope
+
+2. **Detect Checkpoints (Resume Support)**
+   - Check each open issue for `## Checkpoint` comments
+   - If checkpoint found, offer to resume from that point
+   - Resume preserves: branch, completed work, pending steps
+
+3. **Fetch Sprint Issues**
    - Use `list_issues` to fetch open issues for the sprint
    - Identify priorities based on labels (Priority/Critical, Priority/High, etc.)
 
@@ -71,6 +123,67 @@ Parallel Execution Batches:
 ```
 
 **Independent tasks in the same batch run in parallel.**
+
+## File Conflict Prevention (MANDATORY)
+
+**CRITICAL: Before dispatching parallel agents, check for file overlap.**
+
+**Pre-Dispatch Conflict Check:**
+
+1. **Identify target files** for each task in the batch
+2. **Check for overlap** - Do any tasks modify the same file?
+3. **If overlap detected** - Sequentialize those specific tasks
+
+**Example Conflict Detection:**
+```
+Batch 1 Analysis:
+  #45 - Implement JWT service
+        Files: auth/jwt_service.py, auth/__init__.py, tests/test_jwt.py
+
+  #48 - Update API documentation
+        Files: docs/api.md, README.md
+
+  Overlap: NONE → Safe to parallelize
+
+Batch 2 Analysis:
+  #46 - Build login endpoint
+        Files: api/routes/auth.py, auth/__init__.py
+
+  #49 - Add auth tests
+        Files: tests/test_auth.py, auth/__init__.py
+
+  Overlap: auth/__init__.py → CONFLICT!
+  Action: Sequentialize #46 and #49 (run #46 first)
+```
+
+**Conflict Resolution Rules:**
+
+| Conflict Type | Action |
+|---------------|--------|
+| Same file in checklist | Sequentialize tasks |
+| Same directory | Review if safe, usually OK |
+| Shared test file | Sequentialize or assign different test files |
+| Shared config | Sequentialize |
+
+**Branch Isolation Protocol:**
+
+Even for parallel tasks, each MUST run on its own branch:
+```
+Task #45 → feat/45-jwt-service (isolated)
+Task #48 → feat/48-api-docs (isolated)
+```
+
+**Sequential Merge After Completion:**
+```
+1. Task #45 completes → merge feat/45-jwt-service to development
+2. Task #48 completes → merge feat/48-api-docs to development
+3. Never merge simultaneously - always sequential to detect conflicts
+```
+
+**If Merge Conflict Occurs:**
+1. Stop second task
+2. Resolve conflict manually or assign to human
+3. Resume/restart second task with updated base
 
 ## Branch Naming Convention (MANDATORY)
 
@@ -237,6 +350,61 @@ Batch 2 (now unblocked):
 
 #45 completed! #46 and #49 are now unblocked.
 Starting #46 while #48 continues...
+```
+
+## Checkpoint Resume Support
+
+If a previous session was interrupted (agent stopped, failure, budget exhausted), checkpoints enable resumption.
+
+**Checkpoint Detection:**
+The orchestrator scans issue comments for `## Checkpoint` markers containing:
+- Branch name
+- Last commit hash
+- Completed/pending steps
+- Files modified
+
+**Resume Flow:**
+```
+User: /sprint-start
+
+Orchestrator: Checking for checkpoints...
+
+Found checkpoint for #45 (JWT service):
+  Branch: feat/45-jwt-service
+  Last activity: 2 hours ago
+  Progress: 4/7 steps completed
+  Pending: Write tests, add refresh, commit
+
+Options:
+  1. Resume from checkpoint (recommended)
+  2. Start fresh (lose previous work)
+  3. Review checkpoint details
+
+User: 1
+
+Orchestrator: Resuming #45 from checkpoint...
+  ✓ Branch exists
+  ✓ Files match checkpoint
+  ✓ Dispatching executor with context
+
+Executor continues from pending steps...
+```
+
+**Checkpoint Format:**
+Executors save checkpoints after major steps:
+```markdown
+## Checkpoint
+**Branch:** feat/45-jwt-service
+**Commit:** abc123
+**Phase:** Testing
+
+### Completed Steps
+- [x] Step 1
+- [x] Step 2
+
+### Pending Steps
+- [ ] Step 3
+- [ ] Step 4
 ```
 
 ## Getting Started

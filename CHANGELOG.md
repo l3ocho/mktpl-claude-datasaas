@@ -8,6 +8,34 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added
 
+#### Sprint 3: Hooks (V5.2.0 Plugin Enhancements)
+Implementation of 6 foundational hooks across 4 plugins.
+
+**git-flow v1.1.0:**
+- **Commit message enforcement hook** - PreToolUse hook validates conventional commit format on all `git commit` commands (not just `/commit`). Blocks invalid commits with format guidance.
+- **Branch name validation hook** - PreToolUse hook validates branch naming on `git checkout -b` and `git switch -c`. Enforces `type/description` format, lowercase, max 50 chars.
+
+**clarity-assist v1.1.0:**
+- **Vagueness detection hook** - UserPromptSubmit hook detects vague prompts and suggests `/clarify` when ambiguity, missing context, or unclear scope detected.
+
+**data-platform v1.1.0:**
+- **Schema diff detection hook** - PostToolUse hook monitors edits to schema files (dbt models, SQL migrations). Warns on breaking changes (column removal, type narrowing, constraint addition).
+
+**contract-validator v1.1.0:**
+- **SessionStart auto-validate hook** - Smart validation that only runs when plugin files changed since last check. Detects interface compatibility issues at session start.
+- **Breaking change detection hook** - PostToolUse hook monitors plugin interface files (README.md, plugin.json). Warns when changes would break consumers.
+
+**Sprint Completed:**
+- Milestone: Sprint 3 - Hooks (closed 2026-01-28)
+- Issues: #225, #226, #227, #228, #229, #230
+- Wiki: [Change V5.2.0: Plugin Enhancements Proposal](https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/wiki/Change-V5.2.0:-Plugin-Enhancements-Proposal)
+- Lessons: Background agent permissions, agent runaway detection, MCP branch detection bug
+
+### Known Issues
+- **MCP Bug #231:** Branch detection in Gitea MCP runs from installed plugin directory, not user's project directory. Workaround: close issues via Gitea web UI.
+
+---
+
 #### Gitea MCP Server - create_pull_request Tool
 - **`create_pull_request`**: Create new pull requests via MCP
   - Parameters: title, body, head (source branch), base (target branch), labels

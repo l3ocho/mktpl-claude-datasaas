@@ -136,6 +136,58 @@ The planner agent will:
     - Document dependency graph
     - Provide sprint overview with wiki links
 
+11. **Request Sprint Approval**
+    - Present approval request with scope summary
+    - Capture explicit user approval
+    - Record approval in milestone description
+    - Approval scopes what sprint-start can execute
+
+## Sprint Approval (MANDATORY)
+
+**Planning DOES NOT equal execution permission.**
+
+After creating issues, the planner MUST request explicit approval:
+
+```
+Sprint 17 Planning Complete
+===========================
+
+Created Issues:
+- #45: [Sprint 17] feat: JWT token generation
+- #46: [Sprint 17] feat: Login endpoint
+- #47: [Sprint 17] test: Auth tests
+
+Execution Scope:
+- Branches: feat/45-*, feat/46-*, feat/47-*
+- Files: auth/*, api/routes/auth.py, tests/test_auth*
+- Dependencies: PyJWT, python-jose
+
+⚠️ APPROVAL REQUIRED
+
+Do you approve this sprint for execution?
+This grants permission for agents to:
+- Create and modify files in the listed scope
+- Create branches with the listed prefixes
+- Install listed dependencies
+
+Type "approve sprint 17" to authorize execution.
+```
+
+**On Approval:**
+1. Record approval in milestone description
+2. Note timestamp and scope
+3. Sprint-start will verify approval exists
+
+**Approval Record Format:**
+```markdown
+## Sprint Approval
+**Approved:** 2026-01-28 14:30
+**Approver:** User
+**Scope:**
+- Branches: feat/45-*, feat/46-*, feat/47-*
+- Files: auth/*, api/routes/auth.py, tests/test_auth*
+```
+
 ## Issue Title Format (MANDATORY)
 
 ```
@@ -155,15 +207,70 @@ The planner agent will:
 - `[Sprint 17] fix: Resolve login timeout issue`
 - `[Sprint 18] refactor: Extract authentication module`
 
-## Task Granularity Guidelines
+## Task Sizing Rules (MANDATORY)
 
-| Size | Scope | Example |
-|------|-------|---------|
-| **Small** | 1-2 hours, single file/component | Add validation to one field |
-| **Medium** | Half day, multiple files, one feature | Implement new API endpoint |
-| **Large** | Should be broken down | Full authentication system |
+**CRITICAL: Tasks sized L or XL MUST be broken down into smaller tasks.**
 
-**If a task is too large, break it down into smaller tasks.**
+| Effort | Files | Checklist Items | Max Tool Calls | Agent Scope |
+|--------|-------|-----------------|----------------|-------------|
+| **XS** | 1 file | 0-2 items | ~30 | Single function/fix |
+| **S** | 1 file | 2-4 items | ~50 | Single file feature |
+| **M** | 2-3 files | 4-6 items | ~80 | Multi-file feature |
+| **L** | MUST BREAK DOWN | - | - | Too large for one agent |
+| **XL** | MUST BREAK DOWN | - | - | Way too large |
+
+**Why This Matters:**
+- Agents running 400+ tool calls take 1+ hour, with no visibility
+- Large tasks lack clear completion criteria
+- Debugging failures is extremely difficult
+- Small tasks enable parallel execution
+
+**Scoping Checklist:**
+1. Can this be completed in one file? → XS or S
+2. Does it touch 2-3 files? → M (maximum for single task)
+3. Does it touch 4+ files? → MUST break down
+4. Would you estimate 50+ tool calls? → MUST break down
+5. Does it require complex decision-making mid-task? → MUST break down
+
+**Example Breakdown:**
+
+**BAD (L - too broad):**
+```
+[Sprint 3] feat: Implement schema diff detection hook
+Labels: Efforts/L
+- Hook skeleton
+- Pattern detection for DROP/ALTER/RENAME
+- Warning output formatting
+- Integration with hooks.json
+```
+
+**GOOD (broken into S tasks):**
+```
+[Sprint 3] feat: Create schema-diff-check.sh hook skeleton
+Labels: Efforts/S
+- [ ] Create hook file with standard header
+- [ ] Add file type detection for SQL/migrations
+- [ ] Exit 0 (non-blocking)
+
+[Sprint 3] feat: Add DROP/ALTER pattern detection
+Labels: Efforts/S
+- [ ] Detect DROP COLUMN/TABLE/INDEX
+- [ ] Detect ALTER TYPE changes
+- [ ] Detect RENAME operations
+
+[Sprint 3] feat: Add warning output formatting
+Labels: Efforts/S
+- [ ] Format breaking change warnings
+- [ ] Add hook prefix to output
+- [ ] Test output visibility
+
+[Sprint 3] chore: Register hook in hooks.json
+Labels: Efforts/XS
+- [ ] Add PostToolUse:Edit hook entry
+- [ ] Test hook triggers on SQL edits
+```
+
+**The planner MUST refuse to create L/XL tasks without breakdown.**
 
 ## MCP Tools Available
 
