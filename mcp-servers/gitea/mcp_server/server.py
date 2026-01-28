@@ -168,6 +168,10 @@ class GiteaMCPServer:
                                 "items": {"type": "string"},
                                 "description": "New labels"
                             },
+                            "milestone": {
+                                "type": "integer",
+                                "description": "Milestone ID to assign"
+                            },
                             "repo": {
                                 "type": "string",
                                 "description": "Repository name (for PMO mode)"
