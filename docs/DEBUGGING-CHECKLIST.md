@@ -128,7 +128,7 @@ cat ~/.config/claude/netbox.env
 
 # Project-level config (in target project)
 cat /path/to/project/.env
-# Should contain: GITEA_ORG, GITEA_REPO
+# Should contain: GITEA_REPO=owner/repo (e.g., my-org/my-repo)
 ```
 
 ---
