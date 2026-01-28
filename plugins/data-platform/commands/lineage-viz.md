@@ -1,5 +1,17 @@
 # /lineage-viz - Mermaid Lineage Visualization
 
+## Visual Output
+
+When executing this command, display the plugin header:
+
+```
+┌──────────────────────────────────────────────────────────────────┐
+│  📊 DATA-PLATFORM · Lineage Visualization                         │
+└──────────────────────────────────────────────────────────────────┘
+```
+
+Then proceed with the visualization.
+
 Generate Mermaid flowchart syntax for dbt model lineage.
 
 ## Usage

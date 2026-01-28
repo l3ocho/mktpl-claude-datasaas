@@ -111,6 +111,19 @@ pytest tests/test_orders.py -v
 | Cargo.toml | cargo test |
 | mix.exs | ExUnit |
 
+## Visual Output
+
+When executing this command, display the plugin header:
+
+```
+╔══════════════════════════════════════════════════════════════════╗
+║  📋 PROJMAN                                                      ║
+║  Test Generation                                                 ║
+╚══════════════════════════════════════════════════════════════════╝
+```
+
+Then proceed with the test generation workflow.
+
 ## Integration with /test-check
 
 - `/test-gen` creates new tests

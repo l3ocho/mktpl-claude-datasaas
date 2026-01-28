@@ -6,6 +6,18 @@ description: Detect documentation files that are stale relative to their associa
 
 Identify documentation files that may be outdated based on commit history.
 
+## Visual Output
+
+When executing this command, display the plugin header:
+
+```
+┌──────────────────────────────────────────────────────────────────┐
+│  📝 DOC-GUARDIAN · Stale Documentation Check                     │
+└──────────────────────────────────────────────────────────────────┘
+```
+
+Then proceed with the check.
+
 ## Process
 
 1. **Map Documentation to Code**

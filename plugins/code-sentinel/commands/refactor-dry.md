@@ -6,6 +6,18 @@ description: Preview refactoring changes without applying them
 
 Analyze and preview refactoring opportunities without making changes.
 
+## Visual Output
+
+When executing this command, display the plugin header:
+
+```
+┌──────────────────────────────────────────────────────────────────┐
+│  🔒 CODE-SENTINEL · Refactor Preview                             │
+└──────────────────────────────────────────────────────────────────┘
+```
+
+Then proceed with the analysis.
+
 ## Usage
 ```
 /refactor-dry <target> [--all]

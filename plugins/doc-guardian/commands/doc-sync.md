@@ -6,6 +6,18 @@ description: Synchronize all pending documentation updates in a single commit
 
 Apply all pending documentation updates detected by doc-guardian hooks.
 
+## Visual Output
+
+When executing this command, display the plugin header:
+
+```
+┌──────────────────────────────────────────────────────────────────┐
+│  📝 DOC-GUARDIAN · Documentation Sync                            │
+└──────────────────────────────────────────────────────────────────┘
+```
+
+Then proceed with the sync.
+
 ## Process
 
 1. **Review Pending Queue**

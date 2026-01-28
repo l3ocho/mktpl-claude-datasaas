@@ -11,7 +11,7 @@
   "plugins": [
     {
       "name": "projman",
-      "version": "3.2.0",
+      "version": "3.3.0",
       "description": "Sprint planning and project management with Gitea integration",
       "source": "./plugins/projman",
       "author": {
@@ -27,7 +27,7 @@
     },
     {
       "name": "doc-guardian",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "description": "Automatic documentation drift detection and synchronization",
       "source": "./plugins/doc-guardian",
       "author": {
@@ -75,7 +75,7 @@
     },
     {
       "name": "cmdb-assistant",
-      "version": "1.1.0",
+      "version": "1.2.0",
       "description": "NetBox CMDB integration with data quality validation and machine registration",
       "source": "./plugins/cmdb-assistant",
       "author": {
@@ -91,7 +91,7 @@
     },
     {
       "name": "claude-config-maintainer",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "description": "CLAUDE.md optimization and maintenance for Claude Code projects",
       "source": "./plugins/claude-config-maintainer",
       "author": {
@@ -106,7 +106,7 @@
     },
     {
       "name": "clarity-assist",
-      "version": "1.0.0",
+      "version": "1.2.0",
       "description": "Prompt optimization and requirement clarification with ND-friendly accommodations",
       "source": "./plugins/clarity-assist",
       "author": {
@@ -121,7 +121,7 @@
     },
     {
       "name": "git-flow",
-      "version": "1.0.0",
+      "version": "1.2.0",
       "description": "Git workflow automation with intelligent commit messages and branch management",
       "source": "./plugins/git-flow",
       "author": {
@@ -136,7 +136,7 @@
     },
     {
       "name": "pr-review",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "description": "Multi-agent pull request review with confidence scoring and actionable feedback",
       "source": "./plugins/pr-review",
       "author": {
@@ -152,7 +152,7 @@
     },
     {
       "name": "data-platform",
-      "version": "1.0.0",
+      "version": "1.2.0",
       "description": "Data engineering tools with pandas, PostgreSQL/PostGIS, and dbt integration",
       "source": "./plugins/data-platform",
       "author": {
@@ -168,7 +168,7 @@
     },
     {
       "name": "viz-platform",
-      "version": "1.0.0",
+      "version": "1.1.0",
       "description": "Visualization tools with Dash Mantine Components validation, Plotly charts, and theming",
       "source": "./plugins/viz-platform",
       "author": {
@@ -184,7 +184,7 @@
     },
     {
       "name": "contract-validator",
-      "version": "1.0.0",
+      "version": "1.2.0",
       "description": "Cross-plugin compatibility validation and Claude.md agent verification",
       "source": "./plugins/contract-validator",
       "author": {

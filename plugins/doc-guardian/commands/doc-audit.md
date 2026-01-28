@@ -6,6 +6,18 @@ description: Full documentation audit - scans entire project for doc drift witho
 
 Perform a comprehensive documentation drift analysis.
 
+## Visual Output
+
+When executing this command, display the plugin header:
+
+```
+┌──────────────────────────────────────────────────────────────────┐
+│  📝 DOC-GUARDIAN · Documentation Audit                          │
+└──────────────────────────────────────────────────────────────────┘
+```
+
+Then proceed with the audit.
+
 ## Process
 
 1. **Inventory Documentation Files**

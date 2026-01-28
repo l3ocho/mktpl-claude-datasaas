@@ -6,6 +6,18 @@ description: Generate changelog from conventional commits in Keep-a-Changelog fo
 
 Generate a changelog entry from conventional commits.
 
+## Visual Output
+
+When executing this command, display the plugin header:
+
+```
+┌──────────────────────────────────────────────────────────────────┐
+│  📝 DOC-GUARDIAN · Changelog Generation                          │
+└──────────────────────────────────────────────────────────────────┘
+```
+
+Then proceed with the generation.
+
 ## Process
 
 1. **Identify Commit Range**

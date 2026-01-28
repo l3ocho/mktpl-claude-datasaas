@@ -4,6 +4,18 @@ description: Sync project configuration with current git remote - use after chan
 
 # Project Sync (PR Review)
 
+## Visual Output
+
+When executing this command, display the plugin header:
+
+```
+┌──────────────────────────────────────────────────────────────────┐
+│  🔍 PR-REVIEW · Project Sync                                      │
+└──────────────────────────────────────────────────────────────────┘
+```
+
+Then proceed with the synchronization.
+
 Updates project configuration when the git remote URL has changed.
 
 **Use this when:**

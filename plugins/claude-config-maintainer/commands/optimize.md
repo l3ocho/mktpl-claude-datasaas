@@ -6,6 +6,18 @@ description: Optimize CLAUDE.md structure and content
 
 This command automatically optimizes your project's CLAUDE.md file based on best practices and identified issues.
 
+## Visual Output
+
+When executing this command, display the plugin header:
+
+```
+┌──────────────────────────────────────────────────────────────────┐
+│  ⚙️ CONFIG-MAINTAINER · CLAUDE.md Optimization                   │
+└──────────────────────────────────────────────────────────────────┘
+```
+
+Then proceed with the optimization.
+
 ## What This Command Does
 
 1. **Analyze Current File** - Identifies all optimization opportunities

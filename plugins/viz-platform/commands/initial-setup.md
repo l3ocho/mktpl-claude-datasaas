@@ -4,6 +4,18 @@ description: Interactive setup wizard for viz-platform plugin - configures MCP s
 
 # Viz-Platform Setup Wizard
 
+## Visual Output
+
+When executing this command, display the plugin header:
+
+```
+┌──────────────────────────────────────────────────────────────────┐
+│  🎨 VIZ-PLATFORM · Setup Wizard                                   │
+└──────────────────────────────────────────────────────────────────┘
+```
+
+Then proceed with the setup.
+
 This command sets up the viz-platform plugin with Dash Mantine Components validation and theming.
 
 ## Important Context

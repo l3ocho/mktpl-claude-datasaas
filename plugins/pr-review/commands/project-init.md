@@ -4,6 +4,18 @@ description: Quick project setup - configures only project-level settings for PR
 
 # Project Initialization (PR Review)
 
+## Visual Output
+
+When executing this command, display the plugin header:
+
+```
+┌──────────────────────────────────────────────────────────────────┐
+│  🔍 PR-REVIEW · Project Setup                                     │
+└──────────────────────────────────────────────────────────────────┘
+```
+
+Then proceed with the setup.
+
 Fast setup for a new project when system-level configuration is already complete.
 
 **Use this when:**

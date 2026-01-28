@@ -4,6 +4,18 @@ description: Interactive setup wizard for contract-validator plugin - verifies M
 
 # Contract-Validator Setup Wizard
 
+## Visual Output
+
+When executing this command, display the plugin header:
+
+```
+┌──────────────────────────────────────────────────────────────────┐
+│  ✅ CONTRACT-VALIDATOR · Setup Wizard                             │
+└──────────────────────────────────────────────────────────────────┘
+```
+
+Then proceed with the setup.
+
 This command sets up the contract-validator plugin for cross-plugin compatibility validation.
 
 ## Important Context

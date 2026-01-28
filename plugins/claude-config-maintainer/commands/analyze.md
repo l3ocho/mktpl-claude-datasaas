@@ -6,6 +6,18 @@ description: Analyze CLAUDE.md for optimization opportunities and plugin integra
 
 This command analyzes your project's CLAUDE.md file and provides a detailed report on optimization opportunities and plugin integration status.
 
+## Visual Output
+
+When executing this command, display the plugin header:
+
+```
+┌──────────────────────────────────────────────────────────────────┐
+│  ⚙️ CONFIG-MAINTAINER · CLAUDE.md Analysis                       │
+└──────────────────────────────────────────────────────────────────┘
+```
+
+Then proceed with the analysis.
+
 ## What This Command Does
 
 1. **Read CLAUDE.md** - Locates and reads the project's CLAUDE.md file

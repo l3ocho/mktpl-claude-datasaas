@@ -6,6 +6,18 @@ description: Apply refactoring patterns to improve code structure and maintainab
 
 Apply refactoring transformations to specified code.
 
+## Visual Output
+
+When executing this command, display the plugin header:
+
+```
+┌──────────────────────────────────────────────────────────────────┐
+│  🔒 CODE-SENTINEL · Refactor                                     │
+└──────────────────────────────────────────────────────────────────┘
+```
+
+Then proceed with the refactoring workflow.
+
 ## Usage
 ```
 /refactor <target> [--pattern=<pattern>]

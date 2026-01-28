@@ -6,6 +6,18 @@ description: Full security audit of codebase - scans all files for vulnerability
 
 Comprehensive security audit of the project.
 
+## Visual Output
+
+When executing this command, display the plugin header:
+
+```
+┌──────────────────────────────────────────────────────────────────┐
+│  🔒 CODE-SENTINEL · Security Scan                                │
+└──────────────────────────────────────────────────────────────────┘
+```
+
+Then proceed with the scan workflow.
+
 ## Process
 
 1. **File Discovery**

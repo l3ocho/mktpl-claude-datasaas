@@ -70,6 +70,19 @@ Analyze CHANGELOG.md and suggest appropriate semantic version bump.
 **Recommendation:** No release needed
 ```
 
+## Visual Output
+
+When executing this command, display the plugin header:
+
+```
+╔══════════════════════════════════════════════════════════════════╗
+║  📋 PROJMAN                                                      ║
+║  Version Analysis                                                ║
+╚══════════════════════════════════════════════════════════════════╝
+```
+
+Then proceed with the version analysis.
+
 ## Integration
 
 This command helps maintain proper versioning workflow:

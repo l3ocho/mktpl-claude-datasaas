@@ -4,6 +4,18 @@ description: Audit NetBox changes with filtering by date, user, or object type
 
 # CMDB Change Audit
 
+## Visual Output
+
+When executing this command, display the plugin header:
+
+```
+┌──────────────────────────────────────────────────────────────────┐
+│  🖥️ CMDB-ASSISTANT · Change Audit                                │
+└──────────────────────────────────────────────────────────────────┘
+```
+
+Then proceed with the audit.
+
 Query and analyze the NetBox audit log for change tracking and compliance.
 
 ## Usage

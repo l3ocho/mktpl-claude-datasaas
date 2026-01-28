@@ -19,7 +19,7 @@ AI-guided sprint planning with full Gitea integration. Transforms a proven 15-sp
 - Branch-aware security (development/staging/production)
 - Pre-sprint-close code quality review and test verification
 
-**Commands:** `/sprint-plan`, `/sprint-start`, `/sprint-status`, `/sprint-close`, `/labels-sync`, `/initial-setup`, `/project-init`, `/project-sync`, `/review`, `/test-check`, `/test-gen`, `/debug-report`, `/debug-review`, `/suggest-version`, `/proposal-status`
+**Commands:** `/sprint-plan`, `/sprint-start`, `/sprint-status`, `/sprint-close`, `/sprint-diagram`, `/labels-sync`, `/initial-setup`, `/project-init`, `/project-sync`, `/review`, `/test-check`, `/test-gen`, `/debug-report`, `/debug-review`, `/suggest-version`, `/proposal-status`
 
 #### [git-flow](./plugins/git-flow/README.md) *NEW in v3.0.0*
 **Git Workflow Automation**
@@ -44,14 +44,14 @@ Comprehensive pull request review using specialized agents.
 - Actionable feedback with suggested fixes
 - Gitea integration for automated review submission
 
-**Commands:** `/pr-review`, `/pr-summary`, `/pr-findings`, `/initial-setup`, `/project-init`, `/project-sync`
+**Commands:** `/pr-review`, `/pr-summary`, `/pr-findings`, `/pr-diff`, `/initial-setup`, `/project-init`, `/project-sync`
 
 #### [claude-config-maintainer](./plugins/claude-config-maintainer/README.md)
 **CLAUDE.md Optimization and Maintenance**
 
 Analyze, optimize, and create CLAUDE.md configuration files for Claude Code projects.
 
-**Commands:** `/config-analyze`, `/config-optimize`, `/config-init`
+**Commands:** `/config-analyze`, `/config-optimize`, `/config-init`, `/config-diff`, `/config-lint`
 
 #### [contract-validator](./plugins/contract-validator/README.md) *NEW in v5.0.0*
 **Cross-Plugin Compatibility Validation**
@@ -64,7 +64,7 @@ Validate plugin marketplaces for command conflicts, tool overlaps, and broken ag
 - Data flow validation for agent sequences
 - Markdown or JSON reports with actionable suggestions
 
-**Commands:** `/validate-contracts`, `/check-agent`, `/list-interfaces`, `/initial-setup`
+**Commands:** `/validate-contracts`, `/check-agent`, `/list-interfaces`, `/dependency-graph`, `/initial-setup`
 
 ### Productivity
 
@@ -84,7 +84,7 @@ Transform vague requests into clear specifications using structured methodology.
 
 Automatic documentation drift detection and synchronization.
 
-**Commands:** `/doc-audit`, `/doc-sync`
+**Commands:** `/doc-audit`, `/doc-sync`, `/changelog-gen`, `/doc-coverage`, `/stale-docs`
 
 #### [project-hygiene](./plugins/project-hygiene/README.md)
 **Post-Task Cleanup Automation**
@@ -107,7 +107,7 @@ Security vulnerability detection and code refactoring tools.
 
 Full CRUD operations for network infrastructure management directly from Claude Code.
 
-**Commands:** `/initial-setup`, `/cmdb-search`, `/cmdb-device`, `/cmdb-ip`, `/cmdb-site`, `/cmdb-audit`, `/cmdb-register`, `/cmdb-sync`
+**Commands:** `/initial-setup`, `/cmdb-search`, `/cmdb-device`, `/cmdb-ip`, `/cmdb-site`, `/cmdb-audit`, `/cmdb-register`, `/cmdb-sync`, `/cmdb-topology`, `/change-audit`, `/ip-conflicts`
 
 ### Data Engineering
 
@@ -122,7 +122,7 @@ Comprehensive data engineering toolkit with persistent DataFrame storage.
 - 100k row limit with chunking support
 - Auto-detection of dbt projects
 
-**Commands:** `/ingest`, `/profile`, `/schema`, `/explain`, `/lineage`, `/run`
+**Commands:** `/ingest`, `/profile`, `/schema`, `/explain`, `/lineage`, `/lineage-viz`, `/run`, `/dbt-test`, `/data-quality`, `/initial-setup`
 
 ### Visualization
 
@@ -138,7 +138,7 @@ Visualization toolkit with version-locked component validation and design token 
 - 5 Page tools for multi-page app structure
 - Dual theme storage: user-level and project-level
 
-**Commands:** `/chart`, `/dashboard`, `/theme`, `/theme-new`, `/theme-css`, `/component`, `/initial-setup`
+**Commands:** `/chart`, `/chart-export`, `/dashboard`, `/theme`, `/theme-new`, `/theme-css`, `/component`, `/accessibility-check`, `/breakpoints`, `/initial-setup`
 
 ## MCP Servers
 

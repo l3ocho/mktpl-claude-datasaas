@@ -4,6 +4,18 @@ description: Create a new custom theme with design tokens
 
 # Create New Theme
 
+## Visual Output
+
+When executing this command, display the plugin header:
+
+```
+┌──────────────────────────────────────────────────────────────────┐
+│  🎨 VIZ-PLATFORM · New Theme                                      │
+└──────────────────────────────────────────────────────────────────┘
+```
+
+Then proceed with the theme creation.
+
 Create a new custom theme with specified design tokens.
 
 ## Usage

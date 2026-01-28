@@ -158,6 +158,19 @@ When creating missing labels, match the format used by existing labels in the re
 - Ensure you're running in a directory with a git repository
 - Check that the `origin` remote is configured
 
+## Visual Output
+
+When executing this command, display the plugin header:
+
+```
+╔══════════════════════════════════════════════════════════════════╗
+║  📋 PROJMAN                                                      ║
+║  Labels Sync                                                     ║
+╚══════════════════════════════════════════════════════════════════╝
+```
+
+Then proceed with the sync workflow.
+
 ## When to Run
 
 Run `/labels-sync` when:

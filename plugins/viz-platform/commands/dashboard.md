@@ -4,6 +4,18 @@ description: Create a dashboard layout with the layout-builder agent
 
 # Create Dashboard
 
+## Visual Output
+
+When executing this command, display the plugin header:
+
+```
+┌──────────────────────────────────────────────────────────────────┐
+│  🎨 VIZ-PLATFORM · Dashboard Builder                              │
+└──────────────────────────────────────────────────────────────────┘
+```
+
+Then proceed with the dashboard creation.
+
 Create a dashboard layout structure with filters, grids, and sections.
 
 ## Usage

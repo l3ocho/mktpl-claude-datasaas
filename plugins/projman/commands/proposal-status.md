@@ -119,3 +119,16 @@ Summary:
 **Lesson Linking:**
 - Search lessons with implementation link in metadata
 - Or search by version/sprint tags
+
+## Visual Output
+
+When executing this command, display the plugin header:
+
+```
+╔══════════════════════════════════════════════════════════════════╗
+║  📋 PROJMAN                                                      ║
+║  Proposal Status                                                 ║
+╚══════════════════════════════════════════════════════════════════╝
+```
+
+Then proceed with the status report.

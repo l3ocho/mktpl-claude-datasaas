@@ -1,5 +1,17 @@
 # /list-interfaces - Show Plugin Interfaces
 
+## Visual Output
+
+When executing this command, display the plugin header:
+
+```
+┌──────────────────────────────────────────────────────────────────┐
+│  ✅ CONTRACT-VALIDATOR · List Interfaces                         │
+└──────────────────────────────────────────────────────────────────┘
+```
+
+Then proceed with the interface listing.
+
 Display what each plugin in the marketplace produces and accepts.
 
 ## Usage

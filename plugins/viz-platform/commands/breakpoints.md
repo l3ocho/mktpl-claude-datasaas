@@ -4,6 +4,18 @@ description: Configure responsive breakpoints for dashboard layouts
 
 # Configure Breakpoints
 
+## Visual Output
+
+When executing this command, display the plugin header:
+
+```
+┌──────────────────────────────────────────────────────────────────┐
+│  🎨 VIZ-PLATFORM · Breakpoints                                    │
+└──────────────────────────────────────────────────────────────────┘
+```
+
+Then proceed with the configuration.
+
 Configure responsive breakpoints for a layout to support mobile-first design across different screen sizes.
 
 ## Usage

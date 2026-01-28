@@ -206,6 +206,28 @@ Run `/sprint-status` when you want to:
 - Use `/sprint-close` when all issues are completed
 - Use `/sprint-plan` to adjust scope if blocked items can't be unblocked
 
+## Visual Output
+
+When executing this command, display the plugin header followed by a progress block:
+
+```
+╔══════════════════════════════════════════════════════════════════╗
+║  📋 PROJMAN                                                      ║
+║  ⚡ EXECUTION                                                    ║
+║  [Sprint Name]                                                   ║
+╚══════════════════════════════════════════════════════════════════╝
+
+┌─ Sprint Progress ────────────────────────────────────────────────┐
+│  [Sprint Name]                                                   │
+│  ████████████░░░░░░░░░░░░░░░░░░ 40% complete                     │
+│  ✅ Done: 4    ⏳ Active: 2    ⬚ Pending: 4                       │
+└──────────────────────────────────────────────────────────────────┘
+```
+
+Replace `[Sprint Name]` with the actual sprint/milestone name. Calculate percentage from completed vs total issues.
+
+Then proceed with the full status report.
+
 ## Example Usage
 
 ```

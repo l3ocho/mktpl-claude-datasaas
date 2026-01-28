@@ -4,6 +4,18 @@ description: Audit NetBox data quality and identify consistency issues
 
 # CMDB Data Quality Audit
 
+## Visual Output
+
+When executing this command, display the plugin header:
+
+```
+┌──────────────────────────────────────────────────────────────────┐
+│  🖥️ CMDB-ASSISTANT · Data Quality Audit                          │
+└──────────────────────────────────────────────────────────────────┘
+```
+
+Then proceed with the audit.
+
 Analyze NetBox data for quality issues and best practice violations.
 
 ## Usage

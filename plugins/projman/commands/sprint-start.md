@@ -410,6 +410,22 @@ Executors save checkpoints after major steps:
 - [ ] Step 4
 ```
 
+## Visual Output
+
+When executing this command, display the plugin header:
+
+```
+╔══════════════════════════════════════════════════════════════════╗
+║  📋 PROJMAN                                                      ║
+║  ⚡ EXECUTION                                                    ║
+║  [Sprint Name]                                                   ║
+╚══════════════════════════════════════════════════════════════════╝
+```
+
+Replace `[Sprint Name]` with the actual sprint/milestone name from Gitea.
+
+Then proceed with the command workflow.
+
 ## Getting Started
 
 Simply invoke `/sprint-start` and the orchestrator will:

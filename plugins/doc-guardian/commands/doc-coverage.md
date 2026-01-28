@@ -6,6 +6,18 @@ description: Calculate documentation coverage percentage for functions and class
 
 Analyze codebase to calculate documentation coverage metrics.
 
+## Visual Output
+
+When executing this command, display the plugin header:
+
+```
+┌──────────────────────────────────────────────────────────────────┐
+│  📝 DOC-GUARDIAN · Documentation Coverage                        │
+└──────────────────────────────────────────────────────────────────┘
+```
+
+Then proceed with the analysis.
+
 ## Process
 
 1. **Scan Source Files**

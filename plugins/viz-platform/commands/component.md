@@ -4,6 +4,18 @@ description: Inspect Dash Mantine Component props and validation
 
 # Inspect Component
 
+## Visual Output
+
+When executing this command, display the plugin header:
+
+```
+┌──────────────────────────────────────────────────────────────────┐
+│  🎨 VIZ-PLATFORM · Component Inspector                            │
+└──────────────────────────────────────────────────────────────────┘
+```
+
+Then proceed with the inspection.
+
 Inspect a Dash Mantine Component's available props, types, and defaults.
 
 ## Usage

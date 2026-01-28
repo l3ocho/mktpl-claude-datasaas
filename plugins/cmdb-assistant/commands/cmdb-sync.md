@@ -4,6 +4,18 @@ description: Synchronize current machine state with existing NetBox record
 
 # CMDB Machine Sync
 
+## Visual Output
+
+When executing this command, display the plugin header:
+
+```
+┌──────────────────────────────────────────────────────────────────┐
+│  🖥️ CMDB-ASSISTANT · Machine Sync                                │
+└──────────────────────────────────────────────────────────────────┘
+```
+
+Then proceed with the synchronization.
+
 Update an existing NetBox device record with the current machine state. Compares local system information with NetBox and applies changes.
 
 ## Usage

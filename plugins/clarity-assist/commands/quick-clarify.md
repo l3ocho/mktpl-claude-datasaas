@@ -1,5 +1,17 @@
 # /quick-clarify - Rapid Clarification Mode
 
+## Visual Output
+
+When executing this command, display the plugin header:
+
+```
+┌──────────────────────────────────────────────────────────────────┐
+│  💬 CLARITY-ASSIST · Quick Clarify                               │
+└──────────────────────────────────────────────────────────────────┘
+```
+
+Then proceed with the workflow.
+
 ## Purpose
 
 Single-pass clarification for requests that are mostly clear but need minor disambiguation.

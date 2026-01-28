@@ -375,6 +375,20 @@ Milestone: Sprint 17 - User Authentication (Due: 2025-02-01)
 Wiki: https://gitea.example.com/org/repo/wiki/Change-V1.2.0%3A-Proposal
 ```
 
+## Visual Output
+
+When executing this command, display the plugin header:
+
+```
+╔══════════════════════════════════════════════════════════════════╗
+║  📋 PROJMAN                                                      ║
+║  🎯 PLANNING                                                     ║
+║  Sprint Planning                                                 ║
+╚══════════════════════════════════════════════════════════════════╝
+```
+
+Then proceed with the command workflow.
+
 ## Getting Started
 
 Invoke the planner agent by providing your sprint goals. The agent will guide you through the planning process.

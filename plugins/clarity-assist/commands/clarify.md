@@ -1,5 +1,17 @@
 # /clarify - Full Prompt Optimization
 
+## Visual Output
+
+When executing this command, display the plugin header:
+
+```
+┌──────────────────────────────────────────────────────────────────┐
+│  💬 CLARITY-ASSIST · Prompt Optimization                         │
+└──────────────────────────────────────────────────────────────────┘
+```
+
+Then proceed with the workflow.
+
 ## Purpose
 
 Transform vague, incomplete, or ambiguous requests into clear, actionable specifications using the 4-D methodology with neurodivergent-friendly accommodations.
