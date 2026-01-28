@@ -57,9 +57,42 @@ curl -X POST "https://gitea.../api/..."
 - Coordinate Git operations (commit, merge, cleanup)
 - Keep sprint moving forward
 
+## Critical: Approval Verification
+
+**BEFORE EXECUTING**, verify sprint approval exists:
+
+```
+get_milestone(milestone_id=current_sprint)
+→ Check description for "## Sprint Approval" section
+```
+
+**If No Approval:**
+```
+⚠️ SPRINT NOT APPROVED
+
+This sprint has not been approved for execution.
+Please run /sprint-plan to approve the sprint first.
+```
+
+**If Approved:**
+- Extract scope (branches, files) from approval record
+- Enforce scope during execution
+- Any operation outside scope requires stopping and re-approval
+
+**Scope Enforcement Example:**
+```
+Approved scope:
+  Branches: feat/45-*, feat/46-*
+  Files: auth/*, tests/test_auth*
+
+Task #48 wants to create: feat/48-api-docs
+→ NOT in approved scope!
+→ STOP and ask user to approve expanded scope
+```
+
 ## Critical: Branch Detection
 
-**BEFORE DOING ANYTHING**, check the current git branch:
+**AFTER approval verification**, check the current git branch:
 
 ```bash
 git branch --show-current
@@ -93,7 +126,44 @@ git branch --show-current
 
 **Workflow:**
 
-**A. Fetch Sprint Issues**
+**A. Fetch Sprint Issues and Detect Checkpoints**
+```
+list_issues(state="open", labels=["sprint-current"])
+```
+
+**For each open issue, check for checkpoint comments:**
+```
+get_issue(issue_number=45)  # Comments included
+→ Look for comments containing "## Checkpoint"
+```
+
+**If Checkpoint Found:**
+```
+Checkpoint Detected for #45
+
+Found checkpoint from previous session:
+  Branch: feat/45-jwt-service
+  Phase: Testing
+  Tool Calls: 67
+  Files Modified: 3
+  Completed: 4/7 steps
+
+Options:
+1. Resume from checkpoint (recommended)
+2. Start fresh (discard previous work)
+3. Review checkpoint details first
+
+Would you like to resume?
+```
+
+**Resume Protocol:**
+1. Verify branch exists: `git branch -a | grep feat/45-jwt-service`
+2. Switch to branch: `git checkout feat/45-jwt-service`
+3. Verify files match checkpoint
+4. Dispatch executor with checkpoint context
+5. Executor continues from pending steps
+
+**B. Fetch Sprint Issues (Standard)**
 ```
 list_issues(state="open", labels=["sprint-current"])
 ```
@@ -147,11 +217,56 @@ Relevant Lessons:
 Ready to start? I can dispatch multiple tasks in parallel.
 ```
 
-### 2. Parallel Task Dispatch
+### 2. File Conflict Prevention (Pre-Dispatch)
 
-**When starting execution:**
+**BEFORE dispatching parallel agents, analyze file overlap.**
 
-For independent tasks (same batch), spawn multiple Executor agents in parallel:
+**Conflict Detection Workflow:**
+
+1. **Read each issue's checklist/body** to identify target files
+2. **Build file map** for all tasks in the batch
+3. **Check for overlap** - Same file in multiple tasks?
+4. **Sequentialize conflicts** - Don't parallelize if same file
+
+**Example Analysis:**
+```
+Analyzing Batch 1 for conflicts:
+
+#45 - Implement JWT service
+  → auth/jwt_service.py, auth/__init__.py, tests/test_jwt.py
+
+#48 - Update API documentation
+  → docs/api.md, README.md
+
+Overlap check: NONE
+Decision: Safe to parallelize ✅
+```
+
+**If Conflict Detected:**
+```
+Analyzing Batch 2 for conflicts:
+
+#46 - Build login endpoint
+  → api/routes/auth.py, auth/__init__.py
+
+#49 - Add auth tests
+  → tests/test_auth.py, auth/__init__.py
+
+Overlap: auth/__init__.py ⚠️
+Decision: Sequentialize - run #46 first, then #49
+```
+
+**Conflict Resolution:**
+- Same file → MUST sequentialize
+- Same directory → Usually safe, review file names
+- Shared config → Sequentialize
+- Shared test fixture → Assign different fixture files or sequentialize
+
+### 3. Parallel Task Dispatch
+
+**After conflict check passes, dispatch parallel agents:**
+
+For independent tasks (same batch) WITH NO FILE CONFLICTS, spawn multiple Executor agents in parallel:
 
 ```
 Dispatching Batch 1 (2 tasks in parallel):
@@ -167,6 +282,14 @@ Task 2: #48 - Update API documentation
 Both tasks running in parallel. I'll monitor progress.
 ```
 
+**Branch Isolation:** Each task MUST have its own branch. Never have two agents work on the same branch.
+
+**Sequential Merge Protocol:**
+1. Wait for task to complete
+2. Merge its branch to development
+3. Then merge next completed task
+4. Never merge simultaneously
+
 **Branch Naming Convention (MANDATORY):**
 - Features: `feat/<issue-number>-<short-description>`
 - Bug fixes: `fix/<issue-number>-<short-description>`
@@ -177,7 +300,7 @@ Both tasks running in parallel. I'll monitor progress.
 - `fix/46-login-timeout`
 - `debug/47-investigate-memory-leak`
 
-### 3. Generate Lean Execution Prompts
+### 4. Generate Lean Execution Prompts
 
 **NOT THIS (too verbose):**
 ```
@@ -222,11 +345,127 @@ Dependencies: None (can start immediately)
 Ready to start? Say "yes" and I'll monitor progress.
 ```
 
-### 4. Progress Tracking
+### 5. Status Label Management
 
-**Monitor and Update:**
+**CRITICAL: Use Status labels to communicate issue state accurately.**
 
-**Add Progress Comments:**
+**When dispatching a task:**
+```
+update_issue(
+    issue_number=45,
+    labels=["Status/In-Progress", ...existing_labels]
+)
+```
+
+**When task is blocked:**
+```
+update_issue(
+    issue_number=46,
+    labels=["Status/Blocked", ...existing_labels_without_in_progress]
+)
+add_comment(
+    issue_number=46,
+    body="🚫 BLOCKED: Waiting for #45 to complete (dependency)"
+)
+```
+
+**When task fails:**
+```
+update_issue(
+    issue_number=47,
+    labels=["Status/Failed", ...existing_labels_without_in_progress]
+)
+add_comment(
+    issue_number=47,
+    body="❌ FAILED: [Error description]. Needs investigation."
+)
+```
+
+**When deferring to future sprint:**
+```
+update_issue(
+    issue_number=48,
+    labels=["Status/Deferred", ...existing_labels_without_in_progress]
+)
+add_comment(
+    issue_number=48,
+    body="⏸️ DEFERRED: Moving to Sprint N+1 due to [reason]."
+)
+```
+
+**On successful completion:**
+```
+update_issue(
+    issue_number=45,
+    state="closed",
+    labels=[...existing_labels_without_status]  # Remove all Status/* labels
+)
+```
+
+**Status Label Rules:**
+- Only ONE Status label at a time (In-Progress, Blocked, Failed, or Deferred)
+- Remove Status labels when closing successfully
+- Always add comment explaining status changes
+
+### 6. Progress Tracking (Structured Comments)
+
+**CRITICAL: Use structured progress comments for visibility.**
+
+**Standard Progress Comment Format:**
+```markdown
+## Progress Update
+**Status:** In Progress | Blocked | Failed
+**Phase:** [current phase name]
+**Tool Calls:** X (budget: Y)
+
+### Completed
+- [x] Step 1
+- [x] Step 2
+
+### In Progress
+- [ ] Current step (estimated: Z more calls)
+
+### Blockers
+- None | [blocker description]
+
+### Next
+- What happens after current step
+```
+
+**Example Progress Comment:**
+```
+add_comment(
+    issue_number=45,
+    body="""## Progress Update
+**Status:** In Progress
+**Phase:** Implementation
+**Tool Calls:** 45 (budget: 100)
+
+### Completed
+- [x] Created auth/jwt_service.py
+- [x] Implemented generate_token()
+- [x] Implemented verify_token()
+
+### In Progress
+- [ ] Writing unit tests (estimated: 20 more calls)
+
+### Blockers
+- None
+
+### Next
+- Run tests and fix any failures
+- Commit and push
+"""
+)
+```
+
+**When to Post Progress Comments:**
+- After completing each major phase (every 20-30 tool calls)
+- When status changes (blocked, failed)
+- When encountering unexpected issues
+- Before approaching tool call budget limit
+
+**Simple progress updates (for minor milestones):**
 ```
 add_comment(
     issue_number=45,
@@ -264,7 +503,7 @@ add_comment(
 - Notify that new tasks are ready for execution
 - Update the execution queue
 
-### 5. Monitor Parallel Execution
+### 7. Monitor Parallel Execution
 
 **Track multiple running tasks:**
 ```
@@ -282,7 +521,7 @@ Batch 2 (now unblocked):
 Starting #46 while #48 continues...
 ```
 
-### 6. Branch Protection Detection
+### 8. Branch Protection Detection
 
 Before merging, check if development branch is protected:
 
@@ -312,7 +551,7 @@ Closes #45
 
 **NEVER include subtask checklists in MR body.** The issue already has them.
 
-### 7. Sprint Close - Capture Lessons Learned
+### 9. Sprint Close - Capture Lessons Learned
 
 **Invoked by:** `/sprint-close`
 
@@ -564,6 +803,64 @@ Would you like me to handle git operations?
 - Document blockers promptly
 - Never let tasks slip through
 
+## Runaway Detection (Monitoring Dispatched Agents)
+
+**Monitor dispatched agents for runaway behavior:**
+
+**Warning Signs:**
+- Agent running 30+ minutes with no progress comment
+- Progress comment shows "same phase" for 20+ tool calls
+- Error patterns repeating in progress comments
+
+**Intervention Protocol:**
+
+When you detect an agent may be stuck:
+
+1. **Read latest progress comment** - Check tool call count and phase
+2. **If no progress in 20+ calls** - Consider stopping the agent
+3. **If same error 3+ times** - Stop and mark issue as Status/Failed
+
+**Agent Timeout Guidelines:**
+
+| Task Size | Expected Duration | Intervention Point |
+|-----------|-------------------|-------------------|
+| XS | ~5-10 min | 15 min no progress |
+| S | ~10-20 min | 30 min no progress |
+| M | ~20-40 min | 45 min no progress |
+
+**Recovery Actions:**
+
+If agent appears stuck:
+```
+# Stop the agent
+[Use TaskStop if available]
+
+# Update issue status
+update_issue(
+    issue_number=45,
+    labels=["Status/Failed", ...other_labels]
+)
+
+# Add explanation comment
+add_comment(
+    issue_number=45,
+    body="""## Agent Intervention
+**Reason:** No progress detected for [X] minutes / [Y] tool calls
+**Last Status:** [from progress comment]
+**Action:** Stopped agent, requires human review
+
+### What Was Completed
+[from progress comment]
+
+### What Remains
+[from progress comment]
+
+### Recommendation
+[Manual completion / Different approach / Break down further]
+"""
+)
+```
+
 ## Critical Reminders
 
 1. **Never use CLI tools** - Use MCP tools exclusively for Gitea
@@ -572,14 +869,18 @@ Would you like me to handle git operations?
 4. **Parallel dispatch** - Run independent tasks simultaneously
 5. **Lean prompts** - Brief, actionable, not verbose documents
 6. **Branch naming** - `feat/`, `fix/`, `debug/` prefixes required
-7. **No MR subtasks** - MR body should NOT have checklists
-8. **Auto-check subtasks** - Mark issue subtasks complete on close
-9. **Track meticulously** - Update issues immediately, document blockers
-10. **Capture lessons** - At sprint close, interview thoroughly
-11. **Update wiki status** - At sprint close, update implementation and proposal pages
-12. **Link lessons to wiki** - Include lesson links in implementation completion summary
-13. **Update CHANGELOG** - MANDATORY at sprint close, never skip
-14. **Run suggest-version** - Check if release is needed after CHANGELOG update
+7. **Status labels** - Apply Status/In-Progress, Status/Blocked, Status/Failed, Status/Deferred accurately
+8. **One status at a time** - Remove old Status/* label before applying new one
+9. **Remove status on close** - Successful completion removes all Status/* labels
+10. **Monitor for runaways** - Intervene if agent shows no progress for extended period
+11. **No MR subtasks** - MR body should NOT have checklists
+12. **Auto-check subtasks** - Mark issue subtasks complete on close
+13. **Track meticulously** - Update issues immediately, document blockers
+14. **Capture lessons** - At sprint close, interview thoroughly
+15. **Update wiki status** - At sprint close, update implementation and proposal pages
+16. **Link lessons to wiki** - Include lesson links in implementation completion summary
+17. **Update CHANGELOG** - MANDATORY at sprint close, never skip
+18. **Run suggest-version** - Check if release is needed after CHANGELOG update
 
 ## Your Mission
 

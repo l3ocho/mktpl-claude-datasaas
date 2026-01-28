@@ -79,7 +79,12 @@ Completed Issues (3):
 
 In Progress (2):
   #46: [Sprint 18] feat: Build login endpoint [Type/Feature, Priority/High]
+       Status: In Progress | Phase: Implementation | Tool Calls: 45/100
+       Progress: 3/5 steps | Current: Writing validation logic
+
   #49: [Sprint 18] test: Add auth tests [Type/Test, Priority/Medium]
+       Status: In Progress | Phase: Testing | Tool Calls: 30/100
+       Progress: 2/4 steps | Current: Testing edge cases
 
 Ready to Start (2):
   #50: [Sprint 18] feat: Integrate OAuth providers [Type/Feature, Priority/Low]
@@ -137,12 +142,53 @@ Show only backend issues:
 list_issues(labels=["Component/Backend"])
 ```
 
+## Progress Comment Parsing
+
+Agents post structured progress comments in this format:
+
+```markdown
+## Progress Update
+**Status:** In Progress | Blocked | Failed
+**Phase:** [current phase name]
+**Tool Calls:** X (budget: Y)
+
+### Completed
+- [x] Step 1
+
+### In Progress
+- [ ] Current step
+
+### Blockers
+- None | [blocker description]
+```
+
+**To extract real-time progress:**
+1. Fetch issue comments: `get_issue(number)` includes recent comments
+2. Look for comments containing `## Progress Update`
+3. Parse the **Status:** line for current state
+4. Parse **Tool Calls:** for budget consumption
+5. Extract blockers from `### Blockers` section
+
+**Progress Summary Display:**
+```
+In Progress Issues:
+  #45: [Sprint 18] feat: JWT service
+       Status: In Progress | Phase: Testing | Tool Calls: 67/100
+       Completed: 4/6 steps | Current: Writing unit tests
+
+  #46: [Sprint 18] feat: Login endpoint
+       Status: Blocked | Phase: Implementation | Tool Calls: 23/100
+       Blocker: Waiting for JWT service (#45)
+```
+
 ## Blocker Detection
 
 The command identifies blocked issues by:
-1. **Dependency Analysis** - Uses `list_issue_dependencies` to find unmet dependencies
-2. **Comment Keywords** - Checks for "blocked", "blocker", "waiting for"
-3. **Stale Issues** - Issues with no recent activity (>7 days)
+1. **Progress Comments** - Parse `### Blockers` section from structured comments
+2. **Status Labels** - Check for `Status/Blocked` label on issue
+3. **Dependency Analysis** - Uses `list_issue_dependencies` to find unmet dependencies
+4. **Comment Keywords** - Checks for "blocked", "blocker", "waiting for"
+5. **Stale Issues** - Issues with no recent activity (>7 days)
 
 ## When to Use
 
