@@ -200,6 +200,7 @@ class IssueTools:
         body: Optional[str] = None,
         state: Optional[str] = None,
         labels: Optional[List[str]] = None,
+        milestone: Optional[int] = None,
         repo: Optional[str] = None
     ) -> Dict:
         """
@@ -211,6 +212,7 @@ class IssueTools:
             body: New body (optional)
             state: New state - 'open' or 'closed' (optional)
             labels: New labels (optional)
+            milestone: Milestone ID to assign (optional)
             repo: Override configured repo (for PMO multi-repo)
 
         Returns:
@@ -229,7 +231,7 @@ class IssueTools:
         loop = asyncio.get_event_loop()
         return await loop.run_in_executor(
             None,
-            lambda: self.gitea.update_issue(issue_number, title, body, state, labels, repo)
+            lambda: self.gitea.update_issue(issue_number, title, body, state, labels, milestone, repo)
         )
 
     async def add_comment(

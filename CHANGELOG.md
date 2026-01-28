@@ -4,9 +4,28 @@ All notable changes to the Leo Claude Marketplace will be documented in this fil
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
-## [Unreleased]
+## [5.2.0] - 2026-01-28
 
 ### Added
+
+#### Sprint 5: Documentation (V5.2.0 Plugin Enhancements)
+Documentation and guides for the plugin enhancements initiative.
+
+**git-flow v1.2.0:**
+- **Branching Strategy Guide** (`docs/BRANCHING-STRATEGY.md`) - Complete documentation of `development -> staging -> main` promotion flow with Mermaid diagrams
+
+**clarity-assist v1.2.0:**
+- **ND Support Guide** (`docs/ND-SUPPORT.md`) - Documentation of neurodivergent accommodations, features, and usage examples
+
+**Gitea MCP Server:**
+- **`update_issue` milestone parameter** - Can now assign/change milestones programmatically
+
+**Sprint Completed:**
+- Milestone: Sprint 5 - Documentation (closed 2026-01-28)
+- Issues: #266, #267, #268, #269
+- Wiki: [Change V5.2.0: Plugin Enhancements (Sprint 5 Documentation)](https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/wiki/Change-V5.2.0%3A-Plugin-Enhancements-%28Sprint-5-Documentation%29)
+
+---
 
 #### Sprint 4: Commands (V5.2.0 Plugin Enhancements)
 Implementation of 18 new user-facing commands across 8 plugins.
@@ -55,6 +74,7 @@ Implementation of 18 new user-facing commands across 8 plugins.
 
 ### Fixed
 - **MCP:** Project directory detection - all run.sh scripts now capture `CLAUDE_PROJECT_DIR` from PWD before changing directories
+- **Docs:** Added Gitea auto-close behavior and MCP session restart notes to DEBUGGING-CHECKLIST.md
 
 ---
 
