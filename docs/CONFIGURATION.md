@@ -171,8 +171,7 @@ This marketplace uses a **hybrid configuration** approach:
 │                  PROJECT-LEVEL (once per project)              │
 │                  <project-root>/.env                            │
 ├─────────────────────────────────────────────────────────────────┤
-│  GITEA_ORG               │  Organization for this project      │
-│  GITEA_REPO              │  Repository name for this project   │
+│  GITEA_REPO              │  Repository as owner/repo format    │
 │  GIT_WORKFLOW_STYLE      │  (optional) Override system default │
 │  PR_REVIEW_*             │  (optional) PR review settings      │
 └─────────────────────────────────────────────────────────────────┘
@@ -262,8 +261,7 @@ In each project root:
 
 ```bash
 cat > .env << 'EOF'
-GITEA_ORG=your-organization
-GITEA_REPO=your-repo-name
+GITEA_REPO=your-organization/your-repo-name
 EOF
 ```
 
@@ -307,7 +305,7 @@ GITEA_API_TOKEN=your_gitea_token_here
 | `GITEA_API_URL` | Gitea API endpoint (with `/api/v1`) | `https://gitea.example.com/api/v1` |
 | `GITEA_API_TOKEN` | Personal access token | `abc123...` |
 
-**Note:** `GITEA_ORG` is configured at the project level (see below) since different projects may belong to different organizations.
+**Note:** `GITEA_REPO` is configured at the project level in `owner/repo` format since different projects may belong to different organizations.
 
 **Generating a Gitea Token:**
 1. Log into Gitea → **User Icon** → **Settings**
@@ -362,9 +360,8 @@ GIT_CO_AUTHOR=true
 Create `.env` in each project root:
 
 ```bash
-# Required for projman, pr-review
-GITEA_ORG=your-organization
-GITEA_REPO=your-repo-name
+# Required for projman, pr-review (use owner/repo format)
+GITEA_REPO=your-organization/your-repo-name
 
 # Optional: Override git-flow defaults
 GIT_WORKFLOW_STYLE=pr-required
@@ -377,8 +374,7 @@ PR_REVIEW_AUTO_SUBMIT=false
 
 | Variable | Required | Description |
 |----------|----------|-------------|
-| `GITEA_ORG` | Yes | Gitea organization for this project |
-| `GITEA_REPO` | Yes | Repository name (must match Gitea exactly) |
+| `GITEA_REPO` | Yes | Repository in `owner/repo` format (e.g., `my-org/my-repo`) |
 | `GIT_WORKFLOW_STYLE` | No | Override system default |
 | `PR_REVIEW_*` | No | PR review settings |
 
@@ -388,8 +384,8 @@ PR_REVIEW_AUTO_SUBMIT=false
 
 | Plugin | System Config | Project Config | Setup Commands |
 |--------|---------------|----------------|----------------|
-| **projman** | gitea.env | .env (GITEA_ORG, GITEA_REPO) | `/initial-setup`, `/project-init`, `/project-sync` |
-| **pr-review** | gitea.env | .env (GITEA_ORG, GITEA_REPO) | `/initial-setup`, `/project-init`, `/project-sync` |
+| **projman** | gitea.env | .env (GITEA_REPO=owner/repo) | `/initial-setup`, `/project-init`, `/project-sync` |
+| **pr-review** | gitea.env | .env (GITEA_REPO=owner/repo) | `/initial-setup`, `/project-init`, `/project-sync` |
 | **git-flow** | git-flow.env (optional) | .env (optional) | None needed |
 | **clarity-assist** | None | None | None needed |
 | **cmdb-assistant** | netbox.env | None | `/initial-setup` |
@@ -441,7 +437,7 @@ This catches typos and permission issues before saving configuration.
 
 When you start a Claude Code session, a hook automatically:
 
-1. Reads `GITEA_ORG` and `GITEA_REPO` from `.env`
+1. Reads `GITEA_REPO` (in `owner/repo` format) from `.env`
 2. Compares with current `git remote get-url origin`
 3. **Warns** if mismatch detected: "Repository location mismatch. Run `/project-sync` to update."
 
@@ -520,7 +516,8 @@ deactivate
 # Check project .env
 cat .env
 
-# Verify GITEA_REPO matches the Gitea repository name exactly
+# Verify GITEA_REPO is in owner/repo format and matches Gitea exactly
+# Example: GITEA_REPO=my-org/my-repo
 ```
 
 ---
