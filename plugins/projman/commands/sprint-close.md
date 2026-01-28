@@ -54,25 +54,34 @@ The orchestrator agent will guide you through:
    - If partial: Keep status as "In Progress", note completed implementations
    - Add summary of what was accomplished
 
-7. **Update CHANGELOG** (MANDATORY)
+7. **New Command Verification** (if applicable)
+   - Check if this sprint added new commands or skills
+   - **IMPORTANT:** New commands are NOT discoverable until session restart
+   - If new commands were added:
+     - List them in sprint close notes
+     - Remind user: "New commands require session restart to test"
+     - Create verification task in next sprint or backlog
+   - **WHY:** Claude Code discovers skills at session start; commands added during a session won't work until restart
+
+8. **Update CHANGELOG** (MANDATORY)
    - Add all sprint changes to `[Unreleased]` section in CHANGELOG.md
    - Categorize: Added, Changed, Fixed, Removed, Deprecated
    - Include plugin prefix (e.g., `- **projman:** New feature`)
 
-8. **Version Check**
+9. **Version Check**
    - Run `/suggest-version` to analyze changes and recommend version bump
    - If release warranted: run `./scripts/release.sh X.Y.Z`
    - Ensures version numbers stay in sync across files
 
-9. **Git Operations**
-   - Commit any remaining work (including CHANGELOG updates)
-   - Merge feature branches if needed
-   - Clean up merged branches
-   - Tag sprint completion (if release created)
+10. **Git Operations**
+    - Commit any remaining work (including CHANGELOG updates)
+    - Merge feature branches if needed
+    - Clean up merged branches
+    - Tag sprint completion (if release created)
 
-10. **Close Milestone**
-   - Use `update_milestone` to close the sprint milestone
-   - Document final completion status
+11. **Close Milestone**
+    - Use `update_milestone` to close the sprint milestone
+    - Document final completion status
 
 ## MCP Tools Available
 
