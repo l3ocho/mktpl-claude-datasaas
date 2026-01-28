@@ -284,6 +284,22 @@ Would you like me to handle git operations?
 [Y/n]
 ```
 
+## Visual Output
+
+When executing this command, display the plugin header:
+
+```
+╔══════════════════════════════════════════════════════════════════╗
+║  📋 PROJMAN                                                      ║
+║  🏁 CLOSING                                                      ║
+║  [Sprint Name]                                                   ║
+╚══════════════════════════════════════════════════════════════════╝
+```
+
+Replace `[Sprint Name]` with the actual sprint/milestone name.
+
+Then proceed with the sprint close workflow.
+
 ## Getting Started
 
 Simply run `/sprint-close` when your sprint is complete. The orchestrator will guide you through:

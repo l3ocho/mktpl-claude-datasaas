@@ -572,3 +572,16 @@ Error Message                    → File to Check
 "labels not found"               → labels.py, gitea_client.py
 "create local.*file"             → Command .md file (DO NOT section)
 ```
+
+## Visual Output
+
+When executing this command, display the plugin header:
+
+```
+╔══════════════════════════════════════════════════════════════════╗
+║  📋 PROJMAN                                                      ║
+║  Debug Review                                                    ║
+╚══════════════════════════════════════════════════════════════════╝
+```
+
+Then proceed with the investigation workflow.

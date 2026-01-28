@@ -207,6 +207,20 @@ You're ready to use projman commands:
 
 ---
 
+## Visual Output
+
+When executing this command, display the plugin header:
+
+```
+╔══════════════════════════════════════════════════════════════════╗
+║  📋 PROJMAN                                                      ║
+║  ⚙️ SETUP                                                        ║
+║  Project Initialization                                          ║
+╚══════════════════════════════════════════════════════════════════╝
+```
+
+Then proceed with the project setup workflow.
+
 ## Troubleshooting
 
 **MCP tools not working?**

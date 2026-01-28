@@ -161,3 +161,17 @@ If framework not detected:
 1. List what was checked
 2. Ask user to specify the test command
 3. Offer common suggestions based on file types found
+
+## Visual Output
+
+When executing this command, display the plugin header:
+
+```
+╔══════════════════════════════════════════════════════════════════╗
+║  📋 PROJMAN                                                      ║
+║  🏁 CLOSING                                                      ║
+║  Test Verification                                               ║
+╚══════════════════════════════════════════════════════════════════╝
+```
+
+Then proceed with the test check workflow.
