@@ -8,6 +8,56 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added
 
+#### Sprint 4: Commands (V5.2.0 Plugin Enhancements)
+Implementation of 18 new user-facing commands across 8 plugins.
+
+**projman v3.3.0:**
+- **`/sprint-diagram`** - Generate Mermaid diagram of sprint issues with dependencies and status
+
+**pr-review v1.1.0:**
+- **`/pr-diff`** - Formatted diff with inline review comments and annotations
+- **Confidence threshold config** - `PR_REVIEW_CONFIDENCE_THRESHOLD` env var (default: 0.7)
+
+**data-platform v1.2.0:**
+- **`/data-quality`** - DataFrame quality checks (nulls, duplicates, types, outliers) with pass/warn/fail scoring
+- **`/lineage-viz`** - dbt lineage visualization as Mermaid diagrams
+- **`/dbt-test`** - Formatted dbt test runner with summary and failure details
+
+**viz-platform v1.1.0:**
+- **`/chart-export`** - Export charts to PNG, SVG, PDF via kaleido
+- **`/accessibility-check`** - Color blind validation (WCAG contrast ratios)
+- **`/breakpoints`** - Responsive layout breakpoint configuration
+- **New MCP tools**: `chart_export`, `accessibility_validate_colors`, `accessibility_validate_theme`, `accessibility_suggest_alternative`, `layout_set_breakpoints`
+- **New dependency**: kaleido>=0.2.1 for chart rendering
+
+**contract-validator v1.2.0:**
+- **`/dependency-graph`** - Mermaid visualization of plugin dependencies with data flow
+
+**doc-guardian v1.1.0:**
+- **`/changelog-gen`** - Generate changelog from conventional commits
+- **`/doc-coverage`** - Documentation coverage metrics by function/class
+- **`/stale-docs`** - Flag documentation behind code changes
+
+**claude-config-maintainer v1.1.0:**
+- **`/config-diff`** - Track CLAUDE.md changes over time with behavioral impact analysis
+- **`/config-lint`** - 31 lint rules for CLAUDE.md (security, structure, content, format, best practices)
+
+**cmdb-assistant v1.2.0:**
+- **`/cmdb-topology`** - Infrastructure topology diagrams (rack, network, site views)
+- **`/change-audit`** - NetBox audit trail queries with filtering
+- **`/ip-conflicts`** - Detect IP conflicts and overlapping prefixes
+
+**Sprint Completed:**
+- Milestone: Sprint 4 - Commands (closed 2026-01-28)
+- Issues: #241-#258 (18/18 closed)
+- Wiki: [Change V5.2.0: Plugin Enhancements (Sprint 4 Commands)](https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/wiki/Change-V5.2.0%3A-Plugin-Enhancements-%28Sprint-4-Commands%29)
+- Lessons: [Sprint 4 - Plugin Commands Implementation](https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/wiki/lessons/sprints/sprint-4---plugin-commands-implementation)
+
+### Fixed
+- **MCP:** Project directory detection - all run.sh scripts now capture `CLAUDE_PROJECT_DIR` from PWD before changing directories
+
+---
+
 #### Sprint 3: Hooks (V5.2.0 Plugin Enhancements)
 Implementation of 6 foundational hooks across 4 plugins.
 
