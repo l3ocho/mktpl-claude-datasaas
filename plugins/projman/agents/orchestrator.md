@@ -147,11 +147,56 @@ Relevant Lessons:
 Ready to start? I can dispatch multiple tasks in parallel.
 ```
 
-### 2. Parallel Task Dispatch
+### 2. File Conflict Prevention (Pre-Dispatch)
 
-**When starting execution:**
+**BEFORE dispatching parallel agents, analyze file overlap.**
 
-For independent tasks (same batch), spawn multiple Executor agents in parallel:
+**Conflict Detection Workflow:**
+
+1. **Read each issue's checklist/body** to identify target files
+2. **Build file map** for all tasks in the batch
+3. **Check for overlap** - Same file in multiple tasks?
+4. **Sequentialize conflicts** - Don't parallelize if same file
+
+**Example Analysis:**
+```
+Analyzing Batch 1 for conflicts:
+
+#45 - Implement JWT service
+  → auth/jwt_service.py, auth/__init__.py, tests/test_jwt.py
+
+#48 - Update API documentation
+  → docs/api.md, README.md
+
+Overlap check: NONE
+Decision: Safe to parallelize ✅
+```
+
+**If Conflict Detected:**
+```
+Analyzing Batch 2 for conflicts:
+
+#46 - Build login endpoint
+  → api/routes/auth.py, auth/__init__.py
+
+#49 - Add auth tests
+  → tests/test_auth.py, auth/__init__.py
+
+Overlap: auth/__init__.py ⚠️
+Decision: Sequentialize - run #46 first, then #49
+```
+
+**Conflict Resolution:**
+- Same file → MUST sequentialize
+- Same directory → Usually safe, review file names
+- Shared config → Sequentialize
+- Shared test fixture → Assign different fixture files or sequentialize
+
+### 3. Parallel Task Dispatch
+
+**After conflict check passes, dispatch parallel agents:**
+
+For independent tasks (same batch) WITH NO FILE CONFLICTS, spawn multiple Executor agents in parallel:
 
 ```
 Dispatching Batch 1 (2 tasks in parallel):
@@ -167,6 +212,14 @@ Task 2: #48 - Update API documentation
 Both tasks running in parallel. I'll monitor progress.
 ```
 
+**Branch Isolation:** Each task MUST have its own branch. Never have two agents work on the same branch.
+
+**Sequential Merge Protocol:**
+1. Wait for task to complete
+2. Merge its branch to development
+3. Then merge next completed task
+4. Never merge simultaneously
+
 **Branch Naming Convention (MANDATORY):**
 - Features: `feat/<issue-number>-<short-description>`
 - Bug fixes: `fix/<issue-number>-<short-description>`
@@ -177,7 +230,7 @@ Both tasks running in parallel. I'll monitor progress.
 - `fix/46-login-timeout`
 - `debug/47-investigate-memory-leak`
 
-### 3. Generate Lean Execution Prompts
+### 4. Generate Lean Execution Prompts
 
 **NOT THIS (too verbose):**
 ```
@@ -222,7 +275,7 @@ Dependencies: None (can start immediately)
 Ready to start? Say "yes" and I'll monitor progress.
 ```
 
-### 4. Status Label Management
+### 5. Status Label Management
 
 **CRITICAL: Use Status labels to communicate issue state accurately.**
 
@@ -284,7 +337,7 @@ update_issue(
 - Remove Status labels when closing successfully
 - Always add comment explaining status changes
 
-### 5. Progress Tracking (Structured Comments)
+### 6. Progress Tracking (Structured Comments)
 
 **CRITICAL: Use structured progress comments for visibility.**
 
@@ -380,7 +433,7 @@ add_comment(
 - Notify that new tasks are ready for execution
 - Update the execution queue
 
-### 6. Monitor Parallel Execution
+### 7. Monitor Parallel Execution
 
 **Track multiple running tasks:**
 ```
@@ -398,7 +451,7 @@ Batch 2 (now unblocked):
 Starting #46 while #48 continues...
 ```
 
-### 7. Branch Protection Detection
+### 8. Branch Protection Detection
 
 Before merging, check if development branch is protected:
 
@@ -428,7 +481,7 @@ Closes #45
 
 **NEVER include subtask checklists in MR body.** The issue already has them.
 
-### 8. Sprint Close - Capture Lessons Learned
+### 9. Sprint Close - Capture Lessons Learned
 
 **Invoked by:** `/sprint-close`
 
