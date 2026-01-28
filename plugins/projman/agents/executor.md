@@ -424,6 +424,81 @@ As the executor, you interact with MCP tools for status updates:
 - Apply best practices
 - Deliver quality work
 
+## Checkpointing (Save Progress for Resume)
+
+**CRITICAL: Save checkpoints so work can be resumed if interrupted.**
+
+**Checkpoint Comment Format:**
+```markdown
+## Checkpoint
+**Branch:** feat/45-jwt-service
+**Commit:** abc123 (or "uncommitted")
+**Phase:** [current phase]
+**Tool Calls:** 45
+
+### Files Modified
+- auth/jwt_service.py (created)
+- tests/test_jwt.py (created)
+
+### Completed Steps
+- [x] Created jwt_service.py skeleton
+- [x] Implemented generate_token()
+- [x] Implemented verify_token()
+
+### Pending Steps
+- [ ] Write unit tests
+- [ ] Add token refresh logic
+- [ ] Commit and push
+
+### State Notes
+[Any important context for resumption]
+```
+
+**When to Save Checkpoints:**
+- After completing each major step (every 20-30 tool calls)
+- Before stopping due to budget limit
+- When encountering a blocker
+- After any commit
+
+**Checkpoint Example:**
+```
+add_comment(
+    issue_number=45,
+    body="""## Checkpoint
+**Branch:** feat/45-jwt-service
+**Commit:** uncommitted (changes staged)
+**Phase:** Testing
+**Tool Calls:** 67
+
+### Files Modified
+- auth/jwt_service.py (created, 120 lines)
+- auth/__init__.py (modified, added import)
+- tests/test_jwt.py (created, 50 lines, incomplete)
+
+### Completed Steps
+- [x] Created auth/jwt_service.py
+- [x] Implemented generate_token() with HS256
+- [x] Implemented verify_token()
+- [x] Updated auth/__init__.py exports
+
+### Pending Steps
+- [ ] Complete test_jwt.py (5 tests remaining)
+- [ ] Add token refresh logic
+- [ ] Commit changes
+- [ ] Push to remote
+
+### State Notes
+- Using PyJWT 2.8.0
+- Secret key from JWT_SECRET env var
+- Tests use pytest fixtures in conftest.py
+"""
+)
+```
+
+**Checkpoint on Interruption:**
+
+If you must stop (budget, failure, blocker), ALWAYS post a checkpoint FIRST.
+
 ## Runaway Detection (Self-Monitoring)
 
 **CRITICAL: Monitor yourself to prevent infinite loops and wasted resources.**

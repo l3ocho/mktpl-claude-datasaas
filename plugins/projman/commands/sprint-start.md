@@ -25,7 +25,12 @@ If you are on a production or staging branch, you MUST stop and ask the user to 
 
 The orchestrator agent will:
 
-1. **Fetch Sprint Issues**
+1. **Detect Checkpoints (Resume Support)**
+   - Check each open issue for `## Checkpoint` comments
+   - If checkpoint found, offer to resume from that point
+   - Resume preserves: branch, completed work, pending steps
+
+2. **Fetch Sprint Issues**
    - Use `list_issues` to fetch open issues for the sprint
    - Identify priorities based on labels (Priority/Critical, Priority/High, etc.)
 
@@ -298,6 +303,61 @@ Batch 2 (now unblocked):
 
 #45 completed! #46 and #49 are now unblocked.
 Starting #46 while #48 continues...
+```
+
+## Checkpoint Resume Support
+
+If a previous session was interrupted (agent stopped, failure, budget exhausted), checkpoints enable resumption.
+
+**Checkpoint Detection:**
+The orchestrator scans issue comments for `## Checkpoint` markers containing:
+- Branch name
+- Last commit hash
+- Completed/pending steps
+- Files modified
+
+**Resume Flow:**
+```
+User: /sprint-start
+
+Orchestrator: Checking for checkpoints...
+
+Found checkpoint for #45 (JWT service):
+  Branch: feat/45-jwt-service
+  Last activity: 2 hours ago
+  Progress: 4/7 steps completed
+  Pending: Write tests, add refresh, commit
+
+Options:
+  1. Resume from checkpoint (recommended)
+  2. Start fresh (lose previous work)
+  3. Review checkpoint details
+
+User: 1
+
+Orchestrator: Resuming #45 from checkpoint...
+  ✓ Branch exists
+  ✓ Files match checkpoint
+  ✓ Dispatching executor with context
+
+Executor continues from pending steps...
+```
+
+**Checkpoint Format:**
+Executors save checkpoints after major steps:
+```markdown
+## Checkpoint
+**Branch:** feat/45-jwt-service
+**Commit:** abc123
+**Phase:** Testing
+
+### Completed Steps
+- [x] Step 1
+- [x] Step 2
+
+### Pending Steps
+- [ ] Step 3
+- [ ] Step 4
 ```
 
 ## Getting Started
