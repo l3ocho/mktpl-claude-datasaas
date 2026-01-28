@@ -13,9 +13,9 @@ description: Dynamic reference for Gitea label taxonomy (organization + reposito
 
 This skill provides the current label taxonomy used for issue classification in Gitea. Labels are **fetched dynamically** from Gitea and should never be hardcoded.
 
-**Current Taxonomy:** 43 labels (27 organization + 16 repository)
+**Current Taxonomy:** 47 labels (31 organization + 16 repository)
 
-## Organization Labels (27)
+## Organization Labels (31)
 
 Organization-level labels are shared across all repositories in your configured organization.
 
@@ -59,6 +59,12 @@ Organization-level labels are shared across all repositories in your configured 
 - `Type/Documentation` (#0e8a16) - Documentation updates and improvements
 - `Type/Test` (#1d76db) - Testing-related work (unit, integration, e2e)
 - `Type/Chore` (#fef2c0) - Maintenance, tooling, dependencies, build tasks
+
+### Status (4)
+- `Status/In-Progress` (#0052cc) - Work is actively being done on this issue
+- `Status/Blocked` (#ff5630) - Blocked by external dependency or issue
+- `Status/Failed` (#de350b) - Implementation attempted but failed, needs investigation
+- `Status/Deferred` (#6554c0) - Moved to a future sprint or backlog
 
 ## Repository Labels (16)
 
@@ -167,6 +173,28 @@ When suggesting labels for issues, consider the following patterns:
 **Component/Deploy:**
 - Keywords: "deploy", "deployment", "docker", "infrastructure", "ci/cd", "production"
 - Example: "Deploy authentication service to production"
+
+### Status Detection
+
+**Status/In-Progress:**
+- Applied when: Agent starts working on an issue
+- Remove when: Work completes, fails, or is blocked
+- Example: Orchestrator applies when dispatching task to executor
+
+**Status/Blocked:**
+- Applied when: Issue cannot proceed due to external dependency
+- Context: Waiting for another issue, external service, or decision
+- Example: "Blocked by #45 - need JWT service first"
+
+**Status/Failed:**
+- Applied when: Implementation was attempted but failed
+- Context: Errors, permission issues, technical blockers
+- Example: Agent hit permission errors and couldn't complete
+
+**Status/Deferred:**
+- Applied when: Work is moved to a future sprint
+- Context: Scope reduction, reprioritization
+- Example: "Moving to Sprint 5 due to scope constraints"
 
 ### Tech Detection
 
