@@ -50,24 +50,24 @@ See `docs/DEBUGGING-CHECKLIST.md` for details on cache timing.
 ## Project Overview
 
 **Repository:** leo-claude-mktplace
-**Version:** 5.1.0
+**Version:** 5.2.0
 **Status:** Production Ready
 
 A plugin marketplace for Claude Code containing:
 
 | Plugin | Description | Version |
 |--------|-------------|---------|
-| `projman` | Sprint planning and project management with Gitea integration | 3.2.0 |
-| `git-flow` | Git workflow automation with smart commits and branch management | 1.0.0 |
-| `pr-review` | Multi-agent PR review with confidence scoring | 1.0.0 |
-| `clarity-assist` | Prompt optimization with ND-friendly accommodations | 1.0.0 |
-| `doc-guardian` | Automatic documentation drift detection and synchronization | 1.0.0 |
+| `projman` | Sprint planning and project management with Gitea integration | 3.3.0 |
+| `git-flow` | Git workflow automation with smart commits and branch management | 1.2.0 |
+| `pr-review` | Multi-agent PR review with confidence scoring | 1.1.0 |
+| `clarity-assist` | Prompt optimization with ND-friendly accommodations | 1.2.0 |
+| `doc-guardian` | Automatic documentation drift detection and synchronization | 1.1.0 |
 | `code-sentinel` | Security scanning and code refactoring tools | 1.0.0 |
-| `claude-config-maintainer` | CLAUDE.md optimization and maintenance | 1.0.0 |
-| `cmdb-assistant` | NetBox CMDB integration for infrastructure management | 1.0.0 |
-| `data-platform` | pandas, PostgreSQL, and dbt integration for data engineering | 1.0.0 |
-| `viz-platform` | DMC validation, Plotly charts, and theming for dashboards | 1.0.0 |
-| `contract-validator` | Cross-plugin compatibility validation and agent verification | 1.0.0 |
+| `claude-config-maintainer` | CLAUDE.md optimization and maintenance | 1.1.0 |
+| `cmdb-assistant` | NetBox CMDB integration for infrastructure management | 1.2.0 |
+| `data-platform` | pandas, PostgreSQL, and dbt integration for data engineering | 1.2.0 |
+| `viz-platform` | DMC validation, Plotly charts, and theming for dashboards | 1.1.0 |
+| `contract-validator` | Cross-plugin compatibility validation and agent verification | 1.2.0 |
 | `project-hygiene` | Post-task cleanup automation via hooks | 0.1.0 |
 
 ## Quick Start
@@ -85,16 +85,17 @@ A plugin marketplace for Claude Code containing:
 | Category | Commands |
 |----------|----------|
 | **Setup** | `/initial-setup`, `/project-init`, `/project-sync` |
-| **Sprint** | `/sprint-plan`, `/sprint-start`, `/sprint-status`, `/sprint-close` |
+| **Sprint** | `/sprint-plan`, `/sprint-start`, `/sprint-status`, `/sprint-close`, `/sprint-diagram` |
 | **Quality** | `/review`, `/test-check`, `/test-gen` |
 | **Versioning** | `/suggest-version` |
-| **PR Review** | `/pr-review:initial-setup`, `/pr-review:project-init` |
-| **Docs** | `/doc-audit`, `/doc-sync` |
+| **PR Review** | `/pr-review`, `/pr-summary`, `/pr-findings`, `/pr-diff` |
+| **Docs** | `/doc-audit`, `/doc-sync`, `/changelog-gen`, `/doc-coverage`, `/stale-docs` |
 | **Security** | `/security-scan`, `/refactor`, `/refactor-dry` |
-| **Config** | `/config-analyze`, `/config-optimize` |
-| **Data** | `/ingest`, `/profile`, `/schema`, `/explain`, `/lineage`, `/run` |
-| **Visualization** | `/component`, `/chart`, `/dashboard`, `/theme`, `/theme-new`, `/theme-css` |
-| **Validation** | `/validate-contracts`, `/check-agent`, `/list-interfaces` |
+| **Config** | `/config-analyze`, `/config-optimize`, `/config-diff`, `/config-lint` |
+| **Data** | `/ingest`, `/profile`, `/schema`, `/explain`, `/lineage`, `/lineage-viz`, `/run`, `/dbt-test`, `/data-quality` |
+| **Visualization** | `/component`, `/chart`, `/chart-export`, `/dashboard`, `/theme`, `/theme-new`, `/theme-css`, `/accessibility-check`, `/breakpoints` |
+| **Validation** | `/validate-contracts`, `/check-agent`, `/list-interfaces`, `/dependency-graph` |
+| **CMDB** | `/cmdb-search`, `/cmdb-device`, `/cmdb-ip`, `/cmdb-site`, `/cmdb-audit`, `/cmdb-register`, `/cmdb-sync`, `/cmdb-topology`, `/change-audit`, `/ip-conflicts` |
 | **Debug** | `/debug-report`, `/debug-review` |
 
 ## Repository Structure

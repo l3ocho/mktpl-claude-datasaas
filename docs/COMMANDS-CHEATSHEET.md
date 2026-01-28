@@ -24,6 +24,7 @@ Quick reference for all commands in the Leo Claude Marketplace.
 | **projman** | `/debug-review` | | X | Investigate diagnostic issues and propose fixes with approval gates |
 | **projman** | `/suggest-version` | | X | Analyze CHANGELOG and recommend semantic version bump |
 | **projman** | `/proposal-status` | | X | View proposal and implementation hierarchy with status |
+| **projman** | `/sprint-diagram` | | X | Generate Mermaid diagram of sprint issues with dependencies |
 | **git-flow** | `/commit` | | X | Create commit with auto-generated conventional message |
 | **git-flow** | `/commit-push` | | X | Commit and push to remote in one operation |
 | **git-flow** | `/commit-merge` | | X | Commit current changes, then merge into target branch |
@@ -39,10 +40,14 @@ Quick reference for all commands in the Leo Claude Marketplace.
 | **pr-review** | `/pr-review` | | X | Full multi-agent PR review with confidence scoring |
 | **pr-review** | `/pr-summary` | | X | Quick summary of PR changes |
 | **pr-review** | `/pr-findings` | | X | List and filter review findings by category/severity |
+| **pr-review** | `/pr-diff` | | X | Formatted diff with inline review comments and annotations |
 | **clarity-assist** | `/clarify` | | X | Full 4-D prompt optimization with ND accommodations |
 | **clarity-assist** | `/quick-clarify` | | X | Rapid single-pass clarification for simple requests |
 | **doc-guardian** | `/doc-audit` | | X | Full documentation audit - scans for doc drift |
 | **doc-guardian** | `/doc-sync` | | X | Synchronize pending documentation updates |
+| **doc-guardian** | `/changelog-gen` | | X | Generate changelog from conventional commits |
+| **doc-guardian** | `/doc-coverage` | | X | Documentation coverage metrics by function/class |
+| **doc-guardian** | `/stale-docs` | | X | Flag documentation behind code changes |
 | **doc-guardian** | *PostToolUse hook* | X | | Silently detects doc drift on Write/Edit |
 | **code-sentinel** | `/security-scan` | | X | Full security audit (SQL injection, XSS, secrets, etc.) |
 | **code-sentinel** | `/refactor` | | X | Apply refactoring patterns to improve code |
@@ -51,6 +56,8 @@ Quick reference for all commands in the Leo Claude Marketplace.
 | **claude-config-maintainer** | `/config-analyze` | | X | Analyze CLAUDE.md for optimization opportunities |
 | **claude-config-maintainer** | `/config-optimize` | | X | Optimize CLAUDE.md structure with preview/backup |
 | **claude-config-maintainer** | `/config-init` | | X | Initialize new CLAUDE.md for a project |
+| **claude-config-maintainer** | `/config-diff` | | X | Track CLAUDE.md changes over time with behavioral impact |
+| **claude-config-maintainer** | `/config-lint` | | X | Lint CLAUDE.md for anti-patterns and best practices |
 | **cmdb-assistant** | `/initial-setup` | | X | Setup wizard for NetBox MCP server |
 | **cmdb-assistant** | `/cmdb-search` | | X | Search NetBox for devices, IPs, sites |
 | **cmdb-assistant** | `/cmdb-device` | | X | Manage network devices (create, view, update, delete) |
@@ -59,6 +66,9 @@ Quick reference for all commands in the Leo Claude Marketplace.
 | **cmdb-assistant** | `/cmdb-audit` | | X | Data quality analysis (VMs, devices, naming, roles) |
 | **cmdb-assistant** | `/cmdb-register` | | X | Register current machine into NetBox with running apps |
 | **cmdb-assistant** | `/cmdb-sync` | | X | Sync machine state with NetBox (detect drift, update) |
+| **cmdb-assistant** | `/cmdb-topology` | | X | Infrastructure topology diagrams (rack, network, site views) |
+| **cmdb-assistant** | `/change-audit` | | X | NetBox audit trail queries with filtering |
+| **cmdb-assistant** | `/ip-conflicts` | | X | Detect IP conflicts and overlapping prefixes |
 | **project-hygiene** | *PostToolUse hook* | X | | Removes temp files, warns about unexpected root files |
 | **data-platform** | `/ingest` | | X | Load data from CSV, Parquet, JSON into DataFrame |
 | **data-platform** | `/profile` | | X | Generate data profiling report with statistics |
@@ -66,6 +76,9 @@ Quick reference for all commands in the Leo Claude Marketplace.
 | **data-platform** | `/explain` | | X | Explain query execution plan |
 | **data-platform** | `/lineage` | | X | Show dbt model lineage and dependencies |
 | **data-platform** | `/run` | | X | Run dbt models with validation |
+| **data-platform** | `/lineage-viz` | | X | dbt lineage visualization as Mermaid diagrams |
+| **data-platform** | `/dbt-test` | | X | Formatted dbt test runner with summary and failure details |
+| **data-platform** | `/data-quality` | | X | DataFrame quality checks (nulls, duplicates, types, outliers) |
 | **data-platform** | `/initial-setup` | | X | Setup wizard for data-platform MCP servers |
 | **data-platform** | *SessionStart hook* | X | | Checks PostgreSQL connection (non-blocking warning) |
 | **viz-platform** | `/initial-setup` | | X | Setup wizard for viz-platform MCP server |
@@ -75,7 +88,15 @@ Quick reference for all commands in the Leo Claude Marketplace.
 | **viz-platform** | `/theme-new` | | X | Create new custom theme with design tokens |
 | **viz-platform** | `/theme-css` | | X | Export theme as CSS custom properties |
 | **viz-platform** | `/component` | | X | Inspect DMC component props and validation |
+| **viz-platform** | `/chart-export` | | X | Export charts to PNG, SVG, PDF via kaleido |
+| **viz-platform** | `/accessibility-check` | | X | Color blind validation (WCAG contrast ratios) |
+| **viz-platform** | `/breakpoints` | | X | Configure responsive layout breakpoints |
 | **viz-platform** | *SessionStart hook* | X | | Checks DMC version (non-blocking warning) |
+| **contract-validator** | `/validate-contracts` | | X | Full marketplace compatibility validation |
+| **contract-validator** | `/check-agent` | | X | Validate single agent definition |
+| **contract-validator** | `/list-interfaces` | | X | Show all plugin interfaces |
+| **contract-validator** | `/dependency-graph` | | X | Mermaid visualization of plugin dependencies |
+| **contract-validator** | `/initial-setup` | | X | Setup wizard for contract-validator MCP |
 
 ---
 
@@ -91,6 +112,7 @@ Quick reference for all commands in the Leo Claude Marketplace.
 | **Infrastructure** | cmdb-assistant | NetBox CMDB management |
 | **Data Engineering** | data-platform | pandas, PostgreSQL, dbt operations |
 | **Visualization** | viz-platform | DMC validation, Plotly charts, theming |
+| **Validation** | contract-validator | Cross-plugin compatibility checks |
 | **Maintenance** | project-hygiene | Automatic cleanup |
 
 ---
@@ -249,9 +271,10 @@ Some plugins require MCP server connectivity:
 | cmdb-assistant | NetBox | Infrastructure CMDB |
 | data-platform | pandas, PostgreSQL, dbt | DataFrames, database queries, dbt builds |
 | viz-platform | viz-platform | DMC validation, charts, layouts, themes, pages |
+| contract-validator | contract-validator | Plugin interface parsing, compatibility validation |
 
 Ensure credentials are configured in `~/.config/claude/gitea.env`, `~/.config/claude/netbox.env`, or `~/.config/claude/postgres.env`.
 
 ---
 
-*Last Updated: 2026-01-26*
+*Last Updated: 2026-01-28*
