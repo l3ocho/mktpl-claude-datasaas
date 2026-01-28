@@ -6,9 +6,13 @@ description: Begin sprint execution with relevant lessons learned from previous 
 
 You are initiating sprint execution. The orchestrator agent will coordinate the work, analyze dependencies for parallel execution, search for relevant lessons learned, and guide you through the implementation process.
 
-## Sprint Approval Verification
+## Sprint Approval Verification (Recommended)
 
-**CRITICAL: Sprint must be approved before execution.**
+**RECOMMENDED: Sprint should be approved before execution.**
+
+> **Note:** This is a recommended workflow practice, not code-enforced. The orchestrator
+> SHOULD check for approval, but execution will proceed if approval is missing. For
+> critical projects, consider making approval mandatory in your workflow.
 
 The orchestrator checks for approval in the milestone description:
 
@@ -19,16 +23,15 @@ get_milestone(milestone_id=17)
 
 **If Approval Missing:**
 ```
-⚠️ SPRINT NOT APPROVED
+⚠️ SPRINT APPROVAL NOT FOUND (Warning)
 
-Sprint 17 has not been approved for execution.
-The milestone description does not contain an approval record.
+Sprint 17 milestone does not contain an approval record.
 
-Please run /sprint-plan to:
+Recommended: Run /sprint-plan first to:
 1. Review the sprint scope
-2. Approve the execution plan
+2. Document the approved execution plan
 
-Then run /sprint-start again.
+Proceeding anyway - consider adding approval for audit trail.
 ```
 
 **If Approval Found:**
@@ -42,10 +45,10 @@ Then run /sprint-start again.
 Proceeding with execution within approved scope...
 ```
 
-**Scope Enforcement:**
-- Agents can ONLY create branches matching approved patterns
-- Agents can ONLY modify files within approved paths
-- Operations outside scope require re-approval via `/sprint-plan`
+**Scope Enforcement (when approval exists):**
+- Agents SHOULD only create branches matching approved patterns
+- Agents SHOULD only modify files within approved paths
+- Operations outside scope should trigger re-approval via `/sprint-plan`
 
 ## Branch Detection
 
@@ -66,11 +69,11 @@ If you are on a production or staging branch, you MUST stop and ask the user to 
 
 The orchestrator agent will:
 
-1. **Verify Sprint Approval**
+1. **Verify Sprint Approval** (Recommended)
    - Check milestone description for `## Sprint Approval` section
-   - If no approval found, STOP and direct user to `/sprint-plan`
+   - If no approval found, WARN user and suggest `/sprint-plan` first
    - If approval found, extract scope (branches, files)
-   - Agents operate ONLY within approved scope
+   - Agents SHOULD operate within approved scope when available
 
 2. **Detect Checkpoints (Resume Support)**
    - Check each open issue for `## Checkpoint` comments
