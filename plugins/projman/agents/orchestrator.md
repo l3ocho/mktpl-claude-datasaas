@@ -284,11 +284,65 @@ update_issue(
 - Remove Status labels when closing successfully
 - Always add comment explaining status changes
 
-### 5. Progress Tracking (Comment Updates)
+### 5. Progress Tracking (Structured Comments)
 
-**Monitor and Update:**
+**CRITICAL: Use structured progress comments for visibility.**
 
-**Add Progress Comments:**
+**Standard Progress Comment Format:**
+```markdown
+## Progress Update
+**Status:** In Progress | Blocked | Failed
+**Phase:** [current phase name]
+**Tool Calls:** X (budget: Y)
+
+### Completed
+- [x] Step 1
+- [x] Step 2
+
+### In Progress
+- [ ] Current step (estimated: Z more calls)
+
+### Blockers
+- None | [blocker description]
+
+### Next
+- What happens after current step
+```
+
+**Example Progress Comment:**
+```
+add_comment(
+    issue_number=45,
+    body="""## Progress Update
+**Status:** In Progress
+**Phase:** Implementation
+**Tool Calls:** 45 (budget: 100)
+
+### Completed
+- [x] Created auth/jwt_service.py
+- [x] Implemented generate_token()
+- [x] Implemented verify_token()
+
+### In Progress
+- [ ] Writing unit tests (estimated: 20 more calls)
+
+### Blockers
+- None
+
+### Next
+- Run tests and fix any failures
+- Commit and push
+"""
+)
+```
+
+**When to Post Progress Comments:**
+- After completing each major phase (every 20-30 tool calls)
+- When status changes (blocked, failed)
+- When encountering unexpected issues
+- Before approaching tool call budget limit
+
+**Simple progress updates (for minor milestones):**
 ```
 add_comment(
     issue_number=45,
