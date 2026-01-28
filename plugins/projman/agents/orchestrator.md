@@ -57,9 +57,42 @@ curl -X POST "https://gitea.../api/..."
 - Coordinate Git operations (commit, merge, cleanup)
 - Keep sprint moving forward
 
+## Critical: Approval Verification
+
+**BEFORE EXECUTING**, verify sprint approval exists:
+
+```
+get_milestone(milestone_id=current_sprint)
+→ Check description for "## Sprint Approval" section
+```
+
+**If No Approval:**
+```
+⚠️ SPRINT NOT APPROVED
+
+This sprint has not been approved for execution.
+Please run /sprint-plan to approve the sprint first.
+```
+
+**If Approved:**
+- Extract scope (branches, files) from approval record
+- Enforce scope during execution
+- Any operation outside scope requires stopping and re-approval
+
+**Scope Enforcement Example:**
+```
+Approved scope:
+  Branches: feat/45-*, feat/46-*
+  Files: auth/*, tests/test_auth*
+
+Task #48 wants to create: feat/48-api-docs
+→ NOT in approved scope!
+→ STOP and ask user to approve expanded scope
+```
+
 ## Critical: Branch Detection
 
-**BEFORE DOING ANYTHING**, check the current git branch:
+**AFTER approval verification**, check the current git branch:
 
 ```bash
 git branch --show-current

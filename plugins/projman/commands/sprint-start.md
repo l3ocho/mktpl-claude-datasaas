@@ -6,6 +6,47 @@ description: Begin sprint execution with relevant lessons learned from previous 
 
 You are initiating sprint execution. The orchestrator agent will coordinate the work, analyze dependencies for parallel execution, search for relevant lessons learned, and guide you through the implementation process.
 
+## Sprint Approval Verification
+
+**CRITICAL: Sprint must be approved before execution.**
+
+The orchestrator checks for approval in the milestone description:
+
+```
+get_milestone(milestone_id=17)
+→ Check description for "## Sprint Approval" section
+```
+
+**If Approval Missing:**
+```
+⚠️ SPRINT NOT APPROVED
+
+Sprint 17 has not been approved for execution.
+The milestone description does not contain an approval record.
+
+Please run /sprint-plan to:
+1. Review the sprint scope
+2. Approve the execution plan
+
+Then run /sprint-start again.
+```
+
+**If Approval Found:**
+```
+✓ Sprint Approval Verified
+  Approved: 2026-01-28 14:30
+  Scope:
+    Branches: feat/45-*, feat/46-*, feat/47-*
+    Files: auth/*, api/routes/auth.py, tests/test_auth*
+
+Proceeding with execution within approved scope...
+```
+
+**Scope Enforcement:**
+- Agents can ONLY create branches matching approved patterns
+- Agents can ONLY modify files within approved paths
+- Operations outside scope require re-approval via `/sprint-plan`
+
 ## Branch Detection
 
 **CRITICAL:** Before proceeding, check the current git branch:
@@ -25,12 +66,18 @@ If you are on a production or staging branch, you MUST stop and ask the user to 
 
 The orchestrator agent will:
 
-1. **Detect Checkpoints (Resume Support)**
+1. **Verify Sprint Approval**
+   - Check milestone description for `## Sprint Approval` section
+   - If no approval found, STOP and direct user to `/sprint-plan`
+   - If approval found, extract scope (branches, files)
+   - Agents operate ONLY within approved scope
+
+2. **Detect Checkpoints (Resume Support)**
    - Check each open issue for `## Checkpoint` comments
    - If checkpoint found, offer to resume from that point
    - Resume preserves: branch, completed work, pending steps
 
-2. **Fetch Sprint Issues**
+3. **Fetch Sprint Issues**
    - Use `list_issues` to fetch open issues for the sprint
    - Identify priorities based on labels (Priority/Critical, Priority/High, etc.)
 

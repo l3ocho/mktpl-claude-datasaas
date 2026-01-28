@@ -136,6 +136,58 @@ The planner agent will:
     - Document dependency graph
     - Provide sprint overview with wiki links
 
+11. **Request Sprint Approval**
+    - Present approval request with scope summary
+    - Capture explicit user approval
+    - Record approval in milestone description
+    - Approval scopes what sprint-start can execute
+
+## Sprint Approval (MANDATORY)
+
+**Planning DOES NOT equal execution permission.**
+
+After creating issues, the planner MUST request explicit approval:
+
+```
+Sprint 17 Planning Complete
+===========================
+
+Created Issues:
+- #45: [Sprint 17] feat: JWT token generation
+- #46: [Sprint 17] feat: Login endpoint
+- #47: [Sprint 17] test: Auth tests
+
+Execution Scope:
+- Branches: feat/45-*, feat/46-*, feat/47-*
+- Files: auth/*, api/routes/auth.py, tests/test_auth*
+- Dependencies: PyJWT, python-jose
+
+⚠️ APPROVAL REQUIRED
+
+Do you approve this sprint for execution?
+This grants permission for agents to:
+- Create and modify files in the listed scope
+- Create branches with the listed prefixes
+- Install listed dependencies
+
+Type "approve sprint 17" to authorize execution.
+```
+
+**On Approval:**
+1. Record approval in milestone description
+2. Note timestamp and scope
+3. Sprint-start will verify approval exists
+
+**Approval Record Format:**
+```markdown
+## Sprint Approval
+**Approved:** 2026-01-28 14:30
+**Approver:** User
+**Scope:**
+- Branches: feat/45-*, feat/46-*, feat/47-*
+- Files: auth/*, api/routes/auth.py, tests/test_auth*
+```
+
 ## Issue Title Format (MANDATORY)
 
 ```
