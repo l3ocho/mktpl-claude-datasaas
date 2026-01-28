@@ -17,6 +17,7 @@ from .chart_tools import ChartTools
 from .layout_tools import LayoutTools
 from .theme_tools import ThemeTools
 from .page_tools import PageTools
+from .accessibility_tools import AccessibilityTools
 
 # Suppress noisy MCP validation warnings on stderr
 logging.basicConfig(level=logging.INFO)
@@ -36,6 +37,7 @@ class VizPlatformMCPServer:
         self.layout_tools = LayoutTools()
         self.theme_tools = ThemeTools()
         self.page_tools = PageTools()
+        self.accessibility_tools = AccessibilityTools(theme_store=self.theme_tools.store)
 
     async def initialize(self):
         """Initialize server and load configuration."""
@@ -198,6 +200,46 @@ class VizPlatformMCPServer:
                 }
             ))
 
+            # Chart export tool (Issue #247)
+            tools.append(Tool(
+                name="chart_export",
+                description=(
+                    "Export a Plotly chart to static image format (PNG, SVG, PDF). "
+                    "Requires kaleido package. Returns base64 image data or saves to file."
+                ),
+                inputSchema={
+                    "type": "object",
+                    "properties": {
+                        "figure": {
+                            "type": "object",
+                            "description": "Plotly figure JSON to export"
+                        },
+                        "format": {
+                            "type": "string",
+                            "enum": ["png", "svg", "pdf"],
+                            "description": "Output format (default: png)"
+                        },
+                        "width": {
+                            "type": "integer",
+                            "description": "Image width in pixels (default: 1200)"
+                        },
+                        "height": {
+                            "type": "integer",
+                            "description": "Image height in pixels (default: 800)"
+                        },
+                        "scale": {
+                            "type": "number",
+                            "description": "Resolution scale factor (default: 2 for retina)"
+                        },
+                        "output_path": {
+                            "type": "string",
+                            "description": "Optional file path to save image"
+                        }
+                    },
+                    "required": ["figure"]
+                }
+            ))
+
             # Layout tools (Issue #174)
             tools.append(Tool(
                 name="layout_create",
@@ -277,6 +319,36 @@ class VizPlatformMCPServer:
                         }
                     },
                     "required": ["layout_ref", "grid"]
+                }
+            ))
+
+            # Responsive breakpoints tool (Issue #249)
+            tools.append(Tool(
+                name="layout_set_breakpoints",
+                description=(
+                    "Configure responsive breakpoints for a layout. "
+                    "Supports xs, sm, md, lg, xl breakpoints with mobile-first approach. "
+                    "Each breakpoint can define cols, spacing, and other grid properties."
+                ),
+                inputSchema={
+                    "type": "object",
+                    "properties": {
+                        "layout_ref": {
+                            "type": "string",
+                            "description": "Layout name to configure"
+                        },
+                        "breakpoints": {
+                            "type": "object",
+                            "description": (
+                                "Breakpoint config: {xs: {cols, spacing}, sm: {...}, md: {...}, lg: {...}, xl: {...}}"
+                            )
+                        },
+                        "mobile_first": {
+                            "type": "boolean",
+                            "description": "Use mobile-first (min-width) media queries (default: true)"
+                        }
+                    },
+                    "required": ["layout_ref", "breakpoints"]
                 }
             ))
 
@@ -451,6 +523,77 @@ class VizPlatformMCPServer:
                 }
             ))
 
+            # Accessibility tools (Issue #248)
+            tools.append(Tool(
+                name="accessibility_validate_colors",
+                description=(
+                    "Validate colors for color blind accessibility. "
+                    "Checks contrast ratios for deuteranopia, protanopia, tritanopia. "
+                    "Returns issues, simulations, and accessible palette suggestions."
+                ),
+                inputSchema={
+                    "type": "object",
+                    "properties": {
+                        "colors": {
+                            "type": "array",
+                            "items": {"type": "string"},
+                            "description": "List of hex colors to validate (e.g., ['#228be6', '#40c057'])"
+                        },
+                        "check_types": {
+                            "type": "array",
+                            "items": {"type": "string"},
+                            "description": "Color blindness types to check: deuteranopia, protanopia, tritanopia (default: all)"
+                        },
+                        "min_contrast_ratio": {
+                            "type": "number",
+                            "description": "Minimum WCAG contrast ratio (default: 4.5 for AA)"
+                        }
+                    },
+                    "required": ["colors"]
+                }
+            ))
+
+            tools.append(Tool(
+                name="accessibility_validate_theme",
+                description=(
+                    "Validate a theme's colors for accessibility. "
+                    "Extracts all colors from theme tokens and checks for color blind safety."
+                ),
+                inputSchema={
+                    "type": "object",
+                    "properties": {
+                        "theme_name": {
+                            "type": "string",
+                            "description": "Theme name to validate"
+                        }
+                    },
+                    "required": ["theme_name"]
+                }
+            ))
+
+            tools.append(Tool(
+                name="accessibility_suggest_alternative",
+                description=(
+                    "Suggest accessible alternative colors for a given color. "
+                    "Provides alternatives optimized for specific color blindness types."
+                ),
+                inputSchema={
+                    "type": "object",
+                    "properties": {
+                        "color": {
+                            "type": "string",
+                            "description": "Hex color to find alternatives for"
+                        },
+                        "deficiency_type": {
+                            "type": "string",
+                            "enum": ["deuteranopia", "protanopia", "tritanopia"],
+                            "description": "Color blindness type to optimize for"
+                        }
+                    },
+                    "required": ["color", "deficiency_type"]
+                }
+            ))
+
             return tools
 
         @self.server.call_tool()
@@ -524,6 +667,26 @@ class VizPlatformMCPServer:
                         text=json.dumps(result, indent=2)
                     )]
 
+                elif name == "chart_export":
+                    figure = arguments.get('figure')
+                    if not figure:
+                        return [TextContent(
+                            type="text",
+                            text=json.dumps({"error": "figure is required"}, indent=2)
+                        )]
+                    result = await self.chart_tools.chart_export(
+                        figure=figure,
+                        format=arguments.get('format', 'png'),
+                        width=arguments.get('width'),
+                        height=arguments.get('height'),
+                        scale=arguments.get('scale', 2.0),
+                        output_path=arguments.get('output_path')
+                    )
+                    return [TextContent(
+                        type="text",
+                        text=json.dumps(result, indent=2)
+                    )]
+
                 # Layout tools
                 elif name == "layout_create":
                     layout_name = arguments.get('name')
@@ -563,6 +726,23 @@ class VizPlatformMCPServer:
                             text=json.dumps({"error": "layout_ref is required"}, indent=2)
                         )]
                     result = await self.layout_tools.layout_set_grid(layout_ref, grid)
+                    return [TextContent(
+                        type="text",
+                        text=json.dumps(result, indent=2)
+                    )]
+
+                elif name == "layout_set_breakpoints":
+                    layout_ref = arguments.get('layout_ref')
+                    breakpoints = arguments.get('breakpoints', {})
+                    mobile_first = arguments.get('mobile_first', True)
+                    if not layout_ref:
+                        return [TextContent(
+                            type="text",
+                            text=json.dumps({"error": "layout_ref is required"}, indent=2)
+                        )]
+                    result = await self.layout_tools.layout_set_breakpoints(
+                        layout_ref, breakpoints, mobile_first
+                    )
                     return [TextContent(
                         type="text",
                         text=json.dumps(result, indent=2)
@@ -664,6 +844,53 @@ class VizPlatformMCPServer:
                             text=json.dumps({"error": "page_ref is required"}, indent=2)
                         )]
                     result = await self.page_tools.page_set_auth(page_ref, auth_config)
+                    return [TextContent(
+                        type="text",
+                        text=json.dumps(result, indent=2)
+                    )]
+
+                # Accessibility tools
+                elif name == "accessibility_validate_colors":
+                    colors = arguments.get('colors')
+                    if not colors:
+                        return [TextContent(
+                            type="text",
+                            text=json.dumps({"error": "colors list is required"}, indent=2)
+                        )]
+                    result = await self.accessibility_tools.accessibility_validate_colors(
+                        colors=colors,
+                        check_types=arguments.get('check_types'),
+                        min_contrast_ratio=arguments.get('min_contrast_ratio', 4.5)
+                    )
+                    return [TextContent(
+                        type="text",
+                        text=json.dumps(result, indent=2)
+                    )]
+
+                elif name == "accessibility_validate_theme":
+                    theme_name = arguments.get('theme_name')
+                    if not theme_name:
+                        return [TextContent(
+                            type="text",
+                            text=json.dumps({"error": "theme_name is required"}, indent=2)
+                        )]
+                    result = await self.accessibility_tools.accessibility_validate_theme(theme_name)
+                    return [TextContent(
+                        type="text",
+                        text=json.dumps(result, indent=2)
+                    )]
+
+                elif name == "accessibility_suggest_alternative":
+                    color = arguments.get('color')
+                    deficiency_type = arguments.get('deficiency_type')
+                    if not color or not deficiency_type:
+                        return [TextContent(
+                            type="text",
+                            text=json.dumps({"error": "color and deficiency_type are required"}, indent=2)
+                        )]
+                    result = await self.accessibility_tools.accessibility_suggest_alternative(
+                        color, deficiency_type
+                    )
                     return [TextContent(
                         type="text",
                         text=json.dumps(result, indent=2)

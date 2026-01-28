@@ -10,6 +10,46 @@ from uuid import uuid4
 logger = logging.getLogger(__name__)
 
 
+# Standard responsive breakpoints (Mantine/Bootstrap-aligned)
+DEFAULT_BREAKPOINTS = {
+    "xs": {
+        "min_width": "0px",
+        "max_width": "575px",
+        "cols": 1,
+        "spacing": "xs",
+        "description": "Extra small devices (phones, portrait)"
+    },
+    "sm": {
+        "min_width": "576px",
+        "max_width": "767px",
+        "cols": 2,
+        "spacing": "sm",
+        "description": "Small devices (phones, landscape)"
+    },
+    "md": {
+        "min_width": "768px",
+        "max_width": "991px",
+        "cols": 6,
+        "spacing": "md",
+        "description": "Medium devices (tablets)"
+    },
+    "lg": {
+        "min_width": "992px",
+        "max_width": "1199px",
+        "cols": 12,
+        "spacing": "md",
+        "description": "Large devices (desktops)"
+    },
+    "xl": {
+        "min_width": "1200px",
+        "max_width": None,
+        "cols": 12,
+        "spacing": "lg",
+        "description": "Extra large devices (large desktops)"
+    }
+}
+
+
 # Layout templates
 TEMPLATES = {
     "dashboard": {
@@ -364,4 +404,150 @@ class LayoutTools:
                 "props": config["props"]
             }
             for name, config in FILTER_TYPES.items()
+        }
+
+    async def layout_set_breakpoints(
+        self,
+        layout_ref: str,
+        breakpoints: Dict[str, Dict[str, Any]],
+        mobile_first: bool = True
+    ) -> Dict[str, Any]:
+        """
+        Configure responsive breakpoints for a layout.
+
+        Args:
+            layout_ref: Layout name to configure
+            breakpoints: Breakpoint configuration dict:
+                {
+                    "xs": {"cols": 1, "spacing": "xs"},
+                    "sm": {"cols": 2, "spacing": "sm"},
+                    "md": {"cols": 6, "spacing": "md"},
+                    "lg": {"cols": 12, "spacing": "md"},
+                    "xl": {"cols": 12, "spacing": "lg"}
+                }
+            mobile_first: If True, use min-width media queries (default)
+
+        Returns:
+            Dict with:
+                - breakpoints: Complete breakpoint configuration
+                - css_media_queries: Generated CSS media queries
+                - mobile_first: Whether mobile-first approach is used
+        """
+        # Validate layout exists
+        if layout_ref not in self._layouts:
+            return {
+                "error": f"Layout '{layout_ref}' not found. Create it first with layout_create.",
+                "breakpoints": None
+            }
+
+        layout = self._layouts[layout_ref]
+
+        # Validate breakpoint names
+        valid_breakpoints = ["xs", "sm", "md", "lg", "xl"]
+        for bp_name in breakpoints.keys():
+            if bp_name not in valid_breakpoints:
+                return {
+                    "error": f"Invalid breakpoint '{bp_name}'. Must be one of: {valid_breakpoints}",
+                    "breakpoints": layout.get("breakpoints")
+                }
+
+        # Merge with defaults
+        merged_breakpoints = {}
+        for bp_name in valid_breakpoints:
+            default = DEFAULT_BREAKPOINTS[bp_name].copy()
+            if bp_name in breakpoints:
+                default.update(breakpoints[bp_name])
+            merged_breakpoints[bp_name] = default
+
+        # Validate spacing values
+        valid_spacing = ["xs", "sm", "md", "lg", "xl"]
+        for bp_name, bp_config in merged_breakpoints.items():
+            if "spacing" in bp_config and bp_config["spacing"] not in valid_spacing:
+                return {
+                    "error": f"Invalid spacing '{bp_config['spacing']}' for breakpoint '{bp_name}'. Must be one of: {valid_spacing}",
+                    "breakpoints": layout.get("breakpoints")
+                }
+
+        # Validate column counts
+        for bp_name, bp_config in merged_breakpoints.items():
+            if "cols" in bp_config:
+                cols = bp_config["cols"]
+                if not isinstance(cols, int) or cols < 1 or cols > 24:
+                    return {
+                        "error": f"Invalid cols '{cols}' for breakpoint '{bp_name}'. Must be integer between 1 and 24.",
+                        "breakpoints": layout.get("breakpoints")
+                    }
+
+        # Generate CSS media queries
+        css_queries = self._generate_media_queries(merged_breakpoints, mobile_first)
+
+        # Store in layout
+        layout["breakpoints"] = merged_breakpoints
+        layout["mobile_first"] = mobile_first
+        layout["responsive_css"] = css_queries
+
+        return {
+            "layout_ref": layout_ref,
+            "breakpoints": merged_breakpoints,
+            "mobile_first": mobile_first,
+            "css_media_queries": css_queries
+        }
+
+    def _generate_media_queries(
+        self,
+        breakpoints: Dict[str, Dict[str, Any]],
+        mobile_first: bool
+    ) -> List[str]:
+        """Generate CSS media queries for breakpoints."""
+        queries = []
+        bp_order = ["xs", "sm", "md", "lg", "xl"]
+
+        if mobile_first:
+            # Use min-width queries (mobile-first)
+            for bp_name in bp_order[1:]:  # Skip xs (base styles)
+                bp = breakpoints[bp_name]
+                min_width = bp.get("min_width", DEFAULT_BREAKPOINTS[bp_name]["min_width"])
+                if min_width and min_width != "0px":
+                    queries.append(f"@media (min-width: {min_width}) {{ /* {bp_name} styles */ }}")
+        else:
+            # Use max-width queries (desktop-first)
+            for bp_name in reversed(bp_order[:-1]):  # Skip xl (base styles)
+                bp = breakpoints[bp_name]
+                max_width = bp.get("max_width", DEFAULT_BREAKPOINTS[bp_name]["max_width"])
+                if max_width:
+                    queries.append(f"@media (max-width: {max_width}) {{ /* {bp_name} styles */ }}")
+
+        return queries
+
+    async def layout_get_breakpoints(self, layout_ref: str) -> Dict[str, Any]:
+        """
+        Get the breakpoint configuration for a layout.
+
+        Args:
+            layout_ref: Layout name
+
+        Returns:
+            Dict with breakpoint configuration
+        """
+        if layout_ref not in self._layouts:
+            return {
+                "error": f"Layout '{layout_ref}' not found.",
+                "breakpoints": None
+            }
+
+        layout = self._layouts[layout_ref]
+
+        return {
+            "layout_ref": layout_ref,
+            "breakpoints": layout.get("breakpoints", DEFAULT_BREAKPOINTS.copy()),
+            "mobile_first": layout.get("mobile_first", True),
+            "css_media_queries": layout.get("responsive_css", [])
+        }
+
+    def get_default_breakpoints(self) -> Dict[str, Any]:
+        """Get the default breakpoint configuration."""
+        return {
+            "breakpoints": DEFAULT_BREAKPOINTS.copy(),
+            "description": "Standard responsive breakpoints aligned with Mantine/Bootstrap",
+            "mobile_first": True
         }

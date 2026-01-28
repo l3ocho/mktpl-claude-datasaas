@@ -51,7 +51,10 @@ DMC_VERSION=0.14.7
 | `/initial-setup` | Interactive setup wizard for DMC and theme preferences |
 | `/component {name}` | Inspect component props and validation |
 | `/chart {type}` | Create a Plotly chart |
+| `/chart-export {format}` | Export chart to PNG, SVG, or PDF |
 | `/dashboard {template}` | Create a dashboard layout |
+| `/breakpoints {layout}` | Configure responsive breakpoints |
+| `/accessibility-check` | Validate colors for color blind users |
 | `/theme {name}` | Apply an existing theme |
 | `/theme-new {name}` | Create a new custom theme |
 | `/theme-css {name}` | Export theme as CSS |
@@ -75,15 +78,16 @@ Prevent invalid component props before runtime.
 | `get_component_props` | Get detailed prop specifications |
 | `validate_component` | Validate a component configuration |
 
-### Charts (2 tools)
+### Charts (3 tools)
 Create Plotly charts with theme integration.
 
 | Tool | Description |
 |------|-------------|
 | `chart_create` | Create a chart (line, bar, scatter, pie, etc.) |
 | `chart_configure_interaction` | Configure chart interactivity |
+| `chart_export` | Export chart to PNG, SVG, or PDF |
 
-### Layouts (5 tools)
+### Layouts (6 tools)
 Build dashboard structures with filters and grids.
 
 | Tool | Description |
@@ -91,8 +95,18 @@ Build dashboard structures with filters and grids.
 | `layout_create` | Create a layout structure |
 | `layout_add_filter` | Add filter components |
 | `layout_set_grid` | Configure responsive grid |
+| `layout_set_breakpoints` | Configure responsive breakpoints (xs-xl) |
 | `layout_add_section` | Add content sections |
 | `layout_get` | Retrieve layout details |
+
+### Accessibility (3 tools)
+Validate colors for accessibility and color blindness.
+
+| Tool | Description |
+|------|-------------|
+| `accessibility_validate_colors` | Check colors for color blind accessibility |
+| `accessibility_validate_theme` | Validate a theme's color accessibility |
+| `accessibility_suggest_alternative` | Suggest accessible color alternatives |
 
 ### Themes (6 tools)
 Manage design tokens and styling.
@@ -188,9 +202,37 @@ viz-platform works seamlessly with data-platform:
 | `tabs` | Multi-page dashboards |
 | `split` | Comparisons, master-detail |
 
+## Responsive Breakpoints
+
+The plugin supports mobile-first responsive design with standard breakpoints:
+
+| Breakpoint | Min Width | Description |
+|------------|-----------|-------------|
+| `xs` | 0px | Extra small (mobile portrait) |
+| `sm` | 576px | Small (mobile landscape) |
+| `md` | 768px | Medium (tablet) |
+| `lg` | 992px | Large (desktop) |
+| `xl` | 1200px | Extra large (large desktop) |
+
+Example:
+```
+/breakpoints my-dashboard
+# Configure cols, spacing per breakpoint
+```
+
+## Color Accessibility
+
+The plugin validates colors for color blindness:
+- **Deuteranopia** (green-blind) - 6% of males
+- **Protanopia** (red-blind) - 2.5% of males
+- **Tritanopia** (blue-blind) - 0.01% of population
+
+Includes WCAG contrast ratio checking and accessible palette suggestions.
+
 ## Requirements
 
 - Python 3.10+
 - dash-mantine-components >= 0.14.0
 - plotly >= 5.18.0
 - dash >= 2.14.0
+- kaleido >= 0.2.1 (for chart export)

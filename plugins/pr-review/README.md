@@ -13,6 +13,7 @@ pr-review conducts comprehensive code reviews using specialized agents for secur
 | `/pr-review <pr#>` | Full multi-agent review |
 | `/pr-summary <pr#>` | Quick summary without full review |
 | `/pr-findings <pr#>` | Filter findings by category/confidence |
+| `/pr-diff <pr#>` | View diff with inline comment annotations |
 | `/initial-setup` | Full interactive setup wizard |
 | `/project-init` | Quick project setup (system already configured) |
 | `/project-sync` | Sync configuration with current git remote |
@@ -51,13 +52,37 @@ Requires Gitea MCP server configuration.
 
 ## Configuration
 
+Environment variables can be set in your project's `.env` file or shell environment.
+
+| Variable | Default | Description |
+|----------|---------|-------------|
+| `PR_REVIEW_CONFIDENCE_THRESHOLD` | `0.7` | Minimum confidence score (0.0-1.0) for reporting findings. Findings below this threshold are filtered out to reduce noise. |
+| `PR_REVIEW_AUTO_SUBMIT` | `false` | Automatically submit review to Gitea without confirmation prompt |
+
+### Example Configuration
+
 ```bash
-# Minimum confidence to report (default: 0.5)
-PR_REVIEW_CONFIDENCE_THRESHOLD=0.5
+# Project .env file
+
+# Only show high-confidence findings (MEDIUM and HIGH)
+PR_REVIEW_CONFIDENCE_THRESHOLD=0.7
 
 # Auto-submit review to Gitea (default: false)
 PR_REVIEW_AUTO_SUBMIT=false
 ```
+
+### Confidence Threshold Details
+
+The confidence threshold filters which findings appear in review output:
+
+| Threshold | Effect |
+|-----------|--------|
+| `0.9` | Only definite issues (HIGH confidence) |
+| `0.7` | Likely issues and above (MEDIUM+HIGH) - **recommended** |
+| `0.5` | Include possible concerns (LOW+MEDIUM+HIGH) |
+| `0.3` | Include speculative findings |
+
+Lower thresholds show more findings but may include false positives. Higher thresholds reduce noise but may miss some valid concerns.
 
 ## Usage Examples
 

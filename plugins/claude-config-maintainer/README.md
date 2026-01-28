@@ -37,6 +37,33 @@ Create a new CLAUDE.md tailored to your project.
 /config-init
 ```
 
+### `/config-diff`
+Show differences between current CLAUDE.md and previous versions.
+
+```
+/config-diff                    # Compare working copy vs last commit
+/config-diff --commit=abc1234   # Compare against specific commit
+/config-diff --from=v1.0 --to=v2.0  # Compare two commits
+/config-diff --section="Critical Rules"  # Focus on specific section
+```
+
+### `/config-lint`
+Lint CLAUDE.md for common anti-patterns and best practices.
+
+```
+/config-lint                    # Run all lint checks
+/config-lint --fix              # Auto-fix fixable issues
+/config-lint --rules=security   # Check only security rules
+/config-lint --severity=error   # Show only errors
+```
+
+**Lint Rule Categories:**
+- **Security (SEC)** - Hardcoded secrets, paths, credentials
+- **Structure (STR)** - Header hierarchy, required sections
+- **Content (CNT)** - Contradictions, duplicates, vague rules
+- **Format (FMT)** - Consistency, code blocks, whitespace
+- **Best Practice (BPR)** - Missing Quick Start, Critical Rules sections
+
 ## Best Practices
 
 A good CLAUDE.md should be:

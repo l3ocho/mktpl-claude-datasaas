@@ -73,10 +73,12 @@ Base confidence by pattern:
 
 ## Threshold Configuration
 
-The default threshold is 0.5. This can be adjusted:
+The default threshold is 0.7 (showing MEDIUM and HIGH confidence findings). This can be adjusted:
 
 ```bash
-PR_REVIEW_CONFIDENCE_THRESHOLD=0.7  # Only high-confidence
+PR_REVIEW_CONFIDENCE_THRESHOLD=0.9  # Only definite issues (HIGH)
+PR_REVIEW_CONFIDENCE_THRESHOLD=0.7  # Likely issues and above (MEDIUM+HIGH) - default
+PR_REVIEW_CONFIDENCE_THRESHOLD=0.5  # Include possible concerns (LOW+)
 PR_REVIEW_CONFIDENCE_THRESHOLD=0.3  # Include more speculative
 ```
 

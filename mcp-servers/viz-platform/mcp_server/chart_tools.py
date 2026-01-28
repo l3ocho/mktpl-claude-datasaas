@@ -3,10 +3,20 @@ Chart creation tools using Plotly.
 
 Provides tools for creating data visualizations with automatic theme integration.
 """
+import base64
 import logging
+import os
 from typing import Dict, List, Optional, Any, Union
 
 logger = logging.getLogger(__name__)
+
+# Check for kaleido availability
+KALEIDO_AVAILABLE = False
+try:
+    import kaleido
+    KALEIDO_AVAILABLE = True
+except ImportError:
+    logger.debug("kaleido not installed - chart export will be unavailable")
 
 
 # Default color palette based on Mantine theme
@@ -394,4 +404,130 @@ class ChartTools:
                 "error": str(e),
                 "figure": figure,
                 "interactions_added": []
+            }
+
+    async def chart_export(
+        self,
+        figure: Dict[str, Any],
+        format: str = "png",
+        width: Optional[int] = None,
+        height: Optional[int] = None,
+        scale: float = 2.0,
+        output_path: Optional[str] = None
+    ) -> Dict[str, Any]:
+        """
+        Export a Plotly chart to a static image format.
+
+        Args:
+            figure: Plotly figure JSON to export
+            format: Output format - png, svg, or pdf
+            width: Image width in pixels (default: from figure or 1200)
+            height: Image height in pixels (default: from figure or 800)
+            scale: Resolution scale factor (default: 2 for retina)
+            output_path: Optional file path to save the image
+
+        Returns:
+            Dict with:
+                - image_data: Base64-encoded image (if no output_path)
+                - file_path: Path to saved file (if output_path provided)
+                - format: Export format used
+                - dimensions: {width, height, scale}
+                - error: Error message if export failed
+        """
+        # Validate format
+        valid_formats = ['png', 'svg', 'pdf']
+        format = format.lower()
+        if format not in valid_formats:
+            return {
+                "error": f"Invalid format '{format}'. Must be one of: {valid_formats}",
+                "format": format,
+                "image_data": None
+            }
+
+        # Check kaleido availability
+        if not KALEIDO_AVAILABLE:
+            return {
+                "error": "kaleido package not installed. Install with: pip install kaleido",
+                "format": format,
+                "image_data": None,
+                "install_hint": "pip install kaleido"
+            }
+
+        # Validate figure
+        if not figure or 'data' not in figure:
+            return {
+                "error": "Invalid figure: must contain 'data' key",
+                "format": format,
+                "image_data": None
+            }
+
+        try:
+            import plotly.graph_objects as go
+            import plotly.io as pio
+
+            # Create Plotly figure object
+            fig = go.Figure(figure)
+
+            # Determine dimensions
+            layout = figure.get('layout', {})
+            export_width = width or layout.get('width') or 1200
+            export_height = height or layout.get('height') or 800
+
+            # Export to bytes
+            image_bytes = pio.to_image(
+                fig,
+                format=format,
+                width=export_width,
+                height=export_height,
+                scale=scale
+            )
+
+            result = {
+                "format": format,
+                "dimensions": {
+                    "width": export_width,
+                    "height": export_height,
+                    "scale": scale,
+                    "effective_width": int(export_width * scale),
+                    "effective_height": int(export_height * scale)
+                }
+            }
+
+            # Save to file or return base64
+            if output_path:
+                # Ensure directory exists
+                output_dir = os.path.dirname(output_path)
+                if output_dir and not os.path.exists(output_dir):
+                    os.makedirs(output_dir, exist_ok=True)
+
+                # Add extension if missing
+                if not output_path.endswith(f'.{format}'):
+                    output_path = f"{output_path}.{format}"
+
+                with open(output_path, 'wb') as f:
+                    f.write(image_bytes)
+
+                result["file_path"] = output_path
+                result["file_size_bytes"] = len(image_bytes)
+            else:
+                # Return as base64
+                result["image_data"] = base64.b64encode(image_bytes).decode('utf-8')
+                result["data_uri"] = f"data:image/{format};base64,{result['image_data']}"
+
+            return result
+
+        except ImportError as e:
+            logger.error(f"Chart export failed - missing dependency: {e}")
+            return {
+                "error": f"Missing dependency for export: {e}",
+                "format": format,
+                "image_data": None,
+                "install_hint": "pip install plotly kaleido"
+            }
+        except Exception as e:
+            logger.error(f"Chart export failed: {e}")
+            return {
+                "error": str(e),
+                "format": format,
+                "image_data": None
             }
