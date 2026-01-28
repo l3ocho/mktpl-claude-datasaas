@@ -72,6 +72,67 @@ Parallel Execution Batches:
 
 **Independent tasks in the same batch run in parallel.**
 
+## File Conflict Prevention (MANDATORY)
+
+**CRITICAL: Before dispatching parallel agents, check for file overlap.**
+
+**Pre-Dispatch Conflict Check:**
+
+1. **Identify target files** for each task in the batch
+2. **Check for overlap** - Do any tasks modify the same file?
+3. **If overlap detected** - Sequentialize those specific tasks
+
+**Example Conflict Detection:**
+```
+Batch 1 Analysis:
+  #45 - Implement JWT service
+        Files: auth/jwt_service.py, auth/__init__.py, tests/test_jwt.py
+
+  #48 - Update API documentation
+        Files: docs/api.md, README.md
+
+  Overlap: NONE → Safe to parallelize
+
+Batch 2 Analysis:
+  #46 - Build login endpoint
+        Files: api/routes/auth.py, auth/__init__.py
+
+  #49 - Add auth tests
+        Files: tests/test_auth.py, auth/__init__.py
+
+  Overlap: auth/__init__.py → CONFLICT!
+  Action: Sequentialize #46 and #49 (run #46 first)
+```
+
+**Conflict Resolution Rules:**
+
+| Conflict Type | Action |
+|---------------|--------|
+| Same file in checklist | Sequentialize tasks |
+| Same directory | Review if safe, usually OK |
+| Shared test file | Sequentialize or assign different test files |
+| Shared config | Sequentialize |
+
+**Branch Isolation Protocol:**
+
+Even for parallel tasks, each MUST run on its own branch:
+```
+Task #45 → feat/45-jwt-service (isolated)
+Task #48 → feat/48-api-docs (isolated)
+```
+
+**Sequential Merge After Completion:**
+```
+1. Task #45 completes → merge feat/45-jwt-service to development
+2. Task #48 completes → merge feat/48-api-docs to development
+3. Never merge simultaneously - always sequential to detect conflicts
+```
+
+**If Merge Conflict Occurs:**
+1. Stop second task
+2. Resolve conflict manually or assign to human
+3. Resume/restart second task with updated base
+
 ## Branch Naming Convention (MANDATORY)
 
 When creating branches for tasks:
