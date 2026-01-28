@@ -4,6 +4,18 @@ description: Interactive setup wizard for pr-review plugin - configures Gitea MC
 
 # PR Review Setup Wizard
 
+## Visual Output
+
+When executing this command, display the plugin header:
+
+```
+┌──────────────────────────────────────────────────────────────────┐
+│  🔍 PR-REVIEW · Setup Wizard                                      │
+└──────────────────────────────────────────────────────────────────┘
+```
+
+Then proceed with the setup.
+
 This command sets up the pr-review plugin. It shares the Gitea MCP server with projman, so if you've already run `/initial-setup` for projman, most of the work is done.
 
 ## Important Context

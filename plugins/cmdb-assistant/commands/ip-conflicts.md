@@ -4,6 +4,18 @@ description: Detect IP address conflicts and overlapping prefixes in NetBox
 
 # CMDB IP Conflict Detection
 
+## Visual Output
+
+When executing this command, display the plugin header:
+
+```
+┌──────────────────────────────────────────────────────────────────┐
+│  🖥️ CMDB-ASSISTANT · IP Conflict Detection                       │
+└──────────────────────────────────────────────────────────────────┘
+```
+
+Then proceed with the analysis.
+
 Scan NetBox IPAM data to identify IP address conflicts and overlapping prefixes.
 
 ## Usage

@@ -4,6 +4,18 @@ description: Export a Plotly chart to PNG, SVG, or PDF format
 
 # Export Chart
 
+## Visual Output
+
+When executing this command, display the plugin header:
+
+```
+┌──────────────────────────────────────────────────────────────────┐
+│  🎨 VIZ-PLATFORM · Chart Export                                   │
+└──────────────────────────────────────────────────────────────────┘
+```
+
+Then proceed with the export.
+
 Export a Plotly chart to static image formats for sharing, embedding, or printing.
 
 ## Usage

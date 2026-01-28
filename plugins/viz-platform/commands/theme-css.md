@@ -4,6 +4,18 @@ description: Export a theme as CSS custom properties
 
 # Export Theme as CSS
 
+## Visual Output
+
+When executing this command, display the plugin header:
+
+```
+┌──────────────────────────────────────────────────────────────────┐
+│  🎨 VIZ-PLATFORM · Theme CSS Export                               │
+└──────────────────────────────────────────────────────────────────┘
+```
+
+Then proceed with the export.
+
 Export a theme's design tokens as CSS custom properties for use outside Dash.
 
 ## Usage

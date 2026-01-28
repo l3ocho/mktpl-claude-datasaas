@@ -4,6 +4,18 @@ description: Validate color accessibility for color blind users
 
 # Accessibility Check
 
+## Visual Output
+
+When executing this command, display the plugin header:
+
+```
+┌──────────────────────────────────────────────────────────────────┐
+│  🎨 VIZ-PLATFORM · Accessibility Check                            │
+└──────────────────────────────────────────────────────────────────┘
+```
+
+Then proceed with the accessibility validation.
+
 Validate theme or chart colors for color blind accessibility, checking contrast ratios and suggesting alternatives.
 
 ## Usage

@@ -1,5 +1,17 @@
 # /pr-summary - Quick PR Summary
 
+## Visual Output
+
+When executing this command, display the plugin header:
+
+```
+┌──────────────────────────────────────────────────────────────────┐
+│  🔍 PR-REVIEW · Quick Summary                                     │
+└──────────────────────────────────────────────────────────────────┘
+```
+
+Then proceed with the summary.
+
 ## Purpose
 
 Generate a quick summary of PR changes without conducting a full multi-agent review.

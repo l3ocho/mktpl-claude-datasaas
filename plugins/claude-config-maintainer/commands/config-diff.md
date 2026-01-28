@@ -6,6 +6,18 @@ description: Show diff between current CLAUDE.md and last commit
 
 This command shows differences between your current CLAUDE.md file and previous versions, helping track configuration drift and review changes before committing.
 
+## Visual Output
+
+When executing this command, display the plugin header:
+
+```
+┌──────────────────────────────────────────────────────────────────┐
+│  ⚙️ CONFIG-MAINTAINER · CLAUDE.md Diff                           │
+└──────────────────────────────────────────────────────────────────┘
+```
+
+Then proceed with the diff.
+
 ## What This Command Does
 
 1. **Detect CLAUDE.md Location** - Finds the project's CLAUDE.md file

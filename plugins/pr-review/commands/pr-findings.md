@@ -1,5 +1,17 @@
 # /pr-findings - Filter Review Findings
 
+## Visual Output
+
+When executing this command, display the plugin header:
+
+```
+┌──────────────────────────────────────────────────────────────────┐
+│  🔍 PR-REVIEW · Findings                                          │
+└──────────────────────────────────────────────────────────────────┘
+```
+
+Then proceed with the findings display.
+
 ## Purpose
 
 List and filter findings from a previous PR review by category, severity, or confidence level.

@@ -4,6 +4,18 @@ description: Create a Plotly chart with theme integration
 
 # Create Chart
 
+## Visual Output
+
+When executing this command, display the plugin header:
+
+```
+┌──────────────────────────────────────────────────────────────────┐
+│  🎨 VIZ-PLATFORM · Chart Builder                                  │
+└──────────────────────────────────────────────────────────────────┘
+```
+
+Then proceed with the chart creation.
+
 Create a Plotly chart with automatic theme token application.
 
 ## Usage
