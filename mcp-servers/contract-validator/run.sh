@@ -1,4 +1,8 @@
 #!/bin/bash
+# Capture original working directory before any cd operations
+# This should be the user's project directory when launched by Claude Code
+export CLAUDE_PROJECT_DIR="${CLAUDE_PROJECT_DIR:-$PWD}"
+
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 CACHE_VENV="$HOME/.cache/claude-mcp-venvs/leo-claude-mktplace/contract-validator/.venv"
 LOCAL_VENV="$SCRIPT_DIR/.venv"
