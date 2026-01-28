@@ -5,6 +5,17 @@
         "type": "command",
         "command": "${CLAUDE_PLUGIN_ROOT}/hooks/auto-validate.sh"
       }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Edit|Write",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/breaking-change-check.sh"
+          }
+        ]
+      }
     ]
   }
 }
