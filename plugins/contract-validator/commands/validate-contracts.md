@@ -1,5 +1,17 @@
 # /validate-contracts - Full Contract Validation
 
+## Visual Output
+
+When executing this command, display the plugin header:
+
+```
+┌──────────────────────────────────────────────────────────────────┐
+│  ✅ CONTRACT-VALIDATOR · Full Validation                         │
+└──────────────────────────────────────────────────────────────────┘
+```
+
+Then proceed with the validation.
+
 Run comprehensive cross-plugin compatibility validation for the entire marketplace.
 
 ## Usage

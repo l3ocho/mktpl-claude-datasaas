@@ -1,5 +1,17 @@
 # /pr-review - Full Multi-Agent Review
 
+## Visual Output
+
+When executing this command, display the plugin header:
+
+```
+┌──────────────────────────────────────────────────────────────────┐
+│  🔍 PR-REVIEW · Full Review                                       │
+└──────────────────────────────────────────────────────────────────┘
+```
+
+Then proceed with the review.
+
 ## Purpose
 
 Conduct a comprehensive pull request review using specialized agents for security, performance, maintainability, and test coverage.

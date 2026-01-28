@@ -1,5 +1,17 @@
 # /data-quality - Data Quality Assessment
 
+## Visual Output
+
+When executing this command, display the plugin header:
+
+```
+┌──────────────────────────────────────────────────────────────────┐
+│  📊 DATA-PLATFORM · Data Quality                                  │
+└──────────────────────────────────────────────────────────────────┘
+```
+
+Then proceed with the assessment.
+
 Comprehensive data quality check for DataFrames with pass/warn/fail scoring.
 
 ## Usage

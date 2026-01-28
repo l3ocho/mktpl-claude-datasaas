@@ -4,6 +4,18 @@ description: Interactive setup wizard for cmdb-assistant plugin - configures Net
 
 # CMDB Assistant Setup Wizard
 
+## Visual Output
+
+When executing this command, display the plugin header:
+
+```
+┌──────────────────────────────────────────────────────────────────┐
+│  🖥️ CMDB-ASSISTANT · Setup Wizard                                │
+└──────────────────────────────────────────────────────────────────┘
+```
+
+Then proceed with the setup.
+
 This command sets up the cmdb-assistant plugin with NetBox integration.
 
 ## Important Context

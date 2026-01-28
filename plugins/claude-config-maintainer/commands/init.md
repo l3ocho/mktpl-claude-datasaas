@@ -6,6 +6,18 @@ description: Initialize a new CLAUDE.md file for a project
 
 This command creates a new CLAUDE.md file tailored to your project, gathering context and generating appropriate content.
 
+## Visual Output
+
+When executing this command, display the plugin header:
+
+```
+┌──────────────────────────────────────────────────────────────────┐
+│  ⚙️ CONFIG-MAINTAINER · CLAUDE.md Initialization                 │
+└──────────────────────────────────────────────────────────────────┘
+```
+
+Then proceed with the initialization.
+
 ## What This Command Does
 
 1. **Gather Context** - Analyzes project structure and asks clarifying questions

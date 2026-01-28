@@ -1,5 +1,17 @@
 # /commit - Smart Commit
 
+## Visual Output
+
+When executing this command, display the plugin header:
+
+```
+┌──────────────────────────────────────────────────────────────────┐
+│  🔀 GIT-FLOW · Smart Commit                                      │
+└──────────────────────────────────────────────────────────────────┘
+```
+
+Then proceed with the commit workflow.
+
 ## Purpose
 
 Create a git commit with an auto-generated conventional commit message based on staged changes.

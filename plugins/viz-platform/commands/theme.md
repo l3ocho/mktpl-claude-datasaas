@@ -4,6 +4,18 @@ description: Apply an existing theme to the current context
 
 # Apply Theme
 
+## Visual Output
+
+When executing this command, display the plugin header:
+
+```
+┌──────────────────────────────────────────────────────────────────┐
+│  🎨 VIZ-PLATFORM · Apply Theme                                    │
+└──────────────────────────────────────────────────────────────────┘
+```
+
+Then proceed with the theme activation.
+
 Apply an existing theme to activate its design tokens.
 
 ## Usage

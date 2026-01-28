@@ -6,6 +6,18 @@ description: Lint CLAUDE.md for common anti-patterns and best practices
 
 This command checks your CLAUDE.md file against best practices and detects common anti-patterns that can cause issues with Claude Code.
 
+## Visual Output
+
+When executing this command, display the plugin header:
+
+```
+┌──────────────────────────────────────────────────────────────────┐
+│  ⚙️ CONFIG-MAINTAINER · CLAUDE.md Lint                           │
+└──────────────────────────────────────────────────────────────────┘
+```
+
+Then proceed with the linting.
+
 ## What This Command Does
 
 1. **Parse Structure** - Validates markdown structure and hierarchy

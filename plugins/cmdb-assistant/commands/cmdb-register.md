@@ -4,6 +4,18 @@ description: Register the current machine into NetBox with all running applicati
 
 # CMDB Machine Registration
 
+## Visual Output
+
+When executing this command, display the plugin header:
+
+```
+┌──────────────────────────────────────────────────────────────────┐
+│  🖥️ CMDB-ASSISTANT · Machine Registration                        │
+└──────────────────────────────────────────────────────────────────┘
+```
+
+Then proceed with the registration.
+
 Register the current machine into NetBox, including hardware info, network interfaces, and running applications (Docker containers, services).
 
 ## Usage

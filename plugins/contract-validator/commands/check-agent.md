@@ -1,5 +1,17 @@
 # /check-agent - Validate Agent Definition
 
+## Visual Output
+
+When executing this command, display the plugin header:
+
+```
+┌──────────────────────────────────────────────────────────────────┐
+│  ✅ CONTRACT-VALIDATOR · Agent Check                              │
+└──────────────────────────────────────────────────────────────────┘
+```
+
+Then proceed with the validation.
+
 Validate a single agent's tool references and data flow.
 
 ## Usage

@@ -4,6 +4,18 @@ description: Interactive setup wizard for data-platform plugin - configures MCP 
 
 # Data Platform Setup Wizard
 
+## Visual Output
+
+When executing this command, display the plugin header:
+
+```
+┌──────────────────────────────────────────────────────────────────┐
+│  📊 DATA-PLATFORM · Setup Wizard                                  │
+└──────────────────────────────────────────────────────────────────┘
+```
+
+Then proceed with the setup.
+
 This command sets up the data-platform plugin with pandas, PostgreSQL, and dbt integration.
 
 ## Important Context

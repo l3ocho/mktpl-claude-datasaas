@@ -4,6 +4,18 @@ description: Generate infrastructure topology diagrams from NetBox data
 
 # CMDB Topology Visualization
 
+## Visual Output
+
+When executing this command, display the plugin header:
+
+```
+┌──────────────────────────────────────────────────────────────────┐
+│  🖥️ CMDB-ASSISTANT · Topology                                    │
+└──────────────────────────────────────────────────────────────────┘
+```
+
+Then proceed with the visualization.
+
 Generate Mermaid diagrams showing infrastructure topology from NetBox.
 
 ## Usage

@@ -1,5 +1,17 @@
 # /dependency-graph - Generate Dependency Visualization
 
+## Visual Output
+
+When executing this command, display the plugin header:
+
+```
+┌──────────────────────────────────────────────────────────────────┐
+│  ✅ CONTRACT-VALIDATOR · Dependency Graph                         │
+└──────────────────────────────────────────────────────────────────┘
+```
+
+Then proceed with the visualization.
+
 Generate a Mermaid flowchart showing plugin dependencies, data flows, and tool relationships.
 
 ## Usage

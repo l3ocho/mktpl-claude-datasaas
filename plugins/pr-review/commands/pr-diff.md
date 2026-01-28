@@ -1,5 +1,17 @@
 # /pr-diff - Annotated PR Diff Viewer
 
+## Visual Output
+
+When executing this command, display the plugin header:
+
+```
+┌──────────────────────────────────────────────────────────────────┐
+│  🔍 PR-REVIEW · Diff Viewer                                       │
+└──────────────────────────────────────────────────────────────────┘
+```
+
+Then proceed with the diff display.
+
 ## Purpose
 
 Display the PR diff with inline annotations from review comments, making it easy to see what feedback has been given alongside the code changes.

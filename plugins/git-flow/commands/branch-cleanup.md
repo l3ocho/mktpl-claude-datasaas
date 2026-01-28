@@ -1,5 +1,17 @@
 # /branch-cleanup - Clean Merged and Stale Branches
 
+## Visual Output
+
+When executing this command, display the plugin header:
+
+```
+┌──────────────────────────────────────────────────────────────────┐
+│  🔀 GIT-FLOW · Branch Cleanup                                     │
+└──────────────────────────────────────────────────────────────────┘
+```
+
+Then proceed with the workflow.
+
 ## Purpose
 
 Remove branches that have been merged OR whose remote tracking branch no longer exists, both locally and optionally on remote.

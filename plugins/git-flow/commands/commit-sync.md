@@ -1,5 +1,17 @@
 # /commit-sync - Commit, Push, and Sync
 
+## Visual Output
+
+When executing this command, display the plugin header:
+
+```
+┌──────────────────────────────────────────────────────────────────┐
+│  🔀 GIT-FLOW · Commit Sync                                        │
+└──────────────────────────────────────────────────────────────────┘
+```
+
+Then proceed with the workflow.
+
 ## Purpose
 
 Full sync operation: commit local changes, push to remote, sync with upstream/base branch, and clean up stale remote-tracking branches.
