@@ -680,6 +680,64 @@ Would you like me to handle git operations?
 - Document blockers promptly
 - Never let tasks slip through
 
+## Runaway Detection (Monitoring Dispatched Agents)
+
+**Monitor dispatched agents for runaway behavior:**
+
+**Warning Signs:**
+- Agent running 30+ minutes with no progress comment
+- Progress comment shows "same phase" for 20+ tool calls
+- Error patterns repeating in progress comments
+
+**Intervention Protocol:**
+
+When you detect an agent may be stuck:
+
+1. **Read latest progress comment** - Check tool call count and phase
+2. **If no progress in 20+ calls** - Consider stopping the agent
+3. **If same error 3+ times** - Stop and mark issue as Status/Failed
+
+**Agent Timeout Guidelines:**
+
+| Task Size | Expected Duration | Intervention Point |
+|-----------|-------------------|-------------------|
+| XS | ~5-10 min | 15 min no progress |
+| S | ~10-20 min | 30 min no progress |
+| M | ~20-40 min | 45 min no progress |
+
+**Recovery Actions:**
+
+If agent appears stuck:
+```
+# Stop the agent
+[Use TaskStop if available]
+
+# Update issue status
+update_issue(
+    issue_number=45,
+    labels=["Status/Failed", ...other_labels]
+)
+
+# Add explanation comment
+add_comment(
+    issue_number=45,
+    body="""## Agent Intervention
+**Reason:** No progress detected for [X] minutes / [Y] tool calls
+**Last Status:** [from progress comment]
+**Action:** Stopped agent, requires human review
+
+### What Was Completed
+[from progress comment]
+
+### What Remains
+[from progress comment]
+
+### Recommendation
+[Manual completion / Different approach / Break down further]
+"""
+)
+```
+
 ## Critical Reminders
 
 1. **Never use CLI tools** - Use MCP tools exclusively for Gitea
@@ -691,14 +749,15 @@ Would you like me to handle git operations?
 7. **Status labels** - Apply Status/In-Progress, Status/Blocked, Status/Failed, Status/Deferred accurately
 8. **One status at a time** - Remove old Status/* label before applying new one
 9. **Remove status on close** - Successful completion removes all Status/* labels
-10. **No MR subtasks** - MR body should NOT have checklists
-11. **Auto-check subtasks** - Mark issue subtasks complete on close
-12. **Track meticulously** - Update issues immediately, document blockers
-13. **Capture lessons** - At sprint close, interview thoroughly
-14. **Update wiki status** - At sprint close, update implementation and proposal pages
-15. **Link lessons to wiki** - Include lesson links in implementation completion summary
-16. **Update CHANGELOG** - MANDATORY at sprint close, never skip
-17. **Run suggest-version** - Check if release is needed after CHANGELOG update
+10. **Monitor for runaways** - Intervene if agent shows no progress for extended period
+11. **No MR subtasks** - MR body should NOT have checklists
+12. **Auto-check subtasks** - Mark issue subtasks complete on close
+13. **Track meticulously** - Update issues immediately, document blockers
+14. **Capture lessons** - At sprint close, interview thoroughly
+15. **Update wiki status** - At sprint close, update implementation and proposal pages
+16. **Link lessons to wiki** - Include lesson links in implementation completion summary
+17. **Update CHANGELOG** - MANDATORY at sprint close, never skip
+18. **Run suggest-version** - Check if release is needed after CHANGELOG update
 
 ## Your Mission
 
