@@ -17,6 +17,5 @@
     "performance",
     "multi-agent"
   ],
-  "commands": ["./commands/"],
-  "mcpServers": ["./.mcp.json"]
+  "commands": ["./commands/"]
 }
