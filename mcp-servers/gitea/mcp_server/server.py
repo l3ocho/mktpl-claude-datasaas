@@ -144,7 +144,7 @@ class GiteaMCPServer:
                         "type": "object",
                         "properties": {
                             "issue_number": {
-                                "type": "integer",
+                                "type": ["integer", "string"],
                                 "description": "Issue number"
                             },
                             "repo": {
@@ -189,7 +189,7 @@ class GiteaMCPServer:
                         "type": "object",
                         "properties": {
                             "issue_number": {
-                                "type": "integer",
+                                "type": ["integer", "string"],
                                 "description": "Issue number"
                             },
                             "title": {
@@ -211,7 +211,7 @@ class GiteaMCPServer:
                                 "description": "New labels"
                             },
                             "milestone": {
-                                "type": "integer",
+                                "type": ["integer", "string"],
                                 "description": "Milestone ID to assign"
                             },
                             "repo": {
@@ -229,7 +229,7 @@ class GiteaMCPServer:
                         "type": "object",
                         "properties": {
                             "issue_number": {
-                                "type": "integer",
+                                "type": ["integer", "string"],
                                 "description": "Issue number"
                             },
                             "comment": {
@@ -424,7 +424,7 @@ class GiteaMCPServer:
                                 "description": "Tags to filter by (optional)"
                             },
                             "limit": {
-                                "type": "integer",
+                                "type": ["integer", "string"],
                                 "default": 20,
                                 "description": "Maximum results"
                             },
@@ -462,7 +462,7 @@ class GiteaMCPServer:
                         "type": "object",
                         "properties": {
                             "milestone_id": {
-                                "type": "integer",
+                                "type": ["integer", "string"],
                                 "description": "Milestone ID"
                             },
                             "repo": {
@@ -506,7 +506,7 @@ class GiteaMCPServer:
                         "type": "object",
                         "properties": {
                             "milestone_id": {
-                                "type": "integer",
+                                "type": ["integer", "string"],
                                 "description": "Milestone ID"
                             },
                             "title": {
@@ -541,7 +541,7 @@ class GiteaMCPServer:
                         "type": "object",
                         "properties": {
                             "milestone_id": {
-                                "type": "integer",
+                                "type": ["integer", "string"],
                                 "description": "Milestone ID"
                             },
                             "repo": {
@@ -560,7 +560,7 @@ class GiteaMCPServer:
                         "type": "object",
                         "properties": {
                             "issue_number": {
-                                "type": "integer",
+                                "type": ["integer", "string"],
                                 "description": "Issue number"
                             },
                             "repo": {
@@ -578,11 +578,11 @@ class GiteaMCPServer:
                         "type": "object",
                         "properties": {
                             "issue_number": {
-                                "type": "integer",
+                                "type": ["integer", "string"],
                                 "description": "Issue that will depend on another"
                             },
                             "depends_on": {
-                                "type": "integer",
+                                "type": ["integer", "string"],
                                 "description": "Issue that blocks issue_number"
                             },
                             "repo": {
@@ -600,11 +600,11 @@ class GiteaMCPServer:
                         "type": "object",
                         "properties": {
                             "issue_number": {
-                                "type": "integer",
+                                "type": ["integer", "string"],
                                 "description": "Issue that depends on another"
                             },
                             "depends_on": {
-                                "type": "integer",
+                                "type": ["integer", "string"],
                                 "description": "Issue being depended on"
                             },
                             "repo": {
@@ -782,7 +782,7 @@ class GiteaMCPServer:
                         "type": "object",
                         "properties": {
                             "pr_number": {
-                                "type": "integer",
+                                "type": ["integer", "string"],
                                 "description": "Pull request number"
                             },
                             "repo": {
@@ -800,7 +800,7 @@ class GiteaMCPServer:
                         "type": "object",
                         "properties": {
                             "pr_number": {
-                                "type": "integer",
+                                "type": ["integer", "string"],
                                 "description": "Pull request number"
                             },
                             "repo": {
@@ -818,7 +818,7 @@ class GiteaMCPServer:
                         "type": "object",
                         "properties": {
                             "pr_number": {
-                                "type": "integer",
+                                "type": ["integer", "string"],
                                 "description": "Pull request number"
                             },
                             "repo": {
@@ -836,7 +836,7 @@ class GiteaMCPServer:
                         "type": "object",
                         "properties": {
                             "pr_number": {
-                                "type": "integer",
+                                "type": ["integer", "string"],
                                 "description": "Pull request number"
                             },
                             "body": {
@@ -855,7 +855,7 @@ class GiteaMCPServer:
                                     "type": "object",
                                     "properties": {
                                         "path": {"type": "string"},
-                                        "position": {"type": "integer"},
+                                        "position": {"type": ["integer", "string"]},
                                         "body": {"type": "string"}
                                     }
                                 },
@@ -876,7 +876,7 @@ class GiteaMCPServer:
                         "type": "object",
                         "properties": {
                             "pr_number": {
-                                "type": "integer",
+                                "type": ["integer", "string"],
                                 "description": "Pull request number"
                             },
                             "body": {
