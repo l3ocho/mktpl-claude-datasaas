@@ -1,5 +1,7 @@
 ---
+name: security-reviewer
 description: Security-focused code review agent
+model: opus
 ---
 
 # Security Reviewer Agent
