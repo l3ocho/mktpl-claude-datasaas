@@ -1,9 +1,0 @@
-{
-  "mcpServers": {
-    "contract-validator": {
-      "type": "stdio",
-      "command": "${CLAUDE_PLUGIN_ROOT}/mcp-servers/contract-validator/run.sh",
-      "args": []
-    }
-  }
-}
