@@ -1,4 +1,4 @@
-# Leo Claude Marketplace - v5.3.0
+# Leo Claude Marketplace - v5.4.0
 
 A collection of Claude Code plugins for project management, infrastructure automation, and development workflows.
 

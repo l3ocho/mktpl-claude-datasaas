@@ -46,7 +46,7 @@ Run `./scripts/verify-hooks.sh`. If changes affect MCP servers or hooks, inform 
 ## Project Overview
 
 **Repository:** leo-claude-mktplace
-**Version:** 5.3.0
+**Version:** 5.4.0
 **Status:** Production Ready
 
 A plugin marketplace for Claude Code containing:
@@ -54,16 +54,16 @@ A plugin marketplace for Claude Code containing:
 | Plugin | Description | Version |
 |--------|-------------|---------|
 | `projman` | Sprint planning and project management with Gitea integration | 3.3.0 |
-| `git-flow` | Git workflow automation with smart commits and branch management | 1.2.0 |
+| `git-flow` | Git workflow automation with smart commits and branch management | 1.0.0 |
 | `pr-review` | Multi-agent PR review with confidence scoring | 1.1.0 |
-| `clarity-assist` | Prompt optimization with ND-friendly accommodations | 1.2.0 |
-| `doc-guardian` | Automatic documentation drift detection and synchronization | 1.1.0 |
-| `code-sentinel` | Security scanning and code refactoring tools | 1.0.0 |
-| `claude-config-maintainer` | CLAUDE.md optimization and maintenance | 1.1.0 |
+| `clarity-assist` | Prompt optimization with ND-friendly accommodations | 1.0.0 |
+| `doc-guardian` | Automatic documentation drift detection and synchronization | 1.0.0 |
+| `code-sentinel` | Security scanning and code refactoring tools | 1.0.1 |
+| `claude-config-maintainer` | CLAUDE.md optimization and maintenance | 1.0.0 |
 | `cmdb-assistant` | NetBox CMDB integration for infrastructure management | 1.2.0 |
-| `data-platform` | pandas, PostgreSQL, and dbt integration for data engineering | 1.2.0 |
+| `data-platform` | pandas, PostgreSQL, and dbt integration for data engineering | 1.1.0 |
 | `viz-platform` | DMC validation, Plotly charts, and theming for dashboards | 1.1.0 |
-| `contract-validator` | Cross-plugin compatibility validation and agent verification | 1.2.0 |
+| `contract-validator` | Cross-plugin compatibility validation and agent verification | 1.1.0 |
 | `project-hygiene` | Post-task cleanup automation via hooks | 0.1.0 |
 
 ## Quick Start
@@ -189,6 +189,21 @@ leo-claude-mktplace/
 | Project | `.env` in project root | Repository specification (GITEA_ORG, GITEA_REPO) |
 
 **Note:** `GITEA_ORG` is at project level since different projects may belong to different organizations.
+
+### Agent Model Configuration
+
+Agents can specify preferred Claude models for cost/performance optimization:
+
+| Model | Use For | Agents |
+|-------|---------|--------|
+| `opus` | Complex reasoning, security | planner, code-reviewer, security-reviewer |
+| `sonnet` | Implementation, coordination | orchestrator, executor, most agents |
+| `haiku` | Simple validation | component-check, agent-check |
+
+**Configuration:** Add `model: opus|sonnet|haiku` to agent frontmatter, or `defaultModel` to plugin.json.
+**Inheritance:** Agent → Plugin default → System default (sonnet)
+
+See `docs/MODEL-RECOMMENDATIONS.md` for detailed guidance.
 
 ### Branch-Aware Security
 

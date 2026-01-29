@@ -4,6 +4,49 @@ All notable changes to the Leo Claude Marketplace will be documented in this fil
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [5.4.0] - 2026-01-28
+
+### Added
+
+#### Sprint 7: Multi-Model Agent Support
+Configurable model selection for agents with inheritance chain.
+
+**Model Configuration:**
+- Agent-level `model` field in YAML frontmatter (opus|sonnet|haiku)
+- Plugin-level `defaultModel` in plugin.json
+- Inheritance: Agent → Plugin → System default (sonnet)
+
+**Recommended Model Assignments:**
+| Model | Use Case | Agents |
+|-------|----------|--------|
+| **Opus** | Complex reasoning, security analysis | planner, code-reviewer, security-reviewer, data-analysis |
+| **Sonnet** | Implementation, coordination | orchestrator, executor, layout-builder, data-ingestion |
+| **Haiku** | Quick validation | component-check, agent-check |
+
+**Documentation:**
+- `docs/MODEL-RECOMMENDATIONS.md` - Central model selection guide
+- `docs/CONFIGURATION.md` - Added agent model configuration section
+- `CLAUDE.md` - Added model config quick reference
+
+**Agent Updates (7 files):**
+- Opus: planner, code-reviewer (projman), security-reviewer (pr-review, code-sentinel), data-analysis
+- Haiku: component-check (viz-platform), agent-check (contract-validator)
+
+**Plugin Manifest Updates (6 files):**
+- All plugins with agents now have `defaultModel: sonnet`
+- Version bumps: projman 3.3.0, pr-review 1.1.0, data-platform 1.1.0, viz-platform 1.1.0, code-sentinel 1.0.1, contract-validator 1.1.0
+
+**Validation:**
+- `scripts/validate-marketplace.sh` - Added model field validation (v5.4.0+)
+
+**Sprint Completed:**
+- Milestone: Sprint 7 - Multi-Model Agent Support
+- Issues: #302, #303, #304, #305, #306
+- PRs: #307, #308
+- Wiki: [Change V5.4.0: Multi-Model Support (Sprint 7 Implementation)](https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/wiki/Change-V5.4.0%3A-Multi-Model-Support-%28Sprint-7-Implementation%29)
+
+---
+
 ## [5.3.0] - 2026-01-28
 
 ### Added
