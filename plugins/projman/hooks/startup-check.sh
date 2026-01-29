@@ -10,19 +10,6 @@ PLUGIN_ROOT="${CLAUDE_PLUGIN_ROOT:-$(dirname "$(dirname "$(realpath "$0")")")}"
 # Marketplace root is 2 levels up from plugin root (plugins/projman -> .)
 MARKETPLACE_ROOT="$(dirname "$(dirname "$PLUGIN_ROOT")")"
 VENV_REPAIR_SCRIPT="$MARKETPLACE_ROOT/scripts/venv-repair.sh"
-PLUGIN_CACHE="$HOME/.claude/plugins/cache/leo-claude-mktplace"
-
-# ============================================================================
-# Clear stale plugin cache (MUST run before MCP servers load)
-# ============================================================================
-# The cache at ~/.claude/plugins/cache/ holds versioned .mcp.json files.
-# After marketplace updates, cached configs may point to old paths.
-# Clearing forces Claude to read fresh configs from installed marketplace.
-
-if [[ -d "$PLUGIN_CACHE" ]]; then
-    rm -rf "$PLUGIN_CACHE"
-    # Don't output anything - this should be silent and automatic
-fi
 
 # ============================================================================
 # Auto-repair MCP venvs (runs before other checks)
