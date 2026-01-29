@@ -158,8 +158,105 @@ for plugin_dir in "$PLUGINS_DIR"/*/; do
         echo "WARNING: Missing README.md in $plugin_name/"
     fi
 
+    # CRITICAL: Validate file references exist (mcpServers, hooks, commands)
+    # This prevents broken references that silently break plugin loading
+
+    # Check mcpServers references
+    mcp_servers=$(jq -r '.mcpServers // [] | .[]' "$plugin_json" 2>/dev/null)
+    for mcp_ref in $mcp_servers; do
+        mcp_path="$plugin_dir/$mcp_ref"
+        if [[ ! -f "$mcp_path" ]]; then
+            echo "ERROR: BROKEN REFERENCE in $plugin_name/plugin.json"
+            echo "       mcpServers references '$mcp_ref' but file does not exist at:"
+            echo "       $mcp_path"
+            echo ""
+            echo "       FIX: Either create the file or remove the mcpServers entry"
+            exit 1
+        fi
+        echo "  ✓ mcpServers reference: $mcp_ref exists"
+    done
+
+    # Check hooks references (can be array of file paths OR object with handlers)
+    hooks_type=$(jq -r '.hooks | type' "$plugin_json" 2>/dev/null)
+    if [[ "$hooks_type" == "array" ]]; then
+        # Array format: ["./hooks/hooks.json"]
+        hooks=$(jq -r '.hooks[]' "$plugin_json" 2>/dev/null)
+        for hook_ref in $hooks; do
+            hook_path="$plugin_dir/$hook_ref"
+            if [[ ! -f "$hook_path" ]]; then
+                echo "ERROR: BROKEN REFERENCE in $plugin_name/plugin.json"
+                echo "       hooks references '$hook_ref' but file does not exist at:"
+                echo "       $hook_path"
+                echo ""
+                echo "       FIX: Either create the file or remove the hooks entry"
+                exit 1
+            fi
+            echo "  ✓ hooks reference: $hook_ref exists"
+        done
+    elif [[ "$hooks_type" == "object" ]]; then
+        # Object format: { "PostToolUse": [...] } - inline hooks, no file reference to validate
+        echo "  ✓ hooks: inline object format (no file references)"
+    fi
+
+    # Check commands directory references
+    commands=$(jq -r '.commands // [] | .[]' "$plugin_json" 2>/dev/null)
+    for cmd_ref in $commands; do
+        cmd_path="$plugin_dir/$cmd_ref"
+        if [[ ! -d "$cmd_path" ]] && [[ ! -f "$cmd_path" ]]; then
+            echo "ERROR: BROKEN REFERENCE in $plugin_name/plugin.json"
+            echo "       commands references '$cmd_ref' but path does not exist at:"
+            echo "       $cmd_path"
+            echo ""
+            echo "       FIX: Either create the path or remove the commands entry"
+            exit 1
+        fi
+        echo "  ✓ commands reference: $cmd_ref exists"
+    done
+
     echo "✓ $plugin_name valid"
 done
+
+# CRITICAL: Validate marketplace.json file references
+echo ""
+echo "=== Validating Marketplace File References (CRITICAL) ==="
+
+for i in $(seq 0 $((PLUGIN_COUNT - 1))); do
+    PLUGIN_NAME=$(jq -r ".plugins[$i].name" "$MARKETPLACE_JSON")
+    PLUGIN_SOURCE=$(jq -r ".plugins[$i].source" "$MARKETPLACE_JSON")
+    PLUGIN_DIR="$ROOT_DIR/$PLUGIN_SOURCE"
+
+    # Check mcpServers in marketplace.json
+    mcp_servers=$(jq -r ".plugins[$i].mcpServers // [] | .[]" "$MARKETPLACE_JSON" 2>/dev/null)
+    for mcp_ref in $mcp_servers; do
+        mcp_path="$PLUGIN_DIR/$mcp_ref"
+        if [[ ! -f "$mcp_path" ]]; then
+            echo "ERROR: BROKEN REFERENCE in marketplace.json for $PLUGIN_NAME"
+            echo "       mcpServers references '$mcp_ref' but file does not exist at:"
+            echo "       $mcp_path"
+            echo ""
+            echo "       FIX: Either create the file or remove the mcpServers entry from marketplace.json"
+            exit 1
+        fi
+        echo "✓ $PLUGIN_NAME: mcpServers reference $mcp_ref exists"
+    done
+
+    # Check hooks in marketplace.json
+    hooks=$(jq -r ".plugins[$i].hooks // [] | .[]" "$MARKETPLACE_JSON" 2>/dev/null)
+    for hook_ref in $hooks; do
+        hook_path="$PLUGIN_DIR/$hook_ref"
+        if [[ ! -f "$hook_path" ]]; then
+            echo "ERROR: BROKEN REFERENCE in marketplace.json for $PLUGIN_NAME"
+            echo "       hooks references '$hook_ref' but file does not exist at:"
+            echo "       $hook_path"
+            echo ""
+            echo "       FIX: Either create the file or remove the hooks entry from marketplace.json"
+            exit 1
+        fi
+        echo "✓ $PLUGIN_NAME: hooks reference $hook_ref exists"
+    done
+done
+
+echo "✓ All file references validated"
 
 # v5.4.0: Validate agent model fields
 echo ""

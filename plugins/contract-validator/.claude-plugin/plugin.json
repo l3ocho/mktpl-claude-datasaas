@@ -18,6 +18,5 @@
     "interfaces",
     "cross-plugin"
   ],
-  "commands": ["./commands/"],
-  "mcpServers": ["./.mcp.json"]
+  "commands": ["./commands/"]
 }
