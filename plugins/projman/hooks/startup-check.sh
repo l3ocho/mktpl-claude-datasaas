@@ -81,6 +81,29 @@ if [[ -f ".env" ]]; then
     fi
 fi
 
+# ============================================================================
+# Check version consistency across files (early drift detection)
+# ============================================================================
+# Versions must stay in sync across: README.md, marketplace.json, CHANGELOG.md
+# Drift here causes confusion and release issues
+
+if [[ -f "README.md" && -f ".claude-plugin/marketplace.json" && -f "CHANGELOG.md" ]]; then
+    VERSION_README=$(grep -oE "^# .* - v[0-9]+\.[0-9]+\.[0-9]+" README.md 2>/dev/null | grep -oE "[0-9]+\.[0-9]+\.[0-9]+" || echo "")
+    # Extract metadata.version specifically (appears after "metadata" in marketplace.json)
+    VERSION_MARKETPLACE=$(sed -n '/"metadata"/,/}/p' .claude-plugin/marketplace.json 2>/dev/null | grep -oE '"version"[[:space:]]*:[[:space:]]*"[0-9]+\.[0-9]+\.[0-9]+"' | head -1 | grep -oE "[0-9]+\.[0-9]+\.[0-9]+" || echo "")
+    VERSION_CHANGELOG=$(grep -oE "^## \[[0-9]+\.[0-9]+\.[0-9]+\]" CHANGELOG.md 2>/dev/null | head -1 | grep -oE "[0-9]+\.[0-9]+\.[0-9]+" || echo "")
+
+    if [[ -n "$VERSION_README" && -n "$VERSION_MARKETPLACE" && -n "$VERSION_CHANGELOG" ]]; then
+        if [[ "$VERSION_README" != "$VERSION_MARKETPLACE" ]] || [[ "$VERSION_README" != "$VERSION_CHANGELOG" ]]; then
+            echo "$PREFIX Version mismatch detected:"
+            echo "$PREFIX   README.md:        v$VERSION_README"
+            echo "$PREFIX   marketplace.json: v$VERSION_MARKETPLACE"
+            echo "$PREFIX   CHANGELOG.md:     v$VERSION_CHANGELOG"
+            echo "$PREFIX Run /suggest-version to analyze and fix"
+        fi
+    fi
+fi
+
 # Check for CHANGELOG.md [Unreleased] content (version management)
 if [[ -f "CHANGELOG.md" ]]; then
     # Check if there's content under [Unreleased] that hasn't been released
