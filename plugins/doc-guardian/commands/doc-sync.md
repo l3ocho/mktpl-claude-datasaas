@@ -52,7 +52,13 @@ Then proceed with the sync.
    - Single commit: `docs: sync documentation with code changes`
    - Include summary of what was updated in commit body
 
-5. **Output**
+5. **Clear Queue**
+   After successful sync, clear the queue file:
+   ```bash
+   echo "# Doc Guardian Queue - cleared after sync on $(date +%Y-%m-%d)" > .doc-guardian-queue
+   ```
+
+6. **Output**
 ```
 ## Documentation Sync Complete
 
