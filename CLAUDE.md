@@ -54,16 +54,16 @@ A plugin marketplace for Claude Code containing:
 | Plugin | Description | Version |
 |--------|-------------|---------|
 | `projman` | Sprint planning and project management with Gitea integration | 3.3.0 |
-| `git-flow` | Git workflow automation with smart commits and branch management | 1.2.0 |
+| `git-flow` | Git workflow automation with smart commits and branch management | 1.0.0 |
 | `pr-review` | Multi-agent PR review with confidence scoring | 1.1.0 |
-| `clarity-assist` | Prompt optimization with ND-friendly accommodations | 1.2.0 |
-| `doc-guardian` | Automatic documentation drift detection and synchronization | 1.1.0 |
-| `code-sentinel` | Security scanning and code refactoring tools | 1.0.0 |
-| `claude-config-maintainer` | CLAUDE.md optimization and maintenance | 1.1.0 |
+| `clarity-assist` | Prompt optimization with ND-friendly accommodations | 1.0.0 |
+| `doc-guardian` | Automatic documentation drift detection and synchronization | 1.0.0 |
+| `code-sentinel` | Security scanning and code refactoring tools | 1.0.1 |
+| `claude-config-maintainer` | CLAUDE.md optimization and maintenance | 1.0.0 |
 | `cmdb-assistant` | NetBox CMDB integration for infrastructure management | 1.2.0 |
-| `data-platform` | pandas, PostgreSQL, and dbt integration for data engineering | 1.2.0 |
+| `data-platform` | pandas, PostgreSQL, and dbt integration for data engineering | 1.1.0 |
 | `viz-platform` | DMC validation, Plotly charts, and theming for dashboards | 1.1.0 |
-| `contract-validator` | Cross-plugin compatibility validation and agent verification | 1.2.0 |
+| `contract-validator` | Cross-plugin compatibility validation and agent verification | 1.1.0 |
 | `project-hygiene` | Post-task cleanup automation via hooks | 0.1.0 |
 
 ## Quick Start
