@@ -17,6 +17,5 @@
     "agile",
     "lessons-learned"
   ],
-  "commands": ["./commands/"],
-  "mcpServers": ["./.mcp.json"]
+  "commands": ["./commands/"]
 }

@@ -20,6 +20,5 @@
     "visualization",
     "dmc"
   ],
-  "commands": ["./commands/"],
-  "mcpServers": ["./.mcp.json"]
+  "commands": ["./commands/"]
 }
