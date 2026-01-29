@@ -46,7 +46,7 @@ Run `./scripts/verify-hooks.sh`. If changes affect MCP servers or hooks, inform 
 ## Project Overview
 
 **Repository:** leo-claude-mktplace
-**Version:** 5.3.0
+**Version:** 5.4.0
 **Status:** Production Ready
 
 A plugin marketplace for Claude Code containing:
