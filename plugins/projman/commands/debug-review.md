@@ -385,6 +385,13 @@ git push -u origin fix/issue-[NUMBER]-[brief-description]
 git checkout development
 ```
 
+**⚠️ IMPORTANT: Issue will NOT auto-close**
+
+PRs merged to `development` do NOT trigger Gitea's auto-close feature.
+Auto-close only works when merging to the default branch (`main`).
+
+You MUST manually close the issue in Step 15 after the PR is merged.
+
 5. Add comment to original issue:
 ```
 mcp__plugin_projman_gitea__add_comment(
@@ -417,9 +424,14 @@ Next Steps:
 
 **This step runs AFTER the user has verified the fix works.**
 
+**⚠️ MANDATORY: You MUST manually close the issue.**
+
+PRs merged to `development` do NOT auto-close issues (Gitea only auto-closes
+on merges to the default branch `main`). Always close manually after merge.
+
 When user returns and confirms the fix is working:
 
-**1. Close the issue:**
+**1. Close the issue (REQUIRED - won't auto-close):**
 
 ```
 mcp__plugin_projman_gitea__update_issue(
