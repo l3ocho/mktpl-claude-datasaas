@@ -18,6 +18,12 @@ This file provides guidance to Claude Code when working with code in this reposi
 Run `./scripts/verify-hooks.sh`. If changes affect MCP servers or hooks, inform user to restart session.
 **DO NOT clear cache mid-session** - breaks loaded MCP tools.
 
+### NEVER USE CLI TOOLS FOR EXTERNAL SERVICES
+- **FORBIDDEN:** `gh`, `tea`, `curl` to APIs, any CLI that talks to Gitea/GitHub/external services
+- **REQUIRED:** Use MCP tools exclusively (`mcp__plugin_projman_gitea__*`, `mcp__plugin_pr-review_gitea__*`)
+- **NO EXCEPTIONS.** Don't try CLI first. Don't fall back to CLI. MCP ONLY.
+- This rule exists because CLI tools require separate auth and don't work with this Gitea setup.
+
 ### Repository Rules
 
 | Rule | Details |
