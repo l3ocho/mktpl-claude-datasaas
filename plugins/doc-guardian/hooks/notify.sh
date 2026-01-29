@@ -1,11 +1,12 @@
 #!/bin/bash
 # doc-guardian notification hook
 # Tracks documentation dependencies and queues updates
-# This is a command hook - guaranteed not to block workflow
 #
-# IMPORTANT: Output is purely informational - uses passive language
-# to avoid triggering Claude to seek user confirmation.
-# Run /doc-sync to process the queue when ready.
+# SILENT BY DEFAULT - No output to avoid interrupting Claude's workflow.
+# Changes are queued to .doc-guardian-queue for later processing.
+# Run /doc-sync or /doc-audit to see and process pending updates.
+#
+# Set DOC_GUARDIAN_VERBOSE=1 to enable notification output.
 
 # Read tool input from stdin (JSON with file_path)
 INPUT=$(cat)
@@ -48,40 +49,26 @@ DEPENDENT_DOCS="${DOC_DEPS[$MODIFIED_TYPE]}"
 # Queue file for tracking pending updates
 QUEUE_FILE="${CLAUDE_PROJECT_ROOT:-.}/.doc-guardian-queue"
 
-# Debounce: skip notification if same type was logged in last 5 seconds
-# This prevents 4+ rapid notifications during batch edits
-DEBOUNCE_SECONDS=5
+# Add to queue (always, for deduplication we check file+type combo)
+# Format: timestamp | type | file_path | dependent_docs
+QUEUE_ENTRY="$(date +%Y-%m-%dT%H:%M:%S) | $MODIFIED_TYPE | $FILE_PATH | $DEPENDENT_DOCS"
+
+# Check if this exact file+type combo already exists in queue (dedup)
 if [ -f "$QUEUE_FILE" ]; then
-    LAST_ENTRY=$(tail -1 "$QUEUE_FILE" 2>/dev/null || true)
-    LAST_TYPE=$(echo "$LAST_ENTRY" | cut -d'|' -f2 | tr -d ' ')
-    LAST_TIME=$(echo "$LAST_ENTRY" | cut -d'|' -f1 | tr -d ' ')
-
-    if [ "$LAST_TYPE" = "$MODIFIED_TYPE" ] && [ -n "$LAST_TIME" ]; then
-        # Convert timestamps to seconds for comparison
-        LAST_EPOCH=$(date -d "$LAST_TIME" +%s 2>/dev/null || echo "0")
-        NOW_EPOCH=$(date +%s)
-        DIFF=$((NOW_EPOCH - LAST_EPOCH))
-
-        if [ "$DIFF" -lt "$DEBOUNCE_SECONDS" ]; then
-            # Still add to queue, but skip notification
-            {
-                echo "$(date +%Y-%m-%dT%H:%M:%S) | $MODIFIED_TYPE | $FILE_PATH | $DEPENDENT_DOCS"
-            } >> "$QUEUE_FILE" 2>/dev/null || true
-            exit 0
-        fi
+    if grep -qF "| $MODIFIED_TYPE | $FILE_PATH |" "$QUEUE_FILE" 2>/dev/null; then
+        # Already queued, skip silently
+        exit 0
     fi
 fi
 
-# Add to queue (create if doesn't exist, append if does)
-{
-    echo "$(date +%Y-%m-%dT%H:%M:%S) | $MODIFIED_TYPE | $FILE_PATH | $DEPENDENT_DOCS"
-} >> "$QUEUE_FILE" 2>/dev/null || true
+# Add to queue
+echo "$QUEUE_ENTRY" >> "$QUEUE_FILE" 2>/dev/null || true
 
-# Count pending updates
-PENDING_COUNT=$(wc -l < "$QUEUE_FILE" 2>/dev/null | tr -d ' ' || echo "1")
-
-# Output passive notification (no action implied)
-# Uses "queued" instead of "update needed" to avoid triggering Claude to ask about it
-echo "[doc-guardian] drift queued: $MODIFIED_TYPE → $DEPENDENT_DOCS ($PENDING_COUNT total)"
+# SILENT by default - only output if DOC_GUARDIAN_VERBOSE is set
+# This prevents Claude from stopping to ask about documentation updates
+if [ "${DOC_GUARDIAN_VERBOSE:-0}" = "1" ]; then
+    PENDING_COUNT=$(wc -l < "$QUEUE_FILE" 2>/dev/null | tr -d ' ' || echo "1")
+    echo "[doc-guardian] queued: $MODIFIED_TYPE ($PENDING_COUNT pending)"
+fi
 
 exit 0
