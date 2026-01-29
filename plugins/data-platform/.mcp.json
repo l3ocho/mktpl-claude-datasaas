@@ -1,9 +1,0 @@
-{
-  "mcpServers": {
-    "data-platform": {
-      "type": "stdio",
-      "command": "${CLAUDE_PLUGIN_ROOT}/mcp-servers/data-platform/run.sh",
-      "args": []
-    }
-  }
-}

@@ -108,7 +108,7 @@ leo-claude-mktplace/
 ├── plugins/
 │   ├── projman/                  # Sprint management
 │   │   ├── .claude-plugin/plugin.json
-│   │   ├── .mcp.json
+│   │   # .mcp.json removed - now at marketplace root
 │   │   ├── mcp-servers/gitea -> ../../../mcp-servers/gitea  # SYMLINK
 │   │   ├── commands/             # 14 commands (incl. setup, debug, suggest-version)
 │   │   ├── hooks/                # SessionStart: mismatch detection + sprint suggestions
@@ -120,7 +120,7 @@ leo-claude-mktplace/
 │   │   └── agents/
 │   ├── pr-review/                # Multi-agent PR review
 │   │   ├── .claude-plugin/plugin.json
-│   │   ├── .mcp.json
+│   │   # .mcp.json removed - now at marketplace root
 │   │   ├── mcp-servers/gitea -> ../../../mcp-servers/gitea  # SYMLINK
 │   │   ├── commands/             # 6 commands (incl. setup)
 │   │   ├── hooks/                # SessionStart mismatch detection
@@ -131,14 +131,14 @@ leo-claude-mktplace/
 │   │   └── agents/
 │   ├── data-platform/            # Data engineering (NEW v4.0.0)
 │   │   ├── .claude-plugin/plugin.json
-│   │   ├── .mcp.json
+│   │   # .mcp.json removed - now at marketplace root
 │   │   ├── mcp-servers/          # pandas, postgresql, dbt MCPs
 │   │   ├── commands/             # 7 commands
 │   │   ├── hooks/                # SessionStart PostgreSQL check
 │   │   └── agents/               # 2 agents
 │   ├── viz-platform/             # Visualization (NEW v4.0.0)
 │   │   ├── .claude-plugin/plugin.json
-│   │   ├── .mcp.json
+│   │   # .mcp.json removed - now at marketplace root
 │   │   ├── mcp-servers/          # viz-platform MCP
 │   │   ├── commands/             # 7 commands
 │   │   ├── hooks/                # SessionStart DMC check

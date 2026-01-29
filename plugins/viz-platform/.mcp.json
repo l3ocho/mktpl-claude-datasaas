@@ -1,9 +1,0 @@
-{
-  "mcpServers": {
-    "viz-platform": {
-      "type": "stdio",
-      "command": "${CLAUDE_PLUGIN_ROOT}/mcp-servers/viz-platform/run.sh",
-      "args": []
-    }
-  }
-}

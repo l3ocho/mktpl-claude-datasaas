@@ -1,8 +1,0 @@
-{
-  "mcpServers": {
-    "netbox": {
-      "command": "${CLAUDE_PLUGIN_ROOT}/mcp-servers/netbox/run.sh",
-      "args": []
-    }
-  }
-}
