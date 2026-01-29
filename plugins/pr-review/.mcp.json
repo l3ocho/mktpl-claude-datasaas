@@ -1,8 +1,0 @@
-{
-  "mcpServers": {
-    "gitea": {
-      "command": "${CLAUDE_PLUGIN_ROOT}/mcp-servers/gitea/run.sh",
-      "args": []
-    }
-  }
-}
