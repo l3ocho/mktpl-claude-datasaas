@@ -1,48 +1,40 @@
 # CLAUDE.md
 
 This file provides guidance to Claude Code when working with code in this repository.
-## ⛔ MANDATORY BEHAVIOR RULES - READ FIRST
 
-**These rules are NON-NEGOTIABLE. Violating them wastes the user's time and money.**
+## ⛔ RULES - READ FIRST
 
-### 1. WHEN USER ASKS YOU TO CHECK SOMETHING - CHECK EVERYTHING
-- Search ALL locations, not just where you think it is
-- Check cache directories: `~/.claude/plugins/cache/`
-- Check installed: `~/.claude/plugins/marketplaces/`
-- Check source: `~/claude-plugins-work/`
-- **NEVER say "no" or "that's not the issue" without exhaustive verification**
+### Behavioral Rules
 
-### 2. WHEN USER SAYS SOMETHING IS WRONG - BELIEVE THEM
-- The user knows their system better than you
-- Investigate thoroughly before disagreeing
-- If user suspects cache, CHECK THE CACHE
-- If user suspects a file, READ THE FILE
-- **Your confidence is often wrong. User's instincts are often right.**
+| Rule | Summary |
+|------|---------|
+| **Check everything** | Search cache (`~/.claude/plugins/cache/`), installed (`~/.claude/plugins/marketplaces/`), and source (`~/claude-plugins-work/`) |
+| **Believe the user** | User knows their system. Investigate before disagreeing. |
+| **Verify before "done"** | Run commands, show output, check all locations. "Done" = verified working. |
+| **Show what's asked** | Don't interpret or summarize unless asked. |
 
-### 3. NEVER SAY "DONE" WITHOUT VERIFICATION
-- Run the actual command/script to verify
-- Show the output to the user
-- Check ALL affected locations
-- **"Done" means VERIFIED WORKING, not "I made changes"**
+### After Plugin Updates
 
-### 4. SHOW EXACTLY WHAT USER ASKS FOR
-- If user asks for messages, show the MESSAGES
-- If user asks for code, show the CODE
-- If user asks for output, show the OUTPUT
-- **Don't interpret or summarize unless asked**
+Run `./scripts/verify-hooks.sh`. If changes affect MCP servers or hooks, inform user to restart session.
+**DO NOT clear cache mid-session** - breaks loaded MCP tools.
 
-### 5. AFTER PLUGIN UPDATES - VERIFY AND RESTART
+### NEVER USE CLI TOOLS FOR EXTERNAL SERVICES
+- **FORBIDDEN:** `gh`, `tea`, `curl` to APIs, any CLI that talks to Gitea/GitHub/external services
+- **REQUIRED:** Use MCP tools exclusively (`mcp__plugin_projman_gitea__*`, `mcp__plugin_pr-review_gitea__*`)
+- **NO EXCEPTIONS.** Don't try CLI first. Don't fall back to CLI. MCP ONLY.
+- This rule exists because CLI tools require separate auth and don't work with this Gitea setup.
 
-**⚠️ DO NOT clear cache mid-session** - this breaks MCP tools that are already loaded.
+### Repository Rules
 
-1. Run `./scripts/verify-hooks.sh` to check hook types
-2. If changes affect MCP servers or hooks, inform the user:
-   > "Plugin changes require a session restart to take effect. Please restart Claude Code."
-3. Cache clearing is ONLY safe **before** starting a new session (not during)
+| Rule | Details |
+|------|---------|
+| **File creation** | Only in allowed paths. Use `.scratch/` for temp work. Verify against `docs/CANONICAL-PATHS.md` |
+| **plugin.json location** | Must be in `.claude-plugin/` directory |
+| **Hooks** | Use `hooks/hooks.json` (auto-discovered). Never inline in plugin.json |
+| **MCP servers** | Shared at root with symlinks. Use MCP tools, never CLI (`tea`, `gh`) |
+| **Allowed root files** | `CLAUDE.md`, `README.md`, `LICENSE`, `CHANGELOG.md`, `.gitignore`, `.env.example` |
 
-See `docs/DEBUGGING-CHECKLIST.md` for details on cache timing.
-
-**FAILURE TO FOLLOW THESE RULES = WASTED USER TIME = UNACCEPTABLE**
+**Valid hook events:** `PreToolUse`, `PostToolUse`, `UserPromptSubmit`, `SessionStart`, `SessionEnd`, `Notification`, `Stop`, `SubagentStop`, `PreCompact`
 
 ---
 
@@ -161,40 +153,6 @@ leo-claude-mktplace/
     ├── CANONICAL-PATHS.md        # Single source of truth for paths
     └── CONFIGURATION.md          # Centralized configuration guide
 ```
-
-## CRITICAL: Rules You MUST Follow
-
-### File Operations
-- **NEVER** create files in repository root unless listed in "Allowed Root Files"
-- **NEVER** modify `.gitignore` without explicit permission
-- **ALWAYS** use `.scratch/` for temporary/exploratory work
-- **ALWAYS** verify paths against `docs/CANONICAL-PATHS.md` before creating files
-
-### Plugin Development
-- **plugin.json MUST be in `.claude-plugin/` directory** (not plugin root)
-- **Every plugin MUST be listed in marketplace.json**
-- **MCP servers are SHARED at root** with symlinks from plugins
-- **MCP server venv path**: `${CLAUDE_PLUGIN_ROOT}/mcp-servers/{name}/.venv/bin/python`
-- **CLI tools forbidden** - Use MCP tools exclusively (never `tea`, `gh`, etc.)
-
-#### ⚠️ plugin.json Format Rules (CRITICAL)
-- **Hooks in separate file** - Use `hooks/hooks.json` (auto-discovered), NOT inline in plugin.json
-- **NEVER reference hooks** - Don't add `"hooks": "..."` field to plugin.json at all
-- **Agents auto-discover** - NEVER add `"agents": ["./agents/"]` - .md files found automatically
-- **Always validate** - Run `./scripts/validate-marketplace.sh` before committing
-- **Working examples:** projman, pr-review, claude-config-maintainer all use `hooks/hooks.json`
-- See lesson: `lessons/patterns/plugin-manifest-validation---hooks-and-agents-format-requirements`
-
-### Hooks (Valid Events Only)
-`PreToolUse`, `PostToolUse`, `UserPromptSubmit`, `SessionStart`, `SessionEnd`, `Notification`, `Stop`, `SubagentStop`, `PreCompact`
-
-**INVALID:** `task-completed`, `file-changed`, `git-commit-msg-needed`
-
-### Allowed Root Files
-`CLAUDE.md`, `README.md`, `LICENSE`, `CHANGELOG.md`, `.gitignore`, `.env.example`
-
-### Allowed Root Directories
-`.claude/`, `.claude-plugin/`, `.claude-plugins/`, `.scratch/`, `docs/`, `hooks/`, `mcp-servers/`, `plugins/`, `scripts/`
 
 ## Architecture
 
