@@ -22,7 +22,11 @@ Run `./scripts/verify-hooks.sh`. If changes affect MCP servers or hooks, inform 
 - **FORBIDDEN:** `gh`, `tea`, `curl` to APIs, any CLI that talks to Gitea/GitHub/external services
 - **REQUIRED:** Use MCP tools exclusively (`mcp__plugin_projman_gitea__*`, `mcp__plugin_pr-review_gitea__*`)
 - **NO EXCEPTIONS.** Don't try CLI first. Don't fall back to CLI. MCP ONLY.
-- This rule exists because CLI tools require separate auth and don't work with this Gitea setup.
+
+### NEVER PUSH DIRECTLY TO PROTECTED BRANCHES
+- **FORBIDDEN:** `git push origin development`, `git push origin main`, `git push origin master`
+- **REQUIRED:** Create feature branch → push feature branch → create PR via MCP
+- If you accidentally commit to a protected branch locally: `git checkout -b fix/branch-name` then reset the protected branch
 
 ### Repository Rules
 
