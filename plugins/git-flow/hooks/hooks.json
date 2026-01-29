@@ -1,19 +1,16 @@
 {
-  "hooks": {
-    "PreToolUse": [
-      {
-        "matcher": "Bash",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/branch-check.sh"
-          },
-          {
-            "type": "command",
-            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/commit-msg-check.sh"
-          }
-        ]
-      }
-    ]
-  }
+  "hooks": [
+    {
+      "event": "PreToolUse",
+      "matcher": "Bash",
+      "type": "command",
+      "command": "${CLAUDE_PLUGIN_ROOT}/hooks/branch-check.sh"
+    },
+    {
+      "event": "PreToolUse",
+      "matcher": "Bash",
+      "type": "command",
+      "command": "${CLAUDE_PLUGIN_ROOT}/hooks/commit-msg-check.sh"
+    }
+  ]
 }
