@@ -1,18 +1,11 @@
 # /validate-contracts - Full Contract Validation
 
-## Visual Output
-
-When executing this command, display the plugin header:
-
-```
-┌──────────────────────────────────────────────────────────────────┐
-│  ✅ CONTRACT-VALIDATOR · Full Validation                         │
-└──────────────────────────────────────────────────────────────────┘
-```
-
-Then proceed with the validation.
-
-Run comprehensive cross-plugin compatibility validation for the entire marketplace.
+## Skills to Load
+- skills/visual-output.md
+- skills/plugin-discovery.md
+- skills/interface-parsing.md
+- skills/validation-rules.md
+- skills/mcp-tools-reference.md
 
 ## Usage
 
@@ -26,25 +19,22 @@ Run comprehensive cross-plugin compatibility validation for the entire marketpla
 
 ## Workflow
 
-1. **Discover plugins**:
-   - Scan plugins directory for all plugins with `.claude-plugin/` marker
-   - Parse each plugin's README.md to extract interface
+1. **Display header** per `skills/visual-output.md`
 
-2. **Run compatibility checks**:
-   - Perform pairwise compatibility validation between all plugins
-   - Check for command name conflicts
-   - Check for tool name overlaps
-   - Identify interface mismatches
+2. **Discover plugins** per `skills/plugin-discovery.md`
 
-3. **Validate CLAUDE.md agents**:
-   - Parse agent definitions from CLAUDE.md
-   - Validate all tool references exist
-   - Check data flow through agent sequences
+3. **Parse interfaces** per `skills/interface-parsing.md`
+   - Use `parse_plugin_interface` for each plugin
 
-4. **Generate report**:
-   - Summary statistics (plugins, commands, tools, issues)
-   - Detailed findings by severity (error, warning, info)
-   - Actionable suggestions for each issue
+4. **Run validations** per `skills/validation-rules.md`
+   - Use `validate_compatibility` for pairwise checks
+   - Use `validate_agent_refs` for CLAUDE.md agents
+   - Use `validate_data_flow` for data sequences
+
+5. **Generate report**:
+   - Use `generate_compatibility_report` for full report
+   - Use `list_issues` to filter by severity
+   - Display summary and actionable suggestions
 
 ## Examples
 
@@ -52,11 +42,3 @@ Run comprehensive cross-plugin compatibility validation for the entire marketpla
 /validate-contracts
 /validate-contracts ~/claude-plugins-work
 ```
-
-## Available Tools
-
-Use these MCP tools:
-- `generate_compatibility_report` - Generate full marketplace report
-- `list_issues` - Filter issues by severity or type
-- `parse_plugin_interface` - Parse individual plugin interface
-- `validate_compatibility` - Check two plugins for conflicts

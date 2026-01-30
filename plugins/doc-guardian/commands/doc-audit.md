@@ -6,33 +6,26 @@ description: Full documentation audit - scans entire project for doc drift witho
 
 Perform a comprehensive documentation drift analysis.
 
+## Skills to Load
+
+- skills/drift-detection.md
+- skills/doc-patterns.md
+
 ## Visual Output
 
-When executing this command, display the plugin header:
-
 ```
-┌──────────────────────────────────────────────────────────────────┐
-│  📝 DOC-GUARDIAN · Documentation Audit                          │
-└──────────────────────────────────────────────────────────────────┘
++------------------------------------------------------------------+
+|  DOC-GUARDIAN - Documentation Audit                              |
++------------------------------------------------------------------+
 ```
-
-Then proceed with the audit.
 
 ## Process
 
 1. **Inventory Documentation Files**
-   - README.md (root and subdirectories)
-   - CLAUDE.md
-   - API documentation
-   - Docstrings in code files
-   - Configuration references
+   Execute `skills/doc-patterns.md` - identify all doc files
 
 2. **Cross-Reference Analysis**
-   For each documentation file:
-   - Extract referenced functions, classes, endpoints, configs
-   - Verify each reference exists in codebase
-   - Check signatures/types match documentation
-   - Flag deprecated or renamed items still in docs
+   Execute `skills/drift-detection.md` - verify all references
 
 3. **Completeness Check**
    - Public functions without docstrings
@@ -40,23 +33,7 @@ Then proceed with the audit.
    - Environment variables used but not documented
    - CLI commands not in help text
 
-4. **Output Format**
-```
-## Documentation Drift Report
-
-### Critical (Broken References)
-- [ ] README.md:45 references `calculate_total()` - function renamed to `compute_total()`
-
-### Stale (Outdated Info)
-- [ ] CLAUDE.md:23 lists Python 3.9 - project uses 3.11
-
-### Missing (Undocumented)
-- [ ] api/handlers.py:`create_order()` - no docstring
-
-### Summary
-- Critical: X items
-- Stale: X items
-- Missing: X items
-```
+4. **Output**
+   Use format from `skills/drift-detection.md`
 
 5. **Do NOT make changes** - audit only, report findings

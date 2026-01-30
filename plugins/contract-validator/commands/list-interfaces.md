@@ -1,18 +1,10 @@
 # /list-interfaces - Show Plugin Interfaces
 
-## Visual Output
-
-When executing this command, display the plugin header:
-
-```
-┌──────────────────────────────────────────────────────────────────┐
-│  ✅ CONTRACT-VALIDATOR · List Interfaces                         │
-└──────────────────────────────────────────────────────────────────┘
-```
-
-Then proceed with the interface listing.
-
-Display what each plugin in the marketplace produces and accepts.
+## Skills to Load
+- skills/visual-output.md
+- skills/plugin-discovery.md
+- skills/interface-parsing.md
+- skills/mcp-tools-reference.md
 
 ## Usage
 
@@ -26,35 +18,25 @@ Display what each plugin in the marketplace produces and accepts.
 
 ## Workflow
 
-1. **Discover plugins**:
-   - Scan plugins directory for all plugins with `.claude-plugin/` marker
-   - Read each plugin's README.md
+1. **Display header** per `skills/visual-output.md`
 
-2. **Parse interfaces**:
-   - Extract commands (slash commands offered by plugin)
-   - Extract agents (autonomous agents defined)
-   - Extract tools (MCP tools provided)
-   - Identify tool categories and features
+2. **Discover plugins** per `skills/plugin-discovery.md`
 
-3. **Display summary**:
-   - Table of plugins with command/agent/tool counts
-   - Detailed breakdown per plugin
-   - Tool categories and their contents
+3. **Parse interfaces** per `skills/interface-parsing.md`
+   - Use `parse_plugin_interface` for each plugin README.md
+   - Extract commands, agents, tools
 
-## Output Format
+4. **Display summary table**:
+   ```
+   | Plugin      | Commands | Agents | Tools |
+   |-------------|----------|--------|-------|
+   | projman     | 12       | 4      | 26    |
+   ```
 
-```
-| Plugin      | Commands | Agents | Tools |
-|-------------|----------|--------|-------|
-| projman     | 12       | 4      | 26    |
-| data-platform| 7       | 2      | 32    |
-| ...         | ...      | ...    | ...   |
-
-## projman
-- Commands: /sprint-plan, /sprint-start, ...
-- Agents: Planner, Orchestrator, Executor, Code Reviewer
-- Tools: list_issues, create_issue, ...
-```
+5. **Display per-plugin details**:
+   - List of commands
+   - List of agents
+   - Tool categories
 
 ## Examples
 
@@ -62,9 +44,3 @@ Display what each plugin in the marketplace produces and accepts.
 /list-interfaces
 /list-interfaces ~/claude-plugins-work
 ```
-
-## Available Tools
-
-Use these MCP tools:
-- `parse_plugin_interface` - Parse individual plugin README
-- `generate_compatibility_report` - Get full interface data (JSON format)
