@@ -1,7 +1,6 @@
 ---
 name: data-analysis
 description: Data analysis specialist for exploration and profiling
-model: opus
 ---
 
 # Data Analysis Agent

@@ -1,7 +1,6 @@
 ---
 name: component-check
 description: DMC component validation specialist
-model: haiku
 ---
 
 # Component Check Agent

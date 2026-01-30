@@ -521,56 +521,6 @@ cat .env
 
 ---
 
-## Agent Model Configuration
-
-Agents can specify which Claude model to use for optimal cost/performance.
-
-### Model Options
-
-| Model | Use For | Cost |
-|-------|---------|------|
-| `opus` | Complex reasoning, security analysis | Highest |
-| `sonnet` | Implementation, coordination (default) | Medium |
-| `haiku` | Simple validation, quick checks | Lowest |
-
-### Configuration Levels
-
-**1. Agent-Level (highest priority)**
-
-Add to agent frontmatter in `agents/*.md`:
-
-```yaml
----
-name: planner
-description: Sprint planning agent
-model: opus
----
-```
-
-**2. Plugin-Level (fallback)**
-
-Add to `plugin.json`:
-
-```json
-{
-  "defaultModel": "sonnet"
-}
-```
-
-**3. System Default**
-
-If neither is specified, agents use `sonnet`.
-
-### Inheritance Chain
-
-```
-Agent model → Plugin defaultModel → System default (sonnet)
-```
-
-See [Model Recommendations](MODEL-RECOMMENDATIONS.md) for detailed guidance on model selection by task type.
-
----
-
 ## Security Best Practices
 
 1. **Never commit tokens**

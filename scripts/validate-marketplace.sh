@@ -143,16 +143,6 @@ for plugin_dir in "$PLUGINS_DIR"/*/; do
         echo "WARNING: Missing 'keywords' array in $plugin_name/plugin.json"
     fi
 
-    # v5.4.0: Validate defaultModel field if present
-    default_model=$(jq -r '.defaultModel // empty' "$plugin_json")
-    if [[ -n "$default_model" ]]; then
-        if [[ ! "$default_model" =~ ^(opus|sonnet|haiku)$ ]]; then
-            echo "ERROR: Invalid defaultModel '$default_model' in $plugin_name/plugin.json (must be opus|sonnet|haiku)"
-            exit 1
-        fi
-        echo "  ✓ defaultModel: $default_model"
-    fi
-
     # Check README exists
     if [[ ! -f "$plugin_dir/README.md" ]]; then
         echo "WARNING: Missing README.md in $plugin_name/"
@@ -257,40 +247,6 @@ for i in $(seq 0 $((PLUGIN_COUNT - 1))); do
 done
 
 echo "✓ All file references validated"
-
-# v5.4.0: Validate agent model fields
-echo ""
-echo "=== Validating Agent Model Fields (v5.4.0+) ==="
-
-validate_agent_model() {
-    local file="$1"
-    local agent_name=$(basename "$file" .md)
-
-    # Extract model from frontmatter (between --- markers)
-    local model=$(sed -n '/^---$/,/^---$/p' "$file" | grep '^model:' | awk '{print $2}')
-
-    if [[ -n "$model" ]]; then
-        if [[ ! "$model" =~ ^(opus|sonnet|haiku)$ ]]; then
-            echo "ERROR: Invalid model '$model' in $file (must be opus|sonnet|haiku)"
-            exit 1
-        fi
-        echo "  ✓ $agent_name: model=$model"
-    fi
-}
-
-for plugin_dir in "$PLUGINS_DIR"/*/; do
-    plugin_name=$(basename "$plugin_dir")
-    agents_dir="$plugin_dir/agents"
-
-    if [[ -d "$agents_dir" ]]; then
-        echo "--- Checking agents in $plugin_name ---"
-        for agent_file in "$agents_dir"/*.md; do
-            if [[ -f "$agent_file" ]]; then
-                validate_agent_model "$agent_file"
-            fi
-        done
-    fi
-done
 
 # v3.0.0: Validate MCP server symlinks
 echo ""

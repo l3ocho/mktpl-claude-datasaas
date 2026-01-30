@@ -1,7 +1,6 @@
 ---
 name: code-reviewer
 description: Specialized agent for pre-sprint code quality review
-model: opus
 ---
 
 # Code Reviewer Agent

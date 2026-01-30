@@ -265,21 +265,6 @@ leo-claude-mktplace/
 
 **Note:** `GITEA_ORG` is at project level since different projects may belong to different organizations.
 
-### Agent Model Configuration
-
-Agents can specify preferred Claude models for cost/performance optimization:
-
-| Model | Use For | Agents |
-|-------|---------|--------|
-| `opus` | Complex reasoning, security | planner, code-reviewer, security-reviewer |
-| `sonnet` | Implementation, coordination | orchestrator, executor, most agents |
-| `haiku` | Simple validation | component-check, agent-check |
-
-**Configuration:** Add `model: opus|sonnet|haiku` to agent frontmatter, or `defaultModel` to plugin.json.
-**Inheritance:** Agent → Plugin default → System default (sonnet)
-
-See `docs/MODEL-RECOMMENDATIONS.md` for detailed guidance.
-
 ### Branch-Aware Security
 
 | Branch Pattern | Mode | Capabilities |
