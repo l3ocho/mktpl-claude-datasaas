@@ -6,6 +6,12 @@
 # Read tool input from stdin
 INPUT=$(cat)
 
+# Quick check - exit immediately if not a git commit command
+# This avoids spawning Python for 99% of Bash commands
+if ! echo "$INPUT" | grep -q '"command".*git.*commit'; then
+    exit 0
+fi
+
 # Use Python to properly parse JSON and extract the command
 COMMAND=$(echo "$INPUT" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('command',''))" 2>/dev/null)
 
