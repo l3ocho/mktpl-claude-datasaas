@@ -1,23 +1,23 @@
 {
   "mcpServers": {
     "gitea": {
-      "command": "/home/lmiranda/.claude/plugins/marketplaces/leo-claude-mktplace/mcp-servers/gitea/run.sh",
+      "command": "./mcp-servers/gitea/run.sh",
       "args": []
     },
     "netbox": {
-      "command": "/home/lmiranda/.claude/plugins/marketplaces/leo-claude-mktplace/mcp-servers/netbox/run.sh",
+      "command": "./mcp-servers/netbox/run.sh",
       "args": []
     },
     "viz-platform": {
-      "command": "/home/lmiranda/.claude/plugins/marketplaces/leo-claude-mktplace/mcp-servers/viz-platform/run.sh",
+      "command": "./mcp-servers/viz-platform/run.sh",
       "args": []
     },
     "data-platform": {
-      "command": "/home/lmiranda/.claude/plugins/marketplaces/leo-claude-mktplace/mcp-servers/data-platform/run.sh",
+      "command": "./mcp-servers/data-platform/run.sh",
       "args": []
     },
     "contract-validator": {
-      "command": "/home/lmiranda/.claude/plugins/marketplaces/leo-claude-mktplace/mcp-servers/contract-validator/run.sh",
+      "command": "./mcp-servers/contract-validator/run.sh",
       "args": []
     }
   }

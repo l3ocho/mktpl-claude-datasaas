@@ -2,7 +2,7 @@
 
 **This file defines ALL valid paths in this repository. No exceptions. No inference. No assumptions.**
 
-Last Updated: 2026-01-30 (v5.5.0)
+Last Updated: 2026-01-30 (v5.4.1)
 
 ---
 
