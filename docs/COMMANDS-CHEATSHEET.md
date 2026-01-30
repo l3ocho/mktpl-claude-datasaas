@@ -10,21 +10,17 @@ Quick reference for all commands in the Leo Claude Marketplace.
 |--------|---------|:----:|:------:|-------------|
 | **projman** | `/sprint-plan` | | X | Start sprint planning with AI-guided architecture analysis and issue creation |
 | **projman** | `/sprint-start` | | X | Begin sprint execution with dependency analysis and parallel task coordination |
-| **projman** | `/sprint-status` | | X | Check current sprint progress and identify blockers |
+| **projman** | `/sprint-status` | | X | Check current sprint progress (add `--diagram` for Mermaid visualization) |
 | **projman** | `/review` | | X | Pre-sprint-close code quality review (debug artifacts, security, error handling) |
-| **projman** | `/test-check` | | X | Run tests and verify coverage before sprint close |
+| **projman** | `/test` | | X | Run tests (`/test run`) or generate tests (`/test gen <target>`) |
 | **projman** | `/sprint-close` | | X | Complete sprint and capture lessons learned to Gitea Wiki |
 | **projman** | `/labels-sync` | | X | Synchronize label taxonomy from Gitea |
-| **projman** | `/initial-setup` | | X | Full setup wizard: MCP server + system config + project config |
-| **projman** | `/project-init` | | X | Quick project setup (assumes system config exists) |
-| **projman** | `/project-sync` | | X | Sync config with git remote after repo move/rename |
-| **projman** | *SessionStart hook* | X | | Detects git remote vs .env mismatch, warns to run /project-sync |
-| **projman** | `/test-gen` | | X | Generate comprehensive tests for specified code |
-| **projman** | `/debug-report` | | X | Run diagnostics and create structured issue in marketplace |
-| **projman** | `/debug-review` | | X | Investigate diagnostic issues and propose fixes with approval gates |
+| **projman** | `/setup` | | X | Auto-detect mode or use `--full`, `--quick`, `--sync` |
+| **projman** | *SessionStart hook* | X | | Detects git remote vs .env mismatch, warns to run `/setup --sync` |
+| **projman** | `/debug` | | X | Diagnostics (`/debug report`) or investigate (`/debug review`) |
 | **projman** | `/suggest-version` | | X | Analyze CHANGELOG and recommend semantic version bump |
 | **projman** | `/proposal-status` | | X | View proposal and implementation hierarchy with status |
-| **projman** | `/sprint-diagram` | | X | Generate Mermaid diagram of sprint issues with dependencies |
+| **projman** | `/clear-cache` | | X | Clear plugin cache to force fresh configuration reload |
 | **git-flow** | `/commit` | | X | Create commit with auto-generated conventional message |
 | **git-flow** | `/commit-push` | | X | Commit and push to remote in one operation |
 | **git-flow** | `/commit-merge` | | X | Commit current changes, then merge into target branch |
@@ -104,7 +100,7 @@ Quick reference for all commands in the Leo Claude Marketplace.
 
 | Category | Plugins | Primary Use |
 |----------|---------|-------------|
-| **Setup** | projman, pr-review, cmdb-assistant, data-platform | `/initial-setup`, `/project-init` |
+| **Setup** | projman, pr-review, cmdb-assistant, data-platform | `/setup`, `/initial-setup` |
 | **Task Planning** | projman, clarity-assist | Sprint management, requirement clarification |
 | **Code Quality** | code-sentinel, pr-review | Security scanning, PR reviews |
 | **Documentation** | doc-guardian, claude-config-maintainer | Doc sync, CLAUDE.md maintenance |
@@ -145,9 +141,9 @@ A typical workflow for planning and executing a feature sprint:
 5. /branch-start feat/...    # Create feature branch
    ... implement features ...
 6. /commit                   # Commit with conventional message
-7. /sprint-status            # Check progress mid-sprint
+7. /sprint-status --diagram  # Check progress with visualization
 8. /review                   # Pre-close quality review
-9. /test-check               # Verify test coverage
+9. /test run                 # Verify test coverage
 10. /sprint-close            # Capture lessons learned
 ```
 
@@ -194,7 +190,7 @@ Safe refactoring with preview:
 1. /refactor-dry             # Preview opportunities
 2. /security-scan            # Baseline security check
 3. /refactor                 # Apply improvements
-4. /test-check               # Verify nothing broke
+4. /test run                 # Verify nothing broke
 5. /commit                   # Commit with descriptive message
 ```
 
@@ -227,7 +223,7 @@ Working with data pipelines:
 Setting up the marketplace for the first time:
 
 ```
-1. /initial-setup            # Full setup: MCP + system config + project
+1. /setup --full             # Full setup: MCP + system config + project
    # → Follow prompts for Gitea URL, org
    # → Add token manually when prompted
    # → Confirm repository name
@@ -241,7 +237,7 @@ Setting up the marketplace for the first time:
 Adding a new project when system config exists:
 
 ```
-1. /project-init             # Quick project setup
+1. /setup --quick            # Quick project setup (auto-detected)
    # → Confirms detected repo name
    # → Creates .env
 2. /labels-sync              # Sync Gitea labels
@@ -277,4 +273,4 @@ Ensure credentials are configured in `~/.config/claude/gitea.env`, `~/.config/cl
 
 ---
 
-*Last Updated: 2026-01-28*
+*Last Updated: 2026-01-30*

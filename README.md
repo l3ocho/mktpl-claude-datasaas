@@ -6,7 +6,7 @@ A collection of Claude Code plugins for project management, infrastructure autom
 
 ### Development & Project Management
 
-#### [projman](./plugins/projman/README.md)
+#### [projman](./plugins/projman)
 **Sprint Planning and Project Management**
 
 AI-guided sprint planning with full Gitea integration. Transforms a proven 15-sprint workflow into a distributable plugin.
@@ -19,9 +19,9 @@ AI-guided sprint planning with full Gitea integration. Transforms a proven 15-sp
 - Branch-aware security (development/staging/production)
 - Pre-sprint-close code quality review and test verification
 
-**Commands:** `/sprint-plan`, `/sprint-start`, `/sprint-status`, `/sprint-close`, `/sprint-diagram`, `/labels-sync`, `/initial-setup`, `/project-init`, `/project-sync`, `/review`, `/test-check`, `/test-gen`, `/debug-report`, `/debug-review`, `/suggest-version`, `/proposal-status`
+**Commands:** `/sprint-plan`, `/sprint-start`, `/sprint-status`, `/sprint-close`, `/labels-sync`, `/setup`, `/review`, `/test`, `/debug`, `/suggest-version`, `/proposal-status`, `/clear-cache`
 
-#### [git-flow](./plugins/git-flow/README.md) *NEW in v3.0.0*
+#### [git-flow](./plugins/git-flow) *NEW in v3.0.0*
 **Git Workflow Automation**
 
 Smart git operations with intelligent commit messages and branch management.
@@ -34,7 +34,7 @@ Smart git operations with intelligent commit messages and branch management.
 
 **Commands:** `/commit`, `/commit-push`, `/commit-merge`, `/commit-sync`, `/branch-start`, `/branch-cleanup`, `/git-status`, `/git-config`
 
-#### [pr-review](./plugins/pr-review/README.md) *NEW in v3.0.0*
+#### [pr-review](./plugins/pr-review) *NEW in v3.0.0*
 **Multi-Agent PR Review**
 
 Comprehensive pull request review using specialized agents.
@@ -46,14 +46,14 @@ Comprehensive pull request review using specialized agents.
 
 **Commands:** `/pr-review`, `/pr-summary`, `/pr-findings`, `/pr-diff`, `/initial-setup`, `/project-init`, `/project-sync`
 
-#### [claude-config-maintainer](./plugins/claude-config-maintainer/README.md)
+#### [claude-config-maintainer](./plugins/claude-config-maintainer)
 **CLAUDE.md Optimization and Maintenance**
 
 Analyze, optimize, and create CLAUDE.md configuration files for Claude Code projects.
 
 **Commands:** `/config-analyze`, `/config-optimize`, `/config-init`, `/config-diff`, `/config-lint`
 
-#### [contract-validator](./plugins/contract-validator/README.md) *NEW in v5.0.0*
+#### [contract-validator](./plugins/contract-validator) *NEW in v5.0.0*
 **Cross-Plugin Compatibility Validation**
 
 Validate plugin marketplaces for command conflicts, tool overlaps, and broken agent references.
@@ -68,7 +68,7 @@ Validate plugin marketplaces for command conflicts, tool overlaps, and broken ag
 
 ### Productivity
 
-#### [clarity-assist](./plugins/clarity-assist/README.md) *NEW in v3.0.0*
+#### [clarity-assist](./plugins/clarity-assist) *NEW in v3.0.0*
 **Prompt Optimization with ND Accommodations**
 
 Transform vague requests into clear specifications using structured methodology.
@@ -79,21 +79,21 @@ Transform vague requests into clear specifications using structured methodology.
 
 **Commands:** `/clarify`, `/quick-clarify`
 
-#### [doc-guardian](./plugins/doc-guardian/README.md)
+#### [doc-guardian](./plugins/doc-guardian)
 **Documentation Lifecycle Management**
 
 Automatic documentation drift detection and synchronization.
 
 **Commands:** `/doc-audit`, `/doc-sync`, `/changelog-gen`, `/doc-coverage`, `/stale-docs`
 
-#### [project-hygiene](./plugins/project-hygiene/README.md)
+#### [project-hygiene](./plugins/project-hygiene)
 **Post-Task Cleanup Automation**
 
 Hook-based cleanup that runs after Claude completes work.
 
 ### Security
 
-#### [code-sentinel](./plugins/code-sentinel/README.md)
+#### [code-sentinel](./plugins/code-sentinel)
 **Security Scanning & Refactoring**
 
 Security vulnerability detection and code refactoring tools.
@@ -102,7 +102,7 @@ Security vulnerability detection and code refactoring tools.
 
 ### Infrastructure
 
-#### [cmdb-assistant](./plugins/cmdb-assistant/README.md)
+#### [cmdb-assistant](./plugins/cmdb-assistant)
 **NetBox CMDB Integration**
 
 Full CRUD operations for network infrastructure management directly from Claude Code.
@@ -111,7 +111,7 @@ Full CRUD operations for network infrastructure management directly from Claude 
 
 ### Data Engineering
 
-#### [data-platform](./plugins/data-platform/README.md) *NEW in v4.0.0*
+#### [data-platform](./plugins/data-platform) *NEW in v4.0.0*
 **pandas, PostgreSQL/PostGIS, and dbt Integration**
 
 Comprehensive data engineering toolkit with persistent DataFrame storage.
@@ -126,7 +126,7 @@ Comprehensive data engineering toolkit with persistent DataFrame storage.
 
 ### Visualization
 
-#### [viz-platform](./plugins/viz-platform/README.md) *NEW in v4.0.0*
+#### [viz-platform](./plugins/viz-platform) *NEW in v4.0.0*
 **Dash Mantine Components Validation and Theming**
 
 Visualization toolkit with version-locked component validation and design token theming.
@@ -142,7 +142,7 @@ Visualization toolkit with version-locked component validation and design token 
 
 ## MCP Servers
 
-MCP servers are **shared at repository root** with **symlinks** from plugins that use them.
+MCP servers are **shared at repository root** and configured in `.mcp.json`.
 
 ### Gitea MCP Server (shared)
 

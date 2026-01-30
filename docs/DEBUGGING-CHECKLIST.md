@@ -73,24 +73,18 @@ cd $RUNTIME && ./scripts/setup.sh
 
 ---
 
-## Step 4: Verify Symlink Resolution
+## Step 4: Verify MCP Configuration
 
-Plugins use symlinks to shared MCP servers. Verify they resolve correctly:
+Check `.mcp.json` at marketplace root is correctly configured:
 
 ```bash
 RUNTIME=~/.claude/plugins/marketplaces/leo-claude-mktplace
 
-# Check symlinks exist and resolve
-readlink -f $RUNTIME/plugins/projman/mcp-servers/gitea
-readlink -f $RUNTIME/plugins/pr-review/mcp-servers/gitea
-readlink -f $RUNTIME/plugins/cmdb-assistant/mcp-servers/netbox
+# Check .mcp.json exists and has valid content
+cat $RUNTIME/.mcp.json | jq '.mcpServers | keys'
 
-# Should resolve to:
-# $RUNTIME/mcp-servers/gitea
-# $RUNTIME/mcp-servers/netbox
+# Should list: gitea, netbox, data-platform, viz-platform, contract-validator
 ```
-
-**If broken:** Symlinks are relative. If directory structure differs, they'll break.
 
 ---
 
@@ -165,10 +159,8 @@ echo -e "\n=== Virtual Environments ==="
 [ -f "$RUNTIME/mcp-servers/gitea/.venv/bin/python" ] && echo "Gitea venv: OK" || echo "Gitea venv: MISSING"
 [ -f "$RUNTIME/mcp-servers/netbox/.venv/bin/python" ] && echo "NetBox venv: OK" || echo "NetBox venv: MISSING"
 
-echo -e "\n=== Symlinks ==="
-[ -L "$RUNTIME/plugins/projman/mcp-servers/gitea" ] && echo "projman->gitea: OK" || echo "projman->gitea: MISSING"
-[ -L "$RUNTIME/plugins/pr-review/mcp-servers/gitea" ] && echo "pr-review->gitea: OK" || echo "pr-review->gitea: MISSING"
-[ -L "$RUNTIME/plugins/cmdb-assistant/mcp-servers/netbox" ] && echo "cmdb-assistant->netbox: OK" || echo "cmdb-assistant->netbox: MISSING"
+echo -e "\n=== MCP Configuration ==="
+[ -f "$RUNTIME/.mcp.json" ] && echo ".mcp.json: OK" || echo ".mcp.json: MISSING"
 
 echo -e "\n=== Config Files ==="
 [ -f ~/.config/claude/gitea.env ] && echo "gitea.env: OK" || echo "gitea.env: MISSING"
@@ -182,7 +174,7 @@ echo -e "\n=== Config Files ==="
 | Issue | Symptom | Fix |
 |-------|---------|-----|
 | Missing venvs | "X MCP servers failed" | `cd ~/.claude/plugins/marketplaces/leo-claude-mktplace && ./scripts/setup.sh` |
-| Broken symlinks | MCP tools not available | Reinstall marketplace or manually recreate symlinks |
+| Missing .mcp.json | MCP tools not available | Check `.mcp.json` exists at marketplace root |
 | Wrong path edits | Changes don't take effect | Edit installed path or reinstall after source changes |
 | Missing credentials | MCP connection errors | Create `~/.config/claude/gitea.env` with API credentials |
 | Invalid hook events | Hooks don't fire | Use only valid event names (see Step 7) |
@@ -287,8 +279,8 @@ Error: Could not find a suitable TLS CA certificate bundle, invalid path:
 
 Use these commands for automated checking:
 
-- `/debug-report` - Run full diagnostics, create issue if problems found
-- `/debug-review` - Investigate existing diagnostic issues and propose fixes
+- `/debug report` - Run full diagnostics, create issue if problems found
+- `/debug review` - Investigate existing diagnostic issues and propose fixes
 
 ---
 

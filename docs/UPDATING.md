@@ -162,7 +162,7 @@ If that doesn't work:
    ls ~/.claude/plugins/marketplaces/leo-claude-mktplace/mcp-servers/gitea/.venv
    ls ~/.claude/plugins/marketplaces/leo-claude-mktplace/mcp-servers/netbox/.venv
    ```
-3. If missing, the symlinks won't resolve. Run setup.sh as shown above.
+3. If missing, run setup.sh as shown above.
 4. Restart Claude Code session
 5. Check logs for specific errors
 
