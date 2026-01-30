@@ -7,29 +7,6 @@ PREFIX="[projman]"
 
 # Calculate paths
 PLUGIN_ROOT="${CLAUDE_PLUGIN_ROOT:-$(dirname "$(dirname "$(realpath "$0")")")}"
-# Marketplace root is 2 levels up from plugin root (plugins/projman -> .)
-MARKETPLACE_ROOT="$(dirname "$(dirname "$PLUGIN_ROOT")")"
-VENV_REPAIR_SCRIPT="$MARKETPLACE_ROOT/scripts/venv-repair.sh"
-
-# ============================================================================
-# Auto-repair MCP venvs (runs before other checks)
-# ============================================================================
-
-if [[ -x "$VENV_REPAIR_SCRIPT" ]]; then
-    # Run venv repair - this creates symlinks to cached venvs
-    # Only outputs messages if something needed fixing
-    "$VENV_REPAIR_SCRIPT" 2>/dev/null || {
-        echo "$PREFIX MCP venv setup failed - run: cd $MARKETPLACE_ROOT && ./scripts/setup-venvs.sh"
-        exit 0
-    }
-else
-    # Fallback: just check if venv exists
-    VENV_PATH="$PLUGIN_ROOT/mcp-servers/gitea/.venv/bin/python"
-    if [[ ! -f "$VENV_PATH" ]]; then
-        echo "$PREFIX MCP venvs missing - run setup.sh from installed marketplace"
-        exit 0
-    fi
-fi
 
 # Check git remote vs .env config (only if .env exists)
 if [[ -f ".env" ]]; then

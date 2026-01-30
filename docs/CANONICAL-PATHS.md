@@ -163,12 +163,11 @@ leo-claude-mktplace/
 │       └── claude-md-integration.md
 ├── scripts/                    # Setup and maintenance scripts
 │   ├── setup.sh                # Initial setup (create venvs, config templates)
-│   ├── post-update.sh          # Post-update (rebuild venvs, verify symlinks)
-│   ├── check-venv.sh           # Check if venvs exist (for hooks)
+│   ├── post-update.sh          # Post-update (clear cache, show changelog)
+│   ├── check-venv.sh           # Check if venvs exist (read-only)
 │   ├── validate-marketplace.sh # Marketplace compliance validation
 │   ├── verify-hooks.sh         # Verify all hooks use correct event types
-│   ├── setup-venvs.sh          # Setup/repair MCP server venvs
-│   ├── venv-repair.sh          # Repair broken venv symlinks
+│   ├── setup-venvs.sh          # Setup MCP server venvs (create only, never delete)
 │   └── release.sh              # Release automation with version bumping
 ├── CLAUDE.md
 ├── README.md

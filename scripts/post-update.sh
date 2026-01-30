@@ -6,9 +6,10 @@
 #
 # This script:
 # 1. Clears Claude plugin cache (forces fresh .mcp.json reads)
-# 2. Restores MCP venv symlinks (instant if cache exists)
-# 3. Creates venvs in external cache if missing (first run only)
-# 4. Shows recent changelog updates
+# 2. Shows recent changelog updates
+#
+# NOTE: This script does NOT touch .venv directories.
+# If venvs are missing, run ./scripts/setup.sh manually.
 #
 
 set -euo pipefail
@@ -22,13 +23,11 @@ REPO_ROOT="$(dirname "$SCRIPT_DIR")"
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 BLUE='\033[0;34m'
-RED='\033[0;31m'
 NC='\033[0m'
 
 log_info() { echo -e "${BLUE}[INFO]${NC} $1"; }
 log_success() { echo -e "${GREEN}[OK]${NC} $1"; }
 log_warn() { echo -e "${YELLOW}[WARN]${NC} $1"; }
-log_error() { echo -e "${RED}[ERROR]${NC} $1"; }
 
 check_changelog() {
     if [[ -f "$REPO_ROOT/CHANGELOG.md" ]]; then
@@ -52,26 +51,11 @@ main() {
 
     # Clear Claude plugin cache to force fresh .mcp.json reads
     # This cache holds versioned copies that become stale after updates
+    # NOTE: This does NOT touch .venv directories
     if [[ -d "$CLAUDE_PLUGIN_CACHE" ]]; then
         log_info "Clearing Claude plugin cache..."
         rm -rf "$CLAUDE_PLUGIN_CACHE"
         log_success "Plugin cache cleared"
-    fi
-
-    # Run venv-repair.sh to restore symlinks to external cache
-    # This is instant if cache exists, or does full setup on first run
-    if [[ -x "$SCRIPT_DIR/venv-repair.sh" ]]; then
-        log_info "Restoring MCP venv symlinks..."
-        if "$SCRIPT_DIR/venv-repair.sh"; then
-            log_success "MCP venvs ready"
-        else
-            log_error "MCP venv setup failed"
-            log_warn "Run: $SCRIPT_DIR/setup-venvs.sh for full setup"
-            exit 1
-        fi
-    else
-        log_error "venv-repair.sh not found at $SCRIPT_DIR"
-        exit 1
     fi
 
     check_changelog
@@ -80,7 +64,8 @@ main() {
     log_success "Post-update complete!"
     echo ""
     echo "IMPORTANT: Restart Claude Code for changes to take effect."
-    echo "MCP servers will work immediately on next session start."
+    echo ""
+    echo "If MCP servers are not working, run: ./scripts/setup.sh"
 }
 
 main "$@"

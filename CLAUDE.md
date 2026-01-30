@@ -40,8 +40,76 @@ Run `./scripts/verify-hooks.sh`. If changes affect MCP servers or hooks, inform 
 
 **Valid hook events:** `PreToolUse`, `PostToolUse`, `UserPromptSubmit`, `SessionStart`, `SessionEnd`, `Notification`, `Stop`, `SubagentStop`, `PreCompact`
 
+### ⛔ MANDATORY: Before Any Code Change
+
+**Claude MUST show this checklist BEFORE editing any file:**
+
+#### 1. Impact Search Results
+Run and show output of:
+```bash
+grep -rn "PATTERN" --include="*.sh" --include="*.md" --include="*.json" --include="*.py" | grep -v ".git"
+```
+
+#### 2. Files That Will Be Affected
+Numbered list of every file to be modified, with the specific change for each.
+
+#### 3. Files Searched But Not Changed (and why)
+Proof that related files were checked and determined unchanged.
+
+#### 4. Documentation That References This
+List of docs that mention this feature/script/function.
+
+**User verifies this list before Claude proceeds. If Claude skips this, STOP IMMEDIATELY.**
+
+#### After Changes
+Run the same grep and show results proving no references remain unaddressed.
+
 ---
 
+## ⚠️ Development Context: We Build AND Use These Plugins
+
+**This is a self-referential project.** We are:
+1. **BUILDING** a plugin marketplace (source code in `plugins/`)
+2. **USING** the installed marketplace to build it (dogfooding)
+
+### Plugins ACTIVELY USED in This Project
+
+These plugins are installed and should be used during development:
+
+| Plugin | Used For |
+|--------|----------|
+| **projman** | Sprint planning, issue management, lessons learned |
+| **git-flow** | Commits, branch management |
+| **pr-review** | Pull request reviews |
+| **doc-guardian** | Documentation drift detection |
+| **code-sentinel** | Security scanning, refactoring |
+| **clarity-assist** | Prompt clarification |
+| **claude-config-maintainer** | CLAUDE.md optimization |
+| **contract-validator** | Cross-plugin compatibility |
+
+### Plugins NOT Used Here (Development Only)
+
+These plugins exist in source but are **NOT relevant** to this project's workflow:
+
+| Plugin | Why Not Used |
+|--------|--------------|
+| **data-platform** | For data engineering projects (pandas, PostgreSQL, dbt) |
+| **viz-platform** | For dashboard projects (Dash, Plotly) |
+| **cmdb-assistant** | For infrastructure projects (NetBox) |
+
+**Do NOT suggest** `/ingest`, `/profile`, `/chart`, `/cmdb-*` commands - they don't apply here.
+
+### Key Distinction
+
+| Context | Path | What To Do |
+|---------|------|------------|
+| **Editing plugin source** | `~/claude-plugins-work/plugins/` | Modify code, add features |
+| **Using installed plugins** | `~/.claude/plugins/marketplaces/` | Run commands like `/sprint-plan` |
+
+When user says "run /sprint-plan", use the INSTALLED plugin.
+When user says "fix the sprint-plan command", edit the SOURCE code.
+
+---
 
 ## Project Overview
 
@@ -76,7 +144,7 @@ A plugin marketplace for Claude Code containing:
 ./scripts/post-update.sh   # Rebuild venvs, verify symlinks
 ```
 
-### Plugin Commands by Category
+### Plugin Commands - USE THESE in This Project
 
 | Category | Commands |
 |----------|----------|
@@ -88,11 +156,18 @@ A plugin marketplace for Claude Code containing:
 | **Docs** | `/doc-audit`, `/doc-sync`, `/changelog-gen`, `/doc-coverage`, `/stale-docs` |
 | **Security** | `/security-scan`, `/refactor`, `/refactor-dry` |
 | **Config** | `/config-analyze`, `/config-optimize`, `/config-diff`, `/config-lint` |
-| **Data** | `/ingest`, `/profile`, `/schema`, `/explain`, `/lineage`, `/lineage-viz`, `/run`, `/dbt-test`, `/data-quality` |
-| **Visualization** | `/component`, `/chart`, `/chart-export`, `/dashboard`, `/theme`, `/theme-new`, `/theme-css`, `/accessibility-check`, `/breakpoints` |
 | **Validation** | `/validate-contracts`, `/check-agent`, `/list-interfaces`, `/dependency-graph` |
-| **CMDB** | `/cmdb-search`, `/cmdb-device`, `/cmdb-ip`, `/cmdb-site`, `/cmdb-audit`, `/cmdb-register`, `/cmdb-sync`, `/cmdb-topology`, `/change-audit`, `/ip-conflicts` |
 | **Debug** | `/debug-report`, `/debug-review` |
+
+### Plugin Commands - NOT RELEVANT to This Project
+
+These commands are being developed but don't apply to this project's workflow:
+
+| Category | Commands | For Projects Using |
+|----------|----------|-------------------|
+| **Data** | `/ingest`, `/profile`, `/schema`, `/lineage`, `/dbt-test` | pandas, PostgreSQL, dbt |
+| **Visualization** | `/component`, `/chart`, `/dashboard`, `/theme` | Dash, Plotly dashboards |
+| **CMDB** | `/cmdb-search`, `/cmdb-device`, `/cmdb-sync` | NetBox infrastructure |
 
 ## Repository Structure
 
@@ -354,4 +429,4 @@ The script will:
 
 ---
 
-**Last Updated:** 2026-01-28
+**Last Updated:** 2026-01-30

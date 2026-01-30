@@ -139,6 +139,7 @@ For small projects or when starting fresh:
 - Project Overview (required)
 - Quick Start (required)
 - Critical Rules (required)
+- **Pre-Change Protocol (required)**
 
 ### Standard Template (default)
 For typical projects:
@@ -146,6 +147,7 @@ For typical projects:
 - Quick Start
 - Architecture
 - Critical Rules
+- **Pre-Change Protocol**
 - Common Operations
 - File Structure
 
@@ -153,10 +155,43 @@ For typical projects:
 For large or complex projects:
 - All standard sections plus:
 - Detailed Architecture
+- **Pre-Change Protocol**
 - Troubleshooting
 - Integration Points
 - Development Workflow
 - Deployment Notes
+
+### Pre-Change Protocol Section (MANDATORY in ALL templates)
+
+**This section MUST be included in every generated CLAUDE.md:**
+
+```markdown
+## ⛔ MANDATORY: Before Any Code Change
+
+**Claude MUST show this checklist BEFORE editing any file:**
+
+### 1. Impact Search Results
+Run and show output of:
+\`\`\`bash
+grep -rn "PATTERN" --include="*.sh" --include="*.md" --include="*.json" --include="*.py" | grep -v ".git"
+\`\`\`
+
+### 2. Files That Will Be Affected
+Numbered list of every file to be modified, with the specific change for each.
+
+### 3. Files Searched But Not Changed (and why)
+Proof that related files were checked and determined unchanged.
+
+### 4. Documentation That References This
+List of docs that mention this feature/script/function.
+
+**User verifies this list before Claude proceeds. If Claude skips this, stop immediately.**
+
+### After Changes
+Run the same grep and show results proving no references remain unaddressed.
+```
+
+**Rationale:** This protocol prevents incomplete changes where Claude modifies some files but misses others that reference the same code, causing cascading bugs.
 
 ## Auto-Detection
 

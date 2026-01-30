@@ -132,10 +132,8 @@ When updating, review if changes affect the setup workflow:
 ### Dependencies fail to install
 
 ```bash
-# Rebuild virtual environment
+# Install missing dependencies (do NOT delete .venv)
 cd mcp-servers/gitea
-rm -rf .venv
-python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 deactivate
