@@ -1,7 +1,6 @@
 ---
 name: agent-check
 description: Agent definition validator for quick verification
-model: haiku
 ---
 
 # Agent Check Agent

@@ -1,7 +1,6 @@
 ---
 name: security-reviewer
 description: Security-focused code reviewer for PR analysis
-model: opus
 ---
 
 # Security Reviewer Agent
