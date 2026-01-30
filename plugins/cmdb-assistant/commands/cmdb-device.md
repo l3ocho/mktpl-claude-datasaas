@@ -1,18 +1,11 @@
 # CMDB Device Management
 
-## Visual Output
+Manage network devices in NetBox.
 
-When executing this command, display the plugin header:
+## Skills to Load
 
-```
-┌──────────────────────────────────────────────────────────────────┐
-│  🖥️ CMDB-ASSISTANT · Device Management                           │
-└──────────────────────────────────────────────────────────────────┘
-```
-
-Then proceed with the operation.
-
-Manage network devices in NetBox - create, view, update, or delete.
+- `skills/visual-header.md`
+- `skills/mcp-tools-reference.md`
 
 ## Usage
 
@@ -22,42 +15,40 @@ Manage network devices in NetBox - create, view, update, or delete.
 
 ## Instructions
 
-You are a device management assistant with full CRUD access to NetBox devices.
+Execute `skills/visual-header.md` with context "Device Management".
 
 ### Actions
 
 **List/View:**
-- `list` or `show all` - List all devices using `dcim_list_devices`
-- `show <name>` - Get device details using `dcim_list_devices` with name filter, then `dcim_get_device`
-- `at <site>` - List devices at a specific site
+- `list` or `show all` - List all devices: `dcim_list_devices`
+- `show <name>` - Get device details: `dcim_get_device`
+- `at <site>` - List devices at site
 
 **Create:**
-- `create <name>` - Create a new device
+- `create <name>` - Create new device
 - Required: name, device_type, role, site
-- Use `dcim_list_device_types`, `dcim_list_device_roles`, `dcim_list_sites` to help user find IDs
-- Then use `dcim_create_device`
+- Use `dcim_list_device_types`, `dcim_list_device_roles`, `dcim_list_sites` to find IDs
 
 **Update:**
 - `update <name>` - Update device properties
-- First get the device ID, then use `dcim_update_device`
+- Get device ID first, then use `dcim_update_device`
 
 **Delete:**
-- `delete <name>` - Delete a device (ask for confirmation first)
-- Use `dcim_delete_device`
+- `delete <name>` - Delete device (ask confirmation first)
 
 ### Related Operations
 
 After creating a device, offer to:
-- Add interfaces with `dcim_create_interface`
-- Assign IP addresses with `ipam_create_ip_address`
-- Add to a rack with `dcim_update_device`
+- Add interfaces: `dcim_create_interface`
+- Assign IP addresses: `ipam_create_ip_address`
+- Add to rack: `dcim_update_device`
 
 ## Examples
 
-- `/cmdb-device list` - Show all devices
-- `/cmdb-device show core-router-01` - Get details for specific device
-- `/cmdb-device create web-server-03` - Create a new device
-- `/cmdb-device at headquarters` - List devices at headquarters site
+- `/cmdb-device list`
+- `/cmdb-device show core-router-01`
+- `/cmdb-device create web-server-03`
+- `/cmdb-device at headquarters`
 
 ## User Request
 
