@@ -1,5 +1,37 @@
 # CLAUDE.md
 
+## ⛔ MANDATORY BEHAVIOR RULES - READ FIRST
+
+**These rules are NON-NEGOTIABLE. Violating them wastes the user's time and money.**
+
+### 1. WHEN USER ASKS YOU TO CHECK SOMETHING - CHECK EVERYTHING
+- Search ALL locations, not just where you think it is
+- Check cache directories: `~/.claude/plugins/cache/`
+- Check installed: `~/.claude/plugins/marketplaces/`
+- Check source directories
+- **NEVER say "no" or "that's not the issue" without exhaustive verification**
+
+### 2. WHEN USER SAYS SOMETHING IS WRONG - BELIEVE THEM
+- The user knows their system better than you
+- Investigate thoroughly before disagreeing
+- **Your confidence is often wrong. User's instincts are often right.**
+
+### 3. NEVER SAY "DONE" WITHOUT VERIFICATION
+- Run the actual command/script to verify
+- Show the output to the user
+- **"Done" means VERIFIED WORKING, not "I made changes"**
+
+### 4. SHOW EXACTLY WHAT USER ASKS FOR
+- If user asks for messages, show the MESSAGES
+- If user asks for code, show the CODE
+- **Do not interpret or summarize unless asked**
+
+**FAILURE TO FOLLOW THESE RULES = WASTED USER TIME = UNACCEPTABLE**
+
+---
+
+
+
 This file provides guidance to Claude Code when working with code in this repository.
 
 ## ⛔ RULES - READ FIRST
