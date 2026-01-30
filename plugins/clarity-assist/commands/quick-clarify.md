@@ -2,15 +2,11 @@
 
 ## Visual Output
 
-When executing this command, display the plugin header:
-
 ```
-┌──────────────────────────────────────────────────────────────────┐
-│  💬 CLARITY-ASSIST · Quick Clarify                               │
-└──────────────────────────────────────────────────────────────────┘
++----------------------------------------------------------------------+
+|  CLARITY-ASSIST - Quick Clarify                                      |
++----------------------------------------------------------------------+
 ```
-
-Then proceed with the workflow.
 
 ## Purpose
 
@@ -23,74 +19,27 @@ Single-pass clarification for requests that are mostly clear but need minor disa
 - Follow-up to an already-clarified request
 - Simple feature additions or bug fixes
 
-## Process
+## Skills to Load
 
-### Step 1: Echo Understanding
+- `skills/nd-accommodations.md` - ND-friendly question patterns
+- `skills/clarification-techniques.md` - Echo and micro-summary techniques
+- `skills/escalation-patterns.md` - When to escalate to full /clarify
 
-Restate what you understood in a single sentence:
+## Workflow
 
-```
-"I understand you want [X] that does [Y]."
-```
-
-### Step 2: Quick Disambiguation
-
-If needed, ask ONE multiple-choice question:
-
-```
-**Just to confirm:** Should this [A] or [B]?
-1. [Option A with brief description]
-2. [Option B with brief description]
-3. Both
-4. Neither / Other approach
-```
-
-### Step 3: Proceed or Confirm
-
-If confident (>90%), proceed with a brief confirmation:
-
-```
-"Got it. I'll implement [X with chosen option]. Starting now."
-```
-
-If less confident, offer a micro-summary:
-
-```
-"Quick summary before I start:
-- [Key point 1]
-- [Key point 2]
-- [Assumption made]
-
-Proceed? (Or clarify anything)"
-```
-
-## Example Interaction
-
-**User:** Add a delete button to the user list
-
-**Quick-Clarify Response:**
-
-```
-I'll add a delete button to each row in the user list.
-
-**Should deletion require confirmation?**
-1. Yes - show confirmation dialog (Recommended)
-2. No - delete immediately
-3. Soft delete - mark as deleted but keep data
-
-[Asking because accidental deletions can be problematic]
-```
-
-## Escalation to Full /clarify
-
-If quick-clarify reveals complexity:
-
-```
-"This is more involved than it first appeared - there are
-several decisions to make. Want me to switch to a more
-thorough clarification process? (Just say 'yes' or 'clarify')"
-```
+1. **Echo Understanding** - Restate in a single sentence
+2. **Quick Disambiguation** - Ask ONE multiple-choice question if needed
+3. **Proceed or Confirm** - Start work or offer micro-summary
 
 ## Output Format
 
-For quick-clarify, no formal specification document is needed. Just proceed with the task after brief confirmation, documenting assumptions inline with the work.
+No formal specification document needed. Proceed after brief confirmation, documenting assumptions inline with the work.
+
+## Escalation
+
+If complexity emerges, offer to switch to full `/clarify`:
+
+```
+"This is more involved than it first appeared. Want me to switch
+to a more thorough clarification process?"
+```

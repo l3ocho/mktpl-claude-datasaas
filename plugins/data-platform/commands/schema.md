@@ -1,18 +1,12 @@
 # /schema - Schema Exploration
 
+## Skills to Load
+- skills/mcp-tools-reference.md
+- skills/visual-header.md
+
 ## Visual Output
 
-When executing this command, display the plugin header:
-
-```
-┌──────────────────────────────────────────────────────────────────┐
-│  📊 DATA-PLATFORM · Schema Explorer                               │
-└──────────────────────────────────────────────────────────────────┘
-```
-
-Then proceed with the exploration.
-
-Display schema information for database tables or DataFrames.
+Display header: `DATA-PLATFORM - Schema Explorer`
 
 ## Usage
 
@@ -23,23 +17,15 @@ Display schema information for database tables or DataFrames.
 ## Workflow
 
 1. **Determine target**:
-   - If argument is a loaded data_ref, show DataFrame schema
-   - If argument is a table name, query database schema
-   - If no argument, list all available tables and DataFrames
+   - DataFrame: show pandas schema via `describe`
+   - Database table: query via `pg_columns`
+   - No argument: list all tables and DataFrames
 
-2. **For DataFrames**:
-   - Use `describe` to get column info
-   - Show dtypes, null counts, sample values
+2. **For DataFrames**: Show dtypes, null counts, sample values
 
-3. **For database tables**:
-   - Use `pg_columns` for column details
-   - Use `st_tables` to check for PostGIS columns
-   - Show constraints and indexes if available
+3. **For database tables**: Show columns, types, constraints, indexes
 
-4. **Report**:
-   - Column name, type, nullable, default
-   - For PostGIS: geometry type, SRID
-   - For DataFrames: pandas dtype, null percentage
+4. **For PostGIS**: Include geometry type and SRID via `st_tables`
 
 ## Examples
 
@@ -49,9 +35,8 @@ Display schema information for database tables or DataFrames.
 /schema sales_data         # Show DataFrame schema
 ```
 
-## Available Tools
+## Required MCP Tools
 
-Use these MCP tools:
 - `pg_tables` - List database tables
 - `pg_columns` - Get column info
 - `pg_schemas` - List schemas

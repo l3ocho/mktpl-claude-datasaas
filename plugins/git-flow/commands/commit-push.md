@@ -1,65 +1,42 @@
+---
+name: commit-push
+description: Create a commit and push to remote in one operation
+agent: git-assistant
+---
+
 # /commit-push - Commit and Push
 
-## Visual Output
+## Skills
 
-When executing this command, display the plugin header:
-
-```
-┌──────────────────────────────────────────────────────────────────┐
-│  🔀 GIT-FLOW · Commit & Push                                      │
-└──────────────────────────────────────────────────────────────────┘
-```
-
-Then proceed with the workflow.
+- skills/visual-header.md
+- skills/commit-conventions.md
+- skills/sync-workflow.md
+- skills/git-safety.md
+- skills/environment-variables.md
 
 ## Purpose
 
 Create a commit and push to the remote repository in one operation.
 
-## Behavior
+## Parameters
 
-### Step 1: Run /commit
+| Parameter | Description |
+|-----------|-------------|
+| `--message`, `-m` | Override auto-generated message |
+| `--force` | Force push (requires confirmation) |
 
-Execute the standard commit workflow (see commit.md).
+## Workflow
 
-### Step 2: Push to Remote
-
-After successful commit:
-
-1. Check if branch has upstream tracking
-2. If no upstream, set it: `git push -u origin <branch>`
-3. If upstream exists: `git push`
-
-### Step 3: Handle Conflicts
-
-If push fails due to diverged history:
-
-```
-Remote has changes not in your local branch.
-
-Options:
-1. Pull and rebase, then push (Recommended)
-2. Pull and merge, then push
-3. Force push (⚠️ destructive)
-4. Cancel and review manually
-```
-
-## Environment Variables
-
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `GIT_AUTO_PUSH` | `true` | Auto-push after commit |
-| `GIT_PUSH_STRATEGY` | `rebase` | How to handle diverged branches |
-
-## Safety Checks
-
-- **Protected branches**: Warn before pushing to main/master/production
-- **Force push**: Require explicit confirmation
-- **No tracking**: Ask before creating new remote branch
+1. **Display header** - Show GIT-FLOW Commit & Push header
+2. **Run /commit** - Execute standard commit workflow
+3. **Check upstream** - Set up tracking if needed (`git push -u`)
+4. **Push** - Push to remote
+5. **Handle conflicts** - Offer rebase/merge/force if push fails (per sync-workflow.md)
+6. **Verify safety** - Warn before push to protected branches (per git-safety.md)
+7. **Report** - Show push result
 
 ## Output
 
-On success:
 ```
 Committed: abc1234
 feat(auth): add password reset functionality

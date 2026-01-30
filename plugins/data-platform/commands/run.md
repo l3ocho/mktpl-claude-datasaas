@@ -1,18 +1,13 @@
 # /run - Execute dbt Models
 
+## Skills to Load
+- skills/dbt-workflow.md
+- skills/mcp-tools-reference.md
+- skills/visual-header.md
+
 ## Visual Output
 
-When executing this command, display the plugin header:
-
-```
-┌──────────────────────────────────────────────────────────────────┐
-│  📊 DATA-PLATFORM · dbt Run                                       │
-└──────────────────────────────────────────────────────────────────┘
-```
-
-Then proceed with the execution.
-
-Run dbt models with automatic pre-validation.
+Display header: `DATA-PLATFORM - dbt Run`
 
 ## Usage
 
@@ -22,46 +17,28 @@ Run dbt models with automatic pre-validation.
 
 ## Workflow
 
-1. **Pre-validation** (MANDATORY):
-   - Use `dbt_parse` to validate project
-   - Check for deprecated syntax (dbt 1.9+)
-   - If validation fails, show errors and STOP
+Execute `skills/dbt-workflow.md` run workflow:
 
-2. **Execute models**:
-   - Use `dbt_run` with provided selection
-   - Monitor progress and capture output
+1. **Pre-validation** (MANDATORY): Run `dbt_parse` first
+2. **Execute models**: Use `dbt_run` with selection
+3. **Report results**: Status, execution time, row counts
 
-3. **Report results**:
-   - Success/failure status per model
-   - Execution time
-   - Row counts where available
-   - Any warnings or errors
+## Selection Syntax
+
+See `skills/dbt-workflow.md` for full selection patterns.
 
 ## Examples
 
 ```
 /run                           # Run all models
 /run dim_customers             # Run specific model
-/run +fct_orders               # Run model and its upstream
+/run +fct_orders               # Run model and upstream
 /run tag:daily                 # Run models with tag
 /run --full-refresh            # Rebuild incremental models
 ```
 
-## Selection Syntax
+## Required MCP Tools
 
-| Pattern | Meaning |
-|---------|---------|
-| `model_name` | Run single model |
-| `+model_name` | Run model and upstream |
-| `model_name+` | Run model and downstream |
-| `+model_name+` | Run model with all deps |
-| `tag:name` | Run by tag |
-| `path:models/staging` | Run by path |
-
-## Available Tools
-
-Use these MCP tools:
 - `dbt_parse` - Pre-validation (ALWAYS RUN FIRST)
 - `dbt_run` - Execute models
 - `dbt_build` - Run + test
-- `dbt_test` - Run tests only

@@ -8,15 +8,11 @@ Analyze and preview refactoring opportunities without making changes.
 
 ## Visual Output
 
-When executing this command, display the plugin header:
-
 ```
-┌──────────────────────────────────────────────────────────────────┐
-│  🔒 CODE-SENTINEL · Refactor Preview                             │
-└──────────────────────────────────────────────────────────────────┘
++----------------------------------------------------------------------+
+|  CODE-SENTINEL - Refactor Preview                                    |
++----------------------------------------------------------------------+
 ```
-
-Then proceed with the analysis.
 
 ## Usage
 ```
@@ -26,44 +22,31 @@ Then proceed with the analysis.
 **Target:** File path, function name, or "." for current file
 **--all:** Show all opportunities, not just recommended
 
+## Skills to Load
+
+- skills/refactoring-patterns.md
+- skills/dry-run-workflow.md
+
 ## Process
 
-1. **Scan Target**
-   Analyze code for refactoring opportunities.
+1. **Scan Target** - Analyze code using patterns from skill
+2. **Score Opportunities** - Rate by Impact/Risk/Effort (see dry-run-workflow skill)
+3. **Output** - Group by recommended vs optional
 
-2. **Score Opportunities**
-   Each opportunity rated by:
-   - Impact (how much it improves code)
-   - Risk (likelihood of breaking something)
-   - Effort (complexity of the refactoring)
+## Output Format
 
-3. **Output**
 ```
-## Refactoring Opportunities: src/handlers.py
+## Refactoring Opportunities: <target>
 
 ### Recommended (High Impact, Low Risk)
+1. **pattern** at lines X-Y
+   - Impact: High | Risk: Low
+   - Run: `/refactor <target> --pattern=<pattern>`
 
-1. **extract-method** at lines 45-67
-   - Extract order validation logic
-   - Impact: High (reduces complexity from 12 to 4)
-   - Risk: Low (pure function, no side effects)
-   - Run: `/refactor src/handlers.py:45 --pattern=extract-method`
-
-2. **use-dataclass** for OrderInput class
-   - Convert to dataclass with validation
-   - Impact: Medium (reduces boilerplate)
-   - Risk: Low
-   - Run: `/refactor src/models.py:OrderInput --pattern=use-dataclass`
-
-### Optional (Consider Later)
-
-3. **use-fstring** at 12 locations
-   - Modernize string formatting
-   - Impact: Low (readability only)
-   - Risk: None
+### Optional
+- Lower priority items
 
 ### Summary
-- 2 recommended refactorings
-- 1 optional improvement
-- Estimated complexity reduction: 35%
+- X recommended, Y optional
+- Estimated complexity reduction: Z%
 ```
