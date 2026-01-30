@@ -56,6 +56,7 @@ Or specify specific optimizations:
 
 ### Enhance
 - Add missing essential sections
+- **Add Pre-Change Protocol if missing (HIGH PRIORITY)**
 - Improve unclear instructions
 - Add helpful examples
 - Highlight critical rules
@@ -157,6 +158,49 @@ Backup saved to: .claude/backups/CLAUDE.md.2025-01-18
 | `--aggressive` | Maximum condensation |
 | `--preserve-comments` | Keep all existing comments |
 | `--section=NAME` | Optimize specific section only |
+
+## Pre-Change Protocol (Mandatory Addition)
+
+**If CLAUDE.md is missing the Pre-Change Protocol section, optimization MUST add it.**
+
+This is the highest priority enhancement because it prevents cascading bugs from incomplete code changes.
+
+### Detection
+
+Search CLAUDE.md for:
+- "Pre-Change" or "Before Any Code Change" in headers
+- References to impact search or grep verification
+- User verification checkpoint
+
+### If Missing
+
+Add this section (position: after Critical Rules, before Common Operations):
+
+```markdown
+## ⛔ MANDATORY: Before Any Code Change
+
+**Claude MUST show this checklist BEFORE editing any file:**
+
+### 1. Impact Search Results
+Run and show output of:
+\`\`\`bash
+grep -rn "PATTERN" --include="*.sh" --include="*.md" --include="*.json" --include="*.py" | grep -v ".git"
+\`\`\`
+
+### 2. Files That Will Be Affected
+Numbered list of every file to be modified, with the specific change for each.
+
+### 3. Files Searched But Not Changed (and why)
+Proof that related files were checked and determined unchanged.
+
+### 4. Documentation That References This
+List of docs that mention this feature/script/function.
+
+**User verifies this list before Claude proceeds. If Claude skips this, stop immediately.**
+
+### After Changes
+Run the same grep and show results proving no references remain unaddressed.
+```
 
 ## When to Use
 

@@ -59,12 +59,49 @@ Analyze the CLAUDE.md file in this project
 - Quick start commands documented
 - Critical rules highlighted
 - Key workflows covered
+- **Pre-Change Protocol section present** (MANDATORY - see below)
 
 ### Conciseness (25 points)
 - No unnecessary repetition
 - Efficient information density
 - Appropriate length for project size
 - No generic filler content
+
+## Pre-Change Protocol Check (MANDATORY)
+
+**This check is CRITICAL.** The Pre-Change Protocol section ensures Claude performs comprehensive dependency analysis before making any code changes, preventing missed references and incomplete updates.
+
+### What to Check
+
+Search CLAUDE.md for:
+- Section header containing "Pre-Change" or "Before Any Code Change"
+- References to `grep -rn` or impact search
+- Checklist with "Files That Will Be Affected"
+- Requirement for user verification before proceeding
+
+### If Missing
+
+**Flag as HIGH PRIORITY issue:**
+
+```
+1. [HIGH] Missing Pre-Change Protocol section
+   CLAUDE.md lacks mandatory dependency-check protocol.
+   Impact: Claude may miss file references when making changes,
+   leading to broken dependencies and incomplete updates.
+
+   Recommendation: Add Pre-Change Protocol section immediately.
+   This is the #1 cause of cascading bugs from incomplete changes.
+```
+
+### Required Section Content
+
+The Pre-Change Protocol section must include:
+1. Requirement to run grep search and show results
+2. List of files that will be affected
+3. List of files searched but not changed (with reasoning)
+4. Documentation that references the change target
+5. User verification checkpoint before proceeding
+6. Post-change verification step
 
 ## Plugin Integration Analysis
 
