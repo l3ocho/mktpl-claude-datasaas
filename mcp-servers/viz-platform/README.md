@@ -112,4 +112,4 @@ pytest tests/ -v
 
 ## Usage
 
-This MCP server is used by the `viz-platform` plugin. See [plugins/viz-platform/README.md](../../plugins/viz-platform/README.md) for usage instructions.
+This MCP server is used by the `viz-platform` plugin. See the plugin's commands in `plugins/viz-platform/commands/` for usage.

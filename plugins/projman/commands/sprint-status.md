@@ -1,247 +1,78 @@
 ---
-description: Check current sprint progress and identify blockers
+description: Check current sprint progress, identify blockers, optionally generate dependency diagram
 ---
 
-# Sprint Status Check
+# Sprint Status
 
-This command provides a quick overview of your current sprint progress, including open issues, completed work, dependency status, and potential blockers.
+## Skills Required
 
-## What This Command Does
+- skills/mcp-tools-reference.md
+- skills/progress-tracking.md
+- skills/dependency-management.md
 
-1. **Fetch Sprint Issues** - Lists all issues with current sprint labels/milestone
-2. **Analyze Dependencies** - Shows dependency graph and blocked/unblocked tasks
-3. **Categorize by Status** - Groups issues into: Open, In Progress, Blocked, Completed
-4. **Identify Blockers** - Highlights issues with blocker comments or unmet dependencies
-5. **Show Progress Summary** - Provides completion percentage and parallel execution status
-6. **Highlight Priorities** - Shows critical and high-priority items needing attention
+## Purpose
 
-## Usage
+Check current sprint progress, identify blockers, and show execution status. Optionally generate a visual dependency diagram.
 
-Simply run `/sprint-status` to get a comprehensive sprint overview.
-
-## MCP Tools Used
-
-This command uses the following Gitea MCP tools:
-
-**Issue Tools:**
-- `list_issues(state="open")` - Fetch open issues
-- `list_issues(state="closed")` - Fetch completed issues
-- `get_issue(number)` - Get detailed issue information for blockers
-
-**Dependency Tools:**
-- `list_issue_dependencies(issue_number)` - Get dependencies for each issue
-- `get_execution_order(issue_numbers)` - Get parallel execution batches
-
-**Milestone Tools:**
-- `get_milestone(milestone_id)` - Get milestone progress
-
-## Expected Output
+## Invocation
 
 ```
-Sprint Status Report
-====================
-
-Sprint: Sprint 18 - Authentication System
-Milestone: Due 2025-02-01 (5 days remaining)
-Date: 2025-01-18
-
-Progress Summary:
-- Total Issues: 8
-- Completed: 3 (37.5%)
-- In Progress: 2 (25%)
-- Ready: 2 (25%)
-- Blocked: 1 (12.5%)
-
-Dependency Graph:
-#45 -> #46 -> #47
-  |
-  v
-#49 -> #50
-
-Parallel Execution Status:
-+-----------------------------------------------+
-| Batch 1 (COMPLETED):                           |
-|   #45 - Implement JWT service                  |
-|   #48 - Update API documentation               |
-+-----------------------------------------------+
-| Batch 2 (IN PROGRESS):                         |
-|   #46 - Build login endpoint (75%)             |
-|   #49 - Add auth tests (50%)                   |
-+-----------------------------------------------+
-| Batch 3 (BLOCKED):                             |
-|   #47 - Create login form (waiting for #46)    |
-+-----------------------------------------------+
-
-Completed Issues (3):
-  #45: [Sprint 18] feat: Implement JWT service [Type/Feature, Priority/High]
-  #48: [Sprint 18] docs: Update API documentation [Type/Docs, Priority/Medium]
-  #51: [Sprint 18] chore: Update dependencies [Type/Chore, Priority/Low]
-
-In Progress (2):
-  #46: [Sprint 18] feat: Build login endpoint [Type/Feature, Priority/High]
-       Status: In Progress | Phase: Implementation | Tool Calls: 45/100
-       Progress: 3/5 steps | Current: Writing validation logic
-
-  #49: [Sprint 18] test: Add auth tests [Type/Test, Priority/Medium]
-       Status: In Progress | Phase: Testing | Tool Calls: 30/100
-       Progress: 2/4 steps | Current: Testing edge cases
-
-Ready to Start (2):
-  #50: [Sprint 18] feat: Integrate OAuth providers [Type/Feature, Priority/Low]
-  #52: [Sprint 18] feat: Add email verification [Type/Feature, Priority/Medium]
-
-Blocked Issues (1):
-  #47: [Sprint 18] feat: Create login form [Type/Feature, Priority/High]
-     Blocked by: #46 (in progress)
-
-Priority Alerts:
-  1 high-priority item blocked: #47
-  All critical items completed
-
-Recommendations:
-1. Focus on completing #46 (Login endpoint) - unblocks #47
-2. Continue parallel work on #49 (Auth tests)
-3. #50 and #52 are ready - can start in parallel
+/sprint-status              # Text-based status report
+/sprint-status --diagram    # Include Mermaid dependency diagram
 ```
 
-## Dependency Analysis
+## Workflow
 
-The status check analyzes dependencies to show:
+1. **Fetch Sprint Issues** - Get all issues for current milestone
+2. **Calculate Progress** - Count completed vs total issues
+3. **Identify Active Tasks** - Find issues with `Status/In-Progress`
+4. **Identify Blockers** - Find issues with `Status/Blocked`
+5. **Show Dependency Status** - Which tasks are now unblocked
+6. **Parse Progress Comments** - Extract real-time status from structured comments
 
-**Blocked Issues:**
-- Issues waiting for other issues to complete
-- Shows which issue is blocking and its current status
+### If --diagram flag:
 
-**Unblocked Issues:**
-- Issues with no pending dependencies
-- Ready to be picked up immediately
+7. **Fetch Dependencies** - Use `list_issue_dependencies` for each issue
+8. **Get Execution Order** - Use `get_execution_order` for batch grouping
+9. **Generate Mermaid Syntax** - Create flowchart with status colors
 
-**Parallel Opportunities:**
-- Multiple unblocked issues that can run simultaneously
-- Maximizes sprint velocity
+## Output Format
 
-## Filtering Options
+See `skills/progress-tracking.md` for the progress display format.
 
-You can optionally filter the status check:
+### Diagram Format (--diagram)
 
-**By Label:**
-```
-Show only high-priority issues:
-list_issues(labels=["Priority/High"])
-```
+```mermaid
+flowchart TD
+    subgraph batch1["Batch 1 - No Dependencies"]
+        241["#241: sprint-diagram"]
+        242["#242: confidence threshold"]
+    end
 
-**By Milestone:**
-```
-Show issues for specific sprint:
-list_issues(milestone="Sprint 18")
-```
+    classDef completed fill:#90EE90,stroke:#228B22
+    classDef inProgress fill:#FFD700,stroke:#DAA520
+    classDef open fill:#ADD8E6,stroke:#4682B4
+    classDef blocked fill:#FFB6C1,stroke:#CD5C5C
 
-**By Component:**
-```
-Show only backend issues:
-list_issues(labels=["Component/Backend"])
-```
-
-## Progress Comment Parsing
-
-Agents post structured progress comments in this format:
-
-```markdown
-## Progress Update
-**Status:** In Progress | Blocked | Failed
-**Phase:** [current phase name]
-**Tool Calls:** X (budget: Y)
-
-### Completed
-- [x] Step 1
-
-### In Progress
-- [ ] Current step
-
-### Blockers
-- None | [blocker description]
+    class 241 completed
+    class 242 inProgress
 ```
 
-**To extract real-time progress:**
-1. Fetch issue comments: `get_issue(number)` includes recent comments
-2. Look for comments containing `## Progress Update`
-3. Parse the **Status:** line for current state
-4. Parse **Tool Calls:** for budget consumption
-5. Extract blockers from `### Blockers` section
+### Status Colors
 
-**Progress Summary Display:**
-```
-In Progress Issues:
-  #45: [Sprint 18] feat: JWT service
-       Status: In Progress | Phase: Testing | Tool Calls: 67/100
-       Completed: 4/6 steps | Current: Writing unit tests
-
-  #46: [Sprint 18] feat: Login endpoint
-       Status: Blocked | Phase: Implementation | Tool Calls: 23/100
-       Blocker: Waiting for JWT service (#45)
-```
-
-## Blocker Detection
-
-The command identifies blocked issues by:
-1. **Progress Comments** - Parse `### Blockers` section from structured comments
-2. **Status Labels** - Check for `Status/Blocked` label on issue
-3. **Dependency Analysis** - Uses `list_issue_dependencies` to find unmet dependencies
-4. **Comment Keywords** - Checks for "blocked", "blocker", "waiting for"
-5. **Stale Issues** - Issues with no recent activity (>7 days)
-
-## When to Use
-
-Run `/sprint-status` when you want to:
-- Start your day and see what needs attention
-- Prepare for standup meetings
-- Check if the sprint is on track
-- Identify bottlenecks or blockers
-- Decide what to work on next
-- See which tasks can run in parallel
-
-## Integration with Other Commands
-
-- Use `/sprint-start` to begin working on identified tasks
-- Use `/sprint-close` when all issues are completed
-- Use `/sprint-plan` to adjust scope if blocked items can't be unblocked
+| Status | Color | Hex |
+|--------|-------|-----|
+| Completed | Green | #90EE90 |
+| In Progress | Yellow | #FFD700 |
+| Open | Blue | #ADD8E6 |
+| Blocked | Red | #FFB6C1 |
 
 ## Visual Output
-
-When executing this command, display the plugin header followed by a progress block:
 
 ```
 ╔══════════════════════════════════════════════════════════════════╗
 ║  📋 PROJMAN                                                      ║
-║  ⚡ EXECUTION                                                    ║
+║  📊 STATUS                                                       ║
 ║  [Sprint Name]                                                   ║
 ╚══════════════════════════════════════════════════════════════════╝
-
-┌─ Sprint Progress ────────────────────────────────────────────────┐
-│  [Sprint Name]                                                   │
-│  ████████████░░░░░░░░░░░░░░░░░░ 40% complete                     │
-│  ✅ Done: 4    ⏳ Active: 2    ⬚ Pending: 4                       │
-└──────────────────────────────────────────────────────────────────┘
-```
-
-Replace `[Sprint Name]` with the actual sprint/milestone name. Calculate percentage from completed vs total issues.
-
-Then proceed with the full status report.
-
-## Example Usage
-
-```
-User: /sprint-status
-
-Sprint Status Report
-====================
-
-Sprint: Sprint 18 - Authentication System
-Progress: 3/8 (37.5%)
-
-Next Actions:
-1. Complete #46 - it's blocking #47
-2. Start #50 or #52 - both are unblocked
-
-Would you like me to generate execution prompts for the unblocked tasks?
 ```

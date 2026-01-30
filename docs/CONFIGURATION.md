@@ -9,10 +9,10 @@ Centralized configuration documentation for all plugins and MCP servers in the L
 **After installing the marketplace and plugins via Claude Code:**
 
 ```
-/initial-setup
+/setup
 ```
 
-The interactive wizard handles everything except manually adding your API tokens.
+The interactive wizard auto-detects what's needed and handles everything except manually adding your API tokens.
 
 ---
 
@@ -25,7 +25,8 @@ The interactive wizard handles everything except manually adding your API tokens
 └─────────────────────────────────────────────────────────────────────────────┘
                                     │
                                     ▼
-                            /initial-setup
+                              /setup --full
+                          (or /setup auto-detects)
                                     │
      ┌──────────────────────────────┼──────────────────────────────┐
      ▼                              ▼                              ▼
@@ -78,8 +79,8 @@ The interactive wizard handles everything except manually adding your API tokens
                                     │
                     ┌───────────────┴───────────────┐
                     ▼                               ▼
-             /project-init                   /initial-setup
-             (direct path)                   (smart detection)
+             /setup --quick                     /setup
+             (explicit mode)               (auto-detects mode)
                     │                               │
                     │                    ┌──────────┴──────────┐
                     │                    ▼                     ▼
@@ -108,7 +109,7 @@ The interactive wizard handles everything except manually adding your API tokens
 
 ## What Runs Automatically vs User Interaction
 
-### `/initial-setup` - Full Setup
+### `/setup --full` - Full Setup
 
 | Phase | Type | What Happens |
 |-------|------|--------------|
@@ -120,7 +121,7 @@ The interactive wizard handles everything except manually adding your API tokens
 | **6. Project Config** | Automated | Creates `.env` file, checks `.gitignore` |
 | **7. Validation** | Automated | Tests API connectivity, shows summary |
 
-### `/project-init` - Quick Project Setup
+### `/setup --quick` - Quick Project Setup
 
 | Phase | Type | What Happens |
 |-------|------|--------------|
@@ -131,23 +132,25 @@ The interactive wizard handles everything except manually adding your API tokens
 
 ---
 
-## Three Commands for Different Scenarios
+## One Command, Three Modes
 
-| Command | When to Use | What It Does |
-|---------|-------------|--------------|
-| `/initial-setup` | First time on a machine | Full setup: MCP server + system config + project config |
-| `/project-init` | Starting a new project | Quick setup: project config only (assumes system is ready) |
-| `/project-sync` | After repo move/rename | Updates .env to match current git remote |
+| Mode | When to Use | What It Does |
+|------|-------------|--------------|
+| `/setup` | Any time | Auto-detects: runs full, quick, or sync as needed |
+| `/setup --full` | First time on a machine | Full setup: MCP server + system config + project config |
+| `/setup --quick` | Starting a new project | Quick setup: project config only (assumes system is ready) |
+| `/setup --sync` | After repo move/rename | Updates .env to match current git remote |
+
+**Auto-detection logic:**
+1. No system config → **full** mode
+2. System config exists, no project config → **quick** mode
+3. Both exist, git remote differs → **sync** mode
+4. Both exist, match → already configured, offer to reconfigure
 
 **Typical workflow:**
-1. Install plugin → run `/initial-setup` (once per machine)
-2. Start new project → run `/project-init` (once per project)
-3. Repository moved? → run `/project-sync` (updates config)
-
-**Smart features:**
-- `/initial-setup` detects existing system config and offers quick project setup
-- All commands validate org/repo via Gitea API before saving (auto-fills if verified)
-- SessionStart hook automatically detects git remote vs .env mismatches
+1. Install plugin → run `/setup` (auto-runs full mode)
+2. Start new project → run `/setup` (auto-runs quick mode)
+3. Repository moved? → run `/setup` (auto-runs sync mode)
 
 ---
 
@@ -179,7 +182,7 @@ This marketplace uses a **hybrid configuration** approach:
 
 **Benefits:**
 - Single token per service (update once, use everywhere)
-- Easy multi-project setup (just run `/project-init` in each project)
+- Easy multi-project setup (just run `/setup` in each project)
 - Security (tokens never committed to git, never typed into AI chat)
 - Project isolation (each project can override defaults)
 
@@ -187,7 +190,7 @@ This marketplace uses a **hybrid configuration** approach:
 
 ## Prerequisites
 
-Before running `/initial-setup`:
+Before running `/setup`:
 
 1. **Python 3.10+** installed
    ```bash
@@ -210,10 +213,10 @@ Before running `/initial-setup`:
 Run the setup wizard in Claude Code:
 
 ```
-/initial-setup
+/setup
 ```
 
-The wizard will guide you through each step interactively.
+The wizard will guide you through each step interactively and auto-detect the appropriate mode.
 
 **Note:** After first-time setup, you'll need to restart your Claude Code session for MCP tools to become available.
 
@@ -382,10 +385,10 @@ PR_REVIEW_AUTO_SUBMIT=false
 
 ## Plugin Configuration Summary
 
-| Plugin | System Config | Project Config | Setup Commands |
-|--------|---------------|----------------|----------------|
-| **projman** | gitea.env | .env (GITEA_REPO=owner/repo) | `/initial-setup`, `/project-init`, `/project-sync` |
-| **pr-review** | gitea.env | .env (GITEA_REPO=owner/repo) | `/initial-setup`, `/project-init`, `/project-sync` |
+| Plugin | System Config | Project Config | Setup Command |
+|--------|---------------|----------------|---------------|
+| **projman** | gitea.env | .env (GITEA_REPO=owner/repo) | `/setup` |
+| **pr-review** | gitea.env | .env (GITEA_REPO=owner/repo) | `/initial-setup` |
 | **git-flow** | git-flow.env (optional) | .env (optional) | None needed |
 | **clarity-assist** | None | None | None needed |
 | **cmdb-assistant** | netbox.env | None | `/initial-setup` |
@@ -402,21 +405,12 @@ PR_REVIEW_AUTO_SUBMIT=false
 
 Once system-level config is set up, adding new projects is simple:
 
-**Option 1: Use `/project-init` (faster)**
 ```
 cd ~/projects/new-project
-/project-init
+/setup
 ```
 
-**Option 2: Use `/initial-setup` (auto-detects)**
-```
-cd ~/projects/new-project
-/initial-setup
-# → Detects system config exists
-# → Offers "Quick project setup" option
-```
-
-Both approaches work. Use `/project-init` when you know the system is already configured.
+The command auto-detects that system config exists and runs quick project setup.
 
 ---
 
@@ -424,12 +418,12 @@ Both approaches work. Use `/project-init` when you know the system is already co
 
 ### API Validation
 
-When running `/initial-setup`, `/project-init`, or `/project-sync`, the commands:
+When running `/setup`, the command:
 
-1. **Detect** organization and repository from git remote URL
-2. **Validate** via Gitea API: `GET /api/v1/repos/{org}/{repo}`
-3. **Auto-fill** if repository exists and is accessible (no confirmation needed)
-4. **Ask for confirmation** only if validation fails (404 or permission error)
+1. **Detects** organization and repository from git remote URL
+2. **Validates** via Gitea API: `GET /api/v1/repos/{org}/{repo}`
+3. **Auto-fills** if repository exists and is accessible (no confirmation needed)
+4. **Asks for confirmation** only if validation fails (404 or permission error)
 
 This catches typos and permission issues before saving configuration.
 
@@ -439,7 +433,7 @@ When you start a Claude Code session, a hook automatically:
 
 1. Reads `GITEA_REPO` (in `owner/repo` format) from `.env`
 2. Compares with current `git remote get-url origin`
-3. **Warns** if mismatch detected: "Repository location mismatch. Run `/project-sync` to update."
+3. **Warns** if mismatch detected: "Repository location mismatch. Run `/setup --sync` to update."
 
 This helps when you:
 - Move a repository to a different organization
@@ -534,7 +528,7 @@ cat .env
 
 3. **Never type tokens into AI chat**
    - Always edit config files directly in your editor
-   - The `/initial-setup` wizard respects this
+   - The `/setup` wizard respects this
 
 4. **Rotate tokens periodically**
    - Every 6-12 months

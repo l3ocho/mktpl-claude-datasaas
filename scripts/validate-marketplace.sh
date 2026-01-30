@@ -248,58 +248,25 @@ done
 
 echo "✓ All file references validated"
 
-# v3.0.0: Validate MCP server symlinks
+# Validate MCP servers and configuration
 echo ""
-echo "=== Validating MCP Server Symlinks (v3.0.0+) ==="
+echo "=== Validating MCP Servers ==="
 
 # Check shared MCP servers exist
-if [[ ! -d "$ROOT_DIR/mcp-servers/gitea" ]]; then
-    echo "ERROR: Shared gitea MCP server not found at mcp-servers/gitea/"
-    exit 1
-fi
-echo "✓ Shared gitea MCP server exists"
-
-if [[ ! -d "$ROOT_DIR/mcp-servers/netbox" ]]; then
-    echo "ERROR: Shared netbox MCP server not found at mcp-servers/netbox/"
-    exit 1
-fi
-echo "✓ Shared netbox MCP server exists"
-
-if [[ ! -d "$ROOT_DIR/mcp-servers/data-platform" ]]; then
-    echo "ERROR: Shared data-platform MCP server not found at mcp-servers/data-platform/"
-    exit 1
-fi
-echo "✓ Shared data-platform MCP server exists"
-
-# Check symlinks for plugins that use MCP servers
-check_mcp_symlink() {
-    local plugin_name="$1"
-    local server_name="$2"
-    local symlink_path="$ROOT_DIR/plugins/$plugin_name/mcp-servers/$server_name"
-
-    if [[ -L "$symlink_path" ]]; then
-        # Verify symlink resolves correctly
-        if [[ -d "$symlink_path" ]]; then
-            echo "✓ $plugin_name -> $server_name symlink valid"
-        else
-            echo "ERROR: $plugin_name -> $server_name symlink broken (does not resolve)"
-            exit 1
-        fi
-    else
-        echo "ERROR: Missing symlink at plugins/$plugin_name/mcp-servers/$server_name"
+for server in gitea netbox data-platform viz-platform contract-validator; do
+    if [[ ! -d "$ROOT_DIR/mcp-servers/$server" ]]; then
+        echo "ERROR: Shared $server MCP server not found at mcp-servers/$server/"
         exit 1
     fi
-}
+    echo "✓ Shared $server MCP server exists"
+done
 
-# Plugins with gitea MCP dependency
-check_mcp_symlink "projman" "gitea"
-check_mcp_symlink "pr-review" "gitea"
-
-# Plugins with netbox MCP dependency
-check_mcp_symlink "cmdb-assistant" "netbox"
-
-# Plugins with data-platform MCP dependency
-check_mcp_symlink "data-platform" "data-platform"
+# Check .mcp.json exists at root
+if [[ ! -f "$ROOT_DIR/.mcp.json" ]]; then
+    echo "ERROR: .mcp.json not found at repository root"
+    exit 1
+fi
+echo "✓ .mcp.json configuration exists"
 
 echo ""
 echo "=== All validations passed ==="

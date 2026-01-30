@@ -91,62 +91,16 @@ setup_shared_mcp() {
     cd "$REPO_ROOT"
 }
 
-# --- Section 2: Verify Symlinks ---
-verify_symlinks() {
-    log_info "Verifying MCP server symlinks..."
+# --- Section 2: Verify MCP Configuration ---
+verify_mcp_config() {
+    log_info "Verifying MCP configuration..."
 
-    # Check projman -> gitea symlink
-    local projman_gitea="$REPO_ROOT/plugins/projman/mcp-servers/gitea"
-    if [[ -L "$projman_gitea" ]]; then
-        log_success "projman/gitea symlink exists"
+    local mcp_json="$REPO_ROOT/.mcp.json"
+    if [[ -f "$mcp_json" ]]; then
+        log_success ".mcp.json exists at repository root"
     else
-        log_error "projman/gitea symlink missing"
-        log_todo "Run: ln -s ../../../mcp-servers/gitea plugins/projman/mcp-servers/gitea"
-    fi
-
-    # Check cmdb-assistant -> netbox symlink
-    local cmdb_netbox="$REPO_ROOT/plugins/cmdb-assistant/mcp-servers/netbox"
-    if [[ -L "$cmdb_netbox" ]]; then
-        log_success "cmdb-assistant/netbox symlink exists"
-    else
-        log_error "cmdb-assistant/netbox symlink missing"
-        log_todo "Run: ln -s ../../../mcp-servers/netbox plugins/cmdb-assistant/mcp-servers/netbox"
-    fi
-
-    # Check pr-review -> gitea symlink
-    local prreview_gitea="$REPO_ROOT/plugins/pr-review/mcp-servers/gitea"
-    if [[ -L "$prreview_gitea" ]]; then
-        log_success "pr-review/gitea symlink exists"
-    else
-        log_error "pr-review/gitea symlink missing"
-        log_todo "Run: ln -s ../../../mcp-servers/gitea plugins/pr-review/mcp-servers/gitea"
-    fi
-
-    # Check data-platform -> data-platform symlink
-    local dataplatform_link="$REPO_ROOT/plugins/data-platform/mcp-servers/data-platform"
-    if [[ -L "$dataplatform_link" ]]; then
-        log_success "data-platform symlink exists"
-    else
-        log_error "data-platform symlink missing"
-        log_todo "Run: ln -s ../../../mcp-servers/data-platform plugins/data-platform/mcp-servers/data-platform"
-    fi
-
-    # Check viz-platform -> viz-platform symlink
-    local vizplatform_link="$REPO_ROOT/plugins/viz-platform/mcp-servers/viz-platform"
-    if [[ -L "$vizplatform_link" ]]; then
-        log_success "viz-platform symlink exists"
-    else
-        log_error "viz-platform symlink missing"
-        log_todo "Run: ln -s ../../../mcp-servers/viz-platform plugins/viz-platform/mcp-servers/viz-platform"
-    fi
-
-    # Check contract-validator -> contract-validator symlink
-    local contractvalidator_link="$REPO_ROOT/plugins/contract-validator/mcp-servers/contract-validator"
-    if [[ -L "$contractvalidator_link" ]]; then
-        log_success "contract-validator symlink exists"
-    else
-        log_error "contract-validator symlink missing"
-        log_todo "Run: ln -s ../../../mcp-servers/contract-validator plugins/contract-validator/mcp-servers/contract-validator"
+        log_error ".mcp.json missing at repository root"
+        log_todo "Create .mcp.json with MCP server configurations"
     fi
 }
 
@@ -335,8 +289,8 @@ main() {
     setup_shared_mcp "viz-platform"
     setup_shared_mcp "contract-validator"
 
-    # Verify symlinks from plugins to shared MCP servers
-    verify_symlinks
+    # Verify MCP configuration at root
+    verify_mcp_config
 
     # Configuration
     setup_config_templates

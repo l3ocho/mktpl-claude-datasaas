@@ -1,0 +1,90 @@
+---
+description: Configure projman - full setup, quick project init, or sync after repo move
+---
+
+# Setup
+
+## Skills Required
+
+- skills/mcp-tools-reference.md
+- skills/repo-validation.md
+- skills/setup-workflows.md
+
+## Purpose
+
+Unified setup command for all configuration needs.
+
+**Important:**
+- Uses Bash, Read, Write, AskUserQuestion - NOT MCP tools
+- MCP tools won't work until after setup + session restart
+- Tokens must be entered manually for security
+
+## Invocation
+
+```
+/setup              # Auto-detect appropriate mode
+/setup --full       # Full wizard (MCP + system + project)
+/setup --quick      # Project-only setup
+/setup --sync       # Update after repo move
+```
+
+## Mode Detection
+
+If no argument provided, auto-detect:
+
+1. Check `~/.config/claude/gitea.env`
+   - Missing → **full** mode
+
+2. Check project `.env`
+   - Missing → **quick** mode
+
+3. Compare `.env` with git remote
+   - Mismatch → **sync** mode
+   - Match → offer reconfigure or exit
+
+## Mode: Full
+
+Execute `skills/setup-workflows.md` → Full Setup Workflow
+
+Phases:
+1. Environment validation (Python 3.10+)
+2. MCP server setup (venv + requirements)
+3. System-level config (`~/.config/claude/gitea.env`)
+4. Project-level config (`.env`)
+5. Final validation
+
+## Mode: Quick
+
+Execute `skills/setup-workflows.md` → Quick Setup Workflow
+
+Steps:
+1. Verify system config exists
+2. Verify git repository
+3. Check existing `.env`
+4. Detect org/repo from git remote
+5. Validate via API
+6. Create/update `.env`
+7. Check `.gitignore`
+
+## Mode: Sync
+
+Execute `skills/setup-workflows.md` → Sync Workflow
+
+Steps:
+1. Read current config
+2. Detect git remote
+3. Compare values
+4. Show changes
+5. Validate new values
+6. Update `.env`
+7. Confirm
+
+## Visual Output
+
+```
+╔══════════════════════════════════════════════════════════════════╗
+║  📋 PROJMAN                                                      ║
+║  ⚙️ SETUP                                                        ║
+║  [Mode: Full | Quick | Sync]                                     ║
+╚══════════════════════════════════════════════════════════════════╝
+```
