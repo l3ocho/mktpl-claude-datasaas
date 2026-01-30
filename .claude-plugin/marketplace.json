@@ -6,7 +6,7 @@
   },
   "metadata": {
     "description": "Project management plugins with Gitea and NetBox integrations",
-    "version": "5.4.0"
+    "version": "5.4.1"
   },
   "plugins": [
     {
@@ -20,6 +20,7 @@
       },
       "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/projman/README.md",
       "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
+      "hooks": ["./hooks/hooks.json"],
       "category": "development",
       "tags": ["sprint", "agile", "gitea", "project-management"],
       "license": "MIT"
@@ -42,7 +43,7 @@
     },
     {
       "name": "code-sentinel",
-      "version": "1.0.0",
+      "version": "1.0.1",
       "description": "Security scanning and code refactoring tools",
       "source": "./plugins/code-sentinel",
       "author": {
@@ -83,6 +84,7 @@
       },
       "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/cmdb-assistant/README.md",
       "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
+      "hooks": ["./hooks/hooks.json"],
       "category": "infrastructure",
       "tags": ["cmdb", "netbox", "dcim", "ipam", "data-quality", "validation"],
       "license": "MIT"
@@ -98,6 +100,7 @@
       },
       "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/claude-config-maintainer/README.md",
       "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
+      "hooks": ["./hooks/hooks.json"],
       "category": "development",
       "tags": ["claude-md", "configuration", "optimization"],
       "license": "MIT"
@@ -113,6 +116,7 @@
       },
       "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/clarity-assist/README.md",
       "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
+      "hooks": ["./hooks/hooks.json"],
       "category": "productivity",
       "tags": ["prompts", "requirements", "clarification", "nd-friendly"],
       "license": "MIT"
@@ -128,6 +132,7 @@
       },
       "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/git-flow/README.md",
       "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
+      "hooks": ["./hooks/hooks.json"],
       "category": "development",
       "tags": ["git", "workflow", "commits", "branching"],
       "license": "MIT"
@@ -143,6 +148,7 @@
       },
       "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/pr-review/README.md",
       "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
+      "hooks": ["./hooks/hooks.json"],
       "category": "development",
       "tags": ["code-review", "pull-requests", "security", "quality"],
       "license": "MIT"
@@ -158,6 +164,7 @@
       },
       "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/data-platform/README.md",
       "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
+      "hooks": ["./hooks/hooks.json"],
       "category": "data",
       "tags": ["pandas", "postgresql", "postgis", "dbt", "data-engineering", "etl"],
       "license": "MIT"
@@ -173,6 +180,7 @@
       },
       "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/viz-platform/README.md",
       "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
+      "hooks": ["./hooks/hooks.json"],
       "category": "visualization",
       "tags": ["dash", "plotly", "mantine", "charts", "dashboards", "theming", "dmc"],
       "license": "MIT"
@@ -188,6 +196,7 @@
       },
       "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/contract-validator/README.md",
       "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
+      "hooks": ["./hooks/hooks.json"],
       "category": "development",
       "tags": ["validation", "contracts", "compatibility", "agents", "interfaces", "cross-plugin"],
       "license": "MIT"
