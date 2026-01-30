@@ -35,7 +35,7 @@ Run `./scripts/verify-hooks.sh`. If changes affect MCP servers or hooks, inform 
 | **File creation** | Only in allowed paths. Use `.scratch/` for temp work. Verify against `docs/CANONICAL-PATHS.md` |
 | **plugin.json location** | Must be in `.claude-plugin/` directory |
 | **Hooks** | Use `hooks/hooks.json` (auto-discovered). Never inline in plugin.json |
-| **MCP servers** | Shared at root with symlinks. Use MCP tools, never CLI (`tea`, `gh`) |
+| **MCP servers** | Defined in root `.mcp.json`. Use MCP tools, never CLI (`tea`, `gh`) |
 | **Allowed root files** | `CLAUDE.md`, `README.md`, `LICENSE`, `CHANGELOG.md`, `.gitignore`, `.env.example` |
 
 **Valid hook events:** `PreToolUse`, `PostToolUse`, `UserPromptSubmit`, `SessionStart`, `SessionEnd`, `Notification`, `Stop`, `SubagentStop`, `PreCompact`
@@ -141,23 +141,23 @@ A plugin marketplace for Claude Code containing:
 ./scripts/validate-marketplace.sh
 
 # After updates
-./scripts/post-update.sh   # Rebuild venvs, verify symlinks
+./scripts/post-update.sh   # Rebuild venvs
 ```
 
 ### Plugin Commands - USE THESE in This Project
 
 | Category | Commands |
 |----------|----------|
-| **Setup** | `/initial-setup`, `/project-init`, `/project-sync` |
-| **Sprint** | `/sprint-plan`, `/sprint-start`, `/sprint-status`, `/sprint-close`, `/sprint-diagram` |
-| **Quality** | `/review`, `/test-check`, `/test-gen` |
+| **Setup** | `/setup` (modes: `--full`, `--quick`, `--sync`) |
+| **Sprint** | `/sprint-plan`, `/sprint-start`, `/sprint-status` (with `--diagram`), `/sprint-close` |
+| **Quality** | `/review`, `/test` (modes: `run`, `gen`) |
 | **Versioning** | `/suggest-version` |
 | **PR Review** | `/pr-review`, `/pr-summary`, `/pr-findings`, `/pr-diff` |
 | **Docs** | `/doc-audit`, `/doc-sync`, `/changelog-gen`, `/doc-coverage`, `/stale-docs` |
 | **Security** | `/security-scan`, `/refactor`, `/refactor-dry` |
 | **Config** | `/config-analyze`, `/config-optimize`, `/config-diff`, `/config-lint` |
 | **Validation** | `/validate-contracts`, `/check-agent`, `/list-interfaces`, `/dependency-graph` |
-| **Debug** | `/debug-report`, `/debug-review` |
+| **Debug** | `/debug` (modes: `report`, `review`) |
 
 ### Plugin Commands - NOT RELEVANT to This Project
 
@@ -175,46 +175,40 @@ These commands are being developed but don't apply to this project's workflow:
 leo-claude-mktplace/
 ├── .claude-plugin/
 │   └── marketplace.json          # Marketplace manifest
-├── mcp-servers/                  # SHARED MCP servers (v3.0.0+)
+├── .mcp.json                     # MCP server configuration (all servers)
+├── mcp-servers/                  # SHARED MCP servers
 │   ├── gitea/                    # Gitea MCP (issues, PRs, wiki)
 │   ├── netbox/                   # NetBox MCP (CMDB)
 │   ├── data-platform/            # pandas, PostgreSQL, dbt
-│   └── viz-platform/             # DMC validation, charts, themes
+│   ├── viz-platform/             # DMC validation, charts, themes
+│   └── contract-validator/       # Plugin compatibility validation
 ├── plugins/
 │   ├── projman/                  # Sprint management
 │   │   ├── .claude-plugin/plugin.json
-│   │   # .mcp.json removed - now at marketplace root
-│   │   ├── mcp-servers/gitea -> ../../../mcp-servers/gitea  # SYMLINK
-│   │   ├── commands/             # 14 commands (incl. setup, debug, suggest-version)
-│   │   ├── hooks/                # SessionStart: mismatch detection + sprint suggestions
+│   │   ├── commands/             # 12 commands
+│   │   ├── hooks/                # SessionStart: mismatch detection
 │   │   ├── agents/               # 4 agents
-│   │   └── skills/label-taxonomy/
+│   │   └── skills/               # 17 reusable skill files
 │   ├── git-flow/                 # Git workflow automation
 │   │   ├── .claude-plugin/plugin.json
 │   │   ├── commands/             # 8 commands
 │   │   └── agents/
 │   ├── pr-review/                # Multi-agent PR review
 │   │   ├── .claude-plugin/plugin.json
-│   │   # .mcp.json removed - now at marketplace root
-│   │   ├── mcp-servers/gitea -> ../../../mcp-servers/gitea  # SYMLINK
-│   │   ├── commands/             # 6 commands (incl. setup)
+│   │   ├── commands/             # 6 commands
 │   │   ├── hooks/                # SessionStart mismatch detection
 │   │   └── agents/               # 5 agents
 │   ├── clarity-assist/           # Prompt optimization
 │   │   ├── .claude-plugin/plugin.json
 │   │   ├── commands/             # 2 commands
 │   │   └── agents/
-│   ├── data-platform/            # Data engineering (NEW v4.0.0)
+│   ├── data-platform/            # Data engineering
 │   │   ├── .claude-plugin/plugin.json
-│   │   # .mcp.json removed - now at marketplace root
-│   │   ├── mcp-servers/          # pandas, postgresql, dbt MCPs
 │   │   ├── commands/             # 7 commands
 │   │   ├── hooks/                # SessionStart PostgreSQL check
 │   │   └── agents/               # 2 agents
-│   ├── viz-platform/             # Visualization (NEW v4.0.0)
+│   ├── viz-platform/             # Visualization
 │   │   ├── .claude-plugin/plugin.json
-│   │   # .mcp.json removed - now at marketplace root
-│   │   ├── mcp-servers/          # viz-platform MCP
 │   │   ├── commands/             # 7 commands
 │   │   ├── hooks/                # SessionStart DMC check
 │   │   └── agents/               # 3 agents
@@ -222,6 +216,7 @@ leo-claude-mktplace/
 │   ├── code-sentinel/            # Security scanning & refactoring
 │   ├── claude-config-maintainer/
 │   ├── cmdb-assistant/
+│   ├── contract-validator/
 │   └── project-hygiene/
 ├── scripts/
 │   ├── setup.sh, post-update.sh
@@ -297,16 +292,15 @@ Stored in Gitea Wiki under `lessons-learned/sprints/`.
 
 1. Create `plugins/{name}/.claude-plugin/plugin.json`
 2. Add entry to `.claude-plugin/marketplace.json` with category, tags, license
-3. Create `README.md` and `claude-md-integration.md`
-4. If using MCP server, create symlink: `ln -s ../../../mcp-servers/{server} plugins/{name}/mcp-servers/{server}`
+3. Create `claude-md-integration.md`
+4. If using new MCP server, add to root `mcp-servers/` and update `.mcp.json`
 5. Run `./scripts/validate-marketplace.sh`
 6. Update `CHANGELOG.md`
 
 ### Adding a Command to projman
 
 1. Create `plugins/projman/commands/{name}.md`
-2. Update `plugins/projman/README.md`
-3. Update marketplace description if significant
+2. Update marketplace description if significant
 
 ### Validation
 
@@ -333,7 +327,6 @@ Stored in Gitea Wiki under `lessons-learned/sprints/`.
 | `docs/DEBUGGING-CHECKLIST.md` | Systematic troubleshooting guide |
 | `docs/UPDATING.md` | Update guide for the marketplace |
 | `plugins/projman/CONFIGURATION.md` | Projman quick reference (links to central) |
-| `plugins/projman/README.md` | Projman full documentation |
 
 ## Installation Paths
 
@@ -355,12 +348,12 @@ See `docs/DEBUGGING-CHECKLIST.md` for systematic troubleshooting.
 | Symptom | Likely Cause | Fix |
 |---------|--------------|-----|
 | "X MCP servers failed" | Missing venv in installed path | `cd ~/.claude/plugins/marketplaces/leo-claude-mktplace && ./scripts/setup.sh` |
-| MCP tools not available | Symlink broken or venv missing | Run `/debug-report` to diagnose |
+| MCP tools not available | Venv missing or .mcp.json misconfigured | Run `/debug report` to diagnose |
 | Changes not taking effect | Editing source, not installed | Reinstall plugin or edit installed path |
 
 **Debug Commands:**
-- `/debug-report` - Run full diagnostics, create issue if needed
-- `/debug-review` - Investigate and propose fixes
+- `/debug report` - Run full diagnostics, create issue if needed
+- `/debug review` - Investigate and propose fixes
 
 ## Versioning Workflow
 

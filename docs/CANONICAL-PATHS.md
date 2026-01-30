@@ -2,7 +2,7 @@
 
 **This file defines ALL valid paths in this repository. No exceptions. No inference. No assumptions.**
 
-Last Updated: 2026-01-27 (v5.1.0)
+Last Updated: 2026-01-30 (v5.5.0)
 
 ---
 
@@ -76,9 +76,6 @@ leo-claude-mktplace/
 ├── plugins/                    # ALL plugins
 │   ├── projman/                # Sprint management
 │   │   ├── .claude-plugin/
-│   │   ├── .mcp.json
-│   │   ├── mcp-servers/
-│   │   │   └── gitea -> ../../../mcp-servers/gitea  # SYMLINK
 │   │   ├── commands/
 │   │   ├── agents/
 │   │   ├── skills/
@@ -99,9 +96,6 @@ leo-claude-mktplace/
 │   │   └── claude-md-integration.md
 │   ├── cmdb-assistant/         # NetBox CMDB integration
 │   │   ├── .claude-plugin/
-│   │   ├── .mcp.json
-│   │   ├── mcp-servers/
-│   │   │   └── netbox -> ../../../mcp-servers/netbox  # SYMLINK
 │   │   ├── commands/
 │   │   ├── agents/
 │   │   └── claude-md-integration.md
@@ -114,49 +108,37 @@ leo-claude-mktplace/
 │   │   ├── .claude-plugin/
 │   │   ├── hooks/
 │   │   └── claude-md-integration.md
-│   ├── clarity-assist/         # NEW in v3.0.0
+│   ├── clarity-assist/
 │   │   ├── .claude-plugin/
 │   │   ├── commands/
 │   │   ├── agents/
 │   │   ├── skills/
 │   │   └── claude-md-integration.md
-│   ├── git-flow/               # NEW in v3.0.0
+│   ├── git-flow/
 │   │   ├── .claude-plugin/
 │   │   ├── commands/
 │   │   ├── agents/
 │   │   ├── skills/
 │   │   └── claude-md-integration.md
-│   ├── pr-review/              # NEW in v3.0.0
+│   ├── pr-review/
 │   │   ├── .claude-plugin/
-│   │   ├── .mcp.json
-│   │   ├── mcp-servers/
-│   │   │   └── gitea -> ../../../mcp-servers/gitea  # SYMLINK
 │   │   ├── commands/
 │   │   ├── agents/
 │   │   ├── skills/
 │   │   └── claude-md-integration.md
-│   ├── data-platform/          # NEW in v4.0.0
+│   ├── data-platform/
 │   │   ├── .claude-plugin/
-│   │   ├── .mcp.json
-│   │   ├── mcp-servers/
-│   │   │   └── data-platform -> ../../../mcp-servers/data-platform  # SYMLINK
 │   │   ├── commands/
 │   │   ├── agents/
 │   │   ├── hooks/
 │   │   └── claude-md-integration.md
-│   ├── contract-validator/     # NEW in v5.0.0
+│   ├── contract-validator/
 │   │   ├── .claude-plugin/
-│   │   ├── .mcp.json
-│   │   ├── mcp-servers/
-│   │   │   └── contract-validator -> ../../../mcp-servers/contract-validator  # SYMLINK
 │   │   ├── commands/
 │   │   ├── agents/
 │   │   └── claude-md-integration.md
-│   └── viz-platform/           # NEW in v4.1.0
+│   └── viz-platform/
 │       ├── .claude-plugin/
-│       ├── .mcp.json
-│       ├── mcp-servers/
-│       │   └── viz-platform -> ../../../mcp-servers/viz-platform  # SYMLINK
 │       ├── commands/
 │       ├── agents/
 │       ├── hooks/
@@ -188,29 +170,21 @@ leo-claude-mktplace/
 | Plugin manifest | `plugins/{plugin-name}/.claude-plugin/plugin.json` | `plugins/projman/.claude-plugin/plugin.json` |
 | Plugin commands | `plugins/{plugin-name}/commands/` | `plugins/projman/commands/` |
 | Plugin agents | `plugins/{plugin-name}/agents/` | `plugins/projman/agents/` |
-| Plugin .mcp.json | `plugins/{plugin-name}/.mcp.json` | `plugins/projman/.mcp.json` |
+| Plugin skills | `plugins/{plugin-name}/skills/` | `plugins/projman/skills/` |
 | Plugin integration snippet | `plugins/{plugin-name}/claude-md-integration.md` | `plugins/projman/claude-md-integration.md` |
 
-### MCP Server Paths (v3.0.0 Architecture)
+### MCP Server Paths
 
-MCP servers are **shared at repository root** with **symlinks** from plugins.
+MCP servers are **shared at repository root** and configured in `.mcp.json`.
 
 | Context | Pattern | Example |
 |---------|---------|---------|
+| MCP configuration | `.mcp.json` | `.mcp.json` (at repo root) |
 | Shared MCP server | `mcp-servers/{server}/` | `mcp-servers/gitea/` |
 | MCP server code | `mcp-servers/{server}/mcp_server/` | `mcp-servers/gitea/mcp_server/` |
 | MCP venv | `mcp-servers/{server}/.venv/` | `mcp-servers/gitea/.venv/` |
-| Plugin symlink | `plugins/{plugin}/mcp-servers/{server}` | `plugins/projman/mcp-servers/gitea` |
 
-### Symlink Pattern
-
-Plugins that use MCP servers create symlinks:
-```bash
-# From plugin directory
-ln -s ../../../mcp-servers/gitea plugins/projman/mcp-servers/gitea
-```
-
-The symlink target is relative: `../../../mcp-servers/{server}`
+**Note:** Plugins do NOT have their own `mcp-servers/` directories. All MCP servers are shared at root and configured via `.mcp.json`.
 
 ### Documentation Paths
 
@@ -239,15 +213,12 @@ The symlink target is relative: `../../../mcp-servers/{server}`
 2. Verify each path against patterns in this file
 3. Show verification to user before proceeding
 
-### Relative Path Calculation (v3.0.0)
+### Relative Path Calculation
 
-From `plugins/projman/.mcp.json` to shared `mcp-servers/gitea/`:
+From `.mcp.json` (at root) to `mcp-servers/gitea/`:
 ```
-plugins/projman/.mcp.json
-  → Uses ${CLAUDE_PLUGIN_ROOT}/mcp-servers/gitea/
-  → Symlink at plugins/projman/mcp-servers/gitea points to ../../../mcp-servers/gitea
-
-Result in .mcp.json: ${CLAUDE_PLUGIN_ROOT}/mcp-servers/gitea/.venv/bin/python
+.mcp.json (at repository root)
+  → Uses absolute installed path: ~/.claude/plugins/marketplaces/.../mcp-servers/gitea/run.sh
 ```
 
 From `.claude-plugin/marketplace.json` to `plugins/projman/`:
@@ -266,30 +237,34 @@ Result: ./plugins/projman
 | Wrong | Why | Correct |
 |-------|-----|---------|
 | `projman/` at root | Plugins go in `plugins/` | `plugins/projman/` |
-| Direct path in .mcp.json to root mcp-servers | Use symlink | Symlink at `plugins/{plugin}/mcp-servers/` |
-| Creating new mcp-servers inside plugins | Use shared + symlink | Symlink to `mcp-servers/` |
-| Hardcoding absolute paths | Breaks portability | Use `${CLAUDE_PLUGIN_ROOT}` |
+| `mcp-servers/` inside plugins | MCP servers are shared at root | Use root `mcp-servers/` |
+| Plugin-level `.mcp.json` | MCP config is at root | Use root `.mcp.json` |
+| Hardcoding absolute paths in source | Breaks portability | Use relative paths or `${CLAUDE_PLUGIN_ROOT}` |
 
 ---
 
-## Architecture Note (v3.0.0)
+## Architecture Note
 
-MCP servers are now **shared at repository root** with **symlinks** from plugins:
+MCP servers are **shared at repository root** and configured in a single `.mcp.json` file.
 
 **Benefits:**
 - Single source of truth for each MCP server
 - Updates apply to all plugins automatically
-- Reduced duplication
-- Symlinks work with Claude Code caching
+- No duplication - clean plugin structure
+- Simple configuration in one place
 
-**Symlink Pattern:**
-```
-plugins/projman/mcp-servers/gitea -> ../../../mcp-servers/gitea
-plugins/cmdb-assistant/mcp-servers/netbox -> ../../../mcp-servers/netbox
-plugins/pr-review/mcp-servers/gitea -> ../../../mcp-servers/gitea
-plugins/data-platform/mcp-servers/data-platform -> ../../../mcp-servers/data-platform
-plugins/viz-platform/mcp-servers/viz-platform -> ../../../mcp-servers/viz-platform
-plugins/contract-validator/mcp-servers/contract-validator -> ../../../mcp-servers/contract-validator
+**Configuration:**
+All MCP servers are defined in `.mcp.json` at repository root:
+```json
+{
+  "mcpServers": {
+    "gitea": { "command": ".../mcp-servers/gitea/run.sh" },
+    "netbox": { "command": ".../mcp-servers/netbox/run.sh" },
+    "data-platform": { "command": ".../mcp-servers/data-platform/run.sh" },
+    "viz-platform": { "command": ".../mcp-servers/viz-platform/run.sh" },
+    "contract-validator": { "command": ".../mcp-servers/contract-validator/run.sh" }
+  }
+}
 ```
 
 ---
@@ -298,6 +273,7 @@ plugins/contract-validator/mcp-servers/contract-validator -> ../../../mcp-server
 
 | Date | Change | By |
 |------|--------|-----|
+| 2026-01-30 | v5.5.0: Removed plugin-level mcp-servers symlinks - all MCP config now in root .mcp.json | Claude Code |
 | 2026-01-26 | v5.0.0: Added contract-validator plugin and MCP server | Claude Code |
 | 2026-01-26 | v4.1.0: Added viz-platform plugin and MCP server | Claude Code |
 | 2026-01-25 | v4.0.0: Added data-platform plugin and MCP server | Claude Code |
