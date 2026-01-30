@@ -4,6 +4,26 @@ All notable changes to the Leo Claude Marketplace will be documented in this fil
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [Unreleased]
+
+### Changed
+
+#### Sprint 8: Hook Efficiency Quick Wins
+Performance optimizations for plugin hooks to reduce overhead on every command.
+
+**Changes:**
+- **viz-platform:** Remove SessionStart hook that only echoed "loaded" (zero value)
+- **git-flow:** Add early exit to `branch-check.sh` for non-git commands (skip JSON parsing)
+- **git-flow:** Add early exit to `commit-msg-check.sh` for non-git commands (skip Python spawn)
+- **project-hygiene:** Add 60-second cooldown to `cleanup.sh` (reduce find operations)
+
+**Impact:** Hooks now exit immediately for 90%+ of Bash commands that don't need processing.
+
+**Issues:** #321, #322, #323, #324
+**PR:** #334
+
+---
+
 ## [5.4.1] - 2026-01-30
 
 ### Removed
