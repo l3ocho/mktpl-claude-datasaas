@@ -1,4 +1,8 @@
-# /clear-cache
+---
+description: Clear plugin cache to force fresh configuration reload after marketplace updates
+---
+
+# Clear Cache
 
 Clear plugin cache to force fresh configuration reload. Run this after marketplace updates.
 
