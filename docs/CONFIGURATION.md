@@ -501,9 +501,8 @@ If you get 401, regenerate your token in Gitea.
 # Check venv exists
 ls /path/to/mcp-servers/gitea/.venv
 
-# Reinstall if missing
+# If missing, create venv (do NOT delete existing venvs)
 cd /path/to/mcp-servers/gitea
-rm -rf .venv
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt

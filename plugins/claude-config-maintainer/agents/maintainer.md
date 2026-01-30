@@ -277,6 +277,39 @@ Every CLAUDE.md should have:
 1. **Project Overview** - What is this?
 2. **Quick Start** - How do I build/test/run?
 3. **Important Rules** - What must I NOT do?
+4. **Pre-Change Protocol** - Mandatory dependency check before code changes
+
+### Pre-Change Protocol Section (MANDATORY)
+
+**This section is REQUIRED in every CLAUDE.md.** It ensures Claude performs comprehensive dependency analysis before making any code changes.
+
+```markdown
+## ⛔ MANDATORY: Before Any Code Change
+
+**Claude MUST show this checklist BEFORE editing any file:**
+
+### 1. Impact Search Results
+Run and show output of:
+```bash
+grep -rn "PATTERN" --include="*.sh" --include="*.md" --include="*.json" --include="*.py" | grep -v ".git"
+```
+
+### 2. Files That Will Be Affected
+Numbered list of every file to be modified, with the specific change for each.
+
+### 3. Files Searched But Not Changed (and why)
+Proof that related files were checked and determined unchanged.
+
+### 4. Documentation That References This
+List of docs that mention this feature/script/function.
+
+**User verifies this list before Claude proceeds. If Claude skips this, stop immediately.**
+
+### After Changes
+Run the same grep and show results proving no references remain unaddressed.
+```
+
+**When analyzing a CLAUDE.md, flag as HIGH priority issue if this section is missing.**
 
 ### Optional Sections (as needed)
 
