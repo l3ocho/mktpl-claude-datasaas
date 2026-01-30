@@ -6,6 +6,11 @@
 # Read tool input from stdin (JSON format)
 INPUT=$(cat)
 
+# Quick check - exit immediately if not a git command
+if ! echo "$INPUT" | grep -q '"command".*git'; then
+    exit 0
+fi
+
 # Extract command from JSON input
 # The Bash tool sends {"command": "..."} format
 COMMAND=$(echo "$INPUT" | grep -o '"command"[[:space:]]*:[[:space:]]*"[^"]*"' | head -1 | sed 's/.*"command"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/')
