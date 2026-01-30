@@ -1,4 +1,8 @@
-# /suggest-version
+---
+description: Analyze CHANGELOG.md and suggest appropriate semantic version bump
+---
+
+# Suggest Version
 
 Analyze CHANGELOG.md and suggest appropriate semantic version bump.
 
