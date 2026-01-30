@@ -1,18 +1,12 @@
 # /ingest - Data Ingestion
 
+## Skills to Load
+- skills/mcp-tools-reference.md
+- skills/visual-header.md
+
 ## Visual Output
 
-When executing this command, display the plugin header:
-
-```
-┌──────────────────────────────────────────────────────────────────┐
-│  📊 DATA-PLATFORM · Ingest                                        │
-└──────────────────────────────────────────────────────────────────┘
-```
-
-Then proceed with the ingestion.
-
-Load data from files or database into the data platform.
+Display header: `DATA-PLATFORM - Ingest`
 
 ## Usage
 
@@ -22,21 +16,17 @@ Load data from files or database into the data platform.
 
 ## Workflow
 
-1. **Identify data source**:
-   - If source is a file path, determine format (CSV, Parquet, JSON)
-   - If source is "db" or a table name, query PostgreSQL
+1. **Identify source**:
+   - File path: determine format (CSV, Parquet, JSON)
+   - SQL query or table name: query PostgreSQL
 
 2. **Load data**:
-   - For files: Use `read_csv`, `read_parquet`, or `read_json`
-   - For database: Use `pg_query` with appropriate SELECT
+   - Files: `read_csv`, `read_parquet`, `read_json`
+   - Database: `pg_query`
 
-3. **Validate**:
-   - Check row count against limits
-   - If exceeds 100k rows, suggest chunking or filtering
+3. **Validate**: Check row count against 100k limit
 
-4. **Report**:
-   - Show data_ref, row count, columns, and memory usage
-   - Preview first few rows
+4. **Report**: data_ref, row count, columns, memory usage, preview
 
 ## Examples
 
@@ -46,9 +36,8 @@ Load data from files or database into the data platform.
 /ingest "SELECT * FROM orders WHERE created_at > '2024-01-01'"
 ```
 
-## Available Tools
+## Required MCP Tools
 
-Use these MCP tools:
 - `read_csv` - Load CSV files
 - `read_parquet` - Load Parquet files
 - `read_json` - Load JSON/JSONL files

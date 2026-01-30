@@ -1,18 +1,13 @@
 # /lineage - Data Lineage Visualization
 
+## Skills to Load
+- skills/lineage-analysis.md
+- skills/mcp-tools-reference.md
+- skills/visual-header.md
+
 ## Visual Output
 
-When executing this command, display the plugin header:
-
-```
-┌──────────────────────────────────────────────────────────────────┐
-│  📊 DATA-PLATFORM · Lineage                                       │
-└──────────────────────────────────────────────────────────────────┘
-```
-
-Then proceed with the visualization.
-
-Show data lineage for dbt models or database tables.
+Display header: `DATA-PLATFORM - Lineage`
 
 ## Usage
 
@@ -22,24 +17,10 @@ Show data lineage for dbt models or database tables.
 
 ## Workflow
 
-1. **Get lineage data**:
-   - Use `dbt_lineage` for dbt models
-   - For database tables, trace through dbt manifest
-
-2. **Build lineage graph**:
-   - Identify all upstream sources
-   - Identify all downstream consumers
-   - Note materialization at each node
-
-3. **Visualize**:
-   - ASCII art dependency tree
-   - List format with indentation
-   - Show depth levels
-
-4. **Report**:
-   - Full dependency chain
-   - Critical path identification
-   - Refresh implications
+1. **Get lineage data**: Use `dbt_lineage` for dbt models
+2. **Build lineage graph**: Identify upstream sources and downstream consumers
+3. **Visualize**: ASCII tree with depth levels (see `skills/lineage-analysis.md`)
+4. **Report**: Full dependency chain and refresh implications
 
 ## Examples
 
@@ -48,25 +29,8 @@ Show data lineage for dbt models or database tables.
 /lineage fct_orders --depth 3
 ```
 
-## Output Format
+## Required MCP Tools
 
-```
-Sources:
-  └── raw_customers (source)
-  └── raw_orders (source)
-
-dim_customers (table)
-  ├── upstream:
-  │   └── stg_customers (view)
-  │       └── raw_customers (source)
-  └── downstream:
-      └── fct_orders (incremental)
-      └── rpt_customer_lifetime (table)
-```
-
-## Available Tools
-
-Use these MCP tools:
 - `dbt_lineage` - Get model dependencies
 - `dbt_ls` - List dbt resources
 - `dbt_docs_generate` - Generate full manifest

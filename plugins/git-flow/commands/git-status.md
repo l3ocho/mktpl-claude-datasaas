@@ -1,84 +1,56 @@
+---
+name: git-status
+description: Show comprehensive git status with recommendations
+agent: git-assistant
+---
+
 # /git-status - Enhanced Status
 
-## Visual Output
+## Skills
 
-When executing this command, display the plugin header:
-
-```
-┌──────────────────────────────────────────────────────────────────┐
-│  🔀 GIT-FLOW · Status                                             │
-└──────────────────────────────────────────────────────────────────┘
-```
-
-Then proceed with the status display.
+- skills/visual-header.md
+- skills/commit-conventions.md
+- skills/environment-variables.md
 
 ## Purpose
 
-Show comprehensive git status with recommendations and insights.
+Show comprehensive git status with recommendations and insights beyond standard `git status`.
 
-## Behavior
+## Parameters
 
-### Output Format
+| Parameter | Description |
+|-----------|-------------|
+| `--short` | Compact output format |
+
+## Workflow
+
+1. **Display header** - Show GIT-FLOW Status header
+2. **Gather info** - Branch, base comparison, remote status
+3. **Categorize changes** - Staged, unstaged, untracked, deleted, renamed
+4. **Generate recommendations** - What to stage, commit, sync
+5. **Show quick actions** - Relevant /commands for current state
+
+## Output Format
 
 ```
-═══════════════════════════════════════════
 Git Status: <repo-name>
-═══════════════════════════════════════════
 
 Branch: feat/password-reset
 Base: development (3 commits ahead, 0 behind)
 Remote: origin/feat/password-reset (synced)
 
-─── Changes ───────────────────────────────
-
+--- Changes ---
 Staged (ready to commit):
-  ✓ src/auth/reset.ts (modified)
-  ✓ src/auth/types.ts (modified)
+  [x] src/auth/reset.ts (modified)
 
 Unstaged:
-  • tests/auth.test.ts (modified)
-  • src/utils/email.ts (new file, untracked)
+  [ ] tests/auth.test.ts (modified)
 
-─── Recommendations ───────────────────────
-
+--- Recommendations ---
 1. Stage test file: git add tests/auth.test.ts
-2. Consider adding new file: git add src/utils/email.ts
-3. Ready to commit with 2 staged files
+2. Ready to commit with 1 staged file
 
-─── Quick Actions ─────────────────────────
-
-• /commit - Commit staged changes
-• /commit-push - Commit and push
-• /commit-sync - Full sync with development
-
-═══════════════════════════════════════════
+--- Quick Actions ---
+/commit - Commit staged changes
+/commit-push - Commit and push
 ```
-
-## Analysis Provided
-
-### Branch Health
-- Commits ahead/behind base branch
-- Sync status with remote
-- Age of branch
-
-### Change Categories
-- Staged (ready to commit)
-- Modified (not staged)
-- Untracked (new files)
-- Deleted
-- Renamed
-
-### Recommendations
-- What to stage
-- What to ignore
-- When to commit
-- When to sync
-
-### Warnings
-- Large number of changes (consider splitting)
-- Old branch (consider rebasing)
-- Conflicts with upstream
-
-## Output
-
-Always produces the formatted status report with context-aware recommendations.

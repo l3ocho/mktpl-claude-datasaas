@@ -1,116 +1,49 @@
+---
+name: commit-sync
+description: Commit, push, and sync with base branch
+agent: git-assistant
+---
+
 # /commit-sync - Commit, Push, and Sync
 
-## Visual Output
+## Skills
 
-When executing this command, display the plugin header:
-
-```
-┌──────────────────────────────────────────────────────────────────┐
-│  🔀 GIT-FLOW · Commit Sync                                        │
-└──────────────────────────────────────────────────────────────────┘
-```
-
-Then proceed with the workflow.
+- skills/visual-header.md
+- skills/commit-conventions.md
+- skills/sync-workflow.md
+- skills/merge-workflow.md
+- skills/environment-variables.md
 
 ## Purpose
 
-Full sync operation: commit local changes, push to remote, sync with upstream/base branch, and clean up stale remote-tracking branches.
+Full sync operation: commit local changes, push to remote, sync with upstream/base branch, and detect stale branches.
 
-## Behavior
+## Parameters
 
-### Step 1: Run /commit
+| Parameter | Description |
+|-----------|-------------|
+| `--base` | Override default base branch |
+| `--no-rebase` | Use merge instead of rebase |
 
-Execute the standard commit workflow.
+## Workflow
 
-### Step 2: Push to Remote
-
-Push committed changes to remote branch.
-
-### Step 3: Sync with Base
-
-Pull latest from base branch and rebase/merge:
-
-```bash
-# Fetch all with prune (removes stale remote-tracking refs)
-git fetch --all --prune
-
-# Rebase on base branch
-git rebase origin/<base-branch>
-
-# Push again (if rebased)
-git push --force-with-lease
-```
-
-### Step 4: Detect Stale Local Branches
-
-Check for local branches tracking deleted remotes:
-
-```bash
-# Find local branches with gone upstreams
-git branch -vv | grep ': gone]'
-```
-
-If stale branches found, report them:
-
-```
-Stale local branches (remote deleted):
-  - feat/old-feature (was tracking origin/feat/old-feature)
-  - fix/merged-bugfix (was tracking origin/fix/merged-bugfix)
-
-Run /branch-cleanup to remove these branches.
-```
-
-### Step 5: Report Status
-
-```
-Sync complete:
-
-Local:  feat/password-reset @ abc1234
-Remote: origin/feat/password-reset @ abc1234
-Base:   development @ xyz7890 (synced)
-
-Your branch is up-to-date with development.
-No conflicts detected.
-
-Cleanup:
-  Remote refs pruned: 2
-  Stale local branches: 2 (run /branch-cleanup to remove)
-```
-
-## Environment Variables
-
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `GIT_DEFAULT_BASE` | `development` | Branch to sync with |
-| `GIT_SYNC_STRATEGY` | `rebase` | How to incorporate upstream changes |
-| `GIT_AUTO_PRUNE` | `true` | Auto-prune stale remote refs on sync |
-
-## Conflict Handling
-
-If conflicts occur during rebase:
-
-```
-Conflicts detected while syncing with development.
-
-Conflicting files:
-- src/auth/login.ts
-- src/auth/types.ts
-
-Options:
-1. Open conflict resolution (I'll guide you)
-2. Abort sync (keep local state)
-3. Accept all theirs (⚠️ loses your changes in conflicts)
-4. Accept all ours (⚠️ ignores upstream in conflicts)
-```
+1. **Display header** - Show GIT-FLOW Commit Sync header
+2. **Run /commit** - Execute standard commit workflow
+3. **Push to remote** - Push committed changes
+4. **Fetch with prune** - `git fetch --all --prune`
+5. **Sync with base** - Rebase on base branch (per sync-workflow.md)
+6. **Handle conflicts** - Guide resolution if conflicts occur (per merge-workflow.md)
+7. **Push again** - `git push --force-with-lease` if rebased
+8. **Detect stale** - Report stale local branches
+9. **Report status** - Show sync summary
 
 ## Output
 
-On success:
 ```
 Committed: abc1234
 Pushed to: origin/feat/password-reset
 Synced with: development (xyz7890)
 
 Status: Clean, up-to-date
-Stale branches: None (or N found - run /branch-cleanup)
+Stale branches: 2 found - run /branch-cleanup
 ```

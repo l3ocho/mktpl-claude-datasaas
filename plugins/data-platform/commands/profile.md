@@ -1,18 +1,13 @@
 # /profile - Data Profiling
 
+## Skills to Load
+- skills/data-profiling.md
+- skills/mcp-tools-reference.md
+- skills/visual-header.md
+
 ## Visual Output
 
-When executing this command, display the plugin header:
-
-```
-┌──────────────────────────────────────────────────────────────────┐
-│  📊 DATA-PLATFORM · Data Profile                                  │
-└──────────────────────────────────────────────────────────────────┘
-```
-
-Then proceed with the profiling.
-
-Generate statistical profile and quality report for a DataFrame.
+Display header: `DATA-PLATFORM - Data Profile`
 
 ## Usage
 
@@ -22,24 +17,12 @@ Generate statistical profile and quality report for a DataFrame.
 
 ## Workflow
 
-1. **Get data reference**:
-   - If no data_ref provided, use `list_data` to show available options
-   - Validate the data_ref exists
+Execute `skills/data-profiling.md` profiling workflow:
 
-2. **Generate profile**:
-   - Use `describe` for statistical summary
-   - Analyze null counts, unique values, data types
-
-3. **Quality assessment**:
-   - Identify columns with high null percentage
-   - Flag potential data quality issues
-   - Suggest cleaning operations if needed
-
-4. **Report**:
-   - Summary statistics per column
-   - Data type distribution
-   - Memory usage
-   - Quality score
+1. **Get data reference**: Use `list_data` if none provided
+2. **Generate profile**: Use `describe` for statistics
+3. **Quality assessment**: Identify null columns, potential issues
+4. **Report**: Statistics, types, memory usage, quality score
 
 ## Examples
 
@@ -48,9 +31,8 @@ Generate statistical profile and quality report for a DataFrame.
 /profile df_a1b2c3d4
 ```
 
-## Available Tools
+## Required MCP Tools
 
-Use these MCP tools:
 - `describe` - Get statistical summary
 - `head` - Preview first rows
 - `list_data` - List available DataFrames

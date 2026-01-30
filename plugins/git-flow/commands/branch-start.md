@@ -1,106 +1,43 @@
+---
+name: branch-start
+description: Create a new feature/fix/chore branch with consistent naming
+agent: git-assistant
+---
+
 # /branch-start - Start New Branch
 
-## Visual Output
+## Skills
 
-When executing this command, display the plugin header:
-
-```
-┌──────────────────────────────────────────────────────────────────┐
-│  🔀 GIT-FLOW · Branch Start                                      │
-└──────────────────────────────────────────────────────────────────┘
-```
-
-Then proceed with the workflow.
+- skills/visual-header.md
+- skills/branch-naming.md
+- skills/git-safety.md
+- skills/environment-variables.md
 
 ## Purpose
 
-Create a new feature/fix/chore branch with consistent naming conventions.
+Create a new branch with consistent naming conventions, based on the configured base branch.
 
-## Usage
+## Parameters
 
-```
-/branch-start [description]
-```
+| Parameter | Description |
+|-----------|-------------|
+| `<description>` | Brief description for branch name |
+| `--type` | Branch type: feat, fix, chore, docs, refactor |
+| `--issue` | Issue number to include in branch name |
 
-## Behavior
+## Workflow
 
-### Step 1: Determine Branch Type
-
-```
-What type of change is this?
-1. feat - New feature
-2. fix - Bug fix
-3. chore - Maintenance task
-4. docs - Documentation
-5. refactor - Code refactoring
-```
-
-### Step 2: Get Description
-
-If not provided, ask:
-
-```
-Brief description (2-4 words):
-> add user authentication
-```
-
-### Step 3: Generate Branch Name
-
-Convert to kebab-case:
-- `feat/add-user-authentication`
-- `fix/login-timeout-error`
-- `chore/update-dependencies`
-
-### Step 4: Create Branch
-
-```bash
-# Ensure base branch is up-to-date
-git checkout <base-branch>
-git pull origin <base-branch>
-
-# Create and switch to new branch
-git checkout -b <new-branch>
-```
-
-### Step 5: Confirm
-
-```
-Created branch: feat/add-user-authentication
-Based on: development (abc1234)
-
-Ready to start coding!
-```
-
-## Environment Variables
-
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `GIT_DEFAULT_BASE` | `development` | Branch to create from |
-| `GIT_BRANCH_PREFIX` | `true` | Use type/ prefix |
-
-## Naming Rules
-
-- Lowercase only
-- Hyphens for spaces
-- No special characters
-- Max 50 characters
-
-## Validation
-
-```
-Branch name validation:
-✓ Lowercase
-✓ Valid prefix (feat/)
-✓ Descriptive (3+ words recommended)
-✗ Too long (52 chars, max 50)
-
-Suggested: feat/add-user-auth
-Use this instead? (y/n)
-```
+1. **Display header** - Show GIT-FLOW Branch Start header
+2. **Determine type** - Prompt for branch type if not provided
+3. **Get description** - Prompt for description if not provided
+4. **Generate name** - Convert to kebab-case (per branch-naming.md)
+5. **Validate** - Check naming rules, truncate if needed
+6. **Update base** - Checkout and pull base branch
+7. **Create branch** - `git checkout -b <new-branch>`
+8. **Confirm** - Display created branch info
 
 ## Output
 
-On success:
 ```
 Branch: feat/add-user-authentication
 Base: development @ abc1234
