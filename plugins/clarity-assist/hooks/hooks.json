@@ -2,8 +2,13 @@
   "hooks": {
     "UserPromptSubmit": [
       {
-        "type": "command",
-        "command": "${CLAUDE_PLUGIN_ROOT}/hooks/vagueness-check.sh"
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/vagueness-check.sh"
+          }
+        ]
       }
     ]
   }
