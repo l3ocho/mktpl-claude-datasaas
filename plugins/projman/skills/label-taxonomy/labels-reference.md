@@ -13,7 +13,7 @@ description: Dynamic reference for Gitea label taxonomy (organization + reposito
 
 This skill provides the current label taxonomy used for issue classification in Gitea. Labels are **fetched dynamically** from Gitea and should never be hardcoded.
 
-**Current Taxonomy:** 47 labels (31 organization + 16 repository)
+**Current Taxonomy:** 49 labels (31 organization + 18 repository)
 
 ## Organization Labels (31)
 
@@ -66,7 +66,7 @@ Organization-level labels are shared across all repositories in your configured 
 - `Status/Failed` (#de350b) - Implementation attempted but failed, needs investigation
 - `Status/Deferred` (#6554c0) - Moved to a future sprint or backlog
 
-## Repository Labels (16)
+## Repository Labels (18)
 
 Repository-level labels are specific to each project.
 
@@ -89,6 +89,27 @@ Repository-level labels are specific to each project.
 - `Tech/Redis` (#dc382d) - Redis cache and pub/sub
 - `Tech/Vue` (#42b883) - Vue.js frontend framework
 - `Tech/FastAPI` (#009688) - FastAPI backend framework
+
+### Domain (2 labels)
+
+Cross-plugin integration labels for domain-specific validation gates.
+
+| Label | Color | Description |
+|-------|-------|-------------|
+| `Domain/Viz` | `#7c4dff` | Issue involves visualization/frontend — triggers viz-platform design gates |
+| `Domain/Data` | `#00bfa5` | Issue involves data engineering — triggers data-platform data gates |
+
+**Detection Rules:**
+
+**Domain/Viz:**
+- Keywords: "dashboard", "chart", "theme", "DMC", "component", "layout", "responsive", "color", "UI", "frontend", "Dash", "Plotly"
+- Also applied when: `Component/Frontend` or `Component/UI` label is present
+- Example: "Create new neighbourhood comparison dashboard tab"
+
+**Domain/Data:**
+- Keywords: "schema", "migration", "pipeline", "dbt", "table", "column", "query", "PostgreSQL", "lineage", "data model"
+- Also applied when: `Component/Database` or `Component/Data` label is present
+- Example: "Add census demographic data pipeline"
 
 ## Label Suggestion Logic
 
