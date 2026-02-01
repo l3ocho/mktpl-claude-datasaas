@@ -4,6 +4,23 @@ All notable changes to the Leo Claude Marketplace will be documented in this fil
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [5.6.0] - 2026-02-01
+
+### Added
+- **Domain Advisory Pattern**: Cross-plugin integration enabling projman to consult domain-specific plugins during sprint lifecycle
+- **projman**: New `domain-consultation.md` skill for domain detection and gate protocols
+- **viz-platform**: New `design-reviewer` agent for design system compliance auditing
+- **viz-platform**: New `design-system-audit.md` skill defining audit rules and severity levels
+- **viz-platform**: New `/design-review` command for detailed design system audits
+- **viz-platform**: New `/design-gate` command for binary pass/fail validation gates
+- **Labels**: New `Domain/Viz` and `Domain/Data` labels for domain routing
+
+### Changed
+- **projman planner**: Now loads domain-consultation skill and performs domain detection during planning
+- **projman orchestrator**: Now runs domain gates before marking Domain/* labeled issues as complete
+
+---
+
 ## [5.5.0] - 2026-02-01
 
 ### Added
