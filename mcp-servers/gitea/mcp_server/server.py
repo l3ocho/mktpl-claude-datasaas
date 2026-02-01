@@ -435,6 +435,19 @@ class GiteaMCPServer:
                         }
                     }
                 ),
+                Tool(
+                    name="allocate_rfc_number",
+                    description="Allocate the next available RFC number by scanning existing RFC wiki pages",
+                    inputSchema={
+                        "type": "object",
+                        "properties": {
+                            "repo": {
+                                "type": "string",
+                                "description": "Repository name (owner/repo format)"
+                            }
+                        }
+                    }
+                ),
                 # Milestone Tools
                 Tool(
                     name="list_milestones",
@@ -978,6 +991,10 @@ class GiteaMCPServer:
                         query=arguments.get('query'),
                         tags=tags,
                         limit=arguments.get('limit', 20),
+                        repo=arguments.get('repo')
+                    )
+                elif name == "allocate_rfc_number":
+                    result = await self.wiki_tools.allocate_rfc_number(
                         repo=arguments.get('repo')
                     )
                 # Milestone tools
