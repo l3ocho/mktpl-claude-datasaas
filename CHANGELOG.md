@@ -6,6 +6,40 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Added
+
+#### RFC System for Feature Tracking
+Wiki-based Request for Comments (RFC) system for capturing, reviewing, and tracking feature ideas through their lifecycle.
+
+**New Commands (projman):**
+- `/rfc-create` - Create new RFC from conversation or clarified specification
+- `/rfc-list` - List all RFCs grouped by status (Draft, Review, Approved, Implementing, Implemented, Rejected, Stale)
+- `/rfc-review` - Submit Draft RFC for maintainer review
+- `/rfc-approve` - Approve RFC, making it available for sprint planning
+- `/rfc-reject` - Reject RFC with documented reason
+
+**RFC Lifecycle:**
+- Draft → Review → Approved → Implementing → Implemented
+- Terminal states: Rejected, Superseded
+- Stale: Drafts with no activity >90 days
+
+**Sprint Integration:**
+- `/sprint-plan` now detects approved RFCs and offers selection
+- `/sprint-close` updates RFC status to Implemented on completion
+- RFC-Index wiki page auto-maintained with status sections
+
+**Clarity-Assist Integration:**
+- Vagueness hook now detects feature request patterns
+- Suggests `/rfc-create` for feature ideas
+- `/clarify` offers RFC creation after delivering clarified spec
+
+**New MCP Tool:**
+- `allocate_rfc_number` - Allocates next sequential RFC number
+
+**New Skills:**
+- `skills/rfc-workflow.md` - RFC lifecycle and state transitions
+- `skills/rfc-templates.md` - RFC page template specifications
+
 ### Changed
 
 #### Sprint 8: Hook Efficiency Quick Wins

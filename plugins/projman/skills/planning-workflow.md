@@ -40,10 +40,18 @@ Execute in order:
 ### 3. Detect Input Source
 
 Follow `skills/input-detection.md`:
-1. Check for `docs/changes/*.md` files
-2. Check for existing wiki proposal
-3. If neither: use conversation context
-4. If ambiguous: ask user
+1. **Check for approved RFCs** (Priority 0)
+2. Check for `docs/changes/*.md` files
+3. Check for existing wiki proposal
+4. If neither: use conversation context
+5. If ambiguous: ask user
+
+### 3a. RFC Status Update (if RFC selected)
+
+If input source is an RFC:
+1. **Note the RFC number** for later status update
+2. RFC status update happens AFTER sprint approval (Step 11)
+3. The RFC provides the planning context - use its Summary, Motivation, and Design sections
 
 ### 4. Search Relevant Lessons Learned
 
@@ -109,6 +117,31 @@ Follow `skills/sprint-approval.md`:
 - Present approval request with scope summary
 - Wait for explicit user approval
 - Record approval in milestone description
+
+### 12. Update RFC Status (if applicable)
+
+If planning input was an RFC:
+
+1. **Fetch RFC page:**
+   ```python
+   get_wiki_page(page_name="RFC-NNNN:-Title", repo="org/repo")
+   ```
+
+2. **Update RFC page:**
+   - Change status: Approved → Implementing
+   - Add Sprint reference to frontmatter
+   - Add Implementation section with sprint details and issue links
+   ```python
+   update_wiki_page(
+       page_name="RFC-NNNN:-Title",
+       content="[updated content with Implementing status]",
+       repo="org/repo"
+   )
+   ```
+
+3. **Update RFC-Index:**
+   - Remove from "## Approved" section
+   - Add to "## Implementing" section with sprint reference
 
 ---
 

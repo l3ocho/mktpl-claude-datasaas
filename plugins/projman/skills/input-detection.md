@@ -1,6 +1,6 @@
 ---
 name: input-detection
-description: Detect planning input source (file, wiki, or conversation)
+description: Detect planning input source (RFC, file, wiki, or conversation)
 ---
 
 # Input Source Detection
@@ -20,9 +20,53 @@ Defines how to detect where planning input is coming from and how to handle each
 
 | Priority | Source | Detection | Action |
 |----------|--------|-----------|--------|
+| 0 | Approved RFC | RFC-Index has entries in "Approved" section | Offer RFC selection or new work |
 | 1 | Local file | `docs/changes/*.md` exists | Parse frontmatter, migrate to wiki, delete local |
 | 2 | Existing wiki | `Change VXX.X.X: Proposal` exists | Use as-is, create implementation page |
 | 3 | Conversation | Neither exists | Create wiki from discussion context |
+
+---
+
+## RFC Detection (Priority 0)
+
+Before checking for local files or wiki proposals, check for approved RFCs.
+
+### Detection Steps
+
+1. **Fetch RFC-Index:**
+   ```python
+   get_wiki_page(page_name="RFC-Index", repo="org/repo")
+   ```
+
+2. **Parse Approved Section:**
+   - Find "## Approved" section
+   - Extract RFC entries from table
+
+3. **If Approved RFCs Exist:**
+   ```
+   Approved RFCs available for implementation:
+
+   | RFC | Title | Champion |
+   |-----|-------|----------|
+   | RFC-0003 | Feature X | @user |
+   | RFC-0007 | Enhancement Y | @user |
+
+   Options:
+   [1] Implement RFC-0003: Feature X
+   [2] Implement RFC-0007: Enhancement Y
+   [3] Describe new work (skip RFCs)
+
+   Select an option:
+   ```
+
+4. **If RFC Selected:**
+   - Use RFC content as planning input
+   - Status will transition to Implementing after planning approval
+   - Skip local file and wiki proposal detection
+
+5. **If "New Work" Selected:**
+   - Continue with normal Priority 1-3 detection
+   - Optionally offer: "Would you like to create an RFC first? (y/n)"
 
 ---
 
