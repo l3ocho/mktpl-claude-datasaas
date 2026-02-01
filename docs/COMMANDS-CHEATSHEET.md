@@ -21,6 +21,11 @@ Quick reference for all commands in the Leo Claude Marketplace.
 | **projman** | `/suggest-version` | | X | Analyze CHANGELOG and recommend semantic version bump |
 | **projman** | `/proposal-status` | | X | View proposal and implementation hierarchy with status |
 | **projman** | `/clear-cache` | | X | Clear plugin cache to force fresh configuration reload |
+| **projman** | `/rfc-create` | | X | Create new RFC from conversation or clarified spec |
+| **projman** | `/rfc-list` | | X | List all RFCs grouped by status |
+| **projman** | `/rfc-review` | | X | Submit Draft RFC for review |
+| **projman** | `/rfc-approve` | | X | Approve RFC in Review status for sprint planning |
+| **projman** | `/rfc-reject` | | X | Reject RFC with documented reason |
 | **git-flow** | `/commit` | | X | Create commit with auto-generated conventional message |
 | **git-flow** | `/commit-push` | | X | Commit and push to remote in one operation |
 | **git-flow** | `/commit-merge` | | X | Commit current changes, then merge into target branch |
@@ -128,6 +133,22 @@ Quick reference for all commands in the Leo Claude Marketplace.
 ---
 
 ## Dev Workflow Examples
+
+### Example 0: RFC-Driven Feature Development
+
+Full workflow from idea to implementation using RFCs:
+
+```
+1. /clarify                  # Clarify the feature idea
+2. /rfc-create               # Create RFC from clarified spec
+   ... refine RFC content ...
+3. /rfc-review 0001          # Submit RFC for review
+   ... review discussion ...
+4. /rfc-approve 0001         # Approve RFC for implementation
+5. /sprint-plan              # Select approved RFC for sprint
+   ... implement feature ...
+6. /sprint-close             # Complete sprint, RFC marked Implemented
+```
 
 ### Example 1: Starting a New Feature Sprint
 

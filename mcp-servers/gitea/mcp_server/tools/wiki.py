@@ -4,9 +4,11 @@ Wiki management tools for MCP server.
 Provides async wrappers for wiki operations to support lessons learned:
 - Page CRUD operations
 - Lessons learned creation and search
+- RFC number allocation
 """
 import asyncio
 import logging
+import re
 from typing import List, Dict, Optional
 
 logging.basicConfig(level=logging.INFO)
@@ -147,3 +149,39 @@ class WikiTools:
             lambda: self.gitea.search_lessons(query, tags, repo)
         )
         return results[:limit]
+
+    async def allocate_rfc_number(self, repo: Optional[str] = None) -> Dict:
+        """
+        Allocate the next available RFC number.
+
+        Scans existing wiki pages for RFC-NNNN pattern and returns
+        the next sequential number.
+
+        Args:
+            repo: Repository in owner/repo format
+
+        Returns:
+            Dict with 'next_number' (int) and 'formatted' (str like 'RFC-0001')
+        """
+        pages = await self.list_wiki_pages(repo)
+
+        # Extract RFC numbers from page titles
+        rfc_numbers = []
+        rfc_pattern = re.compile(r'^RFC-(\d{4})')
+
+        for page in pages:
+            title = page.get('title', '')
+            match = rfc_pattern.match(title)
+            if match:
+                rfc_numbers.append(int(match.group(1)))
+
+        # Calculate next number
+        if rfc_numbers:
+            next_num = max(rfc_numbers) + 1
+        else:
+            next_num = 1
+
+        return {
+            'next_number': next_num,
+            'formatted': f'RFC-{next_num:04d}'
+        }

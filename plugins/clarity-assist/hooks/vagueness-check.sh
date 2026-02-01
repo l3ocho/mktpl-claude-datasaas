@@ -198,6 +198,38 @@ if (( $(echo "$SCORE > 1.0" | bc -l) )); then
 fi
 
 # ============================================================================
+# Feature Request Detection (for RFC suggestion)
+# ============================================================================
+
+FEATURE_REQUEST=false
+
+# Feature request phrases
+FEATURE_PHRASES=(
+    "we should"
+    "it would be nice"
+    "feature request"
+    "idea:"
+    "suggestion:"
+    "what if we"
+    "wouldn't it be great"
+    "i think we need"
+    "we need to add"
+    "we could add"
+    "how about adding"
+    "can we add"
+    "new feature"
+    "enhancement"
+    "proposal"
+)
+
+for phrase in "${FEATURE_PHRASES[@]}"; do
+    if [[ "$PROMPT_LOWER" == *"$phrase"* ]]; then
+        FEATURE_REQUEST=true
+        break
+    fi
+done
+
+# ============================================================================
 # Output suggestion if score exceeds threshold
 # ============================================================================
 
@@ -208,8 +240,16 @@ if (( $(echo "$SCORE >= $THRESHOLD" | bc -l) )); then
 
     # Gentle, non-blocking suggestion
     echo "$PREFIX Your prompt could benefit from more clarity."
-    echo "$PREFIX Consider running /clarity-assist to refine your request."
+    echo "$PREFIX Consider running /clarify to refine your request."
     echo "$PREFIX (Vagueness score: ${SCORE_PCT}% - this is a suggestion, not a block)"
+
+    # Additional RFC suggestion if feature request detected
+    if [[ "$FEATURE_REQUEST" == true ]]; then
+        echo "$PREFIX This looks like a feature idea. Consider /rfc-create to track it formally."
+    fi
+elif [[ "$FEATURE_REQUEST" == true ]]; then
+    # Feature request detected but not vague - still suggest RFC
+    echo "$PREFIX This looks like a feature idea. Consider /rfc-create to track it formally."
 fi
 
 # Always exit 0 - this hook is non-blocking

@@ -279,7 +279,7 @@ leo-claude-mktplace/
 | Labels | `get_labels`, `suggest_labels`, `create_label`, `create_label_smart` |
 | Milestones | `list_milestones`, `get_milestone`, `create_milestone`, `update_milestone`, `delete_milestone` |
 | Dependencies | `list_issue_dependencies`, `create_issue_dependency`, `remove_issue_dependency`, `get_execution_order` |
-| Wiki | `list_wiki_pages`, `get_wiki_page`, `create_wiki_page`, `update_wiki_page`, `create_lesson`, `search_lessons` |
+| Wiki | `list_wiki_pages`, `get_wiki_page`, `create_wiki_page`, `update_wiki_page`, `create_lesson`, `search_lessons`, `allocate_rfc_number` |
 | **Pull Requests** | `list_pull_requests`, `get_pull_request`, `get_pr_diff`, `get_pr_comments`, `create_pr_review`, `add_pr_comment` |
 | Validation | `validate_repo_org`, `get_branch_protection` |
 
@@ -299,6 +299,20 @@ leo-claude-mktplace/
 | `development`, `feat/*` | Development | Full access |
 | `staging` | Staging | Read-only code, can create issues |
 | `main`, `master` | Production | Read-only, emergency only |
+
+### RFC System
+
+Wiki-based Request for Comments system for tracking feature ideas from proposal through implementation.
+
+**RFC Wiki Naming:**
+- RFC pages: `RFC-NNNN: Short Title` (4-digit zero-padded)
+- Index page: `RFC-Index` (auto-maintained)
+
+**Lifecycle:** Draft → Review → Approved → Implementing → Implemented
+
+**Integration with Sprint Planning:**
+- `/sprint-plan` detects approved RFCs and offers selection
+- `/sprint-close` updates RFC status on completion
 
 ## Label Taxonomy
 
