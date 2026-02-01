@@ -1,4 +1,4 @@
-# Leo Claude Marketplace - v5.5.0
+# Leo Claude Marketplace - v5.6.0
 
 A collection of Claude Code plugins for project management, infrastructure automation, and development workflows.
 
@@ -138,7 +138,22 @@ Visualization toolkit with version-locked component validation and design token 
 - 5 Page tools for multi-page app structure
 - Dual theme storage: user-level and project-level
 
-**Commands:** `/chart`, `/chart-export`, `/dashboard`, `/theme`, `/theme-new`, `/theme-css`, `/component`, `/accessibility-check`, `/breakpoints`, `/initial-setup`
+**Commands:** `/chart`, `/chart-export`, `/dashboard`, `/theme`, `/theme-new`, `/theme-css`, `/component`, `/accessibility-check`, `/breakpoints`, `/design-review`, `/design-gate`, `/initial-setup`
+
+## Domain Advisory Pattern
+
+The marketplace supports cross-plugin domain advisory integration:
+
+- **Domain Detection**: projman automatically detects when issues involve specialized domains (frontend/viz, data engineering)
+- **Acceptance Criteria**: Domain-specific acceptance criteria are added to issues during planning
+- **Execution Gates**: Domain validation gates (`/design-gate`, `/data-gate`) run before issue completion
+- **Extensible**: New domains can be added by creating advisory agents and gate commands
+
+**Current Domains:**
+| Domain | Plugin | Gate Command |
+|--------|--------|--------------|
+| Visualization | viz-platform | `/design-gate` |
+| Data (planned) | data-platform | `/data-gate` |
 
 ## MCP Servers
 
