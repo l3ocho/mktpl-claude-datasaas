@@ -26,6 +26,7 @@ class IssueType(str, Enum):
     OPTIONAL_DEPENDENCY = "optional_dependency"
     UNDECLARED_OUTPUT = "undeclared_output"
     INVALID_SEQUENCE = "invalid_sequence"
+    MISSING_INTEGRATION = "missing_integration"
 
 
 class ValidationIssue(BaseModel):
@@ -62,6 +63,17 @@ class DataFlowResult(BaseModel):
     agent_name: str
     valid: bool
     flow_steps: list[str] = []
+    issues: list[ValidationIssue] = []
+
+
+class WorkflowIntegrationResult(BaseModel):
+    """Result of workflow integration validation for domain plugins"""
+    plugin_name: str
+    domain_label: str
+    valid: bool
+    gate_command_found: bool
+    review_command_found: bool
+    advisory_agent_found: bool
     issues: list[ValidationIssue] = []
 
 
@@ -332,6 +344,110 @@ class ValidationTools:
             agent_name=agent_name,
             valid=len([i for i in issues if i.severity == IssueSeverity.ERROR]) == 0,
             flow_steps=flow_steps,
+            issues=issues
+        )
+
+        return result.model_dump()
+
+    async def validate_workflow_integration(self, plugin_path: str, domain_label: str) -> dict:
+        """
+        Validate that a domain plugin exposes required advisory interfaces.
+
+        Checks for:
+        - Gate command (e.g., /design-gate, /data-gate) - REQUIRED
+        - Review command (e.g., /design-review, /data-review) - recommended
+        - Advisory agent referencing the domain label - recommended
+
+        Args:
+            plugin_path: Path to the domain plugin directory
+            domain_label: The Domain/* label it claims to handle (e.g., Domain/Viz)
+
+        Returns:
+            Validation result with found interfaces and issues
+        """
+        plugin_path_obj = Path(plugin_path)
+        issues = []
+
+        # Extract plugin name from path
+        plugin_name = plugin_path_obj.name
+        if not plugin_path_obj.exists():
+            return {
+                "error": f"Plugin directory not found: {plugin_path}",
+                "plugin_path": plugin_path,
+                "domain_label": domain_label
+            }
+
+        # Extract domain short name from label (e.g., "Domain/Viz" -> "viz", "Domain/Data" -> "data")
+        domain_short = domain_label.split("/")[-1].lower() if "/" in domain_label else domain_label.lower()
+
+        # Check for gate command
+        commands_dir = plugin_path_obj / "commands"
+        gate_command_found = False
+        gate_patterns = ["pass", "fail", "PASS", "FAIL", "Binary pass/fail", "gate"]
+
+        if commands_dir.exists():
+            for cmd_file in commands_dir.glob("*.md"):
+                if "gate" in cmd_file.name.lower():
+                    # Verify it's actually a gate command by checking content
+                    content = cmd_file.read_text()
+                    if any(pattern in content for pattern in gate_patterns):
+                        gate_command_found = True
+                        break
+
+        if not gate_command_found:
+            issues.append(ValidationIssue(
+                severity=IssueSeverity.ERROR,
+                issue_type=IssueType.MISSING_INTEGRATION,
+                message=f"Plugin '{plugin_name}' lacks a gate command for domain '{domain_label}'",
+                location=str(commands_dir),
+                suggestion=f"Create commands/{domain_short}-gate.md with binary PASS/FAIL output"
+            ))
+
+        # Check for review command
+        review_command_found = False
+        if commands_dir.exists():
+            for cmd_file in commands_dir.glob("*.md"):
+                if "review" in cmd_file.name.lower() and "gate" not in cmd_file.name.lower():
+                    review_command_found = True
+                    break
+
+        if not review_command_found:
+            issues.append(ValidationIssue(
+                severity=IssueSeverity.WARNING,
+                issue_type=IssueType.MISSING_INTEGRATION,
+                message=f"Plugin '{plugin_name}' lacks a review command for domain '{domain_label}'",
+                location=str(commands_dir),
+                suggestion=f"Create commands/{domain_short}-review.md for detailed audits"
+            ))
+
+        # Check for advisory agent
+        agents_dir = plugin_path_obj / "agents"
+        advisory_agent_found = False
+
+        if agents_dir.exists():
+            for agent_file in agents_dir.glob("*.md"):
+                content = agent_file.read_text()
+                # Check if agent references the domain label or gate command
+                if domain_label in content or f"{domain_short}-gate" in content.lower() or "advisor" in agent_file.name.lower() or "reviewer" in agent_file.name.lower():
+                    advisory_agent_found = True
+                    break
+
+        if not advisory_agent_found:
+            issues.append(ValidationIssue(
+                severity=IssueSeverity.WARNING,
+                issue_type=IssueType.MISSING_INTEGRATION,
+                message=f"Plugin '{plugin_name}' lacks an advisory agent for domain '{domain_label}'",
+                location=str(agents_dir) if agents_dir.exists() else str(plugin_path_obj),
+                suggestion=f"Create agents/{domain_short}-advisor.md referencing '{domain_label}'"
+            ))
+
+        result = WorkflowIntegrationResult(
+            plugin_name=plugin_name,
+            domain_label=domain_label,
+            valid=gate_command_found,  # Only gate is required for validity
+            gate_command_found=gate_command_found,
+            review_command_found=review_command_found,
+            advisory_agent_found=advisory_agent_found,
             issues=issues
         )
 

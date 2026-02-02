@@ -4,6 +4,18 @@ All notable changes to the Leo Claude Marketplace will be documented in this fil
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [5.7.1] - 2026-02-02
+
+### Added
+- **contract-validator**: New `validate_workflow_integration` MCP tool — validates domain plugins expose required advisory interfaces (gate command, review command, advisory agent)
+- **contract-validator**: New `MISSING_INTEGRATION` issue type for workflow integration validation
+- **marketplace.json**: `integrates_with` field on viz-platform and data-platform declaring projman integration metadata
+
+### Fixed
+- `scripts/setup.sh` banner version updated from v5.1.0 to v5.7.1
+
+---
+
 ## [5.7.0] - 2026-02-02
 
 ### Added

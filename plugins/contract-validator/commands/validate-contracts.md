@@ -30,6 +30,7 @@
    - Use `validate_compatibility` for pairwise checks
    - Use `validate_agent_refs` for CLAUDE.md agents
    - Use `validate_data_flow` for data sequences
+   - Use `validate_workflow_integration` for domain plugin advisory interfaces
 
 5. **Generate report**:
    - Use `generate_compatibility_report` for full report
