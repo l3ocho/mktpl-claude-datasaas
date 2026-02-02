@@ -13,3 +13,8 @@
 2026-02-02T10:58:22 | skills | /home/lmiranda/claude-plugins-work/plugins/contract-validator/skills/mcp-tools-reference.md | README.md
 2026-02-02T10:58:38 | skills | /home/lmiranda/claude-plugins-work/plugins/contract-validator/skills/validation-rules.md | README.md
 2026-02-02T10:59:13 | .claude-plugin | /home/lmiranda/claude-plugins-work/.claude-plugin/marketplace.json | CLAUDE.md .claude-plugin/marketplace.json
+2026-02-02T13:55:33 | skills | /home/lmiranda/claude-plugins-work/plugins/projman/skills/visual-output.md | README.md
+2026-02-02T13:55:41 | agents | /home/lmiranda/claude-plugins-work/plugins/projman/agents/planner.md | README.md CLAUDE.md
+2026-02-02T13:55:55 | agents | /home/lmiranda/claude-plugins-work/plugins/projman/agents/orchestrator.md | README.md CLAUDE.md
+2026-02-02T13:56:14 | agents | /home/lmiranda/claude-plugins-work/plugins/projman/agents/executor.md | README.md CLAUDE.md
+2026-02-02T13:56:34 | agents | /home/lmiranda/claude-plugins-work/plugins/projman/agents/code-reviewer.md | README.md CLAUDE.md
