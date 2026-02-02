@@ -167,15 +167,7 @@
       "hooks": ["./hooks/hooks.json"],
       "category": "data",
       "tags": ["pandas", "postgresql", "postgis", "dbt", "data-engineering", "etl"],
-      "license": "MIT",
-      "integrates_with": {
-        "projman": {
-          "domain_label": "Domain/Data",
-          "gate_command": "/data-gate",
-          "review_command": "/data-review",
-          "advisory_agent": "data-advisor"
-        }
-      }
+      "license": "MIT"
     },
     {
       "name": "viz-platform",
@@ -191,15 +183,7 @@
       "hooks": ["./hooks/hooks.json"],
       "category": "visualization",
       "tags": ["dash", "plotly", "mantine", "charts", "dashboards", "theming", "dmc"],
-      "license": "MIT",
-      "integrates_with": {
-        "projman": {
-          "domain_label": "Domain/Viz",
-          "gate_command": "/design-gate",
-          "review_command": "/design-review",
-          "advisory_agent": "design-reviewer"
-        }
-      }
+      "license": "MIT"
     },
     {
       "name": "contract-validator",
