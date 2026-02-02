@@ -350,7 +350,10 @@ async def test_validate_workflow_integration_complete(validation_tools, domain_p
     assert result["gate_command_found"] is True
     assert result["review_command_found"] is True
     assert result["advisory_agent_found"] is True
-    assert len(result["issues"]) == 0
+    # May have INFO issue about missing contract version (not an error/warning)
+    error_or_warning = [i for i in result["issues"]
+                        if i["severity"].value in ("error", "warning")]
+    assert len(error_or_warning) == 0
 
 
 @pytest.mark.asyncio
