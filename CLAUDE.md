@@ -146,7 +146,7 @@ When user says "fix the sprint-plan command", edit the SOURCE code.
 ## Project Overview
 
 **Repository:** leo-claude-mktplace
-**Version:** 5.4.0
+**Version:** 5.8.0
 **Status:** Production Ready
 
 A plugin marketplace for Claude Code containing:
@@ -161,7 +161,7 @@ A plugin marketplace for Claude Code containing:
 | `code-sentinel` | Security scanning and code refactoring tools | 1.0.1 |
 | `claude-config-maintainer` | CLAUDE.md optimization and maintenance | 1.0.0 |
 | `cmdb-assistant` | NetBox CMDB integration for infrastructure management | 1.2.0 |
-| `data-platform` | pandas, PostgreSQL, and dbt integration for data engineering | 1.1.0 |
+| `data-platform` | pandas, PostgreSQL, and dbt integration for data engineering | 1.3.0 |
 | `viz-platform` | DMC validation, Plotly charts, and theming for dashboards | 1.1.0 |
 | `contract-validator` | Cross-plugin compatibility validation and agent verification | 1.1.0 |
 | `project-hygiene` | Post-task cleanup automation via hooks | 0.1.0 |
@@ -453,4 +453,4 @@ The script will:
 
 ---
 
-**Last Updated:** 2026-01-30
+**Last Updated:** 2026-02-02

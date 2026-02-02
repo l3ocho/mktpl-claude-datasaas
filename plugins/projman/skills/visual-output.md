@@ -29,10 +29,10 @@ Projman uses the double-line box drawing header style with emoji phase indicator
 
 | Agent | Phase Emoji | Phase Name | Context |
 |-------|-------------|------------|---------|
-| Planner | Target | PLANNING | Sprint Name or Goal |
-| Orchestrator | Lightning | EXECUTION | Sprint Name |
-| Executor | Wrench | IMPLEMENTING | Issue Title |
-| Code Reviewer | Magnifier | REVIEW | Sprint Name |
+| Planner | 🎯 Target | PLANNING | Sprint Name or Goal |
+| Orchestrator | ⚡ Lightning | EXECUTION | Sprint Name |
+| Executor | 🔧 Wrench | IMPLEMENTING | Issue Title |
+| Code Reviewer | 🔍 Magnifier | REVIEW | Sprint Name |
 
 ### Command Headers (Non-Agent)
 
@@ -40,14 +40,14 @@ For commands that don't invoke a specific agent phase:
 
 | Command | Phase Emoji | Phase Name |
 |---------|-------------|------------|
-| `/sprint-status` | Chart | STATUS |
-| `/setup` | Gear | SETUP |
-| `/debug` | Bug | DEBUG |
-| `/labels-sync` | Label | LABELS |
-| `/suggest-version` | Package | VERSION |
-| `/proposal-status` | Clipboard | PROPOSALS |
-| `/test` | Flask | TEST |
-| `/rfc` | Document | RFC [Sub-Command] |
+| `/sprint-status` | 📊 Chart | STATUS |
+| `/setup` | ⚙️ Gear | SETUP |
+| `/debug` | 🐛 Bug | DEBUG |
+| `/labels-sync` | 🏷️ Label | LABELS |
+| `/suggest-version` | 📦 Package | VERSION |
+| `/proposal-status` | 📋 Clipboard | PROPOSALS |
+| `/test` | 🧪 Flask | TEST |
+| `/rfc` | 📄 Document | RFC [Sub-Command] |
 
 ---
 
