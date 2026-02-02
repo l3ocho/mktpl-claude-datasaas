@@ -4,6 +4,20 @@ All notable changes to the Leo Claude Marketplace will be documented in this fil
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [5.7.0] - 2026-02-02
+
+### Added
+- **data-platform**: New `data-advisor` agent for data integrity, schema, and dbt compliance validation
+- **data-platform**: New `data-integrity-audit.md` skill defining audit rules, severity levels, and scanning strategies
+- **data-platform**: New `/data-gate` command for binary pass/fail data integrity gates (projman integration)
+- **data-platform**: New `/data-review` command for comprehensive data integrity audits
+
+### Changed
+- Domain Advisory Pattern now fully operational for both Viz and Data domains
+- projman orchestrator `Domain/Data` gates now resolve to live `/data-gate` command (previously fell through to "gate unavailable" warning)
+
+---
+
 ## [5.6.0] - 2026-02-01
 
 ### Added
