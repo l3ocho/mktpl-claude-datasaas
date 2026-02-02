@@ -54,6 +54,9 @@ Quick reference for all commands in the Leo Claude Marketplace.
 | **claude-config-maintainer** | `/config-init` | | X | Initialize new CLAUDE.md for a project |
 | **claude-config-maintainer** | `/config-diff` | | X | Track CLAUDE.md changes over time with behavioral impact |
 | **claude-config-maintainer** | `/config-lint` | | X | Lint CLAUDE.md for anti-patterns and best practices |
+| **claude-config-maintainer** | `/config-audit-settings` | | X | Audit settings.local.json permissions (100-point score) |
+| **claude-config-maintainer** | `/config-optimize-settings` | | X | Optimize permissions (profiles, consolidation, dry-run) |
+| **claude-config-maintainer** | `/config-permissions-map` | | X | Visual review layer + permission coverage map |
 | **cmdb-assistant** | `/initial-setup` | | X | Setup wizard for NetBox MCP server |
 | **cmdb-assistant** | `/cmdb-search` | | X | Search NetBox for devices, IPs, sites |
 | **cmdb-assistant** | `/cmdb-device` | | X | Manage network devices (create, view, update, delete) |

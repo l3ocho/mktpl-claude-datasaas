@@ -8,6 +8,21 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added
 
+#### claude-config-maintainer v1.2.0 - Settings Audit Feature
+
+New commands for auditing and optimizing `settings.local.json` permission configurations:
+
+- **`/config-audit-settings`** — Audit `settings.local.json` permissions with 100-point scoring across redundancy, coverage, safety alignment, and profile fit
+- **`/config-optimize-settings`** — Apply permission optimizations with dry-run, named profiles (`conservative`, `reviewed`, `autonomous`), and consolidation modes
+- **`/config-permissions-map`** — Generate Mermaid diagram of review layer coverage and permission gaps
+- **`skills/settings-optimization.md`** — Comprehensive skill for permission pattern analysis, consolidation rules, review-layer-aware recommendations, and named profiles
+
+**Key Features:**
+- Settings Efficiency Score (100 points) alongside existing CLAUDE.md score
+- Review layer verification — agent reads `hooks/hooks.json` from installed plugins before recommending auto-allow patterns
+- Three named profiles: `conservative` (prompts for most writes), `reviewed` (for projects with ≥2 review layers), `autonomous` (sandboxed environments)
+- Pattern consolidation detection: duplicates, subsets, merge candidates, stale entries, conflicts
+
 #### Projman Hardening Sprint
 Targeted improvements to safety gates, command structure, lifecycle tracking, and cross-plugin contracts.
 
