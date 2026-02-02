@@ -92,7 +92,11 @@ Quick reference for all commands in the Leo Claude Marketplace.
 | **viz-platform** | `/chart-export` | | X | Export charts to PNG, SVG, PDF via kaleido |
 | **viz-platform** | `/accessibility-check` | | X | Color blind validation (WCAG contrast ratios) |
 | **viz-platform** | `/breakpoints` | | X | Configure responsive layout breakpoints |
+| **viz-platform** | `/design-review` | | X | Detailed design system audits |
+| **viz-platform** | `/design-gate` | | X | Binary pass/fail design system validation gates |
 | **viz-platform** | *SessionStart hook* | X | | Checks DMC version (non-blocking warning) |
+| **data-platform** | `/data-review` | | X | Comprehensive data integrity audits |
+| **data-platform** | `/data-gate` | | X | Binary pass/fail data integrity gates |
 | **contract-validator** | `/validate-contracts` | | X | Full marketplace compatibility validation |
 | **contract-validator** | `/check-agent` | | X | Validate single agent definition |
 | **contract-validator** | `/list-interfaces` | | X | Show all plugin interfaces |
@@ -294,4 +298,4 @@ Ensure credentials are configured in `~/.config/claude/gitea.env`, `~/.config/cl
 
 ---
 
-*Last Updated: 2026-01-30*
+*Last Updated: 2026-02-02*

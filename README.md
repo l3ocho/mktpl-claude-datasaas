@@ -1,4 +1,4 @@
-# Leo Claude Marketplace - v5.7.0
+# Leo Claude Marketplace - v5.7.1
 
 A collection of Claude Code plugins for project management, infrastructure automation, and development workflows.
 
@@ -215,7 +215,7 @@ Cross-plugin compatibility validation tools.
 | Category | Tools |
 |----------|-------|
 | Parse | `parse_plugin_interface`, `parse_claude_md_agents` |
-| Validation | `validate_compatibility`, `validate_agent_refs`, `validate_data_flow` |
+| Validation | `validate_compatibility`, `validate_agent_refs`, `validate_data_flow`, `validate_workflow_integration` |
 | Report | `generate_compatibility_report`, `list_issues` |
 
 ## Installation

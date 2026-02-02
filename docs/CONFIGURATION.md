@@ -398,6 +398,7 @@ PR_REVIEW_AUTO_SUBMIT=false
 | **code-sentinel** | None | None | None needed |
 | **project-hygiene** | None | None | None needed |
 | **claude-config-maintainer** | None | None | None needed |
+| **contract-validator** | None | None | `/initial-setup` |
 
 ---
 

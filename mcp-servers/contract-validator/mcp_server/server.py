@@ -131,6 +131,24 @@ class ContractValidatorMCPServer:
                         "required": ["agent_name", "claude_md_path"]
                     }
                 ),
+                Tool(
+                    name="validate_workflow_integration",
+                    description="Validate that a domain plugin exposes the required advisory interfaces (gate command, review command, advisory agent) expected by projman's domain-consultation skill",
+                    inputSchema={
+                        "type": "object",
+                        "properties": {
+                            "plugin_path": {
+                                "type": "string",
+                                "description": "Path to the domain plugin directory"
+                            },
+                            "domain_label": {
+                                "type": "string",
+                                "description": "The Domain/* label it claims to handle, e.g. Domain/Viz"
+                            }
+                        },
+                        "required": ["plugin_path", "domain_label"]
+                    }
+                ),
                 # Report tools (to be implemented in #188)
                 Tool(
                     name="generate_compatibility_report",
@@ -198,6 +216,8 @@ class ContractValidatorMCPServer:
                     result = await self._validate_agent_refs(**arguments)
                 elif name == "validate_data_flow":
                     result = await self._validate_data_flow(**arguments)
+                elif name == "validate_workflow_integration":
+                    result = await self._validate_workflow_integration(**arguments)
                 elif name == "generate_compatibility_report":
                     result = await self._generate_compatibility_report(**arguments)
                 elif name == "list_issues":
@@ -240,6 +260,10 @@ class ContractValidatorMCPServer:
     async def _validate_data_flow(self, agent_name: str, claude_md_path: str) -> dict:
         """Validate agent data flow"""
         return await self.validation_tools.validate_data_flow(agent_name, claude_md_path)
+
+    async def _validate_workflow_integration(self, plugin_path: str, domain_label: str) -> dict:
+        """Validate domain plugin exposes required advisory interfaces"""
+        return await self.validation_tools.validate_workflow_integration(plugin_path, domain_label)
 
     # Report tool implementations (Issue #188)
 
