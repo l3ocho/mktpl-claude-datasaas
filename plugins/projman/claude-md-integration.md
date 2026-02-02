@@ -12,11 +12,11 @@ This project uses the **projman** plugin for sprint planning and project managem
 | `/sprint-close` | Complete sprint and capture lessons learned to Gitea Wiki |
 | `/labels-sync` | Synchronize label taxonomy from Gitea |
 | `/initial-setup` | Run initial setup for projman plugin |
-| `/rfc-create` | Create new RFC from conversation or clarified spec |
-| `/rfc-list` | List all RFCs grouped by status |
-| `/rfc-review` | Submit Draft RFC for review |
-| `/rfc-approve` | Approve RFC for sprint planning |
-| `/rfc-reject` | Reject RFC with documented reason |
+| `/rfc create` | Create new RFC from conversation or clarified spec |
+| `/rfc list` | List all RFCs grouped by status |
+| `/rfc review` | Submit Draft RFC for review |
+| `/rfc approve` | Approve RFC for sprint planning |
+| `/rfc reject` | Reject RFC with documented reason |
 
 ### MCP Tools Available
 

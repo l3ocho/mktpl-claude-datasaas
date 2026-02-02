@@ -138,6 +138,49 @@ For resume support, save checkpoints after major steps:
 
 ---
 
+## Sprint Dispatch Log
+
+A single structured comment on the sprint milestone that records all task dispatches and completions. This is the first place to look when resuming an interrupted sprint.
+
+### Format
+
+Post as a comment on the milestone (via `add_comment` on a pinned tracking issue, or as milestone description appendix):
+
+```markdown
+## Sprint Dispatch Log
+
+| Time | Issue | Action | Agent | Branch | Notes |
+|------|-------|--------|-------|--------|-------|
+| 14:30 | #45 | Dispatched | Executor | feat/45-jwt | Parallel batch 1 |
+| 14:30 | #46 | Dispatched | Executor | feat/46-login | Parallel batch 1 |
+| 14:45 | #45 | Complete | Executor | feat/45-jwt | 47 tool calls, merged |
+| 14:52 | #46 | Failed | Executor | feat/46-login | Auth test failure |
+| 14:53 | #46 | Re-dispatched | Executor | feat/46-login | After fix |
+| 15:10 | #46 | Complete | Executor | feat/46-login | 62 tool calls, merged |
+| 15:10 | #47 | Dispatched | Executor | feat/47-tests | Batch 2 (depended on #45, #46) |
+```
+
+### When to Log
+
+| Event | Action Column | Required Fields |
+|-------|---------------|-----------------|
+| Task dispatched to executor | `Dispatched` | Time, Issue, Branch, Batch info |
+| Task completed | `Complete` | Time, Issue, Tool call count |
+| Task failed | `Failed` | Time, Issue, Error summary |
+| Task re-dispatched | `Re-dispatched` | Time, Issue, Reason |
+| Domain gate checked | `Gate: PASS` or `Gate: FAIL` | Time, Issue, Domain |
+| Sprint resumed | `Resumed` | Time, Notes (from checkpoint) |
+
+### Implementation
+
+The orchestrator appends rows to this log via `add_comment` on the first issue in the milestone (or a dedicated tracking issue). Each append is a single `add_comment` call updating the table.
+
+**On sprint start:** Create the dispatch log header.
+**On each event:** Append a row.
+**On sprint resume:** Add a "Resumed" row with checkpoint context.
+
+---
+
 ## Sprint Progress Display
 
 ```

@@ -154,10 +154,12 @@ This pattern ensures domain expertise stays in domain plugins while projman orch
 
 ## Gate Command Reference
 
-| Domain | Gate Command | Review Command | Advisory Agent |
-|--------|--------------|----------------|----------------|
-| Viz | `/design-gate <path>` | `/design-review <path>` | `design-reviewer` |
-| Data | `/data-gate <path>` | `/data-review <path>` | `data-advisor` |
+| Domain | Gate Command | Contract | Review Command | Advisory Agent |
+|--------|--------------|----------|----------------|----------------|
+| Viz | `/design-gate <path>` | v1 | `/design-review <path>` | `design-reviewer` |
+| Data | `/data-gate <path>` | v1 | `/data-review <path>` | `data-advisor` |
 
 Gate commands return binary PASS/FAIL for automation.
 Review commands return detailed reports for human review.
+
+**Contract Version:** Gate commands declare `gate_contract: vN` in their frontmatter. The version in this table is what projman expects. If a gate command bumps its contract version, this table must be updated to match. The `contract-validator` plugin checks this automatically via `validate_workflow_integration`.

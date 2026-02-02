@@ -1,4 +1,4 @@
-# Leo Claude Marketplace - v5.7.1
+# Leo Claude Marketplace - v5.8.0
 
 A collection of Claude Code plugins for project management, infrastructure automation, and development workflows.
 
@@ -19,7 +19,7 @@ AI-guided sprint planning with full Gitea integration. Transforms a proven 15-sp
 - Branch-aware security (development/staging/production)
 - Pre-sprint-close code quality review and test verification
 
-**Commands:** `/sprint-plan`, `/sprint-start`, `/sprint-status`, `/sprint-close`, `/labels-sync`, `/setup`, `/review`, `/test`, `/debug`, `/suggest-version`, `/proposal-status`, `/clear-cache`, `/rfc-create`, `/rfc-list`, `/rfc-review`, `/rfc-approve`, `/rfc-reject`
+**Commands:** `/sprint-plan`, `/sprint-start`, `/sprint-status`, `/sprint-close`, `/labels-sync`, `/setup`, `/review`, `/test`, `/debug`, `/suggest-version`, `/proposal-status`, `/rfc`
 
 #### [git-flow](./plugins/git-flow) *NEW in v3.0.0*
 **Git Workflow Automation**

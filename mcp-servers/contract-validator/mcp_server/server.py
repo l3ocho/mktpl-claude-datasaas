@@ -133,7 +133,7 @@ class ContractValidatorMCPServer:
                 ),
                 Tool(
                     name="validate_workflow_integration",
-                    description="Validate that a domain plugin exposes the required advisory interfaces (gate command, review command, advisory agent) expected by projman's domain-consultation skill",
+                    description="Validate that a domain plugin exposes the required advisory interfaces (gate command, review command, advisory agent) expected by projman's domain-consultation skill. Also checks gate contract version compatibility.",
                     inputSchema={
                         "type": "object",
                         "properties": {
@@ -144,6 +144,10 @@ class ContractValidatorMCPServer:
                             "domain_label": {
                                 "type": "string",
                                 "description": "The Domain/* label it claims to handle, e.g. Domain/Viz"
+                            },
+                            "expected_contract": {
+                                "type": "string",
+                                "description": "Expected contract version (e.g., 'v1'). If provided, validates the gate command's contract matches."
                             }
                         },
                         "required": ["plugin_path", "domain_label"]
@@ -261,9 +265,16 @@ class ContractValidatorMCPServer:
         """Validate agent data flow"""
         return await self.validation_tools.validate_data_flow(agent_name, claude_md_path)
 
-    async def _validate_workflow_integration(self, plugin_path: str, domain_label: str) -> dict:
+    async def _validate_workflow_integration(
+        self,
+        plugin_path: str,
+        domain_label: str,
+        expected_contract: str = None
+    ) -> dict:
         """Validate domain plugin exposes required advisory interfaces"""
-        return await self.validation_tools.validate_workflow_integration(plugin_path, domain_label)
+        return await self.validation_tools.validate_workflow_integration(
+            plugin_path, domain_label, expected_contract
+        )
 
     # Report tool implementations (Issue #188)
 

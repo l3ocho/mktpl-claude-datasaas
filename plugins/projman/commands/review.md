@@ -8,6 +8,7 @@ agent: code-reviewer
 ## Skills Required
 
 - skills/review-checklist.md
+- skills/sprint-lifecycle.md
 
 ## Purpose
 
@@ -19,6 +20,7 @@ Run `/review` before `/sprint-close` to catch issues.
 
 ## Workflow
 
+0. **Check Lifecycle State** - Execute `skills/sprint-lifecycle.md` check protocol. Expect `Sprint/Executing`. Set `Sprint/Reviewing` after review begins. Warn if in wrong state (allow with `--force`).
 1. **Determine Scope** - Sprint files or recent commits (`git diff --name-only HEAD~5`)
 2. **Read Files** - Use Read tool for each file in scope
 3. **Scan for Patterns** - Check each category from review checklist

@@ -4,6 +4,64 @@ All notable changes to the Leo Claude Marketplace will be documented in this fil
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [5.8.0] - 2026-02-02
+
+### Added
+
+#### Projman Hardening Sprint
+Targeted improvements to safety gates, command structure, lifecycle tracking, and cross-plugin contracts.
+
+**Sprint Lifecycle State Machine:**
+- New `skills/sprint-lifecycle.md` - defines valid states and transitions via milestone metadata
+- States: idle -> Sprint/Planning -> Sprint/Executing -> Sprint/Reviewing -> idle
+- All sprint commands check and set lifecycle state on entry/exit
+- Out-of-order calls produce warnings with guidance, `--force` override available
+
+**Sprint Dispatch Log:**
+- Orchestrator now maintains a structured dispatch log during execution
+- Records task dispatch, completion, failure, gate checks, and resume events
+- Enables timeline reconstruction after interrupted sessions
+
+**Gate Contract Versioning:**
+- Gate commands (`/design-gate`, `/data-gate`) declare `gate_contract: v1` in frontmatter
+- `domain-consultation.md` Gate Command Reference includes expected contract version
+- `validate_workflow_integration` now checks contract version compatibility
+- Mismatch produces WARNING, missing contract produces INFO suggestion
+
+**Shared Visual Output Skill:**
+- New `skills/visual-output.md` - single source of truth for projman visual headers
+- All 4 agent files reference the skill instead of inline templates
+- Phase Registry maps agents to emoji and phase names
+
+### Changed
+
+**Sprint Approval Gate Hardened:**
+- Approval is now a hard block, not a warning (was "recommended", now required)
+- `--force` flag added to bypass in emergencies (logged to milestone)
+- Consistent language across sprint-approval.md, sprint-start.md, and orchestrator.md
+
+**RFC Commands Normalized:**
+- 5 individual commands (`/rfc-create`, `/rfc-list`, `/rfc-review`, `/rfc-approve`, `/rfc-reject`) consolidated into `/rfc create|list|review|approve|reject`
+- `/clear-cache` absorbed into `/setup --clear-cache`
+- Command count reduced from 17 to 12
+
+**`/test` Command Documentation Expanded:**
+- Sprint integration section (pre-close verification workflow)
+- Concrete usage examples for all modes
+- Edge cases table
+- DO NOT rules for both modes
+
+### Removed
+
+- `plugins/projman/commands/rfc-create.md` (replaced by `/rfc create`)
+- `plugins/projman/commands/rfc-list.md` (replaced by `/rfc list`)
+- `plugins/projman/commands/rfc-review.md` (replaced by `/rfc review`)
+- `plugins/projman/commands/rfc-approve.md` (replaced by `/rfc approve`)
+- `plugins/projman/commands/rfc-reject.md` (replaced by `/rfc reject`)
+- `plugins/projman/commands/clear-cache.md` (replaced by `/setup --clear-cache`)
+
+---
+
 ## [5.7.1] - 2026-02-02
 
 ### Added

@@ -72,6 +72,7 @@ class WorkflowIntegrationResult(BaseModel):
     domain_label: str
     valid: bool
     gate_command_found: bool
+    gate_contract: Optional[str] = None  # Contract version declared by gate command
     review_command_found: bool
     advisory_agent_found: bool
     issues: list[ValidationIssue] = []
@@ -349,22 +350,32 @@ class ValidationTools:
 
         return result.model_dump()
 
-    async def validate_workflow_integration(self, plugin_path: str, domain_label: str) -> dict:
+    async def validate_workflow_integration(
+        self,
+        plugin_path: str,
+        domain_label: str,
+        expected_contract: Optional[str] = None
+    ) -> dict:
         """
         Validate that a domain plugin exposes required advisory interfaces.
 
         Checks for:
         - Gate command (e.g., /design-gate, /data-gate) - REQUIRED
+        - Gate contract version (gate_contract in frontmatter) - INFO if missing
         - Review command (e.g., /design-review, /data-review) - recommended
         - Advisory agent referencing the domain label - recommended
 
         Args:
             plugin_path: Path to the domain plugin directory
             domain_label: The Domain/* label it claims to handle (e.g., Domain/Viz)
+            expected_contract: Expected contract version (e.g., 'v1'). If provided,
+                              validates the gate command's contract matches.
 
         Returns:
             Validation result with found interfaces and issues
         """
+        import re
+
         plugin_path_obj = Path(plugin_path)
         issues = []
 
@@ -383,6 +394,7 @@ class ValidationTools:
         # Check for gate command
         commands_dir = plugin_path_obj / "commands"
         gate_command_found = False
+        gate_contract = None
         gate_patterns = ["pass", "fail", "PASS", "FAIL", "Binary pass/fail", "gate"]
 
         if commands_dir.exists():
@@ -392,6 +404,13 @@ class ValidationTools:
                     content = cmd_file.read_text()
                     if any(pattern in content for pattern in gate_patterns):
                         gate_command_found = True
+                        # Parse frontmatter for gate_contract
+                        frontmatter_match = re.match(r'^---\n(.*?)\n---', content, re.DOTALL)
+                        if frontmatter_match:
+                            frontmatter = frontmatter_match.group(1)
+                            contract_match = re.search(r'gate_contract:\s*(\S+)', frontmatter)
+                            if contract_match:
+                                gate_contract = contract_match.group(1)
                         break
 
         if not gate_command_found:
@@ -441,11 +460,31 @@ class ValidationTools:
                 suggestion=f"Create agents/{domain_short}-advisor.md referencing '{domain_label}'"
             ))
 
+        # Check gate contract version
+        if gate_command_found:
+            if not gate_contract:
+                issues.append(ValidationIssue(
+                    severity=IssueSeverity.INFO,
+                    issue_type=IssueType.MISSING_INTEGRATION,
+                    message=f"Gate command does not declare a contract version",
+                    location=str(commands_dir),
+                    suggestion="Consider adding `gate_contract: v1` to frontmatter for version tracking"
+                ))
+            elif expected_contract and gate_contract != expected_contract:
+                issues.append(ValidationIssue(
+                    severity=IssueSeverity.WARNING,
+                    issue_type=IssueType.INTERFACE_MISMATCH,
+                    message=f"Contract version mismatch: gate declares {gate_contract}, projman expects {expected_contract}",
+                    location=str(commands_dir),
+                    suggestion=f"Update domain-consultation.md Gate Command Reference table to {gate_contract}, or update gate command to {expected_contract}"
+                ))
+
         result = WorkflowIntegrationResult(
             plugin_name=plugin_name,
             domain_label=domain_label,
             valid=gate_command_found,  # Only gate is required for validity
             gate_command_found=gate_command_found,
+            gate_contract=gate_contract,
             review_command_found=review_command_found,
             advisory_agent_found=advisory_agent_found,
             issues=issues

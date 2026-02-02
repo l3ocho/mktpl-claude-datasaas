@@ -18,6 +18,7 @@ agent: planner
 - skills/sprint-approval.md
 - skills/planning-workflow.md
 - skills/label-taxonomy/labels-reference.md
+- skills/sprint-lifecycle.md
 
 ## Purpose
 
@@ -35,6 +36,7 @@ Provide sprint goals as natural language input, or prepare input via:
 Execute the planning workflow as defined in `skills/planning-workflow.md`.
 
 **Key steps:**
+0. **Check Lifecycle State** - Execute `skills/sprint-lifecycle.md` check protocol. Expect idle state. Set `Sprint/Planning` after planning completes. Warn and stop if sprint is in another active state (unless `--force`).
 1. Run pre-planning validations (branch, repo org, labels)
 2. Detect input source (file, wiki, or conversation)
 3. Search relevant lessons learned
