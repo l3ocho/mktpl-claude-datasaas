@@ -114,7 +114,54 @@ Report plugin coverage percentage and offer to add missing integrations:
 - Display the integration content that would be added
 - Ask user for confirmation before modifying CLAUDE.md
 
-### 2. Optimize CLAUDE.md Structure
+### 2. Audit Settings Files
+
+When auditing settings files, perform:
+
+#### A. Permission Analysis
+
+Read `.claude/settings.local.json` (primary) and check `.claude/settings.json` and `~/.claude.json` project entries (secondary).
+
+Evaluate using `skills/settings-optimization.md`:
+
+**Redundancy:**
+- Duplicate entries in allow/deny arrays
+- Subset patterns covered by broader patterns
+- Patterns that could be merged
+
+**Coverage:**
+- Common safe tools missing from allow list
+- MCP server tools not covered
+- Directory scopes with no matching permission
+
+**Safety Alignment:**
+- Deny rules cover secrets and destructive commands
+- Allow rules don't bypass active review layers
+- No overly broad patterns without justification
+
+**Profile Fit:**
+- Compare against recommended profile for the project's review architecture
+- Identify specific additions/removals to reach target profile
+
+#### B. Review Layer Verification
+
+Before recommending auto-allow patterns, verify active review layers:
+
+1. Read `plugins/*/hooks/hooks.json` for each installed plugin
+2. Map hook types (PreToolUse, PostToolUse) to tool matchers (Write, Edit, Bash)
+3. Confirm plugins are listed in `.claude-plugin/marketplace.json`
+4. Only recommend auto-allow for scopes covered by ≥2 verified review layers
+
+#### C. Settings Efficiency Score (100 points)
+
+| Category | Points |
+|----------|--------|
+| Redundancy | 25 |
+| Coverage | 25 |
+| Safety Alignment | 25 |
+| Profile Fit | 25 |
+
+### 3. Optimize CLAUDE.md Structure
 
 **Recommended Structure:**
 
@@ -149,7 +196,7 @@ Common issues and solutions.
 - Use headers that scan easily
 - Include examples where they add clarity
 
-### 3. Apply Best Practices
+### 4. Apply Best Practices
 
 **DO:**
 - Use clear, direct language
@@ -166,7 +213,7 @@ Common issues and solutions.
 - Add generic advice that applies to all projects
 - Use emojis unless project requires them
 
-### 4. Generate Improvement Reports
+### 5. Generate Improvement Reports
 
 After analyzing a CLAUDE.md, provide:
 
@@ -202,7 +249,7 @@ Suggested Actions:
 Would you like me to implement these improvements?
 ```
 
-### 5. Insert Plugin Integrations
+### 6. Insert Plugin Integrations
 
 When adding plugin integration content to CLAUDE.md:
 
@@ -237,7 +284,7 @@ Add this integration to CLAUDE.md?
 - Allow users to skip specific plugins they don't want documented
 - Preserve existing CLAUDE.md structure and content
 
-### 6. Create New CLAUDE.md Files
+### 7. Create New CLAUDE.md Files
 
 When creating a new CLAUDE.md:
 
