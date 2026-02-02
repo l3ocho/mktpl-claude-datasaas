@@ -44,10 +44,7 @@ See `skills/review-checklist.md` for complete patterns:
 
 ## Visual Output
 
-```
-╔══════════════════════════════════════════════════════════════════╗
-║  📋 PROJMAN                                                      ║
-║  🏁 CLOSING                                                      ║
-║  Code Review                                                     ║
-╚══════════════════════════════════════════════════════════════════╝
-```
+See `skills/visual-output.md`. This command invokes the **Code Reviewer** agent:
+- Phase Emoji: 🔍
+- Phase Name: REVIEW
+- Context: Sprint Name
