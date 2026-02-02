@@ -4,6 +4,38 @@ All notable changes to the Leo Claude Marketplace will be documented in this fil
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [Unreleased]
+
+### Added
+
+#### Plugin Installation Scripts
+New scripts for installing marketplace plugins into consumer projects:
+
+- **`scripts/install-plugin.sh`** — Install a plugin to a consumer project
+  - Adds MCP server entry to target's `.mcp.json` (if plugin has MCP server)
+  - Appends integration snippet to target's `CLAUDE.md`
+  - Idempotent: safe to run multiple times
+  - Validates plugin exists and target path is valid
+
+- **`scripts/uninstall-plugin.sh`** — Remove a plugin from a consumer project
+  - Removes MCP server entry from `.mcp.json`
+  - Removes integration section from `CLAUDE.md`
+
+- **`scripts/list-installed.sh`** — Show installed plugins in a project
+  - Lists fully installed, partially installed, and available plugins
+  - Shows plugin versions and descriptions
+
+**Usage:**
+```bash
+./scripts/install-plugin.sh data-platform ~/projects/personal-portfolio
+./scripts/list-installed.sh ~/projects/personal-portfolio
+./scripts/uninstall-plugin.sh data-platform ~/projects/personal-portfolio
+```
+
+**Documentation:** `docs/CONFIGURATION.md` updated with "Installing Plugins to Consumer Projects" section.
+
+---
+
 ## [5.8.0] - 2026-02-02
 
 ### Added

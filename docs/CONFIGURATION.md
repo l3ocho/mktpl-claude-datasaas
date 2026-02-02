@@ -415,6 +415,87 @@ The command auto-detects that system config exists and runs quick project setup.
 
 ---
 
+## Installing Plugins to Consumer Projects
+
+The marketplace provides scripts to install plugins into consumer projects. This sets up the MCP server connections and adds CLAUDE.md integration snippets.
+
+### Install a Plugin
+
+```bash
+cd /path/to/leo-claude-mktplace
+./scripts/install-plugin.sh <plugin-name> <target-project-path>
+```
+
+**Examples:**
+```bash
+# Install data-platform to a portfolio project
+./scripts/install-plugin.sh data-platform ~/projects/personal-portfolio
+
+# Install multiple plugins
+./scripts/install-plugin.sh viz-platform ~/projects/personal-portfolio
+./scripts/install-plugin.sh projman ~/projects/personal-portfolio
+```
+
+**What it does:**
+1. Validates the plugin exists in the marketplace
+2. Adds MCP server entry to target's `.mcp.json` (if plugin has MCP server)
+3. Appends integration snippet to target's `CLAUDE.md`
+4. Reports changes and lists available commands
+
+**After installation:** Restart your Claude Code session for MCP tools to become available.
+
+### Uninstall a Plugin
+
+```bash
+./scripts/uninstall-plugin.sh <plugin-name> <target-project-path>
+```
+
+Removes the MCP server entry and CLAUDE.md integration section.
+
+### List Installed Plugins
+
+```bash
+./scripts/list-installed.sh <target-project-path>
+```
+
+Shows which marketplace plugins are installed, partially installed, or available.
+
+**Output example:**
+```
+✓ Fully Installed:
+  PLUGIN                   VERSION    DESCRIPTION
+  ------                   -------    -----------
+  data-platform            1.3.0      pandas, PostgreSQL, and dbt integration...
+  viz-platform             1.1.0      DMC validation, Plotly charts, and theming...
+
+○ Available (not installed):
+  projman                  3.4.0      Sprint planning and project management...
+```
+
+### Plugins with MCP Servers
+
+Not all plugins have MCP servers. The install script handles this automatically:
+
+| Plugin | Has MCP Server | Notes |
+|--------|---------------|-------|
+| data-platform | ✓ | pandas, PostgreSQL, dbt tools |
+| viz-platform | ✓ | DMC validation, chart, theme tools |
+| contract-validator | ✓ | Plugin compatibility validation |
+| cmdb-assistant | ✓ (via netbox) | NetBox CMDB tools |
+| projman | ✓ (via gitea) | Issue, wiki, PR tools |
+| pr-review | ✓ (via gitea) | PR review tools |
+| git-flow | ✗ | Commands only |
+| doc-guardian | ✗ | Commands and hooks only |
+| code-sentinel | ✗ | Commands and hooks only |
+| clarity-assist | ✗ | Commands only |
+
+### Script Requirements
+
+- **jq** must be installed (`sudo apt install jq`)
+- Scripts are idempotent (safe to run multiple times)
+
+---
+
 ## Automatic Validation Features
 
 ### API Validation
