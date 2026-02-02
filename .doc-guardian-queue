@@ -15,3 +15,11 @@
 2026-02-02T13:46:21 | commands | /home/lmiranda/claude-plugins-work/plugins/projman/commands/sprint-status.md | docs/COMMANDS-CHEATSHEET.md README.md
 2026-02-02T13:46:38 | agents | /home/lmiranda/claude-plugins-work/plugins/projman/agents/planner.md | README.md CLAUDE.md
 2026-02-02T13:46:57 | agents | /home/lmiranda/claude-plugins-work/plugins/projman/agents/code-reviewer.md | README.md CLAUDE.md
+2026-02-02T13:49:13 | commands | /home/lmiranda/claude-plugins-work/plugins/viz-platform/commands/design-gate.md | docs/COMMANDS-CHEATSHEET.md README.md
+2026-02-02T13:49:24 | commands | /home/lmiranda/claude-plugins-work/plugins/data-platform/commands/data-gate.md | docs/COMMANDS-CHEATSHEET.md README.md
+2026-02-02T13:49:35 | skills | /home/lmiranda/claude-plugins-work/plugins/projman/skills/domain-consultation.md | README.md
+2026-02-02T13:50:04 | mcp-servers | /home/lmiranda/claude-plugins-work/mcp-servers/contract-validator/mcp_server/validation_tools.py | docs/COMMANDS-CHEATSHEET.md CLAUDE.md
+2026-02-02T13:50:59 | mcp-servers | /home/lmiranda/claude-plugins-work/mcp-servers/contract-validator/mcp_server/server.py | docs/COMMANDS-CHEATSHEET.md CLAUDE.md
+2026-02-02T13:51:32 | mcp-servers | /home/lmiranda/claude-plugins-work/mcp-servers/contract-validator/tests/test_validation_tools.py | docs/COMMANDS-CHEATSHEET.md CLAUDE.md
+2026-02-02T13:51:49 | skills | /home/lmiranda/claude-plugins-work/plugins/contract-validator/skills/validation-rules.md | README.md
+2026-02-02T13:52:07 | skills | /home/lmiranda/claude-plugins-work/plugins/contract-validator/skills/mcp-tools-reference.md | README.md

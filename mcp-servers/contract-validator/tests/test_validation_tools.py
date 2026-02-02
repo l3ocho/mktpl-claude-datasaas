@@ -404,3 +404,108 @@ async def test_validate_workflow_integration_nonexistent_plugin(validation_tools
 
     assert "error" in result
     assert "not found" in result["error"].lower()
+
+
+# --- Gate Contract Version Tests ---
+
+@pytest.fixture
+def domain_plugin_with_contract(tmp_path):
+    """Create domain plugin with gate_contract: v1 in frontmatter"""
+    plugin_dir = tmp_path / "viz-platform-versioned"
+    plugin_dir.mkdir()
+    (plugin_dir / ".claude-plugin").mkdir()
+    (plugin_dir / "commands").mkdir()
+    (plugin_dir / "agents").mkdir()
+
+    # Gate command with gate_contract in frontmatter
+    gate_cmd = plugin_dir / "commands" / "design-gate.md"
+    gate_cmd.write_text("""---
+description: Design system compliance gate (pass/fail)
+gate_contract: v1
+---
+
+# /design-gate
+
+Binary pass/fail validation gate for design system compliance.
+
+## Output
+
+- **PASS**: All design system checks passed
+- **FAIL**: Design system violations detected
+""")
+
+    # Review command
+    review_cmd = plugin_dir / "commands" / "design-review.md"
+    review_cmd.write_text("""# /design-review
+
+Comprehensive design system audit.
+""")
+
+    # Advisory agent
+    agent = plugin_dir / "agents" / "design-reviewer.md"
+    agent.write_text("""# design-reviewer
+
+Design system compliance auditor for Domain/Viz issues.
+""")
+
+    return str(plugin_dir)
+
+
+@pytest.mark.asyncio
+async def test_validate_workflow_contract_match(validation_tools, domain_plugin_with_contract):
+    """Test that matching expected_contract produces no warning"""
+    result = await validation_tools.validate_workflow_integration(
+        domain_plugin_with_contract,
+        "Domain/Viz",
+        expected_contract="v1"
+    )
+
+    assert "error" not in result
+    assert result["valid"] is True
+    assert result["gate_contract"] == "v1"
+
+    # Should have no warnings about contract mismatch
+    warning_issues = [i for i in result["issues"] if i["severity"].value == "warning"]
+    contract_warnings = [i for i in warning_issues if "contract" in i["message"].lower()]
+    assert len(contract_warnings) == 0
+
+
+@pytest.mark.asyncio
+async def test_validate_workflow_contract_mismatch(validation_tools, domain_plugin_with_contract):
+    """Test that mismatched expected_contract produces WARNING"""
+    result = await validation_tools.validate_workflow_integration(
+        domain_plugin_with_contract,
+        "Domain/Viz",
+        expected_contract="v2"  # Gate has v1
+    )
+
+    assert "error" not in result
+    assert result["valid"] is True  # Contract mismatch doesn't affect validity
+    assert result["gate_contract"] == "v1"
+
+    # Should have warning about contract mismatch
+    warning_issues = [i for i in result["issues"] if i["severity"].value == "warning"]
+    contract_warnings = [i for i in warning_issues if "contract" in i["message"].lower()]
+    assert len(contract_warnings) == 1
+    assert "mismatch" in contract_warnings[0]["message"].lower()
+    assert "v1" in contract_warnings[0]["message"]
+    assert "v2" in contract_warnings[0]["message"]
+
+
+@pytest.mark.asyncio
+async def test_validate_workflow_no_contract(validation_tools, domain_plugin_complete):
+    """Test that missing gate_contract produces INFO suggestion"""
+    result = await validation_tools.validate_workflow_integration(
+        domain_plugin_complete,
+        "Domain/Viz"
+    )
+
+    assert "error" not in result
+    assert result["valid"] is True
+    assert result["gate_contract"] is None
+
+    # Should have info issue about missing contract
+    info_issues = [i for i in result["issues"] if i["severity"].value == "info"]
+    contract_info = [i for i in info_issues if "contract" in i["message"].lower()]
+    assert len(contract_info) == 1
+    assert "does not declare" in contract_info[0]["message"].lower()

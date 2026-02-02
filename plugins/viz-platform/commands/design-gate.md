@@ -1,5 +1,6 @@
 ---
 description: Design system compliance gate (pass/fail) for sprint execution
+gate_contract: v1
 arguments:
   - name: path
     description: File or directory to validate
