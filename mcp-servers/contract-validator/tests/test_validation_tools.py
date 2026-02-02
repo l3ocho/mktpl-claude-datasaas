@@ -254,3 +254,153 @@ async def test_validate_data_flow_missing_producer(validation_tools, tmp_path):
     # Should have warning about missing producer
     warning_issues = [i for i in result["issues"] if i["severity"].value == "warning"]
     assert len(warning_issues) > 0
+
+
+# --- Workflow Integration Tests ---
+
+@pytest.fixture
+def domain_plugin_complete(tmp_path):
+    """Create a complete domain plugin with gate, review, and advisory agent"""
+    plugin_dir = tmp_path / "viz-platform"
+    plugin_dir.mkdir()
+    (plugin_dir / ".claude-plugin").mkdir()
+    (plugin_dir / "commands").mkdir()
+    (plugin_dir / "agents").mkdir()
+
+    # Gate command with PASS/FAIL pattern
+    gate_cmd = plugin_dir / "commands" / "design-gate.md"
+    gate_cmd.write_text("""# /design-gate
+
+Binary pass/fail validation gate for design system compliance.
+
+## Output
+
+- **PASS**: All design system checks passed
+- **FAIL**: Design system violations detected
+""")
+
+    # Review command
+    review_cmd = plugin_dir / "commands" / "design-review.md"
+    review_cmd.write_text("""# /design-review
+
+Comprehensive design system audit.
+""")
+
+    # Advisory agent
+    agent = plugin_dir / "agents" / "design-reviewer.md"
+    agent.write_text("""# design-reviewer
+
+Design system compliance auditor.
+
+Handles issues with `Domain/Viz` label.
+""")
+
+    return str(plugin_dir)
+
+
+@pytest.fixture
+def domain_plugin_missing_gate(tmp_path):
+    """Create domain plugin with review and agent but no gate command"""
+    plugin_dir = tmp_path / "data-platform"
+    plugin_dir.mkdir()
+    (plugin_dir / ".claude-plugin").mkdir()
+    (plugin_dir / "commands").mkdir()
+    (plugin_dir / "agents").mkdir()
+
+    # Review command (but no gate)
+    review_cmd = plugin_dir / "commands" / "data-review.md"
+    review_cmd.write_text("""# /data-review
+
+Data integrity audit.
+""")
+
+    # Advisory agent
+    agent = plugin_dir / "agents" / "data-advisor.md"
+    agent.write_text("""# data-advisor
+
+Data integrity advisor for Domain/Data issues.
+""")
+
+    return str(plugin_dir)
+
+
+@pytest.fixture
+def domain_plugin_minimal(tmp_path):
+    """Create minimal plugin with no commands or agents"""
+    plugin_dir = tmp_path / "minimal-plugin"
+    plugin_dir.mkdir()
+    (plugin_dir / ".claude-plugin").mkdir()
+
+    readme = plugin_dir / "README.md"
+    readme.write_text("# Minimal Plugin\n\nNo commands or agents.")
+
+    return str(plugin_dir)
+
+
+@pytest.mark.asyncio
+async def test_validate_workflow_integration_complete(validation_tools, domain_plugin_complete):
+    """Test complete domain plugin returns valid with all interfaces found"""
+    result = await validation_tools.validate_workflow_integration(
+        domain_plugin_complete,
+        "Domain/Viz"
+    )
+
+    assert "error" not in result
+    assert result["valid"] is True
+    assert result["gate_command_found"] is True
+    assert result["review_command_found"] is True
+    assert result["advisory_agent_found"] is True
+    assert len(result["issues"]) == 0
+
+
+@pytest.mark.asyncio
+async def test_validate_workflow_integration_missing_gate(validation_tools, domain_plugin_missing_gate):
+    """Test plugin missing gate command returns invalid with ERROR"""
+    result = await validation_tools.validate_workflow_integration(
+        domain_plugin_missing_gate,
+        "Domain/Data"
+    )
+
+    assert "error" not in result
+    assert result["valid"] is False
+    assert result["gate_command_found"] is False
+    assert result["review_command_found"] is True
+    assert result["advisory_agent_found"] is True
+
+    # Should have one ERROR for missing gate
+    error_issues = [i for i in result["issues"] if i["severity"].value == "error"]
+    assert len(error_issues) == 1
+    assert "gate" in error_issues[0]["message"].lower()
+
+
+@pytest.mark.asyncio
+async def test_validate_workflow_integration_minimal(validation_tools, domain_plugin_minimal):
+    """Test minimal plugin returns invalid with multiple issues"""
+    result = await validation_tools.validate_workflow_integration(
+        domain_plugin_minimal,
+        "Domain/Test"
+    )
+
+    assert "error" not in result
+    assert result["valid"] is False
+    assert result["gate_command_found"] is False
+    assert result["review_command_found"] is False
+    assert result["advisory_agent_found"] is False
+
+    # Should have one ERROR (gate) and two WARNINGs (review, agent)
+    error_issues = [i for i in result["issues"] if i["severity"].value == "error"]
+    warning_issues = [i for i in result["issues"] if i["severity"].value == "warning"]
+    assert len(error_issues) == 1
+    assert len(warning_issues) == 2
+
+
+@pytest.mark.asyncio
+async def test_validate_workflow_integration_nonexistent_plugin(validation_tools, tmp_path):
+    """Test error when plugin directory doesn't exist"""
+    result = await validation_tools.validate_workflow_integration(
+        str(tmp_path / "nonexistent"),
+        "Domain/Test"
+    )
+
+    assert "error" in result
+    assert "not found" in result["error"].lower()

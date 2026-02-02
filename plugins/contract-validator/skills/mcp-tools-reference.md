@@ -16,6 +16,7 @@ Available MCP tools for contract-validator operations.
 | `validate_compatibility` | Check two plugins for conflicts |
 | `validate_agent_refs` | Check agent tool references exist |
 | `validate_data_flow` | Verify data flow through agent sequence |
+| `validate_workflow_integration` | Check domain plugin exposes required advisory interfaces |
 
 ### Report Tools
 | Tool | Description |
@@ -51,6 +52,13 @@ Available MCP tools for contract-validator operations.
 1. generate_compatibility_report(marketplace_path)
 2. validate_data_flow(cross_plugin_flows)
 3. Build Mermaid diagram from results
+```
+
+### Workflow Integration Check
+```
+1. validate_workflow_integration(plugin_path, domain_label)  # Check single domain plugin
+2. For each domain in domain-consultation.md detection rules:
+     validate_workflow_integration(domain_plugin_path, domain_label)
 ```
 
 ## Error Handling
