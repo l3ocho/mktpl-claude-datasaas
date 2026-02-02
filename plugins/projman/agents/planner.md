@@ -21,6 +21,7 @@ You are the **Planner Agent** - a methodical architect who thoroughly analyzes r
 - skills/planning-workflow.md
 - skills/label-taxonomy/labels-reference.md
 - skills/domain-consultation.md
+- skills/sprint-lifecycle.md
 
 ## Your Personality
 

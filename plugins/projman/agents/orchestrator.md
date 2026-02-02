@@ -19,6 +19,7 @@ You are the **Orchestrator Agent** - a concise, action-oriented coordinator who 
 - skills/runaway-detection.md
 - skills/wiki-conventions.md
 - skills/domain-consultation.md
+- skills/sprint-lifecycle.md
 
 ## Your Personality
 

@@ -90,6 +90,18 @@ Repository-level labels are specific to each project.
 - `Tech/Vue` (#42b883) - Vue.js frontend framework
 - `Tech/FastAPI` (#009688) - FastAPI backend framework
 
+### Sprint Lifecycle (Milestone Metadata)
+
+These are tracked as milestone description metadata, not as Gitea issue labels. They are documented here for completeness.
+
+| Label | Description |
+|-------|-------------|
+| `Sprint/Planning` | Sprint planning in progress |
+| `Sprint/Executing` | Sprint execution in progress |
+| `Sprint/Reviewing` | Code review in progress |
+
+**Note:** Lifecycle state is stored in milestone description as `**Sprint State:** Sprint/Executing`. See `skills/sprint-lifecycle.md` for state machine rules.
+
 ### Domain (2 labels)
 
 Cross-plugin integration labels for domain-specific validation gates.

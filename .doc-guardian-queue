@@ -7,3 +7,11 @@
 2026-02-02T13:39:15 | commands | /home/lmiranda/claude-plugins-work/plugins/projman/commands/setup.md | docs/COMMANDS-CHEATSHEET.md README.md
 2026-02-02T13:39:32 | skills | /home/lmiranda/claude-plugins-work/plugins/projman/skills/rfc-workflow.md | README.md
 2026-02-02T13:43:14 | skills | /home/lmiranda/claude-plugins-work/plugins/projman/skills/rfc-templates.md | README.md
+2026-02-02T13:44:55 | skills | /home/lmiranda/claude-plugins-work/plugins/projman/skills/sprint-lifecycle.md | README.md
+2026-02-02T13:45:04 | skills | /home/lmiranda/claude-plugins-work/plugins/projman/skills/label-taxonomy/labels-reference.md | README.md
+2026-02-02T13:45:14 | commands | /home/lmiranda/claude-plugins-work/plugins/projman/commands/sprint-plan.md | docs/COMMANDS-CHEATSHEET.md README.md
+2026-02-02T13:45:48 | commands | /home/lmiranda/claude-plugins-work/plugins/projman/commands/review.md | docs/COMMANDS-CHEATSHEET.md README.md
+2026-02-02T13:46:07 | commands | /home/lmiranda/claude-plugins-work/plugins/projman/commands/sprint-close.md | docs/COMMANDS-CHEATSHEET.md README.md
+2026-02-02T13:46:21 | commands | /home/lmiranda/claude-plugins-work/plugins/projman/commands/sprint-status.md | docs/COMMANDS-CHEATSHEET.md README.md
+2026-02-02T13:46:38 | agents | /home/lmiranda/claude-plugins-work/plugins/projman/agents/planner.md | README.md CLAUDE.md
+2026-02-02T13:46:57 | agents | /home/lmiranda/claude-plugins-work/plugins/projman/agents/code-reviewer.md | README.md CLAUDE.md
