@@ -1,0 +1,27 @@
+# Doc Guardian Queue - cleared after sync on 2026-02-02
+2026-02-02T11:41:00 | .claude-plugin | /home/lmiranda/claude-plugins-work/.claude-plugin/marketplace.json | CLAUDE.md .claude-plugin/marketplace.json
+2026-02-02T13:35:48 | skills | /home/lmiranda/claude-plugins-work/plugins/projman/skills/sprint-approval.md | README.md
+2026-02-02T13:36:03 | commands | /home/lmiranda/claude-plugins-work/plugins/projman/commands/sprint-start.md | docs/COMMANDS-CHEATSHEET.md README.md
+2026-02-02T13:36:16 | agents | /home/lmiranda/claude-plugins-work/plugins/projman/agents/orchestrator.md | README.md CLAUDE.md
+2026-02-02T13:39:07 | commands | /home/lmiranda/claude-plugins-work/plugins/projman/commands/rfc.md | docs/COMMANDS-CHEATSHEET.md README.md
+2026-02-02T13:39:15 | commands | /home/lmiranda/claude-plugins-work/plugins/projman/commands/setup.md | docs/COMMANDS-CHEATSHEET.md README.md
+2026-02-02T13:39:32 | skills | /home/lmiranda/claude-plugins-work/plugins/projman/skills/rfc-workflow.md | README.md
+2026-02-02T13:43:14 | skills | /home/lmiranda/claude-plugins-work/plugins/projman/skills/rfc-templates.md | README.md
+2026-02-02T13:44:55 | skills | /home/lmiranda/claude-plugins-work/plugins/projman/skills/sprint-lifecycle.md | README.md
+2026-02-02T13:45:04 | skills | /home/lmiranda/claude-plugins-work/plugins/projman/skills/label-taxonomy/labels-reference.md | README.md
+2026-02-02T13:45:14 | commands | /home/lmiranda/claude-plugins-work/plugins/projman/commands/sprint-plan.md | docs/COMMANDS-CHEATSHEET.md README.md
+2026-02-02T13:45:48 | commands | /home/lmiranda/claude-plugins-work/plugins/projman/commands/review.md | docs/COMMANDS-CHEATSHEET.md README.md
+2026-02-02T13:46:07 | commands | /home/lmiranda/claude-plugins-work/plugins/projman/commands/sprint-close.md | docs/COMMANDS-CHEATSHEET.md README.md
+2026-02-02T13:46:21 | commands | /home/lmiranda/claude-plugins-work/plugins/projman/commands/sprint-status.md | docs/COMMANDS-CHEATSHEET.md README.md
+2026-02-02T13:46:38 | agents | /home/lmiranda/claude-plugins-work/plugins/projman/agents/planner.md | README.md CLAUDE.md
+2026-02-02T13:46:57 | agents | /home/lmiranda/claude-plugins-work/plugins/projman/agents/code-reviewer.md | README.md CLAUDE.md
+2026-02-02T13:49:13 | commands | /home/lmiranda/claude-plugins-work/plugins/viz-platform/commands/design-gate.md | docs/COMMANDS-CHEATSHEET.md README.md
+2026-02-02T13:49:24 | commands | /home/lmiranda/claude-plugins-work/plugins/data-platform/commands/data-gate.md | docs/COMMANDS-CHEATSHEET.md README.md
+2026-02-02T13:49:35 | skills | /home/lmiranda/claude-plugins-work/plugins/projman/skills/domain-consultation.md | README.md
+2026-02-02T13:50:04 | mcp-servers | /home/lmiranda/claude-plugins-work/mcp-servers/contract-validator/mcp_server/validation_tools.py | docs/COMMANDS-CHEATSHEET.md CLAUDE.md
+2026-02-02T13:50:59 | mcp-servers | /home/lmiranda/claude-plugins-work/mcp-servers/contract-validator/mcp_server/server.py | docs/COMMANDS-CHEATSHEET.md CLAUDE.md
+2026-02-02T13:51:32 | mcp-servers | /home/lmiranda/claude-plugins-work/mcp-servers/contract-validator/tests/test_validation_tools.py | docs/COMMANDS-CHEATSHEET.md CLAUDE.md
+2026-02-02T13:51:49 | skills | /home/lmiranda/claude-plugins-work/plugins/contract-validator/skills/validation-rules.md | README.md
+2026-02-02T13:52:07 | skills | /home/lmiranda/claude-plugins-work/plugins/contract-validator/skills/mcp-tools-reference.md | README.md
+2026-02-02T13:59:09 | skills | /home/lmiranda/claude-plugins-work/plugins/projman/skills/progress-tracking.md | README.md
+2026-02-02T14:01:34 | commands | /home/lmiranda/claude-plugins-work/plugins/projman/commands/test.md | docs/COMMANDS-CHEATSHEET.md README.md

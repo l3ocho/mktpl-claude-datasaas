@@ -35,7 +35,9 @@ Rules for validating plugin compatibility and agent definitions.
 2. Gate command produces binary PASS/FAIL output
 3. Review command exists (WARNING if missing, not ERROR)
 4. Advisory agent exists referencing the domain label
-- Severity: ERROR for missing gate, WARNING for missing review/agent
+5. Gate command declares `gate_contract` version in frontmatter
+6. If expected version provided, gate contract version matches expected
+- Severity: ERROR for missing gate, WARNING for missing review/agent or contract mismatch, INFO for missing contract
 
 ## Severity Levels
 

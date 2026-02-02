@@ -11,7 +11,7 @@ Provides templates for RFC wiki pages and defines the required/optional sections
 
 ## When to Use
 
-- **Commands**: `/rfc-create` when generating new RFC pages
+- **Commands**: `/rfc create` when generating new RFC pages
 - **Integration**: Referenced by `rfc-workflow.md` for page structure
 
 ---

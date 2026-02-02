@@ -9,6 +9,7 @@ description: Check current sprint progress, identify blockers, optionally genera
 - skills/mcp-tools-reference.md
 - skills/progress-tracking.md
 - skills/dependency-management.md
+- skills/sprint-lifecycle.md
 
 ## Purpose
 
@@ -23,6 +24,7 @@ Check current sprint progress, identify blockers, and show execution status. Opt
 
 ## Workflow
 
+0. **Display Lifecycle State** - Read current Sprint/* state from milestone description per `skills/sprint-lifecycle.md` and display in output header.
 1. **Fetch Sprint Issues** - Get all issues for current milestone
 2. **Calculate Progress** - Count completed vs total issues
 3. **Identify Active Tasks** - Find issues with `Status/In-Progress`
