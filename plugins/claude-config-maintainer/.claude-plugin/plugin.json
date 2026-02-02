@@ -1,7 +1,7 @@
 {
   "name": "claude-config-maintainer",
-  "version": "1.0.0",
-  "description": "Maintains and optimizes CLAUDE.md configuration files for Claude Code projects",
+  "version": "1.2.0",
+  "description": "Maintains and optimizes CLAUDE.md and settings.local.json configuration files for Claude Code projects",
   "author": {
     "name": "Leo Miranda",
     "email": "leobmiranda@gmail.com"
@@ -14,7 +14,9 @@
     "configuration",
     "optimization",
     "claude-md",
-    "developer-tools"
+    "developer-tools",
+    "settings",
+    "permissions"
   ],
   "commands": ["./commands/"]
 }

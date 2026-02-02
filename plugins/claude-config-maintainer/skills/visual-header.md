@@ -47,6 +47,27 @@ This skill defines the standard visual header for claude-config-maintainer comma
 +-----------------------------------------------------------------+
 ```
 
+### /config-audit-settings
+```
++-----------------------------------------------------------------+
+|  CONFIG-MAINTAINER - Settings Audit                              |
++-----------------------------------------------------------------+
+```
+
+### /config-optimize-settings
+```
++-----------------------------------------------------------------+
+|  CONFIG-MAINTAINER - Settings Optimization                       |
++-----------------------------------------------------------------+
+```
+
+### /config-permissions-map
+```
++-----------------------------------------------------------------+
+|  CONFIG-MAINTAINER - Permissions Map                             |
++-----------------------------------------------------------------+
+```
+
 ## Usage
 
 Display the header at the start of command execution, before any analysis or output.
