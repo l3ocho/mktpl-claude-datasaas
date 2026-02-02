@@ -9,10 +9,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Added
 - **contract-validator**: New `validate_workflow_integration` MCP tool — validates domain plugins expose required advisory interfaces (gate command, review command, advisory agent)
 - **contract-validator**: New `MISSING_INTEGRATION` issue type for workflow integration validation
-- **marketplace.json**: `integrates_with` field on viz-platform and data-platform declaring projman integration metadata
 
 ### Fixed
 - `scripts/setup.sh` banner version updated from v5.1.0 to v5.7.1
+
+### Reverted
+- **marketplace.json**: Removed `integrates_with` field — Claude Code schema does not support custom plugin fields (causes marketplace load failure)
 
 ---
 
