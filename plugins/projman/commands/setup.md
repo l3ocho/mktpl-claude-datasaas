@@ -26,6 +26,7 @@ Unified setup command for all configuration needs.
 /setup --full       # Full wizard (MCP + system + project)
 /setup --quick      # Project-only setup
 /setup --sync       # Update after repo move
+/setup --clear-cache # Clear plugin cache (between sessions only)
 ```
 
 ## Mode Detection
@@ -78,6 +79,21 @@ Steps:
 5. Validate new values
 6. Update `.env`
 7. Confirm
+
+## Mode: Clear Cache (--clear-cache)
+
+Clear plugin cache to force fresh configuration reload.
+
+**WARNING:** Only run between sessions, never mid-session. Clearing cache mid-session destroys MCP tool venv paths and breaks all MCP operations.
+
+Steps:
+1. Execute: `rm -rf ~/.claude/plugins/cache/leo-claude-mktplace/`
+2. Inform user: "Cache cleared. Restart Claude Code for changes to take effect."
+
+When to use:
+- After updating the marketplace (`git pull` or reinstall)
+- When MCP servers show stale configuration
+- When plugin changes don't take effect
 
 ## Visual Output
 

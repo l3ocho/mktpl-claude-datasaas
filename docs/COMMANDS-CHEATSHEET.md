@@ -15,17 +15,12 @@ Quick reference for all commands in the Leo Claude Marketplace.
 | **projman** | `/test` | | X | Run tests (`/test run`) or generate tests (`/test gen <target>`) |
 | **projman** | `/sprint-close` | | X | Complete sprint and capture lessons learned to Gitea Wiki |
 | **projman** | `/labels-sync` | | X | Synchronize label taxonomy from Gitea |
-| **projman** | `/setup` | | X | Auto-detect mode or use `--full`, `--quick`, `--sync` |
+| **projman** | `/setup` | | X | Auto-detect mode or use `--full`, `--quick`, `--sync`, `--clear-cache` |
 | **projman** | *SessionStart hook* | X | | Detects git remote vs .env mismatch, warns to run `/setup --sync` |
 | **projman** | `/debug` | | X | Diagnostics (`/debug report`) or investigate (`/debug review`) |
 | **projman** | `/suggest-version` | | X | Analyze CHANGELOG and recommend semantic version bump |
 | **projman** | `/proposal-status` | | X | View proposal and implementation hierarchy with status |
-| **projman** | `/clear-cache` | | X | Clear plugin cache to force fresh configuration reload |
-| **projman** | `/rfc-create` | | X | Create new RFC from conversation or clarified spec |
-| **projman** | `/rfc-list` | | X | List all RFCs grouped by status |
-| **projman** | `/rfc-review` | | X | Submit Draft RFC for review |
-| **projman** | `/rfc-approve` | | X | Approve RFC in Review status for sprint planning |
-| **projman** | `/rfc-reject` | | X | Reject RFC with documented reason |
+| **projman** | `/rfc` | | X | RFC lifecycle management (`/rfc create\|list\|review\|approve\|reject`) |
 | **git-flow** | `/commit` | | X | Create commit with auto-generated conventional message |
 | **git-flow** | `/commit-push` | | X | Commit and push to remote in one operation |
 | **git-flow** | `/commit-merge` | | X | Commit current changes, then merge into target branch |
@@ -144,11 +139,11 @@ Full workflow from idea to implementation using RFCs:
 
 ```
 1. /clarify                  # Clarify the feature idea
-2. /rfc-create               # Create RFC from clarified spec
+2. /rfc create               # Create RFC from clarified spec
    ... refine RFC content ...
-3. /rfc-review 0001          # Submit RFC for review
+3. /rfc review 0001          # Submit RFC for review
    ... review discussion ...
-4. /rfc-approve 0001         # Approve RFC for implementation
+4. /rfc approve 0001         # Approve RFC for implementation
 5. /sprint-plan              # Select approved RFC for sprint
    ... implement feature ...
 6. /sprint-close             # Complete sprint, RFC marked Implemented

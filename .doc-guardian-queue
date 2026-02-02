@@ -1,0 +1,9 @@
+# Doc Guardian Queue - cleared after sync on 2026-02-02
+2026-02-02T11:41:00 | .claude-plugin | /home/lmiranda/claude-plugins-work/.claude-plugin/marketplace.json | CLAUDE.md .claude-plugin/marketplace.json
+2026-02-02T13:35:48 | skills | /home/lmiranda/claude-plugins-work/plugins/projman/skills/sprint-approval.md | README.md
+2026-02-02T13:36:03 | commands | /home/lmiranda/claude-plugins-work/plugins/projman/commands/sprint-start.md | docs/COMMANDS-CHEATSHEET.md README.md
+2026-02-02T13:36:16 | agents | /home/lmiranda/claude-plugins-work/plugins/projman/agents/orchestrator.md | README.md CLAUDE.md
+2026-02-02T13:39:07 | commands | /home/lmiranda/claude-plugins-work/plugins/projman/commands/rfc.md | docs/COMMANDS-CHEATSHEET.md README.md
+2026-02-02T13:39:15 | commands | /home/lmiranda/claude-plugins-work/plugins/projman/commands/setup.md | docs/COMMANDS-CHEATSHEET.md README.md
+2026-02-02T13:39:32 | skills | /home/lmiranda/claude-plugins-work/plugins/projman/skills/rfc-workflow.md | README.md
+2026-02-02T13:43:14 | skills | /home/lmiranda/claude-plugins-work/plugins/projman/skills/rfc-templates.md | README.md

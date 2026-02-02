@@ -1,0 +1,15 @@
+2026-01-26T14:36:42 | mcp-servers | /home/lmiranda/claude-plugins-work/mcp-servers/contract-validator/mcp_server/parse_tools.py | docs/COMMANDS-CHEATSHEET.md CLAUDE.md
+2026-01-26T14:37:38 | mcp-servers | /home/lmiranda/claude-plugins-work/mcp-servers/contract-validator/mcp_server/parse_tools.py | docs/COMMANDS-CHEATSHEET.md CLAUDE.md
+2026-01-26T14:37:48 | mcp-servers | /home/lmiranda/claude-plugins-work/mcp-servers/contract-validator/mcp_server/parse_tools.py | docs/COMMANDS-CHEATSHEET.md CLAUDE.md
+2026-01-26T14:38:05 | mcp-servers | /home/lmiranda/claude-plugins-work/mcp-servers/contract-validator/mcp_server/parse_tools.py | docs/COMMANDS-CHEATSHEET.md CLAUDE.md
+2026-01-26T14:38:55 | mcp-servers | /home/lmiranda/claude-plugins-work/mcp-servers/contract-validator/mcp_server/parse_tools.py | docs/COMMANDS-CHEATSHEET.md CLAUDE.md
+2026-01-26T14:39:35 | mcp-servers | /home/lmiranda/claude-plugins-work/mcp-servers/contract-validator/mcp_server/parse_tools.py | docs/COMMANDS-CHEATSHEET.md CLAUDE.md
+2026-01-26T14:40:19 | mcp-servers | /home/lmiranda/claude-plugins-work/mcp-servers/contract-validator/mcp_server/parse_tools.py | docs/COMMANDS-CHEATSHEET.md CLAUDE.md
+2026-01-26T15:02:30 | mcp-servers | /home/lmiranda/claude-plugins-work/mcp-servers/contract-validator/tests/test_parse_tools.py | docs/COMMANDS-CHEATSHEET.md CLAUDE.md
+2026-01-26T15:02:37 | mcp-servers | /home/lmiranda/claude-plugins-work/mcp-servers/contract-validator/tests/test_parse_tools.py | docs/COMMANDS-CHEATSHEET.md CLAUDE.md
+2026-01-26T15:03:41 | mcp-servers | /home/lmiranda/claude-plugins-work/mcp-servers/contract-validator/tests/test_report_tools.py | docs/COMMANDS-CHEATSHEET.md CLAUDE.md
+2026-02-02T10:56:19 | mcp-servers | /home/lmiranda/claude-plugins-work/mcp-servers/contract-validator/mcp_server/validation_tools.py | docs/COMMANDS-CHEATSHEET.md CLAUDE.md
+2026-02-02T10:57:49 | mcp-servers | /home/lmiranda/claude-plugins-work/mcp-servers/contract-validator/tests/test_validation_tools.py | docs/COMMANDS-CHEATSHEET.md CLAUDE.md
+2026-02-02T10:58:22 | skills | /home/lmiranda/claude-plugins-work/plugins/contract-validator/skills/mcp-tools-reference.md | README.md
+2026-02-02T10:58:38 | skills | /home/lmiranda/claude-plugins-work/plugins/contract-validator/skills/validation-rules.md | README.md
+2026-02-02T10:59:13 | .claude-plugin | /home/lmiranda/claude-plugins-work/.claude-plugin/marketplace.json | CLAUDE.md .claude-plugin/marketplace.json
