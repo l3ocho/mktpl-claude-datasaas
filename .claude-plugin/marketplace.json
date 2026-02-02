@@ -6,7 +6,7 @@
   },
   "metadata": {
     "description": "Project management plugins with Gitea and NetBox integrations",
-    "version": "5.6.0"
+    "version": "5.7.0"
   },
   "plugins": [
     {
@@ -155,7 +155,7 @@
     },
     {
       "name": "data-platform",
-      "version": "1.2.0",
+      "version": "1.3.0",
       "description": "Data engineering tools with pandas, PostgreSQL/PostGIS, and dbt integration",
       "source": "./plugins/data-platform",
       "author": {

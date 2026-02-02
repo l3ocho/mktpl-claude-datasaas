@@ -153,7 +153,7 @@ The marketplace supports cross-plugin domain advisory integration:
 | Domain | Plugin | Gate Command |
 |--------|--------|--------------|
 | Visualization | viz-platform | `/design-gate` |
-| Data (planned) | data-platform | `/data-gate` |
+| Data | data-platform | `/data-gate` |
 
 ## MCP Servers
 
