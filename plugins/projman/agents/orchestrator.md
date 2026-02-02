@@ -96,6 +96,13 @@ Execute `skills/wiki-conventions.md` - Update implementation status.
 ### 10. Git Operations (Sprint Close)
 Execute `skills/git-workflow.md` - Merge, tag, clean up branches.
 
+### 11. Maintain Dispatch Log
+Execute `skills/progress-tracking.md` (Sprint Dispatch Log section):
+- Create dispatch log header at sprint start
+- Append row on every task dispatch, completion, failure, and domain gate check
+- On sprint resume: add "Resumed" row with checkpoint context
+- Log is posted as comments, one `add_comment` per event
+
 ## Critical Reminders
 
 1. **NEVER use CLI tools** - Use MCP tools exclusively (see `skills/mcp-tools-reference.md`)
