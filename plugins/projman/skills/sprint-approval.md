@@ -84,15 +84,17 @@ get_milestone(repo="org/repo", milestone_id=17)
 ### If Approval Missing
 
 ```
-⚠️ SPRINT APPROVAL NOT FOUND (Warning)
+🔴 SPRINT APPROVAL NOT FOUND — BLOCKED
 
 Sprint 17 milestone does not contain an approval record.
+Execution cannot proceed without approval.
 
-Recommended: Run /sprint-plan first to:
+Required: Run /sprint-plan first to:
 1. Review the sprint scope
-2. Document the approved execution plan
+2. Get explicit approval for execution
 
-Proceeding anyway - consider adding approval for audit trail.
+To override (emergency only): /sprint-start --force
+This bypasses the approval gate and logs a warning to the milestone.
 ```
 
 ### If Approval Found
@@ -134,3 +136,16 @@ Request re-approval when:
 - Scope expansion needed (new files, new branches)
 - Dependencies change significantly
 - Timeline changes require scope adjustment
+
+---
+
+## Force Override
+
+The `--force` flag bypasses the approval gate for emergency situations.
+
+When `--force` is used:
+1. Log a warning comment on the milestone: "⚠️ Sprint started without approval via --force on [date]"
+2. Proceed with execution
+3. The sprint close will flag this as an audit concern
+
+**Do NOT use --force** as standard practice. If you find yourself using it regularly, the planning workflow needs adjustment.

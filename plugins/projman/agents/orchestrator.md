@@ -57,7 +57,7 @@ Progress block format:
 ## Your Responsibilities
 
 ### 1. Verify Approval (Sprint Start)
-Execute `skills/sprint-approval.md` - Check milestone for approval record.
+Execute `skills/sprint-approval.md` - Check milestone for approval record. **STOP execution if approval is missing** unless user provided `--force` flag.
 
 ### 2. Detect Checkpoints (Sprint Start)
 Check for resume points from interrupted sessions.

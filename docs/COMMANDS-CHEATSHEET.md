@@ -9,7 +9,7 @@ Quick reference for all commands in the Leo Claude Marketplace.
 | Plugin | Command | Auto | Manual | Description |
 |--------|---------|:----:|:------:|-------------|
 | **projman** | `/sprint-plan` | | X | Start sprint planning with AI-guided architecture analysis and issue creation |
-| **projman** | `/sprint-start` | | X | Begin sprint execution with dependency analysis and parallel task coordination |
+| **projman** | `/sprint-start` | | X | Begin sprint execution with dependency analysis and parallel task coordination (requires approval or `--force`) |
 | **projman** | `/sprint-status` | | X | Check current sprint progress (add `--diagram` for Mermaid visualization) |
 | **projman** | `/review` | | X | Pre-sprint-close code quality review (debug artifacts, security, error handling) |
 | **projman** | `/test` | | X | Run tests (`/test run`) or generate tests (`/test gen <target>`) |

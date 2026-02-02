@@ -24,11 +24,14 @@ Initiate sprint execution. The orchestrator agent verifies approval, analyzes de
 
 Run `/sprint-start` when ready to begin executing a planned sprint.
 
+**Flags:**
+- `--force` — Bypass approval gate (emergency only, logged to milestone)
+
 ## Workflow
 
 Execute the sprint start workflow:
 
-1. **Verify Sprint Approval** (recommended) - Check milestone for approval record
+1. **Verify Sprint Approval** (required) - Check milestone for approval record. STOP if missing unless `--force` flag provided.
 2. **Detect Checkpoints** - Check for resume points from interrupted sessions
 3. **Fetch Sprint Issues** - Get open issues from milestone
 4. **Analyze Dependencies** - Use `get_execution_order` for parallel batches
