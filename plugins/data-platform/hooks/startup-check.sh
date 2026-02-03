@@ -7,7 +7,9 @@ PREFIX="[data-platform]"
 
 # Check if MCP venv exists
 PLUGIN_ROOT="${CLAUDE_PLUGIN_ROOT:-$(dirname "$(dirname "$(realpath "$0")")")}"
-VENV_PATH="$PLUGIN_ROOT/mcp-servers/data-platform/.venv/bin/python"
+# MCP servers are at marketplace root, not inside plugin
+MARKETPLACE_ROOT="$(dirname "$(dirname "$PLUGIN_ROOT")")"
+VENV_PATH="$MARKETPLACE_ROOT/mcp-servers/data-platform/.venv/bin/python"
 
 if [[ ! -f "$VENV_PATH" ]]; then
     echo "$PREFIX MCP venv missing - run /initial-setup or setup.sh"
