@@ -34,6 +34,30 @@ New scripts for installing marketplace plugins into consumer projects:
 
 **Documentation:** `docs/CONFIGURATION.md` updated with "Installing Plugins to Consumer Projects" section.
 
+### Fixed
+
+#### Plugin Installation Scripts — MCP Mapping & Section Markers
+
+**MCP Server Mapping:**
+- Added `mcp_servers` field to plugin.json for plugins that use shared MCP servers
+- `projman` and `pr-review` now correctly install `gitea` MCP server
+- `cmdb-assistant` now correctly installs `netbox` MCP server
+- Scripts read MCP server names from plugin.json instead of assuming plugin name = server name
+
+**CLAUDE.md Section Markers:**
+- Install script now wraps integration content with HTML comment markers:
+  `<!-- BEGIN marketplace-plugin: {name} -->` and `<!-- END marketplace-plugin: {name} -->`
+- Uninstall script uses markers for precise section removal (no more code block false positives)
+- Backward compatible: falls back to legacy header detection for pre-marker installations
+
+**Plugins updated with `mcp_servers` field:**
+- `projman` → `["gitea"]`
+- `pr-review` → `["gitea"]`
+- `cmdb-assistant` → `["netbox"]`
+- `data-platform` → `["data-platform"]`
+- `viz-platform` → `["viz-platform"]`
+- `contract-validator` → `["contract-validator"]`
+
 ---
 
 ## [5.8.0] - 2026-02-02

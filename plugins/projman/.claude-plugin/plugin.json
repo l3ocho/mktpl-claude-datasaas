@@ -16,5 +16,6 @@
     "agile",
     "lessons-learned"
   ],
+  "mcp_servers": ["gitea"],
   "commands": ["./commands/"]
 }

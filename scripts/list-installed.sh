@@ -67,13 +67,25 @@ get_available_plugins() {
     done
 }
 
-# --- Get Plugins with MCP Servers ---
-get_mcp_plugins() {
-    for dir in "$REPO_ROOT"/mcp-servers/*/; do
-        if [[ -d "$dir" && -f "$dir/run.sh" ]]; then
-            basename "$dir"
-        fi
-    done
+# --- Get MCP Servers for Plugin ---
+# Reads the mcp_servers array from plugin.json
+get_mcp_servers() {
+    local plugin_name="$1"
+    local plugin_json="$REPO_ROOT/plugins/$plugin_name/.claude-plugin/plugin.json"
+
+    if [[ ! -f "$plugin_json" ]]; then
+        return
+    fi
+
+    jq -r '.mcp_servers // [] | .[]' "$plugin_json" 2>/dev/null || true
+}
+
+# --- Check if plugin has any MCP servers defined ---
+has_mcp_servers() {
+    local plugin_name="$1"
+    local servers
+    servers=$(get_mcp_servers "$plugin_name")
+    [[ -n "$servers" ]]
 }
 
 # --- Check MCP Installation ---
@@ -86,18 +98,28 @@ check_mcp_installed() {
         return 1
     fi
 
-    # Check if this plugin's MCP server is referenced
-    if jq -e ".mcpServers[\"$plugin_name\"]" "$mcp_json" > /dev/null 2>&1; then
+    # Get MCP servers for this plugin from plugin.json
+    local mcp_servers
+    mcp_servers=$(get_mcp_servers "$plugin_name")
+
+    if [[ -z "$mcp_servers" ]]; then
+        # Plugin has no MCP servers defined, so MCP check passes
         return 0
     fi
 
-    # Also check if any entry points to this marketplace's mcp-servers
-    if grep -q "leo-claude-mktplace.*mcp-servers/$plugin_name" "$mcp_json" 2>/dev/null || \
-       grep -q "claude-plugins-work.*mcp-servers/$plugin_name" "$mcp_json" 2>/dev/null; then
-        return 0
-    fi
+    # Check if ALL required MCP servers are present
+    while IFS= read -r server_name; do
+        [[ -z "$server_name" ]] && continue
 
-    return 1
+        if ! jq -e ".mcpServers[\"$server_name\"]" "$mcp_json" > /dev/null 2>&1; then
+            # Also check if any entry points to this marketplace's mcp-servers
+            if ! grep -q "mcp-servers/$server_name" "$mcp_json" 2>/dev/null; then
+                return 1
+            fi
+        fi
+    done <<< "$mcp_servers"
+
+    return 0
 }
 
 # --- Check CLAUDE.md Integration ---
@@ -110,11 +132,13 @@ check_claude_md_installed() {
         return 1
     fi
 
-    # Look for plugin-specific headers that install-plugin.sh adds
-    # Formats vary by plugin:
-    #   "# {plugin-name} Plugin - CLAUDE.md Integration"
-    #   "# {plugin-name} CLAUDE.md Integration"
-    # Use regex to match both patterns
+    # Check for HTML comment marker (preferred, new format)
+    local begin_marker="<!-- BEGIN marketplace-plugin: $plugin_name -->"
+    if grep -qF "$begin_marker" "$target_claude_md" 2>/dev/null; then
+        return 0
+    fi
+
+    # Fallback: check for legacy header format
     if grep -qE "^# ${plugin_name}( Plugin)? -? ?CLAUDE\.md Integration" "$target_claude_md" 2>/dev/null; then
         return 0
     fi
@@ -185,15 +209,15 @@ NOT_INSTALLED=()
 for plugin in $(get_available_plugins); do
     mcp_installed=false
     claude_installed=false
-    has_mcp_server=false
+    needs_mcp=false
 
-    # Check if plugin has MCP server
-    if [[ -d "$REPO_ROOT/mcp-servers/$plugin" ]]; then
-        has_mcp_server=true
+    # Check if plugin has MCP servers defined
+    if has_mcp_servers "$plugin"; then
+        needs_mcp=true
     fi
 
-    # Check MCP installation (only if plugin has MCP server)
-    if $has_mcp_server && check_mcp_installed "$plugin" "$TARGET_PATH"; then
+    # Check MCP installation
+    if check_mcp_installed "$plugin" "$TARGET_PATH"; then
         mcp_installed=true
         INSTALLED_MCP[$plugin]=true
     fi
@@ -205,19 +229,20 @@ for plugin in $(get_available_plugins); do
     fi
 
     # Categorize
-    if $mcp_installed || $claude_installed; then
-        if $has_mcp_server; then
-            if $mcp_installed && $claude_installed; then
+    if $claude_installed; then
+        if $needs_mcp; then
+            if $mcp_installed; then
                 INSTALLED_PLUGINS+=("$plugin")
             else
                 PARTIAL_PLUGINS+=("$plugin")
             fi
         else
             # Plugins without MCP servers just need CLAUDE.md
-            if $claude_installed; then
-                INSTALLED_PLUGINS+=("$plugin")
-            fi
+            INSTALLED_PLUGINS+=("$plugin")
         fi
+    elif $mcp_installed && $needs_mcp; then
+        # Has MCP but missing CLAUDE.md
+        PARTIAL_PLUGINS+=("$plugin")
     else
         NOT_INSTALLED+=("$plugin")
     fi
@@ -247,7 +272,11 @@ if [[ ${#PARTIAL_PLUGINS[@]} -gt 0 ]]; then
         if [[ -v INSTALLED_MCP[$plugin] ]]; then
             echo "    ✓ MCP server configured in .mcp.json"
         else
-            echo "    ✗ MCP server NOT in .mcp.json"
+            # Show which MCP servers are missing
+            mcp_servers=$(get_mcp_servers "$plugin")
+            if [[ -n "$mcp_servers" ]]; then
+                echo "    ✗ MCP server(s) NOT in .mcp.json: $mcp_servers"
+            fi
         fi
         if [[ -v INSTALLED_CLAUDE_MD[$plugin] ]]; then
             echo "    ✓ Integration in CLAUDE.md"
