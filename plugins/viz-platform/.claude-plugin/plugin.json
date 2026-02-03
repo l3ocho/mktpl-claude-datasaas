@@ -19,6 +19,5 @@
     "visualization",
     "dmc"
   ],
-  "mcp_servers": ["viz-platform"],
   "commands": ["./commands/"]
 }

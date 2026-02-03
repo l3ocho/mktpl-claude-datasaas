@@ -17,6 +17,5 @@
     "interfaces",
     "cross-plugin"
   ],
-  "mcp_servers": ["contract-validator"],
   "commands": ["./commands/"]
 }

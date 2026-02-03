@@ -18,6 +18,5 @@
     "etl",
     "dataframe"
   ],
-  "mcp_servers": ["data-platform"],
   "commands": ["./commands/"]
 }
