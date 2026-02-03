@@ -28,7 +28,7 @@ source .venv/bin/activate  # Linux/Mac
 
 ### Running All Tests
 
-Run all 42 unit tests:
+Run all 64 unit tests:
 
 ```bash
 pytest tests/ -v
@@ -36,7 +36,7 @@ pytest tests/ -v
 
 Expected output:
 ```
-============================== 42 passed in 0.57s ==============================
+============================== 64 passed ==============================
 ```
 
 ### Running Specific Test Files
@@ -532,7 +532,7 @@ python -m mcp_server.server
 
 After completing all tests, verify:
 
-- ✅ All 42 unit tests pass
+- ✅ All 64 unit tests pass
 - ✅ MCP server starts without errors
 - ✅ Configuration loads correctly
 - ✅ Gitea API client connects successfully
@@ -548,7 +548,7 @@ After completing all tests, verify:
 
 Phase 1 is complete when:
 
-1. **All unit tests pass** (42/42)
+1. **All unit tests pass** (64/64)
 2. **MCP server starts without errors**
 3. **Can list issues from Gitea**
 4. **Can create issues with labels** (in development mode)

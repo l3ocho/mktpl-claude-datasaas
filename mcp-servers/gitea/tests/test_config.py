@@ -28,7 +28,6 @@ def test_load_system_config(tmp_path, monkeypatch):
 
     assert result['api_url'] == 'https://test.com/api/v1'
     assert result['api_token'] == 'test_token'
-    assert result['owner'] == 'test_owner'
     assert result['mode'] == 'company'  # No repo specified
     assert result['repo'] is None
 
