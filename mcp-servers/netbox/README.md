@@ -79,6 +79,69 @@ Add to your Claude Code MCP configuration (`~/.config/claude/mcp.json` or projec
 1. **System-level** (`~/.config/claude/netbox.env`): Credentials and defaults
 2. **Project-level** (`.env` in current directory): Optional overrides
 
+## Module Filtering (Token Optimization)
+
+By default, the NetBox MCP server registers all 182 tools across 8 modules, consuming ~19,810 tokens of context. For most workflows, you only need a subset of modules.
+
+### Configuration
+
+Add `NETBOX_ENABLED_MODULES` to your `~/.config/claude/netbox.env`:
+
+```bash
+# Enable only specific modules (comma-separated)
+NETBOX_ENABLED_MODULES=dcim,ipam,virtualization,extras
+```
+
+If unset, all modules are enabled (backward compatible).
+
+### Available Modules
+
+| Module | Tool Count | Description | cmdb-assistant Commands |
+|--------|------------|-------------|------------------------|
+| `dcim` | ~60 | Sites, devices, racks, interfaces, cables | `/cmdb-device`, `/cmdb-site`, `/cmdb-search`, `/cmdb-topology` |
+| `ipam` | ~40 | IP addresses, prefixes, VLANs, VRFs | `/cmdb-ip`, `/ip-conflicts`, `/cmdb-search` |
+| `virtualization` | ~20 | Clusters, VMs, VM interfaces | `/cmdb-search`, `/cmdb-audit`, `/cmdb-register` |
+| `extras` | ~12 | Tags, journal entries, audit log | `/change-audit`, `/cmdb-register` |
+| `circuits` | ~15 | Providers, circuits, terminations | — |
+| `tenancy` | ~12 | Tenants, contacts | — |
+| `vpn` | ~15 | Tunnels, IKE/IPSec policies, L2VPN | — |
+| `wireless` | ~8 | Wireless LANs, links, groups | — |
+
+### Recommended Configurations
+
+**For cmdb-assistant users** (~43 tools, ~4,500 tokens):
+```bash
+NETBOX_ENABLED_MODULES=dcim,ipam,virtualization,extras
+```
+
+**Basic infrastructure** (~100 tools):
+```bash
+NETBOX_ENABLED_MODULES=dcim,ipam
+```
+
+**Full CMDB** (all modules, ~182 tools):
+```bash
+# Omit NETBOX_ENABLED_MODULES or set to all modules
+NETBOX_ENABLED_MODULES=dcim,ipam,circuits,virtualization,tenancy,vpn,wireless,extras
+```
+
+### Startup Logging
+
+On startup, the server logs enabled modules and tool count:
+
+```
+NetBox MCP Server initialized: 43 tools registered (modules: dcim, extras, ipam, virtualization)
+```
+
+### Disabled Tool Behavior
+
+Calling a tool from a disabled module returns a clear error:
+
+```
+Tool 'circuits_list_circuits' is not available (module 'circuits' not enabled).
+Enabled modules: dcim, extras, ipam, virtualization
+```
+
 ## Available Tools
 
 ### DCIM (Data Center Infrastructure Management)
@@ -128,18 +191,18 @@ Add to your Claude Code MCP configuration (`~/.config/claude/mcp.json` or projec
 | `circuits_create_provider` | Create a provider |
 | `circuits_list_circuits` | List circuits |
 | `circuits_create_circuit` | Create a circuit |
-| `circuits_list_circuit_terminations` | List terminations |
+| `circ_list_terminations` | List terminations |
 | ... and more |
 
 ### Virtualization
 
 | Tool | Description |
 |------|-------------|
-| `virtualization_list_clusters` | List clusters |
-| `virtualization_create_cluster` | Create a cluster |
-| `virtualization_list_virtual_machines` | List VMs |
-| `virtualization_create_virtual_machine` | Create a VM |
-| `virtualization_list_vm_interfaces` | List VM interfaces |
+| `virt_list_clusters` | List clusters |
+| `virt_create_cluster` | Create a cluster |
+| `virt_list_vms` | List VMs |
+| `virt_create_vm` | Create a VM |
+| `virt_list_vm_ifaces` | List VM interfaces |
 | ... and more |
 
 ### Tenancy
@@ -167,9 +230,9 @@ Add to your Claude Code MCP configuration (`~/.config/claude/mcp.json` or projec
 
 | Tool | Description |
 |------|-------------|
-| `wireless_list_wireless_lans` | List wireless LANs |
-| `wireless_create_wireless_lan` | Create a WLAN |
-| `wireless_list_wireless_links` | List wireless links |
+| `wlan_list_lans` | List wireless LANs |
+| `wlan_create_lan` | Create a WLAN |
+| `wlan_list_links` | List wireless links |
 | ... and more |
 
 ### Extras

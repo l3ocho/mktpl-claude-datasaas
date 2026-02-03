@@ -8,11 +8,12 @@ Tenancy, VPN, Wireless, and Extras.
 import asyncio
 import logging
 import json
+from typing import Optional, Set
 from mcp.server import Server
 from mcp.server.stdio import stdio_server
 from mcp.types import Tool, TextContent
 
-from .config import NetBoxConfig
+from .config import NetBoxConfig, ALL_MODULES
 from .netbox_client import NetBoxClient
 from .tools.dcim import DCIMTools
 from .tools.ipam import IPAMTools
@@ -1453,6 +1454,49 @@ TOOL_NAME_MAP = {
 }
 
 
+# Map tool name prefixes to module names.
+# This handles both full prefixes and shortened prefixes used in TOOL_NAME_MAP.
+PREFIX_TO_MODULE = {
+    'dcim': 'dcim',
+    'ipam': 'ipam',
+    'circuits': 'circuits',
+    'circ': 'circuits',           # Shortened prefix
+    'virtualization': 'virtualization',
+    'virt': 'virtualization',     # Shortened prefix
+    'tenancy': 'tenancy',
+    'vpn': 'vpn',
+    'wireless': 'wireless',
+    'wlan': 'wireless',           # Shortened prefix
+    'extras': 'extras',
+}
+
+
+def _get_tool_module(tool_name: str) -> Optional[str]:
+    """
+    Determine which module a tool belongs to.
+
+    Checks TOOL_NAME_MAP first for shortened names, then falls back to prefix extraction.
+
+    Args:
+        tool_name: The tool name (e.g., 'dcim_list_devices', 'virt_list_vms')
+
+    Returns:
+        Module name (e.g., 'dcim', 'virtualization') or None if unknown
+    """
+    # Check mapped short names first
+    if tool_name in TOOL_NAME_MAP:
+        category, _ = TOOL_NAME_MAP[tool_name]
+        return category
+
+    # Fall back to prefix extraction
+    parts = tool_name.split('_', 1)
+    if len(parts) < 2:
+        return None
+
+    prefix = parts[0]
+    return PREFIX_TO_MODULE.get(prefix)
+
+
 class NetBoxMCPServer:
     """MCP Server for NetBox integration"""
 
@@ -1460,6 +1504,8 @@ class NetBoxMCPServer:
         self.server = Server("netbox-mcp")
         self.config = None
         self.client = None
+        self.enabled_modules: Set[str] = set(ALL_MODULES)
+        # Tool instances - only instantiated for enabled modules
         self.dcim_tools = None
         self.ipam_tools = None
         self.circuits_tools = None
@@ -1474,18 +1520,39 @@ class NetBoxMCPServer:
         try:
             config_loader = NetBoxConfig()
             self.config = config_loader.load()
+            self.enabled_modules = self.config['enabled_modules']
 
             self.client = NetBoxClient()
-            self.dcim_tools = DCIMTools(self.client)
-            self.ipam_tools = IPAMTools(self.client)
-            self.circuits_tools = CircuitsTools(self.client)
-            self.virtualization_tools = VirtualizationTools(self.client)
-            self.tenancy_tools = TenancyTools(self.client)
-            self.vpn_tools = VPNTools(self.client)
-            self.wireless_tools = WirelessTools(self.client)
-            self.extras_tools = ExtrasTools(self.client)
 
-            logger.info(f"NetBox MCP Server initialized for {self.config['api_url']}")
+            # Conditionally instantiate tool classes for enabled modules only
+            if 'dcim' in self.enabled_modules:
+                self.dcim_tools = DCIMTools(self.client)
+            if 'ipam' in self.enabled_modules:
+                self.ipam_tools = IPAMTools(self.client)
+            if 'circuits' in self.enabled_modules:
+                self.circuits_tools = CircuitsTools(self.client)
+            if 'virtualization' in self.enabled_modules:
+                self.virtualization_tools = VirtualizationTools(self.client)
+            if 'tenancy' in self.enabled_modules:
+                self.tenancy_tools = TenancyTools(self.client)
+            if 'vpn' in self.enabled_modules:
+                self.vpn_tools = VPNTools(self.client)
+            if 'wireless' in self.enabled_modules:
+                self.wireless_tools = WirelessTools(self.client)
+            if 'extras' in self.enabled_modules:
+                self.extras_tools = ExtrasTools(self.client)
+
+            # Count tools that will be registered
+            tool_count = sum(
+                1 for name in TOOL_DEFINITIONS
+                if _get_tool_module(name) in self.enabled_modules
+            )
+
+            modules_str = ', '.join(sorted(self.enabled_modules))
+            logger.info(
+                f"NetBox MCP Server initialized: {tool_count} tools registered "
+                f"(modules: {modules_str})"
+            )
         except Exception as e:
             logger.error(f"Failed to initialize: {e}")
             raise
@@ -1495,9 +1562,14 @@ class NetBoxMCPServer:
 
         @self.server.list_tools()
         async def list_tools() -> list[Tool]:
-            """Return list of available tools"""
+            """Return list of available tools, filtered by enabled modules"""
             tools = []
             for name, definition in TOOL_DEFINITIONS.items():
+                # Filter tools by enabled modules
+                module = _get_tool_module(name)
+                if module not in self.enabled_modules:
+                    continue
+
                 tools.append(Tool(
                     name=name,
                     description=definition['description'],
@@ -1532,6 +1604,14 @@ class NetBoxMCPServer:
         'virtualization_list_virtual_machines') to meet the 28-character
         limit. TOOL_NAME_MAP handles the translation to actual method names.
         """
+        # Check module is enabled (routing guard)
+        module = _get_tool_module(name)
+        if module and module not in self.enabled_modules:
+            raise ValueError(
+                f"Tool '{name}' is not available (module '{module}' not enabled). "
+                f"Enabled modules: {', '.join(sorted(self.enabled_modules))}"
+            )
+
         # Check if this is a mapped short name
         if name in TOOL_NAME_MAP:
             category, method_name = TOOL_NAME_MAP[name]
