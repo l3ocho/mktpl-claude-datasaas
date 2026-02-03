@@ -1,6 +1,7 @@
 ---
 name: planner
 description: Sprint planning agent - thoughtful architecture analysis and issue creation
+model: sonnet
 ---
 
 # Sprint Planning Agent

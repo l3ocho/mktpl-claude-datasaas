@@ -58,6 +58,31 @@ New scripts for installing marketplace plugins into consumer projects:
 - `viz-platform` → `["viz-platform"]`
 - `contract-validator` → `["contract-validator"]`
 
+#### Agent Model Selection
+
+Per-agent model selection using Claude Code's now-supported `model` frontmatter field.
+
+- All 25 marketplace agents assigned appropriate model (`sonnet`, `haiku`, or `inherit`)
+- Model assignment based on reasoning depth, tool complexity, and latency requirements
+- Documentation added to `CLAUDE.md` and `docs/CONFIGURATION.md`
+
+**Supported values:** `sonnet` (default), `opus`, `haiku`, `inherit`
+
+**Model assignments:**
+| Model | Agent Types |
+|-------|-------------|
+| sonnet | Planner, Orchestrator, Executor, Code Reviewer, Coordinator, Security Reviewers, Data Advisor, Design Reviewer, etc. |
+| haiku | Maintainability Auditor, Test Validator, Component Check, Theme Setup, Git Assistant, Data Ingestion, Agent Check |
+
+### Fixed
+
+#### Agent Frontmatter Standardization
+
+- Fixed viz-platform and data-platform agents using non-standard `agent:` field (now `name:`)
+- Removed non-standard `triggers:` field from domain agents (trigger info already in agent body)
+- Added missing frontmatter to 13 agents across pr-review, viz-platform, contract-validator, clarity-assist, git-flow, doc-guardian, code-sentinel, cmdb-assistant, and data-platform
+- All 25 agents now have consistent `name`, `description`, and `model` fields
+
 ---
 
 ## [5.8.0] - 2026-02-02

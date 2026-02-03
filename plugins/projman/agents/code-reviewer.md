@@ -1,6 +1,7 @@
 ---
 name: code-reviewer
 description: Pre-sprint code quality review agent
+model: sonnet
 ---
 
 # Code Reviewer Agent

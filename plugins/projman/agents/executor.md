@@ -1,6 +1,7 @@
 ---
 name: executor
 description: Implementation executor agent - precise implementation guidance and code quality
+model: sonnet
 ---
 
 # Implementation Executor Agent

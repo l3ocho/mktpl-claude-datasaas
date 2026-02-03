@@ -1,6 +1,7 @@
 ---
 name: data-analysis
 description: Data analysis specialist for exploration and profiling
+model: sonnet
 ---
 
 # Data Analysis Agent

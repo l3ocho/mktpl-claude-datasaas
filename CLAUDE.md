@@ -271,6 +271,40 @@ leo-claude-mktplace/
 | **Executor** | Implementation-focused | Code implementation, branch management, MR creation |
 | **Code Reviewer** | Thorough, practical | Pre-close quality review, security scan, test verification |
 
+### Agent Model Selection
+
+Agents specify their model in frontmatter using Claude Code's `model` field. Supported values: `sonnet` (default), `opus`, `haiku`, `inherit`.
+
+| Plugin | Agent | Model | Rationale |
+|--------|-------|-------|-----------|
+| projman | Planner | sonnet | Architectural analysis, sprint planning |
+| projman | Orchestrator | sonnet | Coordination and tool dispatch |
+| projman | Executor | sonnet | Code generation and implementation |
+| projman | Code Reviewer | sonnet | Quality gate, pattern detection |
+| pr-review | Coordinator | sonnet | Orchestrates sub-agents, aggregates findings |
+| pr-review | Security Reviewer | sonnet | Security analysis |
+| pr-review | Performance Analyst | sonnet | Performance pattern detection |
+| pr-review | Maintainability Auditor | haiku | Pattern matching (complexity, duplication) |
+| pr-review | Test Validator | haiku | Coverage gap detection |
+| data-platform | Data Advisor | sonnet | Schema validation, dbt orchestration |
+| data-platform | Data Analysis | sonnet | Data exploration and profiling |
+| data-platform | Data Ingestion | haiku | Data loading operations |
+| viz-platform | Design Reviewer | sonnet | DMC validation + accessibility |
+| viz-platform | Layout Builder | sonnet | Dashboard design guidance |
+| viz-platform | Component Check | haiku | Quick component validation |
+| viz-platform | Theme Setup | haiku | Theme configuration |
+| contract-validator | Agent Check | haiku | Reference checking |
+| contract-validator | Full Validation | sonnet | Marketplace sweep |
+| code-sentinel | Security Reviewer | sonnet | Security analysis |
+| code-sentinel | Refactor Advisor | sonnet | Code refactoring advice |
+| doc-guardian | Doc Analyzer | sonnet | Documentation drift detection |
+| clarity-assist | Clarity Coach | sonnet | Conversational coaching |
+| git-flow | Git Assistant | haiku | Git operations |
+| claude-config-maintainer | Maintainer | sonnet | CLAUDE.md optimization |
+| cmdb-assistant | CMDB Assistant | sonnet | NetBox operations |
+
+Override by editing the `model:` field in `plugins/{plugin}/agents/{agent}.md`.
+
 ### MCP Server Tools (Gitea)
 
 | Category | Tools |

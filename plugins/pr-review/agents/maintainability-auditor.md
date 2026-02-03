@@ -1,3 +1,9 @@
+---
+name: maintainability-auditor
+description: Identifies code complexity, duplication, naming issues, and architecture concerns in PR changes.
+model: haiku
+---
+
 # Maintainability Auditor Agent
 
 ## Visual Output Requirements

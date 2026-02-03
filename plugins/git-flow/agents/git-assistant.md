@@ -1,3 +1,9 @@
+---
+name: git-assistant
+description: Git workflow assistant for complex git operations, conflict resolution, and repository history management.
+model: haiku
+---
+
 # Git Assistant Agent
 
 ## Visual Output Requirements

@@ -1,3 +1,9 @@
+---
+name: coordinator
+description: Review coordinator that orchestrates the multi-agent PR review process. Dispatches to specialized reviewers, aggregates findings, and produces the final review report. Use proactively after code changes.
+model: sonnet
+---
+
 # Coordinator Agent
 
 ## Visual Output Requirements

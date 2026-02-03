@@ -1,6 +1,7 @@
 ---
 name: orchestrator
 description: Sprint orchestration agent - coordinates execution and tracks progress
+model: sonnet
 ---
 
 # Sprint Orchestration Agent

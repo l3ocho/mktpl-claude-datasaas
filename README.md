@@ -47,11 +47,11 @@ Comprehensive pull request review using specialized agents.
 **Commands:** `/pr-review`, `/pr-summary`, `/pr-findings`, `/pr-diff`, `/initial-setup`, `/project-init`, `/project-sync`
 
 #### [claude-config-maintainer](./plugins/claude-config-maintainer)
-**CLAUDE.md Optimization and Maintenance**
+**CLAUDE.md and Settings Optimization**
 
-Analyze, optimize, and create CLAUDE.md configuration files for Claude Code projects.
+Analyze, optimize, and create CLAUDE.md configuration files. Audit and optimize settings.local.json permissions.
 
-**Commands:** `/config-analyze`, `/config-optimize`, `/config-init`, `/config-diff`, `/config-lint`
+**Commands:** `/analyze`, `/optimize`, `/init`, `/config-diff`, `/config-lint`, `/config-audit-settings`, `/config-optimize-settings`, `/config-permissions-map`
 
 #### [contract-validator](./plugins/contract-validator) *NEW in v5.0.0*
 **Cross-Plugin Compatibility Validation**
@@ -122,7 +122,7 @@ Comprehensive data engineering toolkit with persistent DataFrame storage.
 - 100k row limit with chunking support
 - Auto-detection of dbt projects
 
-**Commands:** `/ingest`, `/profile`, `/schema`, `/explain`, `/lineage`, `/lineage-viz`, `/run`, `/dbt-test`, `/data-quality`, `/initial-setup`
+**Commands:** `/ingest`, `/profile`, `/schema`, `/explain`, `/lineage`, `/lineage-viz`, `/run`, `/dbt-test`, `/data-quality`, `/data-review`, `/data-gate`, `/initial-setup`
 
 ### Visualization
 
@@ -312,7 +312,7 @@ After installing plugins, the `/plugin` command may show `(no content)` - this i
 | clarity-assist | `/clarity-assist:clarify` |
 | doc-guardian | `/doc-guardian:doc-audit` |
 | code-sentinel | `/code-sentinel:security-scan` |
-| claude-config-maintainer | `/claude-config-maintainer:config-analyze` |
+| claude-config-maintainer | `/claude-config-maintainer:analyze` |
 | cmdb-assistant | `/cmdb-assistant:cmdb-search` |
 | data-platform | `/data-platform:ingest` |
 | viz-platform | `/viz-platform:chart` |

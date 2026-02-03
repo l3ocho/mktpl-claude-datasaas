@@ -1,10 +1,7 @@
 ---
-agent: design-reviewer
-description: Reviews code for design system compliance using viz-platform MCP tools
-triggers:
-  - /design-review command
-  - /design-gate command
-  - projman orchestrator domain gate
+name: design-reviewer
+description: Reviews code for design system compliance using viz-platform MCP tools. Use when validating DMC components, theme tokens, or accessibility standards.
+model: sonnet
 ---
 
 # Design Reviewer Agent
