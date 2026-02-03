@@ -1,10 +1,7 @@
 ---
-agent: data-advisor
-description: Reviews code for data integrity, schema validity, and dbt compliance using data-platform MCP tools
-triggers:
-  - /data-review command
-  - /data-gate command
-  - projman orchestrator domain gate
+name: data-advisor
+description: Reviews code for data integrity, schema validity, and dbt compliance using data-platform MCP tools. Use when validating database operations or data pipelines.
+model: sonnet
 ---
 
 # Data Advisor Agent

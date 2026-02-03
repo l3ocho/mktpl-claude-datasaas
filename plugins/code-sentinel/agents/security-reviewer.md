@@ -1,6 +1,7 @@
 ---
 name: security-reviewer
 description: Security-focused code review agent
+model: sonnet
 ---
 
 # Security Reviewer Agent

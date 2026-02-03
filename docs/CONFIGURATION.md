@@ -496,6 +496,63 @@ Not all plugins have MCP servers. The install script handles this automatically:
 
 ---
 
+## Agent Model Selection
+
+Marketplace agents specify their preferred model using Claude Code's `model` frontmatter field. This allows cost/performance optimization per agent.
+
+### Supported Values
+
+| Value | Description |
+|-------|-------------|
+| `sonnet` | Default. Balanced performance and cost. |
+| `opus` | Higher reasoning depth. Use for complex analysis. |
+| `haiku` | Faster, lower cost. Use for mechanical tasks. |
+| `inherit` | Use session's current model setting. |
+
+### How It Works
+
+Each agent in `plugins/{plugin}/agents/{agent}.md` has frontmatter like:
+
+```yaml
+---
+name: planner
+description: Sprint planning agent - thoughtful architecture analysis
+model: sonnet
+---
+```
+
+Claude Code reads this field when invoking the agent as a subagent.
+
+### Model Assignments
+
+Agents are assigned models based on their task complexity:
+
+| Model | Agents | Rationale |
+|-------|--------|-----------|
+| **sonnet** | Planner, Orchestrator, Executor, Code Reviewer, Coordinator, Security Reviewers, Performance Analyst, Data Advisor, Data Analysis, Design Reviewer, Layout Builder, Full Validation, Doc Analyzer, Clarity Coach, Maintainer, CMDB Assistant, Refactor Advisor | Standard reasoning, tool orchestration, code generation |
+| **haiku** | Maintainability Auditor, Test Validator, Component Check, Theme Setup, Agent Check, Data Ingestion, Git Assistant | Pattern matching, quick validation, mechanical tasks |
+
+### Overriding Model Selection
+
+**Per-agent override:** Edit the `model:` field in the agent file:
+
+```bash
+# Change executor to use opus for heavy implementation work
+nano plugins/projman/agents/executor.md
+# Change model: sonnet to model: opus
+```
+
+**Session-level:** Users on Opus subscription can change the agent's model to `inherit` to use whatever model the session is using.
+
+### Best Practices
+
+1. **Default to sonnet** - Good balance for most tasks
+2. **Use haiku for speed-sensitive agents** - Sub-agents dispatched in parallel, read-only tasks
+3. **Reserve opus for heavy analysis** - Only when sonnet's reasoning isn't sufficient
+4. **Use inherit sparingly** - Only when you want session-level control
+
+---
+
 ## Automatic Validation Features
 
 ### API Validation

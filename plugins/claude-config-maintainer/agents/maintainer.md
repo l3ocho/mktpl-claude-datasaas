@@ -1,6 +1,7 @@
 ---
 name: maintainer
 description: CLAUDE.md optimization and maintenance agent
+model: sonnet
 ---
 
 # CLAUDE.md Maintainer Agent
