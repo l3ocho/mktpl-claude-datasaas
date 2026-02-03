@@ -29,17 +29,19 @@ if [[ -f ".env" ]]; then
 
     if [[ -n "$GITEA_API_URL" && -n "$GITEA_API_TOKEN" && -n "$GITEA_REPO" ]]; then
         # Quick check for open issues without milestone (unplanned work)
+        # Note: grep -c returns 0 on no match but exits non-zero, causing || to also fire
+        # Use subshell to ensure single value
         OPEN_ISSUES=$(curl -s -m 5 \
             -H "Authorization: token $GITEA_API_TOKEN" \
             "${GITEA_API_URL}/repos/${GITEA_REPO}/issues?state=open&milestone=none&limit=1" 2>/dev/null | \
-            grep -c '"number"' || echo "0")
+            grep -c '"number"' 2>/dev/null) || OPEN_ISSUES=0
 
         if [[ "$OPEN_ISSUES" -gt 0 ]]; then
             # Count total unplanned issues
             TOTAL_UNPLANNED=$(curl -s -m 5 \
                 -H "Authorization: token $GITEA_API_TOKEN" \
                 "${GITEA_API_URL}/repos/${GITEA_REPO}/issues?state=open&milestone=none" 2>/dev/null | \
-                grep -c '"number"' || echo "?")
+                grep -c '"number"' 2>/dev/null) || TOTAL_UNPLANNED="?"
             echo "$PREFIX ${TOTAL_UNPLANNED} open issues without milestone - consider /sprint-plan"
         fi
     fi

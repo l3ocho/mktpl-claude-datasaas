@@ -11,9 +11,17 @@ PLUGIN_ROOT="${CLAUDE_PLUGIN_ROOT:-$(dirname "$(dirname "$(realpath "$0")")")}"
 MARKETPLACE_ROOT="$(dirname "$(dirname "$PLUGIN_ROOT")")"
 LOCAL_VENV="$MARKETPLACE_ROOT/mcp-servers/data-platform/.venv/bin/python"
 
-# Check cache first (preferred), then local
+# Check cache first (preferred), then local symlink
+CACHE_VENV_DIR="$HOME/.cache/claude-mcp-venvs/leo-claude-mktplace/data-platform/.venv"
+LOCAL_VENV_DIR="$MARKETPLACE_ROOT/mcp-servers/data-platform/.venv"
+
 if [[ -f "$CACHE_VENV" ]]; then
     VENV_PATH="$CACHE_VENV"
+    # Auto-create symlink in installed marketplace if missing
+    if [[ ! -e "$LOCAL_VENV_DIR" && -d "$CACHE_VENV_DIR" ]]; then
+        mkdir -p "$(dirname "$LOCAL_VENV_DIR")" 2>/dev/null
+        ln -sf "$CACHE_VENV_DIR" "$LOCAL_VENV_DIR" 2>/dev/null
+    fi
 elif [[ -f "$LOCAL_VENV" ]]; then
     VENV_PATH="$LOCAL_VENV"
 else
