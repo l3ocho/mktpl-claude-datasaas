@@ -2,6 +2,8 @@
 name: design-reviewer
 description: Reviews code for design system compliance using viz-platform MCP tools. Use when validating DMC components, theme tokens, or accessibility standards.
 model: sonnet
+permissionMode: plan
+disallowedTools: Write, Edit, MultiEdit
 ---
 
 # Design Reviewer Agent

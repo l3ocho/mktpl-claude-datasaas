@@ -271,39 +271,60 @@ leo-claude-mktplace/
 | **Executor** | Implementation-focused | Code implementation, branch management, MR creation |
 | **Code Reviewer** | Thorough, practical | Pre-close quality review, security scan, test verification |
 
-### Agent Model Selection
+### Agent Frontmatter Configuration
 
-Agents specify their model in frontmatter using Claude Code's `model` field. Supported values: `sonnet` (default), `opus`, `haiku`, `inherit`.
+Agents specify their configuration in frontmatter using Claude Code's supported fields. Reference: https://code.claude.com/docs/en/sub-agents
 
-| Plugin | Agent | Model | Rationale |
-|--------|-------|-------|-----------|
-| projman | Planner | sonnet | Architectural analysis, sprint planning |
-| projman | Orchestrator | sonnet | Coordination and tool dispatch |
-| projman | Executor | sonnet | Code generation and implementation |
-| projman | Code Reviewer | sonnet | Quality gate, pattern detection |
-| pr-review | Coordinator | sonnet | Orchestrates sub-agents, aggregates findings |
-| pr-review | Security Reviewer | sonnet | Security analysis |
-| pr-review | Performance Analyst | sonnet | Performance pattern detection |
-| pr-review | Maintainability Auditor | haiku | Pattern matching (complexity, duplication) |
-| pr-review | Test Validator | haiku | Coverage gap detection |
-| data-platform | Data Advisor | sonnet | Schema validation, dbt orchestration |
-| data-platform | Data Analysis | sonnet | Data exploration and profiling |
-| data-platform | Data Ingestion | haiku | Data loading operations |
-| viz-platform | Design Reviewer | sonnet | DMC validation + accessibility |
-| viz-platform | Layout Builder | sonnet | Dashboard design guidance |
-| viz-platform | Component Check | haiku | Quick component validation |
-| viz-platform | Theme Setup | haiku | Theme configuration |
-| contract-validator | Agent Check | haiku | Reference checking |
-| contract-validator | Full Validation | sonnet | Marketplace sweep |
-| code-sentinel | Security Reviewer | sonnet | Security analysis |
-| code-sentinel | Refactor Advisor | sonnet | Code refactoring advice |
-| doc-guardian | Doc Analyzer | sonnet | Documentation drift detection |
-| clarity-assist | Clarity Coach | sonnet | Conversational coaching |
-| git-flow | Git Assistant | haiku | Git operations |
-| claude-config-maintainer | Maintainer | sonnet | CLAUDE.md optimization |
-| cmdb-assistant | CMDB Assistant | sonnet | NetBox operations |
+**Supported frontmatter fields:**
 
-Override by editing the `model:` field in `plugins/{plugin}/agents/{agent}.md`.
+| Field | Required | Default | Description |
+|-------|----------|---------|-------------|
+| `name` | Yes | — | Unique identifier, lowercase + hyphens |
+| `description` | Yes | — | When Claude should delegate to this subagent |
+| `model` | No | `inherit` | `sonnet`, `opus`, `haiku`, or `inherit` |
+| `permissionMode` | No | `default` | Controls permission prompts: `default`, `acceptEdits`, `dontAsk`, `bypassPermissions`, `plan` |
+| `disallowedTools` | No | none | Comma-separated tools to remove from agent's toolset |
+| `skills` | No | none | Comma-separated skills auto-injected into context at startup |
+| `hooks` | No | none | Lifecycle hooks scoped to this subagent |
+
+**Complete agent matrix:**
+
+| Plugin | Agent | `model` | `permissionMode` | `disallowedTools` | `skills` |
+|--------|-------|---------|-------------------|--------------------|----------|
+| projman | planner | opus | default | — | body text (14) |
+| projman | orchestrator | sonnet | acceptEdits | — | body text (12) |
+| projman | executor | sonnet | bypassPermissions | — | frontmatter (7) |
+| projman | code-reviewer | opus | default | Write, Edit, MultiEdit | frontmatter (4) |
+| pr-review | coordinator | sonnet | plan | Write, Edit, MultiEdit | — |
+| pr-review | security-reviewer | sonnet | plan | Write, Edit, MultiEdit | — |
+| pr-review | performance-analyst | sonnet | plan | Write, Edit, MultiEdit | — |
+| pr-review | maintainability-auditor | haiku | plan | Write, Edit, MultiEdit | — |
+| pr-review | test-validator | haiku | plan | Write, Edit, MultiEdit | — |
+| data-platform | data-advisor | sonnet | default | — | — |
+| data-platform | data-analysis | sonnet | plan | Write, Edit, MultiEdit | — |
+| data-platform | data-ingestion | haiku | acceptEdits | — | — |
+| viz-platform | design-reviewer | sonnet | plan | Write, Edit, MultiEdit | — |
+| viz-platform | layout-builder | sonnet | default | — | — |
+| viz-platform | component-check | haiku | plan | Write, Edit, MultiEdit | — |
+| viz-platform | theme-setup | haiku | acceptEdits | — | — |
+| contract-validator | full-validation | sonnet | default | — | — |
+| contract-validator | agent-check | haiku | plan | Write, Edit, MultiEdit | — |
+| code-sentinel | security-reviewer | sonnet | plan | Write, Edit, MultiEdit | — |
+| code-sentinel | refactor-advisor | sonnet | acceptEdits | — | — |
+| doc-guardian | doc-analyzer | sonnet | acceptEdits | — | — |
+| clarity-assist | clarity-coach | sonnet | default | Write, Edit, MultiEdit | — |
+| git-flow | git-assistant | haiku | acceptEdits | — | — |
+| claude-config-maintainer | maintainer | sonnet | acceptEdits | — | frontmatter (2) |
+| cmdb-assistant | cmdb-assistant | sonnet | default | — | — |
+
+**Design principles:**
+- `bypassPermissions` is granted to exactly ONE agent (Executor) which has code-sentinel PreToolUse hook + Code Reviewer downstream as safety nets.
+- `plan` mode is assigned to all pure analysis agents (pr-review, read-only validators).
+- `disallowedTools: Write, Edit, MultiEdit` provides defense-in-depth on agents that should never write files.
+- `skills` frontmatter is used for agents with ≤7 skills where guaranteed loading is safety-critical. Agents with 8+ skills use body text `## Skills to Load` for selective loading.
+- `hooks` (agent-scoped) is reserved for future use (v6.0+).
+
+Override any field by editing the agent's `.md` file in `plugins/{plugin}/agents/`.
 
 ### MCP Server Tools (Gitea)
 

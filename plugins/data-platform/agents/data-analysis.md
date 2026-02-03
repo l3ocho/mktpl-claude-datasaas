@@ -2,6 +2,8 @@
 name: data-analysis
 description: Data analysis specialist for exploration and profiling
 model: sonnet
+permissionMode: plan
+disallowedTools: Write, Edit, MultiEdit
 ---
 
 # Data Analysis Agent

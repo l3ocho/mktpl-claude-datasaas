@@ -1,7 +1,8 @@
 ---
 name: planner
 description: Sprint planning agent - thoughtful architecture analysis and issue creation
-model: sonnet
+model: opus
+permissionMode: default
 ---
 
 # Sprint Planning Agent

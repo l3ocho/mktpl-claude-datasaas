@@ -2,6 +2,8 @@
 name: maintainer
 description: CLAUDE.md optimization and maintenance agent
 model: sonnet
+permissionMode: acceptEdits
+skills: visual-header, settings-optimization
 ---
 
 # CLAUDE.md Maintainer Agent

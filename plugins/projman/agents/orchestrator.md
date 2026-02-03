@@ -2,6 +2,7 @@
 name: orchestrator
 description: Sprint orchestration agent - coordinates execution and tracks progress
 model: sonnet
+permissionMode: acceptEdits
 ---
 
 # Sprint Orchestration Agent

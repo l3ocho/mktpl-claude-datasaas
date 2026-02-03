@@ -496,60 +496,100 @@ Not all plugins have MCP servers. The install script handles this automatically:
 
 ---
 
-## Agent Model Selection
+## Agent Frontmatter Configuration
 
-Marketplace agents specify their preferred model using Claude Code's `model` frontmatter field. This allows cost/performance optimization per agent.
+Agents specify their configuration in frontmatter using Claude Code's supported fields. Reference: https://code.claude.com/docs/en/sub-agents
 
-### Supported Values
+### Supported Frontmatter Fields
 
-| Value | Description |
-|-------|-------------|
-| `sonnet` | Default. Balanced performance and cost. |
-| `opus` | Higher reasoning depth. Use for complex analysis. |
-| `haiku` | Faster, lower cost. Use for mechanical tasks. |
-| `inherit` | Use session's current model setting. |
+| Field | Required | Default | Description |
+|-------|----------|---------|-------------|
+| `name` | Yes | — | Unique identifier, lowercase + hyphens |
+| `description` | Yes | — | When Claude should delegate to this subagent |
+| `model` | No | `inherit` | `sonnet`, `opus`, `haiku`, or `inherit` |
+| `permissionMode` | No | `default` | Controls permission prompts: `default`, `acceptEdits`, `dontAsk`, `bypassPermissions`, `plan` |
+| `disallowedTools` | No | none | Comma-separated tools to remove from agent's toolset |
+| `skills` | No | none | Comma-separated skills auto-injected into context at startup |
+| `hooks` | No | none | Lifecycle hooks scoped to this subagent |
 
-### How It Works
+### Complete Agent Matrix
 
-Each agent in `plugins/{plugin}/agents/{agent}.md` has frontmatter like:
+| Plugin | Agent | `model` | `permissionMode` | `disallowedTools` | `skills` |
+|--------|-------|---------|-------------------|--------------------|----------|
+| projman | planner | opus | default | — | body text (14) |
+| projman | orchestrator | sonnet | acceptEdits | — | body text (12) |
+| projman | executor | sonnet | bypassPermissions | — | frontmatter (7) |
+| projman | code-reviewer | opus | default | Write, Edit, MultiEdit | frontmatter (4) |
+| pr-review | coordinator | sonnet | plan | Write, Edit, MultiEdit | — |
+| pr-review | security-reviewer | sonnet | plan | Write, Edit, MultiEdit | — |
+| pr-review | performance-analyst | sonnet | plan | Write, Edit, MultiEdit | — |
+| pr-review | maintainability-auditor | haiku | plan | Write, Edit, MultiEdit | — |
+| pr-review | test-validator | haiku | plan | Write, Edit, MultiEdit | — |
+| data-platform | data-advisor | sonnet | default | — | — |
+| data-platform | data-analysis | sonnet | plan | Write, Edit, MultiEdit | — |
+| data-platform | data-ingestion | haiku | acceptEdits | — | — |
+| viz-platform | design-reviewer | sonnet | plan | Write, Edit, MultiEdit | — |
+| viz-platform | layout-builder | sonnet | default | — | — |
+| viz-platform | component-check | haiku | plan | Write, Edit, MultiEdit | — |
+| viz-platform | theme-setup | haiku | acceptEdits | — | — |
+| contract-validator | full-validation | sonnet | default | — | — |
+| contract-validator | agent-check | haiku | plan | Write, Edit, MultiEdit | — |
+| code-sentinel | security-reviewer | sonnet | plan | Write, Edit, MultiEdit | — |
+| code-sentinel | refactor-advisor | sonnet | acceptEdits | — | — |
+| doc-guardian | doc-analyzer | sonnet | acceptEdits | — | — |
+| clarity-assist | clarity-coach | sonnet | default | Write, Edit, MultiEdit | — |
+| git-flow | git-assistant | haiku | acceptEdits | — | — |
+| claude-config-maintainer | maintainer | sonnet | acceptEdits | — | frontmatter (2) |
+| cmdb-assistant | cmdb-assistant | sonnet | default | — | — |
 
-```yaml
----
-name: planner
-description: Sprint planning agent - thoughtful architecture analysis
-model: sonnet
----
-```
+### Design Principles
 
-Claude Code reads this field when invoking the agent as a subagent.
+- `bypassPermissions` is granted to exactly ONE agent (Executor) which has code-sentinel PreToolUse hook + Code Reviewer downstream as safety nets.
+- `plan` mode is assigned to all pure analysis agents (pr-review, read-only validators).
+- `disallowedTools: Write, Edit, MultiEdit` provides defense-in-depth on agents that should never write files.
+- `skills` frontmatter is used for agents with ≤7 skills where guaranteed loading is safety-critical. Agents with 8+ skills use body text `## Skills to Load` for selective loading.
+- `hooks` (agent-scoped) is reserved for future use (v6.0+).
 
-### Model Assignments
+Override any field by editing the agent's `.md` file in `plugins/{plugin}/agents/`.
 
-Agents are assigned models based on their task complexity:
+### permissionMode Guide
 
-| Model | Agents | Rationale |
-|-------|--------|-----------|
-| **sonnet** | Planner, Orchestrator, Executor, Code Reviewer, Coordinator, Security Reviewers, Performance Analyst, Data Advisor, Data Analysis, Design Reviewer, Layout Builder, Full Validation, Doc Analyzer, Clarity Coach, Maintainer, CMDB Assistant, Refactor Advisor | Standard reasoning, tool orchestration, code generation |
-| **haiku** | Maintainability Auditor, Test Validator, Component Check, Theme Setup, Agent Check, Data Ingestion, Git Assistant | Pattern matching, quick validation, mechanical tasks |
+| Value | Prompts for file ops? | Prompts for Bash? | Prompts for MCP? | Use when |
+|-------|-----------------------|-------------------|-------------------|----------|
+| `default` | Yes | Yes | No (MCP bypasses permissions) | You want full visibility |
+| `acceptEdits` | No | Yes | No | Core job is file read/write, Bash visibility useful |
+| `dontAsk` | No | No (most) | No | Even Bash prompts are friction |
+| `bypassPermissions` | No | No | No | Agent has downstream safety layers |
+| `plan` | N/A (read-only) | N/A (read-only) | No | Pure analysis, no modifications |
 
-### Overriding Model Selection
+### disallowedTools Guide
 
-**Per-agent override:** Edit the `model:` field in the agent file:
+Use `disallowedTools` to remove specific tools from an agent's toolset. This is a blacklist — the agent inherits all tools from the main thread, then the listed tools are removed.
 
-```bash
-# Change executor to use opus for heavy implementation work
-nano plugins/projman/agents/executor.md
-# Change model: sonnet to model: opus
-```
+Prefer `disallowedTools` over `tools` (whitelist) because:
+- New MCP servers are automatically available without updating every agent.
+- Less configuration to maintain.
+- Easier to audit — you only list what's blocked.
 
-**Session-level:** Users on Opus subscription can change the agent's model to `inherit` to use whatever model the session is using.
+Common patterns:
+- `disallowedTools: Write, Edit, MultiEdit` — read-only agent, cannot modify files.
+- `disallowedTools: Bash` — no shell access (rare, most agents need at least read-only Bash).
 
-### Best Practices
+### skills Frontmatter Guide
 
-1. **Default to sonnet** - Good balance for most tasks
-2. **Use haiku for speed-sensitive agents** - Sub-agents dispatched in parallel, read-only tasks
-3. **Reserve opus for heavy analysis** - Only when sonnet's reasoning isn't sufficient
-4. **Use inherit sparingly** - Only when you want session-level control
+The `skills` field auto-injects skill file contents into the agent's context window at startup. The agent does NOT need to read the files — they are already present.
+
+**When to use frontmatter `skills`:**
+- Agent has ≤7 skills.
+- Skills are safety-critical (e.g., `branch-security`, `runaway-detection`).
+- You need guaranteed loading — no risk of the agent skipping a skill.
+
+**When to keep body text `## Skills to Load`:**
+- Agent has 8+ skills (context window cost too high for full injection).
+- Skills are situational — not all needed for every invocation.
+- Agent benefits from selective loading based on the specific task.
+
+Skill names in frontmatter are resolved relative to the plugin's `skills/` directory. Use the filename without the `.md` extension.
 
 ---
 

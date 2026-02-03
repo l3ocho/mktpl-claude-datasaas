@@ -2,6 +2,8 @@
 name: performance-analyst
 description: Performance-focused code reviewer that identifies performance issues, inefficiencies, and optimization opportunities.
 model: sonnet
+permissionMode: plan
+disallowedTools: Write, Edit, MultiEdit
 ---
 
 # Performance Analyst Agent
