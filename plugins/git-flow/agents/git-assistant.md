@@ -2,6 +2,7 @@
 name: git-assistant
 description: Git workflow assistant for complex git operations, conflict resolution, and repository history management.
 model: haiku
+permissionMode: acceptEdits
 ---
 
 # Git Assistant Agent

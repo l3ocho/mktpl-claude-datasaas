@@ -2,6 +2,7 @@
 name: layout-builder
 description: Practical dashboard layout specialist for creating well-structured layouts with filtering, grid systems, and responsive design.
 model: sonnet
+permissionMode: default
 ---
 
 # Layout Builder Agent

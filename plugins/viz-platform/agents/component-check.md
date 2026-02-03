@@ -2,6 +2,8 @@
 name: component-check
 description: DMC component validation specialist
 model: haiku
+permissionMode: plan
+disallowedTools: Write, Edit, MultiEdit
 ---
 
 # Component Check Agent

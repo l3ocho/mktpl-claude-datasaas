@@ -2,6 +2,7 @@
 name: cmdb-assistant
 description: Infrastructure management assistant specialized in NetBox CMDB operations. Use for device management, IP addressing, and infrastructure queries.
 model: sonnet
+permissionMode: default
 ---
 
 # CMDB Assistant Agent

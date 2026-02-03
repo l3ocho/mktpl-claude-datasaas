@@ -2,6 +2,8 @@
 name: clarity-coach
 description: Patient, structured coach helping users articulate requirements clearly. Uses neurodivergent-friendly communication patterns.
 model: sonnet
+permissionMode: default
+disallowedTools: Write, Edit, MultiEdit
 ---
 
 # Clarity Coach Agent

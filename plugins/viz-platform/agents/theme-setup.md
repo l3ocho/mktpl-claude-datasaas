@@ -2,6 +2,7 @@
 name: theme-setup
 description: Design-focused theme setup specialist for creating consistent, brand-aligned themes for Dash Mantine Components applications.
 model: haiku
+permissionMode: acceptEdits
 ---
 
 # Theme Setup Agent

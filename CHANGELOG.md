@@ -87,6 +87,36 @@ Per-agent model selection using Claude Code's now-supported `model` frontmatter 
 - Added missing frontmatter to 13 agents across pr-review, viz-platform, contract-validator, clarity-assist, git-flow, doc-guardian, code-sentinel, cmdb-assistant, and data-platform
 - All 25 agents now have consistent `name`, `description`, and `model` fields
 
+### Changed
+
+#### Agent Frontmatter Hardening v3
+
+Comprehensive agent-level configuration using Claude Code's supported frontmatter fields.
+
+**permissionMode added to all 25 agents:**
+- `bypassPermissions` (1): Executor — full autonomy with code-sentinel + Code Reviewer safety nets
+- `acceptEdits` (7): Orchestrator, Data Ingestion, Theme Setup, Refactor Advisor, Doc Analyzer, Git Assistant, Maintainer
+- `default` (7): Planner, Code Reviewer, Data Advisor, Layout Builder, Full Validation, Clarity Coach, CMDB Assistant
+- `plan` (10): All pr-review agents (5), Data Analysis, Design Reviewer, Component Check, Agent Check, Security Reviewer (code-sentinel)
+
+**disallowedTools added to 12 agents:**
+- All `plan`-mode agents (10) + Code Reviewer + Clarity Coach receive `disallowedTools: Write, Edit, MultiEdit`
+- Enforces read-only contracts at platform level (defense-in-depth with `permissionMode`)
+
+**Model promotions:**
+- Planner: `sonnet` → `opus` (architectural reasoning benefits from deeper analysis)
+- Code Reviewer: `sonnet` → `opus` (quality gate benefits from thorough review)
+
+**skills frontmatter on 3 agents:**
+- Executor: 7 safety-critical skills auto-injected (branch-security, runaway-detection, etc.)
+- Code Reviewer: 4 review skills auto-injected
+- Maintainer: 2 config skills auto-injected
+- Body text `## Skills to Load` removed for these agents to avoid duplication
+
+**Documentation:**
+- `CLAUDE.md` and `docs/CONFIGURATION.md` updated with complete agent configuration matrix
+- New subsections: permissionMode Guide, disallowedTools Guide, skills Frontmatter Guide
+
 ---
 
 ## [5.8.0] - 2026-02-02

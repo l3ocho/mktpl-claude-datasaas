@@ -2,6 +2,7 @@
 name: refactor-advisor
 description: Code structure and refactoring specialist. Use when analyzing code quality, design patterns, or planning refactoring work.
 model: sonnet
+permissionMode: acceptEdits
 ---
 
 # Refactor Advisor Agent
