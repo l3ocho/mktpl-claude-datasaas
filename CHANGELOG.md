@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+---
+
+## [5.10.0] - 2026-02-03
+
 ### Added
 
 #### NetBox MCP Server: Module-Based Tool Filtering
@@ -38,6 +42,13 @@ Fixed documentation referencing non-existent `virtualization_*` tool names:
 | `cmdb-search.md` | `virtualization_list_virtual_machines` | `virt_list_vms` |
 
 Also fixed NetBox README.md tool name references for virtualization, wireless, and circuits modules.
+
+#### Gitea MCP Server: Standardized Build Backend
+
+Changed `mcp-servers/gitea/pyproject.toml` from hatchling to setuptools:
+- Matches all other MCP servers (contract-validator, viz-platform, data-platform)
+- Updated license format to PEP 639 compliance
+- Added pytest configuration for consistency
 
 ---
 
