@@ -5,13 +5,18 @@
 
 PREFIX="[pr-review]"
 
-# Check if MCP venv exists
+# Check if MCP venv exists - check cache first, then local
+CACHE_VENV="$HOME/.cache/claude-mcp-venvs/leo-claude-mktplace/gitea/.venv/bin/python"
 PLUGIN_ROOT="${CLAUDE_PLUGIN_ROOT:-$(dirname "$(dirname "$(realpath "$0")")")}"
-# MCP servers are at marketplace root, not inside plugin
 MARKETPLACE_ROOT="$(dirname "$(dirname "$PLUGIN_ROOT")")"
-VENV_PATH="$MARKETPLACE_ROOT/mcp-servers/gitea/.venv/bin/python"
+LOCAL_VENV="$MARKETPLACE_ROOT/mcp-servers/gitea/.venv/bin/python"
 
-if [[ ! -f "$VENV_PATH" ]]; then
+# Check cache first (preferred), then local
+if [[ -f "$CACHE_VENV" ]]; then
+    VENV_PATH="$CACHE_VENV"
+elif [[ -f "$LOCAL_VENV" ]]; then
+    VENV_PATH="$LOCAL_VENV"
+else
     echo "$PREFIX MCP venvs missing - run setup.sh from installed marketplace"
     exit 0
 fi
