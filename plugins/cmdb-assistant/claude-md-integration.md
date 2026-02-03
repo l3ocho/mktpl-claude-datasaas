@@ -32,9 +32,9 @@ The following NetBox MCP tools are available for infrastructure management:
 - `ipam_list_available_ips`, `ipam_create_available_ip` - IP allocation
 
 **Virtualization:**
-- `virtualization_list_virtual_machines`, `virtualization_create_virtual_machine` - VM management
-- `virtualization_list_clusters`, `virtualization_create_cluster` - Cluster management
-- `virtualization_list_vm_interfaces` - VM interface management
+- `virt_list_vms`, `virt_create_vm`, `virt_update_vm`, `virt_delete_vm` - VM management
+- `virt_list_clusters`, `virt_create_cluster`, `virt_update_cluster`, `virt_delete_cluster` - Cluster management
+- `virt_list_vm_ifaces`, `virt_create_vm_iface` - VM interface management
 
 **Circuits:**
 - `circuits_list_circuits`, `circuits_create_circuit` - Circuit management

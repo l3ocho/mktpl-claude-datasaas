@@ -31,7 +31,7 @@ When the user provides a search query, determine the best approach:
 3. **Site search**: Use `dcim_list_sites` with name filter
 4. **Prefix search**: Use `ipam_list_prefixes` with prefix or within filter
 5. **VLAN search**: Use `ipam_list_vlans` with vid or name filter
-6. **VM search**: Use `virtualization_list_virtual_machines` with name filter
+6. **VM search**: Use `virt_list_vms` with name filter
 
 For broad searches, query multiple endpoints and consolidate results.
 
