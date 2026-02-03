@@ -6,6 +6,39 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Added
+
+#### NetBox MCP Server: Module-Based Tool Filtering
+
+Environment-variable-driven module filtering to reduce token consumption:
+
+- **New config option**: `NETBOX_ENABLED_MODULES` in `~/.config/claude/netbox.env`
+- **Token savings**: ~15,000 tokens (from ~19,810 to ~4,500) with recommended config
+- **Default behavior**: All modules enabled if env var unset (backward compatible)
+- **Startup logging**: Shows enabled modules and tool count on initialization
+- **Routing guard**: Clear error message when calling disabled module's tools
+
+**Recommended configuration for cmdb-assistant users:**
+```bash
+NETBOX_ENABLED_MODULES=dcim,ipam,virtualization,extras
+```
+
+This enables ~43 tools covering all cmdb-assistant commands while staying well below the 25K token warning threshold.
+
+### Fixed
+
+#### cmdb-assistant Documentation: Incorrect Tool Names
+
+Fixed documentation referencing non-existent `virtualization_*` tool names:
+
+| File | Wrong | Correct |
+|------|-------|---------|
+| `claude-md-integration.md` | `virtualization_list_virtual_machines` | `virt_list_vms` |
+| `claude-md-integration.md` | `virtualization_create_virtual_machine` | `virt_create_vm` |
+| `cmdb-search.md` | `virtualization_list_virtual_machines` | `virt_list_vms` |
+
+Also fixed NetBox README.md tool name references for virtualization, wireless, and circuits modules.
+
 ---
 
 ## [5.9.0] - 2026-02-03

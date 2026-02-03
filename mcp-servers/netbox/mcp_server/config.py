@@ -9,10 +9,16 @@ from pathlib import Path
 from dotenv import load_dotenv
 import os
 import logging
-from typing import Dict, Optional
+from typing import Dict, List, Optional, Set
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
+
+# All available NetBox modules
+ALL_MODULES = frozenset([
+    'dcim', 'ipam', 'circuits', 'virtualization',
+    'tenancy', 'vpn', 'wireless', 'extras'
+])
 
 
 class NetBoxConfig:
@@ -23,6 +29,7 @@ class NetBoxConfig:
         self.api_token: Optional[str] = None
         self.verify_ssl: bool = True
         self.timeout: int = 30
+        self.enabled_modules: Set[str] = set(ALL_MODULES)
 
     def load(self) -> Dict[str, any]:
         """
@@ -73,6 +80,9 @@ class NetBoxConfig:
             self.timeout = 30
             logger.warning(f"Invalid NETBOX_TIMEOUT value '{timeout_str}', using default 30")
 
+        # Module filtering
+        self.enabled_modules = self._load_enabled_modules()
+
         # Validate required variables
         self._validate()
 
@@ -84,7 +94,8 @@ class NetBoxConfig:
             'api_url': self.api_url,
             'api_token': self.api_token,
             'verify_ssl': self.verify_ssl,
-            'timeout': self.timeout
+            'timeout': self.timeout,
+            'enabled_modules': self.enabled_modules
         }
 
     def _validate(self) -> None:
@@ -106,3 +117,40 @@ class NetBoxConfig:
                 f"Missing required configuration: {', '.join(missing)}\n"
                 "Check your ~/.config/claude/netbox.env file"
             )
+
+    def _load_enabled_modules(self) -> Set[str]:
+        """
+        Load enabled modules from NETBOX_ENABLED_MODULES environment variable.
+
+        Format: Comma-separated list of module names.
+        Example: NETBOX_ENABLED_MODULES=dcim,ipam,virtualization,extras
+
+        Returns:
+            Set of enabled module names. If env var is unset/empty, returns all modules.
+        """
+        modules_str = os.getenv('NETBOX_ENABLED_MODULES', '').strip()
+
+        if not modules_str:
+            logger.info("NETBOX_ENABLED_MODULES not set, all modules enabled (default)")
+            return set(ALL_MODULES)
+
+        # Parse comma-separated list, strip whitespace
+        requested = {m.strip().lower() for m in modules_str.split(',') if m.strip()}
+
+        # Validate module names
+        invalid = requested - ALL_MODULES
+        if invalid:
+            logger.warning(
+                f"Unknown modules in NETBOX_ENABLED_MODULES: {', '.join(sorted(invalid))}. "
+                f"Valid modules: {', '.join(sorted(ALL_MODULES))}"
+            )
+
+        # Return only valid modules
+        enabled = requested & ALL_MODULES
+
+        if not enabled:
+            logger.warning("No valid modules enabled, falling back to all modules")
+            return set(ALL_MODULES)
+
+        logger.info(f"Enabled modules: {', '.join(sorted(enabled))}")
+        return enabled
