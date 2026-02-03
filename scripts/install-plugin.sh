@@ -7,7 +7,7 @@
 #
 # This script:
 # 1. Validates plugin exists in the marketplace
-# 2. Updates target project's .mcp.json with MCP server entry (if applicable)
+# 2. Updates target project's .mcp.json with MCP server entries (if applicable)
 # 3. Appends CLAUDE.md integration snippet to target project
 # 4. Is idempotent (safe to run multiple times)
 #
@@ -39,6 +39,7 @@ log_warning() { echo -e "${YELLOW}[WARN]${NC} $1"; }
 # --- Track Changes ---
 CHANGES_MADE=()
 SKIPPED=()
+MCP_SERVERS_INSTALLED=()
 
 # --- Usage ---
 usage() {
@@ -114,15 +115,28 @@ validate_target() {
     fi
 }
 
-# --- Check if MCP Server Exists for Plugin ---
-has_mcp_server() {
+# --- Get MCP Servers for Plugin ---
+# Reads the mcp_servers array from plugin.json
+# Returns newline-separated list of MCP server names, or empty if none
+get_mcp_servers() {
     local plugin_name="$1"
-    local mcp_dir="$REPO_ROOT/mcp-servers/$plugin_name"
+    local plugin_json="$REPO_ROOT/plugins/$plugin_name/.claude-plugin/plugin.json"
 
-    if [[ -d "$mcp_dir" && -f "$mcp_dir/run.sh" ]]; then
-        return 0
+    if [[ ! -f "$plugin_json" ]]; then
+        return
     fi
-    return 1
+
+    # Read mcp_servers array from plugin.json
+    # Returns empty if field doesn't exist or is empty
+    jq -r '.mcp_servers // [] | .[]' "$plugin_json" 2>/dev/null || true
+}
+
+# --- Check if plugin has any MCP servers ---
+has_mcp_servers() {
+    local plugin_name="$1"
+    local servers
+    servers=$(get_mcp_servers "$plugin_name")
+    [[ -n "$servers" ]]
 }
 
 # --- Update .mcp.json ---
@@ -130,12 +144,14 @@ update_mcp_json() {
     local plugin_name="$1"
     local target_path="$2"
     local mcp_json="$target_path/.mcp.json"
-    local mcp_server_path="$REPO_ROOT/mcp-servers/$plugin_name/run.sh"
 
-    # Check if plugin has MCP server
-    if ! has_mcp_server "$plugin_name"; then
-        log_skip "Plugin '$plugin_name' has no MCP server - skipping .mcp.json update"
-        SKIPPED+=(".mcp.json: No MCP server for $plugin_name")
+    # Get MCP servers for this plugin
+    local mcp_servers
+    mcp_servers=$(get_mcp_servers "$plugin_name")
+
+    if [[ -z "$mcp_servers" ]]; then
+        log_skip "Plugin '$plugin_name' has no MCP servers - skipping .mcp.json update"
+        SKIPPED+=(".mcp.json: No MCP servers for $plugin_name")
         return 0
     fi
 
@@ -146,21 +162,37 @@ update_mcp_json() {
         CHANGES_MADE+=("Created .mcp.json")
     fi
 
-    # Check if entry already exists
-    if jq -e ".mcpServers[\"$plugin_name\"]" "$mcp_json" > /dev/null 2>&1; then
-        log_skip "MCP server '$plugin_name' already in .mcp.json"
-        SKIPPED+=(".mcp.json: $plugin_name already present")
-        return 0
-    fi
+    # Add each MCP server
+    local servers_added=0
+    while IFS= read -r server_name; do
+        [[ -z "$server_name" ]] && continue
 
-    # Add MCP server entry
-    log_info "Adding MCP server '$plugin_name' to .mcp.json"
-    local tmp_file=$(mktemp)
-    jq ".mcpServers[\"$plugin_name\"] = {\"command\": \"$mcp_server_path\", \"args\": []}" "$mcp_json" > "$tmp_file"
-    mv "$tmp_file" "$mcp_json"
+        local mcp_server_path="$REPO_ROOT/mcp-servers/$server_name/run.sh"
 
-    CHANGES_MADE+=("Added $plugin_name to .mcp.json")
-    log_success "Added MCP server entry for '$plugin_name'"
+        # Verify server exists
+        if [[ ! -f "$mcp_server_path" ]]; then
+            log_warning "MCP server '$server_name' not found at $mcp_server_path"
+            continue
+        fi
+
+        # Check if entry already exists
+        if jq -e ".mcpServers[\"$server_name\"]" "$mcp_json" > /dev/null 2>&1; then
+            log_skip "MCP server '$server_name' already in .mcp.json"
+            SKIPPED+=(".mcp.json: $server_name already present")
+            continue
+        fi
+
+        # Add MCP server entry
+        log_info "Adding MCP server '$server_name' to .mcp.json"
+        local tmp_file=$(mktemp)
+        jq ".mcpServers[\"$server_name\"] = {\"command\": \"$mcp_server_path\", \"args\": []}" "$mcp_json" > "$tmp_file"
+        mv "$tmp_file" "$mcp_json"
+
+        CHANGES_MADE+=("Added $server_name to .mcp.json")
+        MCP_SERVERS_INSTALLED+=("$server_name")
+        log_success "Added MCP server entry for '$server_name'"
+        ((++servers_added))
+    done <<< "$mcp_servers"
 }
 
 # --- Update CLAUDE.md ---
@@ -189,21 +221,24 @@ EOF
         CHANGES_MADE+=("Created CLAUDE.md")
     fi
 
-    # Read integration content
-    local integration_content
-    integration_content=$(cat "$integration_file")
-
-    # Extract the first line (# header) to use as marker for detection
-    local header_marker
-    header_marker=$(head -1 "$integration_file")
-
-    # Check if already integrated - look for the integration file's header
-    # Handles both formats: "# {name} Plugin - CLAUDE.md Integration" and "# {name} CLAUDE.md Integration"
-    if grep -qE "^# ${plugin_name}( Plugin)? -? ?CLAUDE\.md Integration" "$target_claude_md" 2>/dev/null; then
+    # Check if already integrated using HTML comment marker (preferred)
+    local begin_marker="<!-- BEGIN marketplace-plugin: $plugin_name -->"
+    if grep -qF "$begin_marker" "$target_claude_md" 2>/dev/null; then
         log_skip "Plugin '$plugin_name' integration already in CLAUDE.md"
         SKIPPED+=("CLAUDE.md: $plugin_name already present")
         return 0
     fi
+
+    # Fallback: check for legacy header format (backward compatibility)
+    if grep -qE "^# ${plugin_name}( Plugin)? -? ?CLAUDE\.md Integration" "$target_claude_md" 2>/dev/null; then
+        log_skip "Plugin '$plugin_name' integration already in CLAUDE.md (legacy format)"
+        SKIPPED+=("CLAUDE.md: $plugin_name already present")
+        return 0
+    fi
+
+    # Read integration content
+    local integration_content
+    integration_content=$(cat "$integration_file")
 
     # Check for or create Marketplace Plugin Integration section
     local section_header="## Marketplace Plugin Integration"
@@ -217,12 +252,18 @@ EOF
         echo "" >> "$target_claude_md"
     fi
 
-    # Append integration content
+    # Append integration content with HTML comment markers
     log_info "Adding '$plugin_name' integration to CLAUDE.md"
+    local end_marker="<!-- END marketplace-plugin: $plugin_name -->"
+
     echo "" >> "$target_claude_md"
     echo "---" >> "$target_claude_md"
     echo "" >> "$target_claude_md"
+    echo "$begin_marker" >> "$target_claude_md"
+    echo "" >> "$target_claude_md"
     echo "$integration_content" >> "$target_claude_md"
+    echo "" >> "$target_claude_md"
+    echo "$end_marker" >> "$target_claude_md"
 
     CHANGES_MADE+=("Added $plugin_name integration to CLAUDE.md")
     log_success "Added CLAUDE.md integration for '$plugin_name'"
@@ -287,8 +328,14 @@ print_summary() {
     fi
     echo ""
 
-    # MCP tools reminder
-    if has_mcp_server "$plugin_name"; then
+    # MCP servers info
+    if [[ ${#MCP_SERVERS_INSTALLED[@]} -gt 0 ]]; then
+        echo -e "${CYAN}MCP Servers Installed:${NC}"
+        for server in "${MCP_SERVERS_INSTALLED[@]}"; do
+            echo "  - $server"
+        done
+        echo ""
+    elif has_mcp_servers "$plugin_name"; then
         echo -e "${CYAN}MCP Tools:${NC}"
         echo "  This plugin includes MCP server tools. Use ToolSearch to discover them."
         echo ""

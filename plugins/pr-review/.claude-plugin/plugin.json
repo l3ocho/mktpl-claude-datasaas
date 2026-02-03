@@ -16,5 +16,6 @@
     "performance",
     "multi-agent"
   ],
+  "mcp_servers": ["gitea"],
   "commands": ["./commands/"]
 }
