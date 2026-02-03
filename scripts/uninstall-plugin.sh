@@ -6,7 +6,7 @@
 # Usage: ./scripts/uninstall-plugin.sh <plugin-name> <target-project-path>
 #
 # This script:
-# 1. Removes MCP server entry from target project's .mcp.json
+# 1. Removes MCP server entries from target project's .mcp.json
 # 2. Removes CLAUDE.md integration section for the plugin
 # 3. Is idempotent (safe to run multiple times)
 #
@@ -76,6 +76,22 @@ validate_target() {
     log_success "Target project found: $target_path"
 }
 
+# --- Get MCP Servers for Plugin ---
+# Reads the mcp_servers array from plugin.json
+# Returns newline-separated list of MCP server names, or empty if none
+get_mcp_servers() {
+    local plugin_name="$1"
+    local plugin_json="$REPO_ROOT/plugins/$plugin_name/.claude-plugin/plugin.json"
+
+    if [[ ! -f "$plugin_json" ]]; then
+        return
+    fi
+
+    # Read mcp_servers array from plugin.json
+    # Returns empty if field doesn't exist or is empty
+    jq -r '.mcp_servers // [] | .[]' "$plugin_json" 2>/dev/null || true
+}
+
 # --- Remove from .mcp.json ---
 remove_from_mcp_json() {
     local plugin_name="$1"
@@ -89,21 +105,48 @@ remove_from_mcp_json() {
         return 0
     fi
 
-    # Check if entry exists
-    if ! jq -e ".mcpServers[\"$plugin_name\"]" "$mcp_json" > /dev/null 2>&1; then
-        log_skip "MCP server '$plugin_name' not in .mcp.json"
-        SKIPPED+=(".mcp.json: $plugin_name not present")
+    # Get MCP servers for this plugin
+    local mcp_servers
+    mcp_servers=$(get_mcp_servers "$plugin_name")
+
+    if [[ -z "$mcp_servers" ]]; then
+        # Fallback: try to remove entry with plugin name (backward compatibility)
+        if jq -e ".mcpServers[\"$plugin_name\"]" "$mcp_json" > /dev/null 2>&1; then
+            log_info "Removing MCP server '$plugin_name' from .mcp.json"
+            local tmp_file=$(mktemp)
+            jq "del(.mcpServers[\"$plugin_name\"])" "$mcp_json" > "$tmp_file"
+            mv "$tmp_file" "$mcp_json"
+            CHANGES_MADE+=("Removed $plugin_name from .mcp.json")
+            log_success "Removed MCP server entry for '$plugin_name'"
+        else
+            log_skip "Plugin '$plugin_name' has no MCP servers configured"
+            SKIPPED+=(".mcp.json: No MCP servers for $plugin_name")
+        fi
         return 0
     fi
 
-    # Remove MCP server entry
-    log_info "Removing MCP server '$plugin_name' from .mcp.json"
-    local tmp_file=$(mktemp)
-    jq "del(.mcpServers[\"$plugin_name\"])" "$mcp_json" > "$tmp_file"
-    mv "$tmp_file" "$mcp_json"
+    # Remove each MCP server
+    local servers_removed=0
+    while IFS= read -r server_name; do
+        [[ -z "$server_name" ]] && continue
 
-    CHANGES_MADE+=("Removed $plugin_name from .mcp.json")
-    log_success "Removed MCP server entry for '$plugin_name'"
+        # Check if entry exists
+        if ! jq -e ".mcpServers[\"$server_name\"]" "$mcp_json" > /dev/null 2>&1; then
+            log_skip "MCP server '$server_name' not in .mcp.json"
+            SKIPPED+=(".mcp.json: $server_name not present")
+            continue
+        fi
+
+        # Remove MCP server entry
+        log_info "Removing MCP server '$server_name' from .mcp.json"
+        local tmp_file=$(mktemp)
+        jq "del(.mcpServers[\"$server_name\"])" "$mcp_json" > "$tmp_file"
+        mv "$tmp_file" "$mcp_json"
+
+        CHANGES_MADE+=("Removed $server_name from .mcp.json")
+        log_success "Removed MCP server entry for '$server_name'"
+        ((++servers_removed))
+    done <<< "$mcp_servers"
 }
 
 # --- Remove from CLAUDE.md ---
@@ -119,8 +162,64 @@ remove_from_claude_md() {
         return 0
     fi
 
-    # Look for the plugin section header (handles multiple formats)
-    # Formats: "# {plugin-name} Plugin - CLAUDE.md Integration" or "# {plugin-name} CLAUDE.md Integration"
+    # Try HTML comment markers first (preferred method)
+    local begin_marker="<!-- BEGIN marketplace-plugin: $plugin_name -->"
+    local end_marker="<!-- END marketplace-plugin: $plugin_name -->"
+
+    if grep -qF "$begin_marker" "$target_claude_md" 2>/dev/null; then
+        log_info "Removing '$plugin_name' section from CLAUDE.md (using markers)"
+
+        # Remove everything between markers (inclusive) and preceding ---
+        local tmp_file=$(mktemp)
+        awk -v begin="$begin_marker" -v end="$end_marker" '
+        BEGIN { skip = 0; prev_hr = 0; buffer = "" }
+        {
+            is_hr = /^---[[:space:]]*$/
+
+            if ($0 == begin) {
+                skip = 1
+                # If previous line was ---, dont print it
+                if (prev_hr) {
+                    buffer = ""
+                }
+                next
+            }
+
+            if (skip) {
+                if ($0 == end) {
+                    skip = 0
+                }
+                next
+            }
+
+            # Print buffered content
+            if (buffer != "") {
+                print buffer
+            }
+
+            # Buffer current line (in case its --- before a marker)
+            buffer = $0
+            prev_hr = is_hr
+        }
+        END {
+            # Print final buffered content
+            if (buffer != "") {
+                print buffer
+            }
+        }
+        ' "$target_claude_md" > "$tmp_file"
+
+        # Clean up multiple consecutive blank lines
+        awk 'NF{blank=0} !NF{blank++} blank<=2' "$tmp_file" > "${tmp_file}.clean"
+        mv "${tmp_file}.clean" "$target_claude_md"
+        rm -f "$tmp_file"
+
+        CHANGES_MADE+=("Removed $plugin_name section from CLAUDE.md")
+        log_success "Removed CLAUDE.md section for '$plugin_name'"
+        return 0
+    fi
+
+    # Fallback: try legacy header-based detection
     local section_header
     section_header=$(grep -E "^# ${plugin_name}( Plugin)? -? ?CLAUDE\.md Integration" "$target_claude_md" 2>/dev/null | head -1)
 
@@ -130,10 +229,9 @@ remove_from_claude_md() {
         return 0
     fi
 
-    log_info "Removing '$plugin_name' section from CLAUDE.md"
+    log_info "Removing '$plugin_name' section from CLAUDE.md (legacy format)"
 
     # Create temp file and use awk to remove section
-    # Remove from header to next "---" divider or next plugin header
     local tmp_file=$(mktemp)
 
     awk -v header="$section_header" '
@@ -155,25 +253,24 @@ remove_from_claude_md() {
         is_hr = /^---[[:space:]]*$/ && !in_code_block
 
         # Check if this is a new plugin section header (only outside code blocks)
-        # Patterns: "# {name} Plugin - CLAUDE.md Integration" or "# {name} CLAUDE.md Integration"
         is_new_plugin_section = /^# [a-z-]+( Plugin)? -? ?CLAUDE\.md Integration/ && !in_code_block && $0 != header
 
+        # Check for HTML marker (new format)
+        is_begin_marker = /^<!-- BEGIN marketplace-plugin:/ && !in_code_block
+
         if (skip) {
-            # Stop skipping when we hit --- (outside code block) or a new plugin section
+            # Stop skipping when we hit --- or a new section
             if (is_hr) {
-                # This --- ends the section we are removing, skip it too
                 skip = 0
                 next
             }
-            if (is_new_plugin_section) {
-                # New plugin section starts, stop skipping and print it
+            if (is_new_plugin_section || is_begin_marker) {
                 skip = 0
                 print
             }
             next
         }
 
-        # Not skipping - print the line
         print
     }
     END { if (!found) exit 1 }
