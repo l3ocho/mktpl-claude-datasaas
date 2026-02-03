@@ -2,6 +2,7 @@
 name: data-ingestion
 description: Data ingestion specialist for loading, transforming, and preparing data for analysis.
 model: haiku
+permissionMode: acceptEdits
 ---
 
 # Data Ingestion Agent

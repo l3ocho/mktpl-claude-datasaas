@@ -2,6 +2,8 @@
 name: test-validator
 description: Test quality reviewer that validates test coverage, test quality, and testing practices in PR changes.
 model: haiku
+permissionMode: plan
+disallowedTools: Write, Edit, MultiEdit
 ---
 
 # Test Validator Agent

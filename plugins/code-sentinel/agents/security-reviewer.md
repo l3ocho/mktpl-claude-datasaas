@@ -2,6 +2,8 @@
 name: security-reviewer
 description: Security-focused code review agent
 model: sonnet
+permissionMode: plan
+disallowedTools: Write, Edit, MultiEdit
 ---
 
 # Security Reviewer Agent

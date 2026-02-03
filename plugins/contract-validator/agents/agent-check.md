@@ -2,6 +2,8 @@
 name: agent-check
 description: Agent definition validator for quick verification
 model: haiku
+permissionMode: plan
+disallowedTools: Write, Edit, MultiEdit
 ---
 
 # Agent Check Agent

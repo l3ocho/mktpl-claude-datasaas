@@ -2,6 +2,7 @@
 name: full-validation
 description: Contract validation specialist for comprehensive cross-plugin compatibility validation of the entire marketplace.
 model: sonnet
+permissionMode: default
 ---
 
 # Full Validation Agent
