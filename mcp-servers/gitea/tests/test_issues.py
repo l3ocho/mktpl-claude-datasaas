@@ -119,22 +119,26 @@ async def test_aggregate_issues_company_mode(issue_tools):
             'repo2': [{'number': 2}]
         })
 
-        aggregated = await issue_tools.aggregate_issues()
+        aggregated = await issue_tools.aggregate_issues(org='test_owner')
 
         assert 'repo1' in aggregated
         assert 'repo2' in aggregated
 
 
 @pytest.mark.asyncio
-async def test_aggregate_issues_project_mode_error(issue_tools):
-    """Test that aggregate_issues fails in project mode"""
+async def test_aggregate_issues_project_mode(issue_tools):
+    """Test that aggregate_issues works in project mode with org argument"""
     issue_tools.gitea.mode = 'project'
 
     with patch.object(issue_tools, '_get_current_branch', return_value='development'):
-        with pytest.raises(ValueError) as exc_info:
-            await issue_tools.aggregate_issues()
+        issue_tools.gitea.aggregate_issues = Mock(return_value={
+            'repo1': [{'number': 1}]
+        })
 
-        assert "only available in company mode" in str(exc_info.value)
+        # aggregate_issues now works in any mode when org is provided
+        aggregated = await issue_tools.aggregate_issues(org='test_owner')
+
+        assert 'repo1' in aggregated
 
 
 def test_branch_detection():

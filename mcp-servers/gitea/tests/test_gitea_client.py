@@ -14,8 +14,7 @@ def mock_config():
         mock_instance.load.return_value = {
             'api_url': 'https://test.com/api/v1',
             'api_token': 'test_token',
-            'owner': 'test_owner',
-            'repo': 'test_repo',
+            'repo': 'test_owner/test_repo',  # Combined owner/repo format
             'mode': 'project'
         }
         yield mock_cfg
@@ -31,8 +30,7 @@ def test_client_initialization(gitea_client):
     """Test client initializes with correct configuration"""
     assert gitea_client.base_url == 'https://test.com/api/v1'
     assert gitea_client.token == 'test_token'
-    assert gitea_client.owner == 'test_owner'
-    assert gitea_client.repo == 'test_repo'
+    assert gitea_client.repo == 'test_owner/test_repo'  # Combined format
     assert gitea_client.mode == 'project'
     assert 'Authorization' in gitea_client.session.headers
     assert gitea_client.session.headers['Authorization'] == 'token test_token'
@@ -92,15 +90,20 @@ def test_create_issue(gitea_client):
     }
     mock_response.raise_for_status = Mock()
 
-    with patch.object(gitea_client.session, 'post', return_value=mock_response):
-        issue = gitea_client.create_issue(
-            title='New Issue',
-            body='Issue body',
-            labels=['Type/Bug']
-        )
+    # Mock is_org_repo to avoid network call during label resolution
+    with patch.object(gitea_client, 'is_org_repo', return_value=True):
+        # Mock get_org_labels and get_labels for label resolution
+        with patch.object(gitea_client, 'get_org_labels', return_value=[{'name': 'Type/Bug', 'id': 1}]):
+            with patch.object(gitea_client, 'get_labels', return_value=[]):
+                with patch.object(gitea_client.session, 'post', return_value=mock_response):
+                    issue = gitea_client.create_issue(
+                        title='New Issue',
+                        body='Issue body',
+                        labels=['Type/Bug']
+                    )
 
-        assert issue['title'] == 'New Issue'
-        gitea_client.session.post.assert_called_once()
+                    assert issue['title'] == 'New Issue'
+                    gitea_client.session.post.assert_called_once()
 
 
 def test_update_issue(gitea_client):
@@ -161,7 +164,7 @@ def test_get_org_labels(gitea_client):
     mock_response.raise_for_status = Mock()
 
     with patch.object(gitea_client.session, 'get', return_value=mock_response):
-        labels = gitea_client.get_org_labels()
+        labels = gitea_client.get_org_labels(org='test_owner')
 
         assert len(labels) == 2
 
@@ -176,7 +179,7 @@ def test_list_repos(gitea_client):
     mock_response.raise_for_status = Mock()
 
     with patch.object(gitea_client.session, 'get', return_value=mock_response):
-        repos = gitea_client.list_repos()
+        repos = gitea_client.list_repos(org='test_owner')
 
         assert len(repos) == 2
         assert repos[0]['name'] == 'repo1'
@@ -196,7 +199,7 @@ def test_aggregate_issues(gitea_client):
         [{'number': 2, 'title': 'Issue 2'}]   # repo2
     ])
 
-    aggregated = gitea_client.aggregate_issues(state='open')
+    aggregated = gitea_client.aggregate_issues(org='test_owner', state='open')
 
     assert 'repo1' in aggregated
     assert 'repo2' in aggregated
@@ -205,14 +208,13 @@ def test_aggregate_issues(gitea_client):
 
 
 def test_no_repo_specified_error(gitea_client):
-    """Test error when repository not specified"""
+    """Test error when repository not specified or invalid format"""
     # Create client without repo
     with patch('mcp_server.gitea_client.GiteaConfig') as mock_cfg:
         mock_instance = mock_cfg.return_value
         mock_instance.load.return_value = {
             'api_url': 'https://test.com/api/v1',
             'api_token': 'test_token',
-            'owner': 'test_owner',
             'repo': None,  # No repo
             'mode': 'company'
         }
@@ -221,7 +223,7 @@ def test_no_repo_specified_error(gitea_client):
         with pytest.raises(ValueError) as exc_info:
             client.list_issues()
 
-        assert "Repository not specified" in str(exc_info.value)
+        assert "Use 'owner/repo' format" in str(exc_info.value)
 
 
 # ========================================
