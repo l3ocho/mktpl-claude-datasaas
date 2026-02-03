@@ -19,8 +19,9 @@ The Gitea MCP Server provides Claude Code with direct access to Gitea for issue 
 - **Hybrid Configuration**: System-level credentials + project-level paths
 - **PMO Support**: Multi-repository aggregation for organization-wide views
 
-### Tools Provided
+### Tools Provided (36 total)
 
+#### Issue Management (6 tools)
 | Tool | Description | Mode |
 |------|-------------|------|
 | `list_issues` | List issues from repository | Both |
@@ -28,9 +29,61 @@ The Gitea MCP Server provides Claude Code with direct access to Gitea for issue 
 | `create_issue` | Create new issue with labels | Both |
 | `update_issue` | Update existing issue | Both |
 | `add_comment` | Add comment to issue | Both |
+| `aggregate_issues` | Cross-repository issue aggregation | PMO Only |
+
+#### Label Management (5 tools)
+| Tool | Description | Mode |
+|------|-------------|------|
 | `get_labels` | Get all labels (org + repo) | Both |
 | `suggest_labels` | Intelligent label suggestion | Both |
-| `aggregate_issues` | Cross-repository issue aggregation | PMO Only |
+| `create_label` | Create repo-level label | Both |
+| `create_org_label` | Create organization-level label | Both |
+| `create_label_smart` | Auto-detect org vs repo for label creation | Both |
+
+#### Wiki & Lessons Learned (7 tools)
+| Tool | Description | Mode |
+|------|-------------|------|
+| `list_wiki_pages` | List all wiki pages | Both |
+| `get_wiki_page` | Get specific wiki page content | Both |
+| `create_wiki_page` | Create new wiki page | Both |
+| `update_wiki_page` | Update existing wiki page | Both |
+| `create_lesson` | Create lessons learned entry | Both |
+| `search_lessons` | Search lessons by query/tags | Both |
+| `allocate_rfc_number` | Get next available RFC number | Both |
+
+#### Milestone Management (5 tools)
+| Tool | Description | Mode |
+|------|-------------|------|
+| `list_milestones` | List all milestones | Both |
+| `get_milestone` | Get specific milestone | Both |
+| `create_milestone` | Create new milestone | Both |
+| `update_milestone` | Update existing milestone | Both |
+| `delete_milestone` | Delete a milestone | Both |
+
+#### Issue Dependencies (4 tools)
+| Tool | Description | Mode |
+|------|-------------|------|
+| `list_issue_dependencies` | List blocking issues | Both |
+| `create_issue_dependency` | Create dependency between issues | Both |
+| `remove_issue_dependency` | Remove dependency | Both |
+| `get_execution_order` | Calculate parallelizable execution order | Both |
+
+#### Pull Request Tools (7 tools)
+| Tool | Description | Mode |
+|------|-------------|------|
+| `list_pull_requests` | List PRs from repository | Both |
+| `get_pull_request` | Get specific PR details | Both |
+| `get_pr_diff` | Get PR diff content | Both |
+| `get_pr_comments` | Get comments on a PR | Both |
+| `create_pr_review` | Create PR review (approve/request changes) | Both |
+| `add_pr_comment` | Add comment to PR | Both |
+| `create_pull_request` | Create new pull request | Both |
+
+#### Validation Tools (2 tools)
+| Tool | Description | Mode |
+|------|-------------|------|
+| `validate_repo_org` | Check if repo belongs to organization | Both |
+| `get_branch_protection` | Get branch protection rules | Both |
 
 ## Architecture
 
@@ -40,15 +93,20 @@ The Gitea MCP Server provides Claude Code with direct access to Gitea for issue 
 mcp-servers/gitea/
 ├── .venv/                      # Python virtual environment
 ├── requirements.txt            # Python dependencies
+├── run.sh                      # Entry point script
 ├── mcp_server/
 │   ├── __init__.py
-│   ├── server.py              # MCP server entry point
-│   ├── config.py              # Configuration loader
+│   ├── server.py              # MCP server entry point (36 tools)
+│   ├── config.py              # Configuration loader with auto-detection
 │   ├── gitea_client.py        # Gitea API client
 │   └── tools/
 │       ├── __init__.py
-│       ├── issues.py          # Issue tools
-│       └── labels.py          # Label tools
+│       ├── issues.py          # Issue management tools
+│       ├── labels.py          # Label management tools
+│       ├── wiki.py            # Wiki & lessons learned tools
+│       ├── milestones.py      # Milestone management tools
+│       ├── dependencies.py    # Issue dependency tools
+│       └── pull_requests.py   # Pull request tools
 ├── tests/
 │   ├── __init__.py
 │   ├── test_config.py
@@ -56,7 +114,8 @@ mcp-servers/gitea/
 │   ├── test_issues.py
 │   └── test_labels.py
 ├── README.md                   # This file
-└── TESTING.md                  # Testing instructions
+├── TESTING.md                  # Testing instructions
+└── CHANGELOG.md                # Version history
 ```
 
 ### Mode Detection
@@ -111,7 +170,6 @@ mkdir -p ~/.config/claude
 cat > ~/.config/claude/gitea.env << EOF
 GITEA_API_URL=https://gitea.example.com/api/v1
 GITEA_API_TOKEN=your_gitea_token_here
-GITEA_OWNER=bandit
 EOF
 
 chmod 600 ~/.config/claude/gitea.env
@@ -137,14 +195,34 @@ For company/PMO mode, omit the `.env` file or don't set `GITEA_REPO`.
 **Required Variables**:
 - `GITEA_API_URL` - Gitea API endpoint (e.g., `https://gitea.example.com/api/v1`)
 - `GITEA_API_TOKEN` - Personal access token with repo permissions
-- `GITEA_OWNER` - Organization or user name (e.g., `bandit`)
 
 ### Project-Level Configuration
 
 **File**: `<project-root>/.env`
 
 **Optional Variables**:
-- `GITEA_REPO` - Repository name (enables project mode)
+- `GITEA_REPO` - Repository in `owner/repo` format (enables project mode)
+
+### Automatic Repository Detection
+
+If `GITEA_REPO` is not set, the server auto-detects the repository from your git remote:
+
+**Supported URL Formats**:
+- SSH: `ssh://git@gitea.example.com:22/owner/repo.git`
+- SSH short: `git@gitea.example.com:owner/repo.git`
+- HTTPS: `https://gitea.example.com/owner/repo.git`
+- HTTP: `http://gitea.example.com/owner/repo.git`
+
+The repository is extracted as `owner/repo` format automatically.
+
+### Project Directory Detection
+
+The server finds your project directory using these strategies (in order):
+
+1. `CLAUDE_PROJECT_DIR` environment variable (highest priority)
+2. `PWD` environment variable (if `.git` or `.env` present)
+3. Current working directory (if `.git` or `.env` present)
+4. Falls back to company/PMO mode if no project found
 
 ### Generating Gitea API Token
 
@@ -220,13 +298,13 @@ suggestions = await label_tools.suggest_labels(context)
 
 ### Unit Tests
 
-Run all 42 unit tests with mocks:
+Run all 64 unit tests with mocks:
 
 ```bash
 pytest tests/ -v
 ```
 
-Expected: `42 passed in 0.57s`
+Expected: `64 passed`
 
 ### Integration Tests
 
@@ -327,11 +405,15 @@ See [TESTING.md](./TESTING.md#troubleshooting) for more details.
 
 ### Project Structure
 
-- `config.py` - Hybrid configuration loader with mode detection
+- `config.py` - Hybrid configuration loader with auto-detection
 - `gitea_client.py` - Synchronous Gitea API client using requests
-- `tools/issues.py` - Async wrappers with branch detection
-- `tools/labels.py` - Label management and suggestion
-- `server.py` - MCP server with JSON-RPC 2.0 over stdio
+- `tools/issues.py` - Issue management with branch detection
+- `tools/labels.py` - Label management and intelligent suggestions
+- `tools/wiki.py` - Wiki pages and lessons learned
+- `tools/milestones.py` - Milestone CRUD operations
+- `tools/dependencies.py` - Issue dependency tracking
+- `tools/pull_requests.py` - PR review and management
+- `server.py` - MCP server with 36 tools over JSON-RPC 2.0 stdio
 
 ### Adding New Tools
 
@@ -374,18 +456,14 @@ def list_issues(self, state='open', labels=None, repo=None):
 
 ## Changelog
 
-### v1.0.0 (2025-01-06) - Phase 1 Complete
+See [CHANGELOG.md](./CHANGELOG.md) for full version history.
 
-✅ Initial implementation:
-- Configuration management (hybrid system + project)
-- Gitea API client with all CRUD operations
-- MCP server with 8 tools
-- Issue tools with branch detection
-- Label tools with intelligent suggestions
-- Mode detection (project vs company)
-- Branch-aware security model
-- 42 unit tests (100% passing)
-- Comprehensive documentation
+### Recent Updates
+
+- **v1.3.0** - Pull request tools (7 tools), label creation tools (3)
+- **v1.2.0** - Milestone management (5 tools), issue dependencies (4 tools)
+- **v1.1.0** - Wiki & lessons learned system (7 tools)
+- **v1.0.0** - Initial release with core issue/label tools (8 tools)
 
 ## License
 
@@ -407,6 +485,6 @@ For issues or questions:
 ---
 
 **Built for**: Leo Claude Marketplace - Project Management Plugins
-**Phase**: 1 (Complete)
+**Tools**: 36
 **Status**: ✅ Production Ready
-**Last Updated**: 2025-01-06
+**Last Updated**: 2026-02-03
