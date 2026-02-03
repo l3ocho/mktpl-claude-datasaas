@@ -1,5 +1,7 @@
 ---
-description: Specialized agent for documentation analysis and drift detection
+name: doc-analyzer
+description: Specialized agent for documentation analysis and drift detection. Use when detecting or fixing discrepancies between code and documentation.
+model: sonnet
 ---
 
 # Documentation Analyzer Agent
