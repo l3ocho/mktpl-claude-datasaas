@@ -182,9 +182,41 @@ MCP servers are **shared at repository root** and configured in `.mcp.json`.
 | MCP configuration | `.mcp.json` | `.mcp.json` (at repo root) |
 | Shared MCP server | `mcp-servers/{server}/` | `mcp-servers/gitea/` |
 | MCP server code | `mcp-servers/{server}/mcp_server/` | `mcp-servers/gitea/mcp_server/` |
-| MCP venv | `mcp-servers/{server}/.venv/` | `mcp-servers/gitea/.venv/` |
+| MCP venv (local) | `mcp-servers/{server}/.venv/` | `mcp-servers/gitea/.venv/` |
 
 **Note:** Plugins do NOT have their own `mcp-servers/` directories. All MCP servers are shared at root and configured via `.mcp.json`.
+
+### MCP Venv Paths - CRITICAL
+
+**Venvs live in a CACHE directory that SURVIVES marketplace updates.**
+
+When checking for venvs, ALWAYS check in this order:
+
+| Priority | Path | Survives Updates? |
+|----------|------|-------------------|
+| 1 (CHECK FIRST) | `~/.cache/claude-mcp-venvs/leo-claude-mktplace/{server}/.venv/` | YES |
+| 2 (fallback) | `{marketplace}/mcp-servers/{server}/.venv/` | NO |
+
+**Why cache first?**
+- Marketplace directory gets WIPED on every update/reinstall
+- Cache directory SURVIVES updates
+- False "venv missing" errors waste hours of debugging
+
+**Pattern for hooks checking venvs:**
+```bash
+CACHE_VENV="$HOME/.cache/claude-mcp-venvs/leo-claude-mktplace/{server}/.venv/bin/python"
+LOCAL_VENV="$MARKETPLACE_ROOT/mcp-servers/{server}/.venv/bin/python"
+
+if [[ -f "$CACHE_VENV" ]]; then
+    VENV_PATH="$CACHE_VENV"
+elif [[ -f "$LOCAL_VENV" ]]; then
+    VENV_PATH="$LOCAL_VENV"
+else
+    echo "venv missing"
+fi
+```
+
+**See lesson learned:** [Startup Hooks Must Check Venv Cache Path First](https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/wiki/lessons/patterns/startup-hooks-must-check-venv-cache-path-first)
 
 ### Documentation Paths
 
