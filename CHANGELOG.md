@@ -8,6 +8,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added
 
+- **marketplace:** Task-specific launcher script for token optimization
+  - New script: `scripts/claude-launch.sh` loads only needed plugins via `--plugin-dir`
+  - Profiles: sprint (default), review, data, infra, full
+  - Reduces token overhead from ~22K to ~4-6K tokens
+  - Enables `ENABLE_TOOL_SEARCH=true` for MCP lazy loading
 - **marketplace:** Lean/full profile switching to reduce token overhead
   - New script: `scripts/switch-profile.sh` to toggle between profiles
   - Lean profile: 6 plugins (projman, git-flow, pr-review, clarity-assist, code-sentinel, doc-guardian)

@@ -2,6 +2,31 @@
 
 A collection of Claude Code plugins for project management, infrastructure automation, and development workflows.
 
+## Quick Start
+
+Use the launcher script to load only the plugins you need, reducing token overhead from ~22K to ~4-6K tokens:
+
+```bash
+./scripts/claude-launch.sh [profile] [extra-args...]
+```
+
+| Profile | Plugins Loaded | Use Case |
+|---------|----------------|----------|
+| `sprint` | projman, git-flow, pr-review, code-sentinel, doc-guardian, clarity-assist | Default. Sprint planning and development |
+| `review` | pr-review, code-sentinel | Lightweight code review |
+| `data` | data-platform, viz-platform | Data engineering and visualization |
+| `infra` | cmdb-assistant | Infrastructure/CMDB management |
+| `full` | All 12 plugins via marketplace.json | When you need everything |
+
+**Examples:**
+```bash
+./scripts/claude-launch.sh                    # Default sprint profile
+./scripts/claude-launch.sh data --model opus  # Data profile with Opus
+./scripts/claude-launch.sh full               # Load all plugins
+```
+
+The script enables `ENABLE_TOOL_SEARCH=true` for MCP lazy loading.
+
 ## Plugins
 
 ### Development & Project Management
