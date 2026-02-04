@@ -182,7 +182,7 @@ This marketplace uses a **hybrid configuration** approach:
 
 **Benefits:**
 - Single token per service (update once, use everywhere)
-- Easy multi-project setup (just run `/setup` in each project)
+- Easy multi-project setup (just run `/pm-setup` in each project)
 - Security (tokens never committed to git, never typed into AI chat)
 - Project isolation (each project can override defaults)
 
@@ -190,7 +190,7 @@ This marketplace uses a **hybrid configuration** approach:
 
 ## Prerequisites
 
-Before running `/setup`:
+Before running `/pm-setup`:
 
 1. **Python 3.10+** installed
    ```bash
@@ -741,7 +741,7 @@ cat .env
 
 3. **Never type tokens into AI chat**
    - Always edit config files directly in your editor
-   - The `/setup` wizard respects this
+   - The `/pm-setup` wizard respects this
 
 4. **Rotate tokens periodically**
    - Every 6-12 months
