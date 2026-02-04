@@ -1,0 +1,24 @@
+{
+  "mcpServers": {
+    "gitea": {
+      "command": "./mcp-servers/gitea/run.sh",
+      "args": []
+    },
+    "netbox": {
+      "command": "./mcp-servers/netbox/run.sh",
+      "args": []
+    },
+    "viz-platform": {
+      "command": "./mcp-servers/viz-platform/run.sh",
+      "args": []
+    },
+    "data-platform": {
+      "command": "./mcp-servers/data-platform/run.sh",
+      "args": []
+    },
+    "contract-validator": {
+      "command": "./mcp-servers/contract-validator/run.sh",
+      "args": []
+    }
+  }
+}
