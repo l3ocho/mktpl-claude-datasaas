@@ -291,8 +291,8 @@ Agents specify their configuration in frontmatter using Claude Code's supported 
 
 | Plugin | Agent | `model` | `permissionMode` | `disallowedTools` | `skills` |
 |--------|-------|---------|-------------------|--------------------|----------|
-| projman | planner | opus | default | — | body text (14) |
-| projman | orchestrator | sonnet | acceptEdits | — | body text (12) |
+| projman | planner | opus | default | — | frontmatter (2) + body text (12) |
+| projman | orchestrator | sonnet | acceptEdits | — | frontmatter (2) + body text (10) |
 | projman | executor | sonnet | bypassPermissions | — | frontmatter (7) |
 | projman | code-reviewer | opus | default | Write, Edit, MultiEdit | frontmatter (4) |
 | pr-review | coordinator | sonnet | plan | Write, Edit, MultiEdit | — |

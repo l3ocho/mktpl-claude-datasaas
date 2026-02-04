@@ -7,7 +7,8 @@ agent: planner
 
 ## Skills Required
 
-- skills/mcp-tools-reference.md
+- skills/mcp-tools-reference.md (frontmatter — auto-injected)
+- skills/batch-execution.md (frontmatter — auto-injected)
 - skills/branch-security.md
 - skills/repo-validation.md
 - skills/input-detection.md

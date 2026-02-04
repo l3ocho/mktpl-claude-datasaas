@@ -12,6 +12,7 @@ A collection of Claude Code plugins for project management, infrastructure autom
 AI-guided sprint planning with full Gitea integration. Transforms a proven 15-sprint workflow into a distributable plugin.
 
 - Four-agent model: Planner, Orchestrator, Executor, Code Reviewer
+- Plan-then-batch execution: skills loaded once per phase, API calls batched for ~80% token savings
 - Intelligent label suggestions from 43-label taxonomy
 - Lessons learned capture via Gitea Wiki
 - Native issue dependencies with parallel execution

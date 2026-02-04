@@ -8,6 +8,55 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [6.0.0] - YYYY-MM-DD
+
+### Added
+
+#### Plan-Then-Batch Skill Optimization (projman)
+
+New execution pattern that separates cognitive work from mechanical API operations, reducing skill-related token consumption by ~76-83% during sprint workflows.
+
+- **`skills/batch-execution.md`** — New skill defining the plan-then-batch protocol:
+  - Phase 1: Cognitive work with all skills loaded
+  - Phase 2: Execution manifest (structured plan of all API operations)
+  - Phase 3: Batch execute API calls using only frontmatter skills
+  - Phase 4: Batch report with success/failure summary
+  - Error handling: continue on individual failures, report at end
+
+- **Frontmatter skill promotion:**
+  - Planner agent: `mcp-tools-reference` and `batch-execution` promoted to frontmatter (auto-injected, zero re-read cost)
+  - Orchestrator agent: same promotion
+  - Eliminates per-operation skill file re-reads during API execution loops
+
+- **Phase-based skill loading:**
+  - Planner: 3 phases (validation → analysis → approval) with explicit "read once" instructions
+  - Orchestrator: 2 phases (startup → dispatch) with same pattern
+  - New `## Skill Loading Protocol` section replaces flat `## Skills to Load` in agent files
+
+### Changed
+
+- **`planning-workflow.md`** — Steps 8-10 restructured:
+  - Step 8: "Draft Issue Specifications" (no API calls — resolve all parameters first)
+  - Step 8a: "Batch Execute Issue Creation" (tight API loop, frontmatter skills only)
+  - Step 9: Merged into Step 8a (dependencies created in batch)
+  - Step 10: Milestone creation moved before batch (must exist for assignment)
+
+- **Agent matrix updated:**
+  - Planner: `body text (14)` → `frontmatter (2) + body text (12)`
+  - Orchestrator: `body text (12)` → `frontmatter (2) + body text (10)`
+
+- **`docs/CONFIGURATION.md`** — New "Phase-Based Skill Loading" subsection documenting the pattern
+
+### Token Impact
+
+| Scenario | Before | After | Savings |
+|----------|--------|-------|---------|
+| 6-issue sprint (planning) | ~23,800 lines | ~5,600 lines | ~76% |
+| 10-issue sprint (planning) | ~35,000 lines | ~7,000 lines | ~80% |
+| 8-issue status updates (orchestrator) | ~9,600 lines | ~1,600 lines | ~83% |
+
+---
+
 ## [5.10.0] - 2026-02-03
 
 ### Added
