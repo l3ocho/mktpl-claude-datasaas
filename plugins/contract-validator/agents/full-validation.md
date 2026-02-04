@@ -100,5 +100,5 @@ You are a contract validation specialist. Your role is to perform comprehensive 
 2. Parses all README.md files
 3. Runs 66 pairwise compatibility checks
 4. Finds 3 errors, 4 warnings
-5. Reports: "Command conflict: projman and data-platform both define /initial-setup"
+5. Reports: "Command conflict: pluginA and pluginB both define /setup"
 6. Suggests: "Rename one command to avoid ambiguity"

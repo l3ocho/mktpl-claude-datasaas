@@ -46,9 +46,9 @@ cd ~/.claude/plugins/marketplaces/leo-claude-mktplace && ./scripts/setup.sh
 
 ## After Updating: Re-run Setup if Needed
 
-### When to Re-run `/initial-setup`
+### When to Re-run Setup
 
-You typically **don't need** to re-run setup after updates. However, re-run if:
+You typically **don't need** to re-run setup after updates. However, re-run your plugin's setup command (e.g., `/pm-setup`, `/pr-setup`, `/cmdb-setup`) if:
 
 - Changelog mentions **new required environment variables**
 - Changelog mentions **breaking changes** to configuration
@@ -97,7 +97,7 @@ When updating, review if changes affect the setup workflow:
 
 1. **Check for setup command changes:**
    ```bash
-   git diff HEAD~1 plugins/*/commands/initial-setup.md
+   git diff HEAD~1 plugins/*/commands/*-setup.md
    git diff HEAD~1 plugins/*/commands/project-init.md
    git diff HEAD~1 plugins/*/commands/project-sync.md
    ```
@@ -114,7 +114,7 @@ When updating, review if changes affect the setup workflow:
 
 **If setup commands changed:**
 - Review what's new (new validation steps, new prompts, etc.)
-- Consider re-running `/initial-setup` or `/project-init` to benefit from improvements
+- Consider re-running your plugin's setup command or `/project-init` to benefit from improvements
 - Existing configurations remain valid unless changelog notes breaking changes
 
 **If hooks changed:**
@@ -142,7 +142,7 @@ deactivate
 ### Configuration no longer works
 
 1. Check CHANGELOG.md for breaking changes
-2. Run `/initial-setup` to re-validate and fix configuration
+2. Run your plugin's setup command (e.g., `/pm-setup`) to re-validate and fix configuration
 3. Compare your config files with documentation in `docs/CONFIGURATION.md`
 
 ### MCP server won't start after update

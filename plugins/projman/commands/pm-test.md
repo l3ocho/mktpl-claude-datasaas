@@ -2,7 +2,7 @@
 description: Run tests with coverage or generate tests for specified code
 ---
 
-# Test
+# PM Test
 
 ## Skills Required
 
@@ -15,13 +15,13 @@ Unified testing command for running tests and generating new tests.
 ## Invocation
 
 ```
-/test                       # Default: run tests
-/test run                   # Run tests, check coverage
-/test run --coverage        # Run with coverage report
-/test run --verbose         # Verbose output
-/test gen <target>          # Generate tests for target
-/test gen <target> --type=unit      # Specific test type
-/test gen <target> --framework=jest # Specific framework
+/pm-test                       # Default: run tests
+/pm-test run                   # Run tests, check coverage
+/pm-test run --coverage        # Run with coverage report
+/pm-test run --verbose         # Verbose output
+/pm-test gen <target>          # Generate tests for target
+/pm-test gen <target> --type=unit      # Specific test type
+/pm-test gen <target> --framework=jest # Specific framework
 ```
 
 ## Mode Selection
@@ -104,15 +104,15 @@ See `skills/test-standards.md` for test patterns and structure.
 
 ## Sprint Integration
 
-The `/test` command plays a critical role in the sprint close workflow:
+The `/pm-test` command plays a critical role in the sprint close workflow:
 
-1. After `/review` identifies code quality issues
+1. After `/pm-review` identifies code quality issues
 2. Before `/sprint-close` finalizes the sprint
 3. The code reviewer and orchestrator reference test results when deciding if a sprint is ready to close
 
 ### Pre-Close Verification
 
-When running `/test run` before sprint close:
+When running `/pm-test run` before sprint close:
 
 1. **Identify sprint files** - Files changed in the current sprint (via git diff against development)
 2. **Check test coverage** - Report which sprint files have tests and which don't
@@ -125,31 +125,31 @@ When running `/test run` before sprint close:
 
 ### Run all tests
 ```
-/test run
+/pm-test run
 ```
 Detects framework, runs full test suite, reports results.
 
 ### Run with coverage
 ```
-/test run --coverage
+/pm-test run --coverage
 ```
 Same as above plus coverage percentage per file.
 
 ### Generate tests for a specific file
 ```
-/test gen src/auth/jwt_service.py
+/pm-test gen src/auth/jwt_service.py
 ```
 Analyzes the file, generates a test file at `tests/test_jwt_service.py`.
 
 ### Generate specific test type
 ```
-/test gen src/api/routes/auth.py --type=integration
+/pm-test gen src/api/routes/auth.py --type=integration
 ```
 Generates integration tests (request/response patterns) instead of unit tests.
 
 ### Generate with specific framework
 ```
-/test gen src/components/Card.jsx --framework=vitest
+/pm-test gen src/components/Card.jsx --framework=vitest
 ```
 Uses Vitest instead of auto-detected framework.
 
@@ -161,7 +161,7 @@ Uses Vitest instead of auto-detected framework.
 |----------|----------|
 | No test framework detected | List what was checked, ask user to specify test command |
 | Tests fail | Report failures clearly, recommend "TESTS MUST PASS before sprint close" |
-| No tests exist for sprint files | Warn with file list, offer to generate with `/test gen` |
+| No tests exist for sprint files | Warn with file list, offer to generate with `/pm-test gen` |
 | External services required | Ask for confirmation before running tests that need database/API |
 | Mixed framework project | Detect all frameworks, ask which to run or run all |
 

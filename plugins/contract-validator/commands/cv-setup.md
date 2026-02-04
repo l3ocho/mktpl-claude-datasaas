@@ -2,7 +2,7 @@
 description: Interactive setup wizard for contract-validator plugin
 ---
 
-# /initial-setup - Contract-Validator Setup Wizard
+# /cv-setup - Contract Validator Setup Wizard
 
 ## Skills to Load
 - skills/visual-output.md

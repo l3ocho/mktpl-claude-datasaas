@@ -41,12 +41,12 @@ For commands that don't invoke a specific agent phase:
 | Command | Phase Emoji | Phase Name |
 |---------|-------------|------------|
 | `/sprint-status` | 📊 Chart | STATUS |
-| `/setup` | ⚙️ Gear | SETUP |
-| `/debug` | 🐛 Bug | DEBUG |
+| `/pm-setup` | ⚙️ Gear | SETUP |
+| `/pm-debug` | 🐛 Bug | DEBUG |
 | `/labels-sync` | 🏷️ Label | LABELS |
 | `/suggest-version` | 📦 Package | VERSION |
 | `/proposal-status` | 📋 Clipboard | PROPOSALS |
-| `/test` | 🧪 Flask | TEST |
+| `/pm-test` | 🧪 Flask | TEST |
 | `/rfc` | 📄 Document | RFC [Sub-Command] |
 
 ---

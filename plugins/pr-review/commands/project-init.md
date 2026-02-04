@@ -17,13 +17,13 @@ Display header: `PR-REVIEW - Project Setup`
 
 Fast setup when system-level config already exists.
 
-**Use when:** Already ran `/initial-setup`, starting new project
+**Use when:** Already ran `/pr-setup`, starting new project
 
 ## Workflow
 
 ### Pre-Flight Check
 
-Verify `~/.config/claude/gitea.env` exists. If missing: redirect to `/initial-setup`
+Verify `~/.config/claude/gitea.env` exists. If missing: redirect to `/pr-setup`
 
 ### Project Setup
 

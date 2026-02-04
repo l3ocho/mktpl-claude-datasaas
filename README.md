@@ -1,4 +1,4 @@
-# Leo Claude Marketplace - v5.10.0
+# Leo Claude Marketplace - v7.0.0
 
 A collection of Claude Code plugins for project management, infrastructure automation, and development workflows.
 
@@ -20,7 +20,7 @@ AI-guided sprint planning with full Gitea integration. Transforms a proven 15-sp
 - Branch-aware security (development/staging/production)
 - Pre-sprint-close code quality review and test verification
 
-**Commands:** `/sprint-plan`, `/sprint-start`, `/sprint-status`, `/sprint-close`, `/labels-sync`, `/setup`, `/review`, `/test`, `/debug`, `/suggest-version`, `/proposal-status`, `/rfc`
+**Commands:** `/sprint-plan`, `/sprint-start`, `/sprint-status`, `/sprint-close`, `/labels-sync`, `/pm-setup`, `/pm-review`, `/pm-test`, `/pm-debug`, `/suggest-version`, `/proposal-status`, `/rfc`
 
 #### [git-flow](./plugins/git-flow) *NEW in v3.0.0*
 **Git Workflow Automation**
@@ -33,7 +33,7 @@ Smart git operations with intelligent commit messages and branch management.
 - Merge and cleanup automation
 - Protected branch awareness
 
-**Commands:** `/commit`, `/commit-push`, `/commit-merge`, `/commit-sync`, `/branch-start`, `/branch-cleanup`, `/git-status`, `/git-config`
+**Commands:** `/git-commit`, `/git-commit-push`, `/git-commit-merge`, `/git-commit-sync`, `/branch-start`, `/branch-cleanup`, `/git-status`, `/git-config`
 
 #### [pr-review](./plugins/pr-review) *NEW in v3.0.0*
 **Multi-Agent PR Review**
@@ -45,7 +45,7 @@ Comprehensive pull request review using specialized agents.
 - Actionable feedback with suggested fixes
 - Gitea integration for automated review submission
 
-**Commands:** `/pr-review`, `/pr-summary`, `/pr-findings`, `/pr-diff`, `/initial-setup`, `/project-init`, `/project-sync`
+**Commands:** `/pr-review`, `/pr-summary`, `/pr-findings`, `/pr-diff`, `/pr-setup`, `/project-init`, `/project-sync`
 
 #### [claude-config-maintainer](./plugins/claude-config-maintainer)
 **CLAUDE.md and Settings Optimization**
@@ -65,7 +65,7 @@ Validate plugin marketplaces for command conflicts, tool overlaps, and broken ag
 - Data flow validation for agent sequences
 - Markdown or JSON reports with actionable suggestions
 
-**Commands:** `/validate-contracts`, `/check-agent`, `/list-interfaces`, `/dependency-graph`, `/initial-setup`
+**Commands:** `/validate-contracts`, `/check-agent`, `/list-interfaces`, `/dependency-graph`, `/cv-setup`
 
 ### Productivity
 
@@ -108,7 +108,7 @@ Security vulnerability detection and code refactoring tools.
 
 Full CRUD operations for network infrastructure management directly from Claude Code.
 
-**Commands:** `/initial-setup`, `/cmdb-search`, `/cmdb-device`, `/cmdb-ip`, `/cmdb-site`, `/cmdb-audit`, `/cmdb-register`, `/cmdb-sync`, `/cmdb-topology`, `/change-audit`, `/ip-conflicts`
+**Commands:** `/cmdb-setup`, `/cmdb-search`, `/cmdb-device`, `/cmdb-ip`, `/cmdb-site`, `/cmdb-audit`, `/cmdb-register`, `/cmdb-sync`, `/cmdb-topology`, `/change-audit`, `/ip-conflicts`
 
 ### Data Engineering
 
@@ -123,7 +123,7 @@ Comprehensive data engineering toolkit with persistent DataFrame storage.
 - 100k row limit with chunking support
 - Auto-detection of dbt projects
 
-**Commands:** `/ingest`, `/profile`, `/schema`, `/explain`, `/lineage`, `/lineage-viz`, `/run`, `/dbt-test`, `/data-quality`, `/data-review`, `/data-gate`, `/initial-setup`
+**Commands:** `/data-ingest`, `/data-profile`, `/data-schema`, `/data-explain`, `/data-lineage`, `/lineage-viz`, `/data-run`, `/dbt-test`, `/data-quality`, `/data-review`, `/data-gate`, `/data-setup`
 
 ### Visualization
 
@@ -139,7 +139,7 @@ Visualization toolkit with version-locked component validation and design token 
 - 5 Page tools for multi-page app structure
 - Dual theme storage: user-level and project-level
 
-**Commands:** `/chart`, `/chart-export`, `/dashboard`, `/theme`, `/theme-new`, `/theme-css`, `/component`, `/accessibility-check`, `/breakpoints`, `/design-review`, `/design-gate`, `/initial-setup`
+**Commands:** `/viz-chart`, `/viz-chart-export`, `/viz-dashboard`, `/viz-theme`, `/viz-theme-new`, `/viz-theme-css`, `/viz-component`, `/accessibility-check`, `/viz-breakpoints`, `/design-review`, `/design-gate`, `/viz-setup`
 
 ## Domain Advisory Pattern
 
@@ -255,7 +255,7 @@ Add to `.claude/settings.json` in your target project:
 After installing plugins, run the setup wizard:
 
 ```
-/initial-setup
+/pm-setup
 ```
 
 The wizard handles everything:
@@ -315,8 +315,8 @@ After installing plugins, the `/plugin` command may show `(no content)` - this i
 | code-sentinel | `/code-sentinel:security-scan` |
 | claude-config-maintainer | `/claude-config-maintainer:analyze` |
 | cmdb-assistant | `/cmdb-assistant:cmdb-search` |
-| data-platform | `/data-platform:ingest` |
-| viz-platform | `/viz-platform:chart` |
+| data-platform | `/data-platform:data-ingest` |
+| viz-platform | `/viz-platform:viz-chart` |
 | contract-validator | `/contract-validator:validate-contracts` |
 
 ## Repository Structure
