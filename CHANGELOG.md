@@ -6,6 +6,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Fixed
+
+- **docs:** Stale command references in data-platform visual-header.md and viz-platform claude-md-integration.md updated to v7.0.0 namespaced names
+- **docs:** git-flow visual-header.md and git-status.md quick actions updated to namespaced commands
+- **docs:** projman/CONFIGURATION.md and docs/DEBUGGING-CHECKLIST.md updated with correct command names
+
+### Added
+
+- **projman:** Token usage estimation reporting at sprint workflow boundaries
+  - New skill: `token-budget-report.md` with MCP overhead and skill loading estimation model
+  - Token report displayed at end of `/sprint-plan` and `/sprint-close`
+  - On-demand via `/sprint-status --tokens`
+  - Helps identify which phases and components consume the most context budget
+
 ---
 
 ## [7.0.0] - 2026-02-03
