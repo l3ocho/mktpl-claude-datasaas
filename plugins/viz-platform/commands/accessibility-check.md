@@ -41,5 +41,5 @@ accessibility_validate_theme(theme_name="corporate")
 
 ## Related Commands
 
-- `/theme-new {name}` - Create accessible theme
-- `/chart {type}` - Create chart (check colors after)
+- `/viz-theme-new {name}` - Create accessible theme
+- `/viz-chart {type}` - Create chart (check colors after)

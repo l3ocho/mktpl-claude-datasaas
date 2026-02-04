@@ -129,7 +129,7 @@ These plugins exist in source but are **NOT relevant** to this project's workflo
 | **viz-platform** | For dashboard projects (Dash, Plotly) |
 | **cmdb-assistant** | For infrastructure projects (NetBox) |
 
-**Do NOT suggest** `/ingest`, `/profile`, `/chart`, `/cmdb-*` commands - they don't apply here.
+**Do NOT suggest** `/data-ingest`, `/data-profile`, `/viz-chart`, `/cmdb-*` commands - they don't apply here.
 
 ### Key Distinction
 
@@ -146,7 +146,7 @@ When user says "fix the sprint-plan command", edit the SOURCE code.
 ## Project Overview
 
 **Repository:** leo-claude-mktplace
-**Version:** 5.9.0
+**Version:** 7.0.0
 **Status:** Production Ready
 
 A plugin marketplace for Claude Code containing:
@@ -180,16 +180,16 @@ A plugin marketplace for Claude Code containing:
 
 | Category | Commands |
 |----------|----------|
-| **Setup** | `/setup` (modes: `--full`, `--quick`, `--sync`) |
+| **Setup** | `/pm-setup` (modes: `--full`, `--quick`, `--sync`) |
 | **Sprint** | `/sprint-plan`, `/sprint-start`, `/sprint-status` (with `--diagram`), `/sprint-close` |
-| **Quality** | `/review`, `/test` (modes: `run`, `gen`) |
+| **Quality** | `/pm-review`, `/pm-test` (modes: `run`, `gen`) |
 | **Versioning** | `/suggest-version` |
 | **PR Review** | `/pr-review`, `/pr-summary`, `/pr-findings`, `/pr-diff` |
 | **Docs** | `/doc-audit`, `/doc-sync`, `/changelog-gen`, `/doc-coverage`, `/stale-docs` |
 | **Security** | `/security-scan`, `/refactor`, `/refactor-dry` |
 | **Config** | `/config-analyze`, `/config-optimize`, `/config-diff`, `/config-lint` |
 | **Validation** | `/validate-contracts`, `/check-agent`, `/list-interfaces`, `/dependency-graph` |
-| **Debug** | `/debug` (modes: `report`, `review`) |
+| **Debug** | `/pm-debug` (modes: `report`, `review`) |
 
 ### Plugin Commands - NOT RELEVANT to This Project
 
@@ -197,8 +197,8 @@ These commands are being developed but don't apply to this project's workflow:
 
 | Category | Commands | For Projects Using |
 |----------|----------|-------------------|
-| **Data** | `/ingest`, `/profile`, `/schema`, `/lineage`, `/dbt-test` | pandas, PostgreSQL, dbt |
-| **Visualization** | `/component`, `/chart`, `/dashboard`, `/theme` | Dash, Plotly dashboards |
+| **Data** | `/data-ingest`, `/data-profile`, `/data-schema`, `/data-lineage`, `/dbt-test` | pandas, PostgreSQL, dbt |
+| **Visualization** | `/viz-component`, `/viz-chart`, `/viz-dashboard`, `/viz-theme` | Dash, Plotly dashboards |
 | **CMDB** | `/cmdb-search`, `/cmdb-device`, `/cmdb-sync` | NetBox infrastructure |
 
 ## Repository Structure
@@ -449,12 +449,12 @@ See `docs/DEBUGGING-CHECKLIST.md` for systematic troubleshooting.
 | Symptom | Likely Cause | Fix |
 |---------|--------------|-----|
 | "X MCP servers failed" | Missing venv in installed path | `cd ~/.claude/plugins/marketplaces/leo-claude-mktplace && ./scripts/setup.sh` |
-| MCP tools not available | Venv missing or .mcp.json misconfigured | Run `/debug report` to diagnose |
+| MCP tools not available | Venv missing or .mcp.json misconfigured | Run `/pm-debug report` to diagnose |
 | Changes not taking effect | Editing source, not installed | Reinstall plugin or edit installed path |
 
 **Debug Commands:**
-- `/debug report` - Run full diagnostics, create issue if needed
-- `/debug review` - Investigate and propose fixes
+- `/pm-debug report` - Run full diagnostics, create issue if needed
+- `/pm-debug review` - Investigate and propose fixes
 
 ## Versioning Workflow
 
@@ -508,4 +508,4 @@ The script will:
 
 ---
 
-**Last Updated:** 2026-02-02
+**Last Updated:** 2026-02-03

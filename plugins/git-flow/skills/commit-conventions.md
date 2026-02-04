@@ -6,7 +6,7 @@ Defines conventional commit message format for consistent, parseable commit hist
 
 ## When to Use
 
-- Generating commit messages in `/commit`
+- Generating commit messages in `/git-commit`
 - Validating user-provided commit messages
 - Explaining commit format to users
 

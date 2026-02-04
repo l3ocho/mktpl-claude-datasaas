@@ -11,25 +11,25 @@ Quick reference for all commands in the Leo Claude Marketplace.
 | **projman** | `/sprint-plan` | | X | Start sprint planning with AI-guided architecture analysis and issue creation |
 | **projman** | `/sprint-start` | | X | Begin sprint execution with dependency analysis and parallel task coordination (requires approval or `--force`) |
 | **projman** | `/sprint-status` | | X | Check current sprint progress (add `--diagram` for Mermaid visualization) |
-| **projman** | `/review` | | X | Pre-sprint-close code quality review (debug artifacts, security, error handling) |
-| **projman** | `/test` | | X | Run tests (`/test run`) or generate tests (`/test gen <target>`) |
+| **projman** | `/pm-review` | | X | Pre-sprint-close code quality review (debug artifacts, security, error handling) |
+| **projman** | `/pm-test` | | X | Run tests (`/pm-test run`) or generate tests (`/pm-test gen <target>`) |
 | **projman** | `/sprint-close` | | X | Complete sprint and capture lessons learned to Gitea Wiki |
 | **projman** | `/labels-sync` | | X | Synchronize label taxonomy from Gitea |
-| **projman** | `/setup` | | X | Auto-detect mode or use `--full`, `--quick`, `--sync`, `--clear-cache` |
-| **projman** | *SessionStart hook* | X | | Detects git remote vs .env mismatch, warns to run `/setup --sync` |
-| **projman** | `/debug` | | X | Diagnostics (`/debug report`) or investigate (`/debug review`) |
+| **projman** | `/pm-setup` | | X | Auto-detect mode or use `--full`, `--quick`, `--sync`, `--clear-cache` |
+| **projman** | *SessionStart hook* | X | | Detects git remote vs .env mismatch, warns to run `/pm-setup --sync` |
+| **projman** | `/pm-debug` | | X | Diagnostics (`/pm-debug report`) or investigate (`/pm-debug review`) |
 | **projman** | `/suggest-version` | | X | Analyze CHANGELOG and recommend semantic version bump |
 | **projman** | `/proposal-status` | | X | View proposal and implementation hierarchy with status |
 | **projman** | `/rfc` | | X | RFC lifecycle management (`/rfc create\|list\|review\|approve\|reject`) |
-| **git-flow** | `/commit` | | X | Create commit with auto-generated conventional message |
-| **git-flow** | `/commit-push` | | X | Commit and push to remote in one operation |
-| **git-flow** | `/commit-merge` | | X | Commit current changes, then merge into target branch |
-| **git-flow** | `/commit-sync` | | X | Full sync: commit, push, and sync with upstream/base branch |
+| **git-flow** | `/git-commit` | | X | Create commit with auto-generated conventional message |
+| **git-flow** | `/git-commit-push` | | X | Commit and push to remote in one operation |
+| **git-flow** | `/git-commit-merge` | | X | Commit current changes, then merge into target branch |
+| **git-flow** | `/git-commit-sync` | | X | Full sync: commit, push, and sync with upstream/base branch |
 | **git-flow** | `/branch-start` | | X | Create new feature/fix/chore branch with naming conventions |
 | **git-flow** | `/branch-cleanup` | | X | Remove merged branches locally and optionally on remote |
 | **git-flow** | `/git-status` | | X | Enhanced git status with recommendations |
 | **git-flow** | `/git-config` | | X | Configure git-flow settings for the project |
-| **pr-review** | `/initial-setup` | | X | Setup wizard for pr-review (shares Gitea MCP with projman) |
+| **pr-review** | `/pr-setup` | | X | Setup wizard for pr-review (shares Gitea MCP with projman) |
 | **pr-review** | `/project-init` | | X | Quick project setup for PR reviews |
 | **pr-review** | `/project-sync` | | X | Sync config with git remote after repo move/rename |
 | **pr-review** | *SessionStart hook* | X | | Detects git remote vs .env mismatch |
@@ -57,7 +57,7 @@ Quick reference for all commands in the Leo Claude Marketplace.
 | **claude-config-maintainer** | `/config-audit-settings` | | X | Audit settings.local.json permissions (100-point score) |
 | **claude-config-maintainer** | `/config-optimize-settings` | | X | Optimize permissions (profiles, consolidation, dry-run) |
 | **claude-config-maintainer** | `/config-permissions-map` | | X | Visual review layer + permission coverage map |
-| **cmdb-assistant** | `/initial-setup` | | X | Setup wizard for NetBox MCP server |
+| **cmdb-assistant** | `/cmdb-setup` | | X | Setup wizard for NetBox MCP server |
 | **cmdb-assistant** | `/cmdb-search` | | X | Search NetBox for devices, IPs, sites |
 | **cmdb-assistant** | `/cmdb-device` | | X | Manage network devices (create, view, update, delete) |
 | **cmdb-assistant** | `/cmdb-ip` | | X | Manage IP addresses and prefixes |
@@ -69,27 +69,27 @@ Quick reference for all commands in the Leo Claude Marketplace.
 | **cmdb-assistant** | `/change-audit` | | X | NetBox audit trail queries with filtering |
 | **cmdb-assistant** | `/ip-conflicts` | | X | Detect IP conflicts and overlapping prefixes |
 | **project-hygiene** | *PostToolUse hook* | X | | Removes temp files, warns about unexpected root files |
-| **data-platform** | `/ingest` | | X | Load data from CSV, Parquet, JSON into DataFrame |
-| **data-platform** | `/profile` | | X | Generate data profiling report with statistics |
-| **data-platform** | `/schema` | | X | Explore database schemas, tables, columns |
-| **data-platform** | `/explain` | | X | Explain query execution plan |
-| **data-platform** | `/lineage` | | X | Show dbt model lineage and dependencies |
-| **data-platform** | `/run` | | X | Run dbt models with validation |
+| **data-platform** | `/data-ingest` | | X | Load data from CSV, Parquet, JSON into DataFrame |
+| **data-platform** | `/data-profile` | | X | Generate data profiling report with statistics |
+| **data-platform** | `/data-schema` | | X | Explore database schemas, tables, columns |
+| **data-platform** | `/data-explain` | | X | Explain query execution plan |
+| **data-platform** | `/data-lineage` | | X | Show dbt model lineage and dependencies |
+| **data-platform** | `/data-run` | | X | Run dbt models with validation |
 | **data-platform** | `/lineage-viz` | | X | dbt lineage visualization as Mermaid diagrams |
 | **data-platform** | `/dbt-test` | | X | Formatted dbt test runner with summary and failure details |
 | **data-platform** | `/data-quality` | | X | DataFrame quality checks (nulls, duplicates, types, outliers) |
-| **data-platform** | `/initial-setup` | | X | Setup wizard for data-platform MCP servers |
+| **data-platform** | `/data-setup` | | X | Setup wizard for data-platform MCP servers |
 | **data-platform** | *SessionStart hook* | X | | Checks PostgreSQL connection (non-blocking warning) |
-| **viz-platform** | `/initial-setup` | | X | Setup wizard for viz-platform MCP server |
-| **viz-platform** | `/chart` | | X | Create Plotly charts with theme integration |
-| **viz-platform** | `/dashboard` | | X | Create dashboard layouts with filters and grids |
-| **viz-platform** | `/theme` | | X | Apply existing theme to visualizations |
-| **viz-platform** | `/theme-new` | | X | Create new custom theme with design tokens |
-| **viz-platform** | `/theme-css` | | X | Export theme as CSS custom properties |
-| **viz-platform** | `/component` | | X | Inspect DMC component props and validation |
-| **viz-platform** | `/chart-export` | | X | Export charts to PNG, SVG, PDF via kaleido |
+| **viz-platform** | `/viz-setup` | | X | Setup wizard for viz-platform MCP server |
+| **viz-platform** | `/viz-chart` | | X | Create Plotly charts with theme integration |
+| **viz-platform** | `/viz-dashboard` | | X | Create dashboard layouts with filters and grids |
+| **viz-platform** | `/viz-theme` | | X | Apply existing theme to visualizations |
+| **viz-platform** | `/viz-theme-new` | | X | Create new custom theme with design tokens |
+| **viz-platform** | `/viz-theme-css` | | X | Export theme as CSS custom properties |
+| **viz-platform** | `/viz-component` | | X | Inspect DMC component props and validation |
+| **viz-platform** | `/viz-chart-export` | | X | Export charts to PNG, SVG, PDF via kaleido |
 | **viz-platform** | `/accessibility-check` | | X | Color blind validation (WCAG contrast ratios) |
-| **viz-platform** | `/breakpoints` | | X | Configure responsive layout breakpoints |
+| **viz-platform** | `/viz-breakpoints` | | X | Configure responsive layout breakpoints |
 | **viz-platform** | `/design-review` | | X | Detailed design system audits |
 | **viz-platform** | `/design-gate` | | X | Binary pass/fail design system validation gates |
 | **viz-platform** | *SessionStart hook* | X | | Checks DMC version (non-blocking warning) |
@@ -99,7 +99,7 @@ Quick reference for all commands in the Leo Claude Marketplace.
 | **contract-validator** | `/check-agent` | | X | Validate single agent definition |
 | **contract-validator** | `/list-interfaces` | | X | Show all plugin interfaces |
 | **contract-validator** | `/dependency-graph` | | X | Mermaid visualization of plugin dependencies |
-| **contract-validator** | `/initial-setup` | | X | Setup wizard for contract-validator MCP |
+| **contract-validator** | `/cv-setup` | | X | Setup wizard for contract-validator MCP |
 
 ---
 
@@ -107,7 +107,7 @@ Quick reference for all commands in the Leo Claude Marketplace.
 
 | Category | Plugins | Primary Use |
 |----------|---------|-------------|
-| **Setup** | projman, pr-review, cmdb-assistant, data-platform | `/setup`, `/initial-setup` |
+| **Setup** | projman, pr-review, cmdb-assistant, data-platform, viz-platform, contract-validator | `/pm-setup`, `/pr-setup`, `/cmdb-setup`, `/data-setup`, `/viz-setup`, `/cv-setup` |
 | **Task Planning** | projman, clarity-assist | Sprint management, requirement clarification |
 | **Code Quality** | code-sentinel, pr-review | Security scanning, PR reviews |
 | **Documentation** | doc-guardian, claude-config-maintainer | Doc sync, CLAUDE.md maintenance |
@@ -163,10 +163,10 @@ A typical workflow for planning and executing a feature sprint:
 4. /sprint-start             # Begin execution with dependency ordering
 5. /branch-start feat/...    # Create feature branch
    ... implement features ...
-6. /commit                   # Commit with conventional message
+6. /git-commit               # Commit with conventional message
 7. /sprint-status --diagram  # Check progress with visualization
-8. /review                   # Pre-close quality review
-9. /test run                 # Verify test coverage
+8. /pm-review                # Pre-close quality review
+9. /pm-test run              # Verify test coverage
 10. /sprint-close            # Capture lessons learned
 ```
 
@@ -178,8 +178,8 @@ Quick daily workflow with git-flow:
 1. /git-status               # Check current state
 2. /branch-start fix/...     # Start bugfix branch
    ... make changes ...
-3. /commit                   # Auto-generate commit message
-4. /commit-push              # Push to remote
+3. /git-commit               # Auto-generate commit message
+4. /git-commit-push          # Push to remote
 5. /branch-cleanup           # Clean merged branches
 ```
 
@@ -213,8 +213,8 @@ Safe refactoring with preview:
 1. /refactor-dry             # Preview opportunities
 2. /security-scan            # Baseline security check
 3. /refactor                 # Apply improvements
-4. /test run                 # Verify nothing broke
-5. /commit                   # Commit with descriptive message
+4. /pm-test run              # Verify nothing broke
+5. /git-commit               # Commit with descriptive message
 ```
 
 ### Example 6: Infrastructure Documentation
@@ -233,12 +233,12 @@ Managing infrastructure with CMDB:
 Working with data pipelines:
 
 ```
-1. /ingest file.csv          # Load data into DataFrame
-2. /profile                  # Generate data profiling report
-3. /schema                   # Explore database schemas
-4. /lineage model_name       # View dbt model dependencies
-5. /run model_name           # Execute dbt models
-6. /explain "SELECT ..."     # Analyze query execution plan
+1. /data-ingest file.csv     # Load data into DataFrame
+2. /data-profile             # Generate data profiling report
+3. /data-schema              # Explore database schemas
+4. /data-lineage model_name  # View dbt model dependencies
+5. /data-run model_name      # Execute dbt models
+6. /data-explain "SELECT ..." # Analyze query execution plan
 ```
 
 ### Example 7: First-Time Setup (New Machine)
@@ -246,7 +246,7 @@ Working with data pipelines:
 Setting up the marketplace for the first time:
 
 ```
-1. /setup --full             # Full setup: MCP + system config + project
+1. /pm-setup --full          # Full setup: MCP + system config + project
    # → Follow prompts for Gitea URL, org
    # → Add token manually when prompted
    # → Confirm repository name
@@ -260,7 +260,7 @@ Setting up the marketplace for the first time:
 Adding a new project when system config exists:
 
 ```
-1. /setup --quick            # Quick project setup (auto-detected)
+1. /pm-setup --quick         # Quick project setup (auto-detected)
    # → Confirms detected repo name
    # → Creates .env
 2. /labels-sync              # Sync Gitea labels
@@ -272,8 +272,8 @@ Adding a new project when system config exists:
 ## Quick Tips
 
 - **Hooks run automatically** - doc-guardian and code-sentinel protect you without manual invocation
-- **Use `/commit` over `git commit`** - generates better commit messages following conventions
-- **Run `/review` before `/sprint-close`** - catches issues before closing the sprint
+- **Use `/git-commit` over `git commit`** - generates better commit messages following conventions
+- **Run `/pm-review` before `/sprint-close`** - catches issues before closing the sprint
 - **Use `/clarify` for vague requests** - especially helpful for complex requirements
 - **`/refactor-dry` is safe** - always preview before applying refactoring changes
 

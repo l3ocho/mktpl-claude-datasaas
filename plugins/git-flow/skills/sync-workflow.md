@@ -6,8 +6,8 @@ Defines push/pull patterns, rebase strategies, upstream tracking, and stale bran
 
 ## When to Use
 
-- Pushing commits in `/commit-push`
-- Full sync operations in `/commit-sync`
+- Pushing commits in `/git-commit-push`
+- Full sync operations in `/git-commit-sync`
 - Detecting and reporting stale branches
 
 ## Push Workflow

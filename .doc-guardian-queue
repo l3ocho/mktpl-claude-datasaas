@@ -25,3 +25,41 @@
 2026-02-02T13:52:07 | skills | /home/lmiranda/claude-plugins-work/plugins/contract-validator/skills/mcp-tools-reference.md | README.md
 2026-02-02T13:59:09 | skills | /home/lmiranda/claude-plugins-work/plugins/projman/skills/progress-tracking.md | README.md
 2026-02-02T14:01:34 | commands | /home/lmiranda/claude-plugins-work/plugins/projman/commands/test.md | docs/COMMANDS-CHEATSHEET.md README.md
+2026-02-03T21:08:38 | commands | /home/lmiranda/claude-plugins-work/plugins/git-flow/commands/git-commit.md | docs/COMMANDS-CHEATSHEET.md README.md
+2026-02-03T21:08:39 | commands | /home/lmiranda/claude-plugins-work/plugins/git-flow/commands/git-commit-push.md | docs/COMMANDS-CHEATSHEET.md README.md
+2026-02-03T21:08:40 | commands | /home/lmiranda/claude-plugins-work/plugins/git-flow/commands/git-commit-merge.md | docs/COMMANDS-CHEATSHEET.md README.md
+2026-02-03T21:08:41 | commands | /home/lmiranda/claude-plugins-work/plugins/git-flow/commands/git-commit-sync.md | docs/COMMANDS-CHEATSHEET.md README.md
+2026-02-03T21:08:49 | commands | /home/lmiranda/claude-plugins-work/plugins/cmdb-assistant/commands/cmdb-setup.md | docs/COMMANDS-CHEATSHEET.md README.md
+2026-02-03T21:08:50 | commands | /home/lmiranda/claude-plugins-work/plugins/pr-review/commands/project-init.md | docs/COMMANDS-CHEATSHEET.md README.md
+2026-02-03T21:08:51 | skills | /home/lmiranda/claude-plugins-work/plugins/cmdb-assistant/skills/visual-header.md | README.md
+2026-02-03T21:08:51 | commands | /home/lmiranda/claude-plugins-work/plugins/projman/commands/pm-review.md | docs/COMMANDS-CHEATSHEET.md README.md
+2026-02-03T21:08:53 | commands | /home/lmiranda/claude-plugins-work/plugins/projman/commands/pm-test.md | docs/COMMANDS-CHEATSHEET.md README.md
+2026-02-03T21:08:54 | skills | /home/lmiranda/claude-plugins-work/plugins/projman/skills/review-checklist.md | README.md
+2026-02-03T21:08:55 | skills | /home/lmiranda/claude-plugins-work/plugins/projman/skills/visual-output.md | README.md
+2026-02-03T21:08:58 | skills | /home/lmiranda/claude-plugins-work/plugins/projman/skills/setup-workflows.md | README.md
+2026-02-03T21:08:59 | skills | /home/lmiranda/claude-plugins-work/plugins/git-flow/skills/sync-workflow.md | README.md
+2026-02-03T21:09:00 | skills | /home/lmiranda/claude-plugins-work/plugins/git-flow/skills/commit-conventions.md | README.md
+2026-02-03T21:09:00 | skills | /home/lmiranda/claude-plugins-work/plugins/git-flow/skills/merge-workflow.md | README.md
+2026-02-03T21:09:08 | commands | /home/lmiranda/claude-plugins-work/plugins/projman/commands/pm-setup.md | docs/COMMANDS-CHEATSHEET.md README.md
+2026-02-03T21:09:08 | commands | /home/lmiranda/claude-plugins-work/plugins/data-platform/commands/data-setup.md | docs/COMMANDS-CHEATSHEET.md README.md
+2026-02-03T21:09:10 | commands | /home/lmiranda/claude-plugins-work/plugins/data-platform/commands/data-run.md | docs/COMMANDS-CHEATSHEET.md README.md
+2026-02-03T21:09:10 | commands | /home/lmiranda/claude-plugins-work/plugins/contract-validator/commands/cv-setup.md | docs/COMMANDS-CHEATSHEET.md README.md
+2026-02-03T21:09:11 | commands | /home/lmiranda/claude-plugins-work/plugins/projman/commands/pm-debug.md | docs/COMMANDS-CHEATSHEET.md README.md
+2026-02-03T21:09:13 | agents | /home/lmiranda/claude-plugins-work/plugins/contract-validator/agents/full-validation.md | README.md CLAUDE.md
+2026-02-03T21:09:14 | commands | /home/lmiranda/claude-plugins-work/plugins/data-platform/commands/data-ingest.md | docs/COMMANDS-CHEATSHEET.md README.md
+2026-02-03T21:09:18 | commands | /home/lmiranda/claude-plugins-work/plugins/data-platform/commands/data-profile.md | docs/COMMANDS-CHEATSHEET.md README.md
+2026-02-03T21:09:18 | commands | /home/lmiranda/claude-plugins-work/plugins/viz-platform/commands/viz-setup.md | docs/COMMANDS-CHEATSHEET.md README.md
+2026-02-03T21:09:20 | commands | /home/lmiranda/claude-plugins-work/plugins/data-platform/commands/data-schema.md | docs/COMMANDS-CHEATSHEET.md README.md
+2026-02-03T21:09:20 | commands | /home/lmiranda/claude-plugins-work/plugins/viz-platform/commands/viz-theme.md | docs/COMMANDS-CHEATSHEET.md README.md
+2026-02-03T21:09:23 | commands | /home/lmiranda/claude-plugins-work/plugins/viz-platform/commands/viz-theme-new.md | docs/COMMANDS-CHEATSHEET.md README.md
+2026-02-03T21:09:24 | commands | /home/lmiranda/claude-plugins-work/plugins/data-platform/commands/data-explain.md | docs/COMMANDS-CHEATSHEET.md README.md
+2026-02-03T21:09:26 | commands | /home/lmiranda/claude-plugins-work/plugins/data-platform/commands/data-lineage.md | docs/COMMANDS-CHEATSHEET.md README.md
+2026-02-03T21:09:26 | commands | /home/lmiranda/claude-plugins-work/plugins/viz-platform/commands/viz-theme-css.md | docs/COMMANDS-CHEATSHEET.md README.md
+2026-02-03T21:09:29 | commands | /home/lmiranda/claude-plugins-work/plugins/viz-platform/commands/viz-chart.md | docs/COMMANDS-CHEATSHEET.md README.md
+2026-02-03T21:09:32 | commands | /home/lmiranda/claude-plugins-work/plugins/viz-platform/commands/viz-chart-export.md | docs/COMMANDS-CHEATSHEET.md README.md
+2026-02-03T21:09:33 | commands | /home/lmiranda/claude-plugins-work/plugins/data-platform/commands/data-review.md | docs/COMMANDS-CHEATSHEET.md README.md
+2026-02-03T21:09:35 | commands | /home/lmiranda/claude-plugins-work/plugins/viz-platform/commands/viz-dashboard.md | docs/COMMANDS-CHEATSHEET.md README.md
+2026-02-03T21:09:38 | commands | /home/lmiranda/claude-plugins-work/plugins/viz-platform/commands/viz-component.md | docs/COMMANDS-CHEATSHEET.md README.md
+2026-02-03T21:09:40 | commands | /home/lmiranda/claude-plugins-work/plugins/viz-platform/commands/viz-breakpoints.md | docs/COMMANDS-CHEATSHEET.md README.md
+2026-02-03T21:09:46 | commands | /home/lmiranda/claude-plugins-work/plugins/viz-platform/commands/design-review.md | docs/COMMANDS-CHEATSHEET.md README.md
+2026-02-03T21:10:22 | commands | /home/lmiranda/claude-plugins-work/plugins/viz-platform/commands/accessibility-check.md | docs/COMMANDS-CHEATSHEET.md README.md

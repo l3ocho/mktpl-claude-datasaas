@@ -2,7 +2,7 @@
 description: Interactive setup wizard for viz-platform plugin
 ---
 
-# Viz-Platform Setup Wizard
+# Viz Setup
 
 ## Visual Output
 
@@ -41,5 +41,5 @@ Verify MCP server loads, display summary, prompt session restart.
 
 ## Related Commands
 
-- `/component {name}` - Inspect component props
-- `/chart {type}` - Create a chart
+- `/viz-component {name}` - Inspect component props
+- `/viz-chart {type}` - Create a chart

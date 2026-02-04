@@ -10,12 +10,12 @@ Add this snippet to your project's CLAUDE.md to enable viz-platform capabilities
 This project uses viz-platform for Dash Mantine Components dashboards.
 
 ### Available Commands
-- `/component {name}` - Inspect DMC component props
-- `/chart {type}` - Create Plotly charts (line, bar, scatter, pie, area, histogram, box, heatmap, sunburst, treemap)
-- `/dashboard {template}` - Create layouts (basic, sidebar, tabs, split)
-- `/theme {name}` - Apply a theme
-- `/theme-new {name}` - Create custom theme
-- `/theme-css {name}` - Export theme as CSS
+- `/viz-component {name}` - Inspect DMC component props
+- `/viz-chart {type}` - Create Plotly charts (line, bar, scatter, pie, area, histogram, box, heatmap, sunburst, treemap)
+- `/viz-dashboard {template}` - Create layouts (basic, sidebar, tabs, split)
+- `/viz-theme {name}` - Apply a theme
+- `/viz-theme-new {name}` - Create custom theme
+- `/viz-theme-css {name}` - Export theme as CSS
 
 ### MCP Tools Available
 - **DMC**: list_components, get_component_props, validate_component
@@ -49,8 +49,8 @@ If using with data-platform, add this section:
 - `/profile {data_ref}` - Statistical summary
 
 ### Visualization (viz-platform)
-- `/chart {type}` - Create charts from loaded data
-- `/dashboard {template}` - Build dashboard layouts
+- `/viz-chart {type}` - Create charts from loaded data
+- `/viz-dashboard {template}` - Build dashboard layouts
 
 ### Workflow Pattern
 1. Load data: `read_csv("data.csv")` → returns `data_ref`

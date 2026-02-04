@@ -1,4 +1,4 @@
-# /initial-setup - Data Platform Setup Wizard
+# /data-setup - Data Platform Setup Wizard
 
 ## Skills to Load
 - skills/setup-workflow.md
@@ -11,7 +11,7 @@ Display header: `DATA-PLATFORM - Setup Wizard`
 ## Usage
 
 ```
-/initial-setup
+/data-setup
 ```
 
 ## Workflow

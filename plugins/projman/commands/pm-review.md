@@ -3,7 +3,7 @@ description: Pre-sprint-close code quality review
 agent: code-reviewer
 ---
 
-# Code Review for Sprint Close
+# PM Review - Code Review for Sprint Close
 
 ## Skills Required
 
@@ -16,7 +16,7 @@ Review recent code changes for quality issues before closing the sprint.
 
 ## Invocation
 
-Run `/review` before `/sprint-close` to catch issues.
+Run `/pm-review` before `/sprint-close` to catch issues.
 
 ## Workflow
 
