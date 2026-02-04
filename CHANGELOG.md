@@ -6,19 +6,34 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
-### Fixed
-
-- **docs:** Stale command references in data-platform visual-header.md and viz-platform claude-md-integration.md updated to v7.0.0 namespaced names
-- **docs:** git-flow visual-header.md and git-status.md quick actions updated to namespaced commands
-- **docs:** projman/CONFIGURATION.md and docs/DEBUGGING-CHECKLIST.md updated with correct command names
-
 ### Added
 
+- **marketplace:** Lean/full profile switching to reduce token overhead
+  - New script: `scripts/switch-profile.sh` to toggle between profiles
+  - Lean profile: 6 plugins (projman, git-flow, pr-review, clarity-assist, code-sentinel, doc-guardian)
+  - Lean MCP: gitea only (reduces ~12k tokens of MCP server overhead)
+  - Full profile: all 12 plugins and 5 MCP servers
+  - New files: `.mcp-lean.json`, `.mcp-full.json`, `marketplace-lean.json`, `marketplace-full.json`
+  - Default is now lean profile for reduced daily overhead
 - **projman:** Token usage estimation reporting at sprint workflow boundaries
   - New skill: `token-budget-report.md` with MCP overhead and skill loading estimation model
   - Token report displayed at end of `/sprint-plan` and `/sprint-close`
   - On-demand via `/sprint-status --tokens`
   - Helps identify which phases and components consume the most context budget
+
+### Changed
+
+- **projman:** `/sprint-status` now uses conditional skill loading for reduced token overhead
+  - Only loads `mcp-tools-reference.md` by default (~1.5k tokens vs ~5k)
+  - `--diagram` flag loads `dependency-management.md` and `progress-tracking.md`
+  - `--tokens` flag loads `token-budget-report.md`
+  - Estimated savings: ~3.5k tokens per status check
+
+### Fixed
+
+- **docs:** Stale command references in data-platform visual-header.md and viz-platform claude-md-integration.md updated to v7.0.0 namespaced names
+- **docs:** git-flow visual-header.md and git-status.md quick actions updated to namespaced commands
+- **docs:** projman/CONFIGURATION.md and docs/DEBUGGING-CHECKLIST.md updated with correct command names
 
 ---
 
