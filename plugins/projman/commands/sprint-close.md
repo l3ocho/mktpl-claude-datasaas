@@ -14,6 +14,7 @@ agent: orchestrator
 - skills/progress-tracking.md
 - skills/git-workflow.md
 - skills/sprint-lifecycle.md
+- skills/token-budget-report.md
 
 ## Purpose
 
@@ -82,3 +83,12 @@ If the sprint was linked to an RFC:
 ║  [Sprint Name]                                                   ║
 ╚══════════════════════════════════════════════════════════════════╝
 ```
+
+## Final Step: Token Budget Report
+
+After displaying the closing summary and completing all workflow steps, generate a Token Budget Report per `skills/token-budget-report.md`.
+
+- Phase: CLOSING
+- List all skills that were loaded during this closing session
+- Use the orchestrator agent's model (sonnet) for agent overhead
+- Display the formatted report

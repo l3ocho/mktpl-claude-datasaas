@@ -44,9 +44,9 @@ If using with data-platform, add this section:
 ## Data + Visualization Workflow
 
 ### Data Loading (data-platform)
-- `/ingest {file}` - Load CSV, Parquet, or JSON
-- `/schema {table}` - View database schema
-- `/profile {data_ref}` - Statistical summary
+- `/data-ingest {file}` - Load CSV, Parquet, or JSON
+- `/data-schema {table}` - View database schema
+- `/data-profile {data_ref}` - Statistical summary
 
 ### Visualization (viz-platform)
 - `/viz-chart {type}` - Create charts from loaded data
