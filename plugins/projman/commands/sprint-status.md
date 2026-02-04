@@ -6,15 +6,18 @@ description: Check current sprint progress, identify blockers, optionally genera
 
 ## Skills Required
 
+**Always loaded:**
 - skills/mcp-tools-reference.md
-- skills/progress-tracking.md
-- skills/dependency-management.md
-- skills/sprint-lifecycle.md
-- skills/token-budget-report.md
+
+**Conditional — only load if matching flag is present:**
+- skills/sprint-lifecycle.md — load if displaying lifecycle state (always, but this is small)
+- skills/dependency-management.md — load ONLY with `--diagram` flag
+- skills/token-budget-report.md — load ONLY with `--tokens` flag
+- skills/progress-tracking.md — load ONLY with `--diagram` flag
 
 ## Purpose
 
-Check current sprint progress, identify blockers, and show execution status. Optionally generate a visual dependency diagram.
+Check current sprint progress, identify blockers, and show execution status. Optionally generate a visual dependency diagram or token budget report.
 
 ## Invocation
 
@@ -26,23 +29,24 @@ Check current sprint progress, identify blockers, and show execution status. Opt
 
 ## Workflow
 
-0. **Display Lifecycle State** - Read current Sprint/* state from milestone description per `skills/sprint-lifecycle.md` and display in output header.
-1. **Fetch Sprint Issues** - Get all issues for current milestone
-2. **Calculate Progress** - Count completed vs total issues
-3. **Identify Active Tasks** - Find issues with `Status/In-Progress`
-4. **Identify Blockers** - Find issues with `Status/Blocked`
-5. **Show Dependency Status** - Which tasks are now unblocked
-6. **Parse Progress Comments** - Extract real-time status from structured comments
+1. **Fetch Active Milestone** — `get_milestone` for the open milestone
+2. **Read Lifecycle State** — Parse `**Sprint State:**` from milestone description
+3. **Fetch Sprint Issues** — `list_issues` filtered by milestone
+4. **Calculate Progress** — Count closed vs total issues
+5. **Identify Blockers** — Find issues with `Status/Blocked` label
+6. **Display Output** — Format header + progress bar + issue table + blockers
 
-### If --diagram flag:
+That's it. No dependency analysis, no token estimation, no progress comment parsing unless a flag asks for it.
 
-7. **Fetch Dependencies** - Use `list_issue_dependencies` for each issue
-8. **Get Execution Order** - Use `get_execution_order` for batch grouping
-9. **Generate Mermaid Syntax** - Create flowchart with status colors
+### If --diagram flag, THEN ALSO:
+7. Fetch dependencies with `list_issue_dependencies`
+8. Load `skills/dependency-management.md`
+9. Load `skills/progress-tracking.md`
+10. Generate Mermaid diagram
 
-### If --tokens flag:
-
-10. **Generate Token Budget Report** - Execute `skills/token-budget-report.md` estimation model
+### If --tokens flag, THEN ALSO:
+11. Load `skills/token-budget-report.md`
+12. **Generate Token Budget Report** - Execute `skills/token-budget-report.md` estimation model
     - Phase: STATUS (read-only snapshot, not a workflow boundary)
     - List MCP servers from `.mcp.json` with static overhead estimates
     - Show current session cost estimate based on skills loaded so far
@@ -50,7 +54,27 @@ Check current sprint progress, identify blockers, and show execution status. Opt
 
 ## Output Format
 
-See `skills/progress-tracking.md` for the progress display format.
+### Default Output (no flags)
+
+```
+╔══════════════════════════════════════════════════════════════════╗
+║  📋 PROJMAN                                                      ║
+║  📊 STATUS                                                       ║
+║  [Sprint Name]                                                   ║
+╚══════════════════════════════════════════════════════════════════╝
+
+Sprint State: [Planning|Executing|Blocked|Review|Closing]
+
+Progress: [██████████░░░░░░░░░░] 50% (5/10 issues)
+
+| # | Title | Status | Labels |
+|---|-------|--------|--------|
+| 123 | Issue title | Open | Priority/High |
+| 124 | Another issue | Closed | Type/Bug |
+
+Blockers:
+- #125: Blocked issue title (Status/Blocked)
+```
 
 ### Diagram Format (--diagram)
 
@@ -78,13 +102,3 @@ flowchart TD
 | In Progress | Yellow | #FFD700 |
 | Open | Blue | #ADD8E6 |
 | Blocked | Red | #FFB6C1 |
-
-## Visual Output
-
-```
-╔══════════════════════════════════════════════════════════════════╗
-║  📋 PROJMAN                                                      ║
-║  📊 STATUS                                                       ║
-║  [Sprint Name]                                                   ║
-╚══════════════════════════════════════════════════════════════════╝
-```
