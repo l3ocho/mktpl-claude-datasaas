@@ -12,7 +12,9 @@ case "${1:-lean}" in
   lean)
     cp "$MARKETPLACE_DIR/marketplace-lean.json" "$MARKETPLACE_DIR/marketplace.json"
     cp "$ROOT_DIR/.mcp-lean.json" "$ROOT_DIR/.mcp.json"
+    rm -rf ~/.claude/plugins/cache/
     echo "Switched to LEAN profile (6 plugins, 1 MCP server)"
+    echo "Plugin cache cleared."
     echo ""
     echo "Plugins: projman, git-flow, pr-review, clarity-assist, code-sentinel, doc-guardian"
     echo "MCP: gitea only"
@@ -22,7 +24,9 @@ case "${1:-lean}" in
   full)
     cp "$MARKETPLACE_DIR/marketplace-full.json" "$MARKETPLACE_DIR/marketplace.json"
     cp "$ROOT_DIR/.mcp-full.json" "$ROOT_DIR/.mcp.json"
+    rm -rf ~/.claude/plugins/cache/
     echo "Switched to FULL profile (12 plugins, 5 MCP servers)"
+    echo "Plugin cache cleared."
     echo ""
     echo "Plugins: all"
     echo "MCP: gitea, netbox, data-platform, viz-platform, contract-validator"

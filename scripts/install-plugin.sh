@@ -116,19 +116,19 @@ validate_target() {
 }
 
 # --- Get MCP Servers for Plugin ---
-# Reads the mcp_servers array from plugin.json
+# Reads the mcp_servers array from metadata.json (separate from plugin.json to avoid schema validation issues)
 # Returns newline-separated list of MCP server names, or empty if none
 get_mcp_servers() {
     local plugin_name="$1"
-    local plugin_json="$REPO_ROOT/plugins/$plugin_name/.claude-plugin/plugin.json"
+    local metadata_json="$REPO_ROOT/plugins/$plugin_name/.claude-plugin/metadata.json"
 
-    if [[ ! -f "$plugin_json" ]]; then
+    if [[ ! -f "$metadata_json" ]]; then
         return
     fi
 
-    # Read mcp_servers array from plugin.json
+    # Read mcp_servers array from metadata.json
     # Returns empty if field doesn't exist or is empty
-    jq -r '.mcp_servers // [] | .[]' "$plugin_json" 2>/dev/null || true
+    jq -r '.mcp_servers // [] | .[]' "$metadata_json" 2>/dev/null || true
 }
 
 # --- Check if plugin has any MCP servers ---
