@@ -1,5 +1,5 @@
 ---
-description: Check current sprint progress, identify blockers, optionally generate dependency diagram
+description: Check current sprint progress, identify blockers, optionally generate dependency diagram or token budget report
 ---
 
 # Sprint Status
@@ -10,6 +10,7 @@ description: Check current sprint progress, identify blockers, optionally genera
 - skills/progress-tracking.md
 - skills/dependency-management.md
 - skills/sprint-lifecycle.md
+- skills/token-budget-report.md
 
 ## Purpose
 
@@ -20,6 +21,7 @@ Check current sprint progress, identify blockers, and show execution status. Opt
 ```
 /sprint-status              # Text-based status report
 /sprint-status --diagram    # Include Mermaid dependency diagram
+/sprint-status --tokens     # Show token budget estimation report
 ```
 
 ## Workflow
@@ -37,6 +39,14 @@ Check current sprint progress, identify blockers, and show execution status. Opt
 7. **Fetch Dependencies** - Use `list_issue_dependencies` for each issue
 8. **Get Execution Order** - Use `get_execution_order` for batch grouping
 9. **Generate Mermaid Syntax** - Create flowchart with status colors
+
+### If --tokens flag:
+
+10. **Generate Token Budget Report** - Execute `skills/token-budget-report.md` estimation model
+    - Phase: STATUS (read-only snapshot, not a workflow boundary)
+    - List MCP servers from `.mcp.json` with static overhead estimates
+    - Show current session cost estimate based on skills loaded so far
+    - Display formatted report per the skill's Display Format section
 
 ## Output Format
 
