@@ -84,6 +84,13 @@ Thumbs.db
 # Claude Code
 .claude/settings.local.json
 .claude/history/
+.claude/backups/
+
+# Doc Guardian transient files
+.doc-guardian-queue
+
+# Development convenience links
+.marketplaces-link
 
 # Logs
 logs/

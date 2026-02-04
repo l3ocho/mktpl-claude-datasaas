@@ -84,21 +84,38 @@ Think through:
 - What dependencies exist?
 - What are potential risks?
 
-### 8. Create Gitea Issues
+### 8. Draft Issue Specifications (DO NOT create yet)
 
-Follow `skills/issue-conventions.md` and `skills/task-sizing.md`:
-- Use proper title format: `[Sprint XX] <type>: <description>`
-- Include wiki implementation reference
-- Apply appropriate labels using `suggest_labels`
-- **Refuse to create L/XL tasks without breakdown**
+Follow `skills/issue-conventions.md` and `skills/task-sizing.md` to prepare the complete specification for ALL issues. **Do NOT call `create_issue` yet.**
 
-### 9. Set Up Dependencies
+For each issue, resolve completely:
+- Title: `[Sprint XX] <type>: <description>`
+- Body: Full description with wiki reference, acceptance criteria, technical notes
+- Labels: Use `suggest_labels` to determine, then finalize the list
+- Milestone: The sprint milestone (create first if needed)
+- Dependencies: Which issues depend on which (by draft order index)
 
-```python
-create_issue_dependency(repo="org/repo", issue_number=46, depends_on=45)
-```
+**Refuse to create L/XL tasks without breakdown.**
 
-### 10. Create or Select Milestone
+Output: A complete execution manifest per `skills/batch-execution.md` Phase 2 format.
+
+### 8a. Batch Execute Issue Creation
+
+Follow `skills/batch-execution.md` Phase 3:
+1. Execute all `create_issue` calls — collect returned issue numbers
+2. Execute all `create_issue_dependency` calls — using collected numbers
+3. Assign all issues to milestone
+4. Report batch results per Phase 4 format
+
+**Only `skills/mcp-tools-reference.md` is needed for this step.** Do NOT re-read other skill files.
+
+### 9. (Merged into Step 8a)
+
+Dependencies are now created as part of the batch execution in Step 8a. No separate step needed.
+
+### 10. Create or Select Milestone (before batch)
+
+**This step runs BEFORE Step 8a** — the milestone must exist before batch issue creation can assign to it.
 
 ```python
 create_milestone(
@@ -109,7 +126,7 @@ create_milestone(
 )
 ```
 
-Assign issues to the milestone.
+If milestone already exists, select it. Record the milestone ID for use in the batch manifest.
 
 ### 11. Request Sprint Approval
 

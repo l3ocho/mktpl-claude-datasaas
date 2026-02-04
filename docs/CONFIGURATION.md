@@ -516,8 +516,8 @@ Agents specify their configuration in frontmatter using Claude Code's supported 
 
 | Plugin | Agent | `model` | `permissionMode` | `disallowedTools` | `skills` |
 |--------|-------|---------|-------------------|--------------------|----------|
-| projman | planner | opus | default | — | body text (14) |
-| projman | orchestrator | sonnet | acceptEdits | — | body text (12) |
+| projman | planner | opus | default | — | frontmatter (2) + body text (12) |
+| projman | orchestrator | sonnet | acceptEdits | — | frontmatter (2) + body text (10) |
 | projman | executor | sonnet | bypassPermissions | — | frontmatter (7) |
 | projman | code-reviewer | opus | default | Write, Edit, MultiEdit | frontmatter (4) |
 | pr-review | coordinator | sonnet | plan | Write, Edit, MultiEdit | — |
@@ -590,6 +590,40 @@ The `skills` field auto-injects skill file contents into the agent's context win
 - Agent benefits from selective loading based on the specific task.
 
 Skill names in frontmatter are resolved relative to the plugin's `skills/` directory. Use the filename without the `.md` extension.
+
+### Phase-Based Skill Loading (Body Text)
+
+For agents with 8+ skills, use **phase-based loading** in the agent body text. This structures skill reads into logical phases, with explicit instructions to read each skill exactly once.
+
+**Pattern:**
+
+```markdown
+## Skill Loading Protocol
+
+**Frontmatter skills (auto-injected, always available — DO NOT re-read these):**
+- `skill-a` — description
+- `skill-b` — description
+
+**Phase 1 skills — read ONCE at session start:**
+- skills/validation-skill.md
+- skills/safety-skill.md
+
+**Phase 2 skills — read ONCE when entering main work:**
+- skills/workflow-skill.md
+- skills/domain-skill.md
+
+**CRITICAL: Read each skill file exactly ONCE. Do NOT re-read skill files between MCP API calls.**
+```
+
+**Benefits:**
+- Frontmatter skills (always needed) are auto-injected — zero file read cost
+- Phase skills are read once at the appropriate time — not re-read per API call
+- `batch-execution` skill provides protocol for API-heavy phases
+- ~76-83% reduction in skill-related token consumption for typical sprints
+
+**Currently applied to:**
+- Planner agent: 2 frontmatter + 12 body text (3 phases)
+- Orchestrator agent: 2 frontmatter + 10 body text (2 phases)
 
 ---
 

@@ -7,7 +7,8 @@ agent: orchestrator
 
 ## Skills Required
 
-- skills/mcp-tools-reference.md
+- skills/mcp-tools-reference.md (frontmatter — auto-injected)
+- skills/batch-execution.md (frontmatter — auto-injected)
 - skills/branch-security.md
 - skills/sprint-approval.md
 - skills/dependency-management.md
