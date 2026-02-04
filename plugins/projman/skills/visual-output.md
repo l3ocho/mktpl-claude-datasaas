@@ -99,3 +99,22 @@ For domain gate results displayed by orchestrator:
 | Hourglass | In progress |
 | Empty box | Pending / Not started |
 | Warning | Warning |
+
+---
+
+## Token Budget Report
+
+Displayed at end of planning and closing phases:
+
+```
++-- Token Budget Report -----------------------------------------------+
+|  Phase: [PHASE NAME]                                                 |
+|  Sprint: [Sprint Name]                                               |
++----------------------------------------------------------------------+
+|  MCP Overhead: ~XX,XXX tk                                            |
+|  Phase Cost:   ~X,XXX tk  (skills: N, agent: model)                 |
+|  Est. Total:   ~XX,XXX tk (~XX% of budget)                          |
++----------------------------------------------------------------------+
+```
+
+See `skills/token-budget-report.md` for full format and estimation model.

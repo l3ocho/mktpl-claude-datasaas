@@ -20,6 +20,7 @@ agent: planner
 - skills/planning-workflow.md
 - skills/label-taxonomy/labels-reference.md
 - skills/sprint-lifecycle.md
+- skills/token-budget-report.md
 
 ## Purpose
 
@@ -57,3 +58,12 @@ Execute the planning workflow as defined in `skills/planning-workflow.md`.
 ║  [Sprint Name]                                                   ║
 ╚══════════════════════════════════════════════════════════════════╝
 ```
+
+## Final Step: Token Budget Report
+
+After displaying the planning summary and gaining sprint approval, generate a Token Budget Report per `skills/token-budget-report.md`.
+
+- Phase: PLANNING
+- List all skills that were loaded during this planning session
+- Use the planner agent's model (sonnet) for agent overhead
+- Display the formatted report

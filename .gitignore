@@ -132,4 +132,5 @@ site/
 *credentials*
 *secret*
 *token*
+!**/token-budget-report.md
 !.gitkeep

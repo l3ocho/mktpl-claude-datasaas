@@ -51,6 +51,6 @@ Unstaged:
 2. Ready to commit with 1 staged file
 
 --- Quick Actions ---
-/commit - Commit staged changes
-/commit-push - Commit and push
+/git-commit - Commit staged changes
+/git-commit-push - Commit and push
 ```
