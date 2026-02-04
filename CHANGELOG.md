@@ -17,13 +17,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
   - Profiles: sprint (default), review, data, infra, full
   - Reduces token overhead from ~22K to ~4-6K tokens
   - Enables `ENABLE_TOOL_SEARCH=true` for MCP lazy loading
-- **marketplace:** Lean/full profile switching to reduce token overhead
-  - New script: `scripts/switch-profile.sh` to toggle between profiles
-  - Lean profile: 6 plugins (projman, git-flow, pr-review, clarity-assist, code-sentinel, doc-guardian)
-  - Lean MCP: gitea only (reduces ~12k tokens of MCP server overhead)
-  - Full profile: all 12 plugins and 5 MCP servers
-  - New files: `.mcp-lean.json`, `.mcp-full.json`, `marketplace-lean.json`, `marketplace-full.json`
-  - Default is now lean profile for reduced daily overhead
+- **marketplace:** Lean/full profile config files for manual switching (superseded by `claude-launch.sh`)
+  - Files: `.mcp-lean.json`, `.mcp-full.json`, `marketplace-lean.json`, `marketplace-full.json`
+  - Script `scripts/switch-profile.sh` available but `claude-launch.sh` is the recommended approach
+  - Full profile remains the default baseline; launcher handles selective loading
 - **projman:** Token usage estimation reporting at sprint workflow boundaries
   - New skill: `token-budget-report.md` with MCP overhead and skill loading estimation model
   - Token report displayed at end of `/sprint-plan` and `/sprint-close`

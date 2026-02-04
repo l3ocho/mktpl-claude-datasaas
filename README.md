@@ -47,7 +47,7 @@ AI-guided sprint planning with full Gitea integration. Transforms a proven 15-sp
 
 **Commands:** `/sprint-plan`, `/sprint-start`, `/sprint-status`, `/sprint-close`, `/labels-sync`, `/pm-setup`, `/pm-review`, `/pm-test`, `/pm-debug`, `/suggest-version`, `/proposal-status`, `/rfc`
 
-#### [git-flow](./plugins/git-flow) *NEW in v3.0.0*
+#### [git-flow](./plugins/git-flow)
 **Git Workflow Automation**
 
 Smart git operations with intelligent commit messages and branch management.
@@ -60,7 +60,7 @@ Smart git operations with intelligent commit messages and branch management.
 
 **Commands:** `/git-commit`, `/git-commit-push`, `/git-commit-merge`, `/git-commit-sync`, `/branch-start`, `/branch-cleanup`, `/git-status`, `/git-config`
 
-#### [pr-review](./plugins/pr-review) *NEW in v3.0.0*
+#### [pr-review](./plugins/pr-review)
 **Multi-Agent PR Review**
 
 Comprehensive pull request review using specialized agents.
@@ -79,7 +79,7 @@ Analyze, optimize, and create CLAUDE.md configuration files. Audit and optimize 
 
 **Commands:** `/analyze`, `/optimize`, `/init`, `/config-diff`, `/config-lint`, `/config-audit-settings`, `/config-optimize-settings`, `/config-permissions-map`
 
-#### [contract-validator](./plugins/contract-validator) *NEW in v5.0.0*
+#### [contract-validator](./plugins/contract-validator)
 **Cross-Plugin Compatibility Validation**
 
 Validate plugin marketplaces for command conflicts, tool overlaps, and broken agent references.
@@ -94,7 +94,7 @@ Validate plugin marketplaces for command conflicts, tool overlaps, and broken ag
 
 ### Productivity
 
-#### [clarity-assist](./plugins/clarity-assist) *NEW in v3.0.0*
+#### [clarity-assist](./plugins/clarity-assist)
 **Prompt Optimization with ND Accommodations**
 
 Transform vague requests into clear specifications using structured methodology.
@@ -137,7 +137,7 @@ Full CRUD operations for network infrastructure management directly from Claude 
 
 ### Data Engineering
 
-#### [data-platform](./plugins/data-platform) *NEW in v4.0.0*
+#### [data-platform](./plugins/data-platform)
 **pandas, PostgreSQL/PostGIS, and dbt Integration**
 
 Comprehensive data engineering toolkit with persistent DataFrame storage.
@@ -152,7 +152,7 @@ Comprehensive data engineering toolkit with persistent DataFrame storage.
 
 ### Visualization
 
-#### [viz-platform](./plugins/viz-platform) *NEW in v4.0.0*
+#### [viz-platform](./plugins/viz-platform)
 **Dash Mantine Components Validation and Theming**
 
 Visualization toolkit with version-locked component validation and design token theming.
@@ -196,7 +196,7 @@ Full Gitea API integration for project management.
 | Wiki | `list_wiki_pages`, `get_wiki_page`, `create_wiki_page`, `update_wiki_page`, `create_lesson`, `search_lessons` |
 | Milestones | `list_milestones`, `get_milestone`, `create_milestone`, `update_milestone`, `delete_milestone` |
 | Dependencies | `list_issue_dependencies`, `create_issue_dependency`, `remove_issue_dependency`, `get_execution_order` |
-| **Pull Requests** | `list_pull_requests`, `get_pull_request`, `get_pr_diff`, `get_pr_comments`, `create_pr_review`, `add_pr_comment` *(NEW in v3.0.0)* |
+| **Pull Requests** | `list_pull_requests`, `get_pull_request`, `get_pr_diff`, `get_pr_comments`, `create_pr_review`, `add_pr_comment` |
 | Validation | `validate_repo_org`, `get_branch_protection` |
 
 ### NetBox MCP Server (shared)
@@ -211,7 +211,7 @@ Comprehensive NetBox REST API integration for infrastructure management.
 | Virtualization | Clusters, VMs, Interfaces |
 | Extras | Tags, Custom Fields, Audit Log |
 
-### Data Platform MCP Server (shared) *NEW in v4.0.0*
+### Data Platform MCP Server (shared)
 
 pandas, PostgreSQL/PostGIS, and dbt integration for data engineering.
 
@@ -222,7 +222,7 @@ pandas, PostgreSQL/PostGIS, and dbt integration for data engineering.
 | PostGIS | `st_tables`, `st_geometry_type`, `st_srid`, `st_extent` |
 | dbt | `dbt_parse`, `dbt_run`, `dbt_test`, `dbt_build`, `dbt_compile`, `dbt_ls`, `dbt_docs_generate`, `dbt_lineage` |
 
-### Viz Platform MCP Server (shared) *NEW in v4.0.0*
+### Viz Platform MCP Server (shared)
 
 Dash Mantine Components validation and visualization tools.
 
@@ -234,7 +234,7 @@ Dash Mantine Components validation and visualization tools.
 | Theme | `theme_create`, `theme_extend`, `theme_validate`, `theme_export_css`, `theme_list`, `theme_activate` |
 | Page | `page_create`, `page_add_navbar`, `page_set_auth`, `page_list`, `page_get_app_config` |
 
-### Contract Validator MCP Server (shared) *NEW in v5.0.0*
+### Contract Validator MCP Server (shared)
 
 Cross-plugin compatibility validation tools.
 
