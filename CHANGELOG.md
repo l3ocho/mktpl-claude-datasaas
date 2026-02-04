@@ -8,7 +8,49 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
-## [6.0.0] - YYYY-MM-DD
+## [7.0.0] - 2026-02-03
+
+### BREAKING CHANGES
+
+#### Command Namespace Rename
+
+All generic command names are now prefixed with their plugin's namespace to eliminate collisions across the marketplace. This is a **breaking change** for consuming projects — update your CLAUDE.md integration snippets.
+
+**Full Rename Map:**
+
+| Plugin | Old | New |
+|--------|-----|-----|
+| projman | `/setup` | `/pm-setup` |
+| projman | `/review` | `/pm-review` |
+| projman | `/test` | `/pm-test` |
+| projman | `/debug` | `/pm-debug` |
+| git-flow | `/commit` | `/git-commit` |
+| git-flow | `/commit-push` | `/git-commit-push` |
+| git-flow | `/commit-merge` | `/git-commit-merge` |
+| git-flow | `/commit-sync` | `/git-commit-sync` |
+| pr-review | `/initial-setup` | `/pr-setup` |
+| cmdb-assistant | `/initial-setup` | `/cmdb-setup` |
+| data-platform | `/initial-setup` | `/data-setup` |
+| data-platform | `/run` | `/data-run` |
+| data-platform | `/ingest` | `/data-ingest` |
+| data-platform | `/profile` | `/data-profile` |
+| data-platform | `/schema` | `/data-schema` |
+| data-platform | `/explain` | `/data-explain` |
+| data-platform | `/lineage` | `/data-lineage` |
+| viz-platform | `/initial-setup` | `/viz-setup` |
+| viz-platform | `/theme` | `/viz-theme` |
+| viz-platform | `/theme-new` | `/viz-theme-new` |
+| viz-platform | `/theme-css` | `/viz-theme-css` |
+| viz-platform | `/chart` | `/viz-chart` |
+| viz-platform | `/chart-export` | `/viz-chart-export` |
+| viz-platform | `/dashboard` | `/viz-dashboard` |
+| viz-platform | `/component` | `/viz-component` |
+| viz-platform | `/breakpoints` | `/viz-breakpoints` |
+| contract-validator | `/initial-setup` | `/cv-setup` |
+
+**Migration:** Update your project's CLAUDE.md integration snippets to use the new command names. Run `/plugin list` to verify installed plugins are using v7.0.0+.
+
+**Unchanged:** Commands already using plugin-namespaced prefixes (`/sprint-*`, `/cmdb-*`, `/labels-sync`, `/branch-*`, `/git-status`, `/git-config`, `/pr-review`, `/pr-summary`, `/pr-findings`, `/pr-diff`, `/project-init`, `/project-sync`, `/config-*`, `/design-*`, `/data-quality`, `/data-review`, `/data-gate`, `/lineage-viz`, `/dbt-test`, `/accessibility-check`, `/validate-contracts`, `/check-agent`, `/list-interfaces`, `/dependency-graph`, `/doc-audit`, `/doc-sync`, `/security-scan`, `/refactor`, `/refactor-dry`, `/clarify`, `/suggest-version`, `/proposal-status`, `/rfc`, `/change-audit`, `/ip-conflicts`) are **not affected**.
 
 ### Added
 
