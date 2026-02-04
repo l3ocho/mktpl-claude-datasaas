@@ -1,10 +1,10 @@
 ---
-name: commit-sync
+name: git-commit-sync
 description: Commit, push, and sync with base branch
 agent: git-assistant
 ---
 
-# /commit-sync - Commit, Push, and Sync
+# /git-commit-sync - Commit, Push, and Sync
 
 ## Skills
 
@@ -28,7 +28,7 @@ Full sync operation: commit local changes, push to remote, sync with upstream/ba
 ## Workflow
 
 1. **Display header** - Show GIT-FLOW Commit Sync header
-2. **Run /commit** - Execute standard commit workflow
+2. **Run /git-commit** - Execute standard commit workflow
 3. **Push to remote** - Push committed changes
 4. **Fetch with prune** - `git fetch --all --prune`
 5. **Sync with base** - Rebase on base branch (per sync-workflow.md)

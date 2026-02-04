@@ -12,7 +12,7 @@ Defines code review criteria, severity classification, and output format.
 ## When to Use
 
 - **Code Reviewer agent**: During pre-sprint-close review
-- **Commands**: `/review`
+- **Commands**: `/pm-review`
 
 ---
 

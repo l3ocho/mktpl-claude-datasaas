@@ -40,9 +40,9 @@ Use conventional commits:
 
 | Command | Use Case |
 |---------|----------|
-| `/commit` | Create commit with smart message |
-| `/commit-push` | Commit and push |
-| `/commit-merge` | Commit and merge to base |
+| `/git-commit` | Create commit with smart message |
+| `/git-commit-push` | Commit and push |
+| `/git-commit-merge` | Commit and merge to base |
 | `/branch-start` | Start new branch |
 | `/git-status` | Enhanced status |
 

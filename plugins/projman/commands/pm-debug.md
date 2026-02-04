@@ -2,7 +2,7 @@
 description: Diagnose issues and create reports, or investigate existing diagnostic issues
 ---
 
-# Debug
+# PM Debug
 
 ## Skills Required
 
@@ -17,9 +17,9 @@ Unified debugging command for diagnostics and issue investigation.
 ## Invocation
 
 ```
-/debug              # Ask which mode
-/debug report       # Run diagnostics, create issue
-/debug review       # Investigate existing issues
+/pm-debug              # Ask which mode
+/pm-debug report       # Run diagnostics, create issue
+/pm-debug review       # Investigate existing issues
 ```
 
 ## Mode Selection

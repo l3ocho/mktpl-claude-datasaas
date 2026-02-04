@@ -2,7 +2,7 @@
 description: Configure projman - full setup, quick project init, or sync after repo move
 ---
 
-# Setup
+# PM Setup
 
 ## Skills Required
 
@@ -22,11 +22,11 @@ Unified setup command for all configuration needs.
 ## Invocation
 
 ```
-/setup              # Auto-detect appropriate mode
-/setup --full       # Full wizard (MCP + system + project)
-/setup --quick      # Project-only setup
-/setup --sync       # Update after repo move
-/setup --clear-cache # Clear plugin cache (between sessions only)
+/pm-setup              # Auto-detect appropriate mode
+/pm-setup --full       # Full wizard (MCP + system + project)
+/pm-setup --quick      # Project-only setup
+/pm-setup --sync       # Update after repo move
+/pm-setup --clear-cache # Clear plugin cache (between sessions only)
 ```
 
 ## Mode Detection

@@ -24,7 +24,7 @@ Standard visual header for cmdb-assistant commands.
 | `/cmdb-topology` | Topology |
 | `/change-audit` | Change Audit |
 | `/ip-conflicts` | IP Conflict Detection |
-| `/initial-setup` | Setup Wizard |
+| `/cmdb-setup` | Setup Wizard |
 | Agent mode | Infrastructure Management |
 
 ## Usage

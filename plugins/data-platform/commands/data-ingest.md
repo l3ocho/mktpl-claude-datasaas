@@ -1,4 +1,4 @@
-# /ingest - Data Ingestion
+# /data-ingest - Data Ingestion
 
 ## Skills to Load
 - skills/mcp-tools-reference.md
@@ -11,7 +11,7 @@ Display header: `DATA-PLATFORM - Ingest`
 ## Usage
 
 ```
-/ingest [source]
+/data-ingest [source]
 ```
 
 ## Workflow
@@ -31,9 +31,9 @@ Display header: `DATA-PLATFORM - Ingest`
 ## Examples
 
 ```
-/ingest data/sales.csv
-/ingest data/customers.parquet
-/ingest "SELECT * FROM orders WHERE created_at > '2024-01-01'"
+/data-ingest data/sales.csv
+/data-ingest data/customers.parquet
+/data-ingest "SELECT * FROM orders WHERE created_at > '2024-01-01'"
 ```
 
 ## Required MCP Tools

@@ -2,7 +2,7 @@
 description: Create a dashboard layout with the layout-builder agent
 ---
 
-# Create Dashboard
+# Viz Dashboard
 
 ## Skills to Load
 - skills/mcp-tools-reference.md
@@ -21,7 +21,7 @@ Create a dashboard layout with filters, grids, and sections.
 ## Usage
 
 ```
-/dashboard {template}
+/viz-dashboard {template}
 ```
 
 ## Arguments
@@ -37,5 +37,5 @@ Activates **layout-builder** agent which orchestrates:
 
 ## Related Commands
 
-- `/breakpoints {layout}` - Configure responsive breakpoints
-- `/chart {type}` - Add charts to layout
+- `/viz-breakpoints {layout}` - Configure responsive breakpoints
+- `/viz-chart {type}` - Add charts to layout

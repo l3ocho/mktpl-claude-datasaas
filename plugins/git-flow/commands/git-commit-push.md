@@ -1,10 +1,10 @@
 ---
-name: commit-push
+name: git-commit-push
 description: Create a commit and push to remote in one operation
 agent: git-assistant
 ---
 
-# /commit-push - Commit and Push
+# /git-commit-push - Commit and Push
 
 ## Skills
 
@@ -28,7 +28,7 @@ Create a commit and push to the remote repository in one operation.
 ## Workflow
 
 1. **Display header** - Show GIT-FLOW Commit & Push header
-2. **Run /commit** - Execute standard commit workflow
+2. **Run /git-commit** - Execute standard commit workflow
 3. **Check upstream** - Set up tracking if needed (`git push -u`)
 4. **Push** - Push to remote
 5. **Handle conflicts** - Offer rebase/merge/force if push fails (per sync-workflow.md)

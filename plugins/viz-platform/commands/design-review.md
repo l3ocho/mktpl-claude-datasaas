@@ -61,8 +61,8 @@ Each finding includes:
 ## Related Commands
 
 - `/design-gate` - Binary pass/fail for sprint execution (no detailed report)
-- `/component` - Inspect individual DMC component props
-- `/theme` - Check active theme configuration
+- `/viz-component` - Inspect individual DMC component props
+- `/viz-theme` - Check active theme configuration
 
 ## Requirements
 

@@ -18,7 +18,7 @@ Configure the cmdb-assistant plugin with NetBox integration.
 ## Usage
 
 ```
-/initial-setup
+/cmdb-setup
 ```
 
 ## Instructions

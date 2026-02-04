@@ -1,10 +1,10 @@
 ---
-name: commit-merge
+name: git-commit-merge
 description: Commit current changes and merge branch into target
 agent: git-assistant
 ---
 
-# /commit-merge - Commit and Merge
+# /git-commit-merge - Commit and Merge
 
 ## Skills
 
@@ -29,7 +29,7 @@ Commit current changes, then merge the current branch into a target branch.
 ## Workflow
 
 1. **Display header** - Show GIT-FLOW Commit & Merge header
-2. **Run /commit** - Execute standard commit workflow
+2. **Run /git-commit** - Execute standard commit workflow
 3. **Identify target** - Prompt for target branch if not specified
 4. **Select strategy** - Merge commit, squash, or rebase (per merge-workflow.md)
 5. **Execute merge** - Switch to target, pull, merge, push

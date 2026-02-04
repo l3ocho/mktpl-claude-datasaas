@@ -145,5 +145,5 @@ Use `/data-gate` when you want to automate.
 ## Related Commands
 
 - `/data-gate` - Binary pass/fail for automation
-- `/lineage` - Visualize dbt model dependencies
-- `/schema` - Explore database schema
+- `/data-lineage` - Visualize dbt model dependencies
+- `/data-schema` - Explore database schema

@@ -6,7 +6,7 @@ Defines merge strategies, conflict resolution approaches, and post-merge cleanup
 
 ## When to Use
 
-- Merging feature branches in `/commit-merge`
+- Merging feature branches in `/git-commit-merge`
 - Resolving conflicts during sync operations
 - Cleaning up after successful merges
 

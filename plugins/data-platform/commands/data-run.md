@@ -1,4 +1,4 @@
-# /run - Execute dbt Models
+# /data-run - Execute dbt Models
 
 ## Skills to Load
 - skills/dbt-workflow.md
@@ -12,7 +12,7 @@ Display header: `DATA-PLATFORM - dbt Run`
 ## Usage
 
 ```
-/run [model_selection] [--full-refresh]
+/data-run [model_selection] [--full-refresh]
 ```
 
 ## Workflow
@@ -30,11 +30,11 @@ See `skills/dbt-workflow.md` for full selection patterns.
 ## Examples
 
 ```
-/run                           # Run all models
-/run dim_customers             # Run specific model
-/run +fct_orders               # Run model and upstream
-/run tag:daily                 # Run models with tag
-/run --full-refresh            # Rebuild incremental models
+/data-run                           # Run all models
+/data-run dim_customers             # Run specific model
+/data-run +fct_orders               # Run model and upstream
+/data-run tag:daily                 # Run models with tag
+/data-run --full-refresh            # Rebuild incremental models
 ```
 
 ## Required MCP Tools

@@ -2,7 +2,7 @@
 description: Create a new custom theme with design tokens
 ---
 
-# Create New Theme
+# Viz Theme New
 
 ## Skills to Load
 - skills/mcp-tools-reference.md
@@ -21,7 +21,7 @@ Create a new custom theme with specified design tokens.
 ## Usage
 
 ```
-/theme-new {name}
+/viz-theme-new {name}
 ```
 
 ## Arguments
@@ -37,5 +37,5 @@ theme_validate(theme_name="corporate")
 
 ## Related Commands
 
-- `/theme {name}` - Apply a theme
-- `/theme-css {name}` - Export theme as CSS
+- `/viz-theme {name}` - Apply a theme
+- `/viz-theme-css {name}` - Export theme as CSS

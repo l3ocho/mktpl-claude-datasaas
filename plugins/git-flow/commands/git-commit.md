@@ -1,10 +1,10 @@
 ---
-name: commit
+name: git-commit
 description: Create a git commit with auto-generated conventional commit message
 agent: git-assistant
 ---
 
-# /commit - Smart Commit
+# /git-commit - Smart Commit
 
 ## Skills
 
