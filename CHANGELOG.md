@@ -6,6 +6,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Fixed
+
+- Confirmed projman `metadata.json` exists with gitea MCP mapping
+- Synced `marketplace-full.json` and `marketplace-lean.json` to current version (were stale)
+- Added `metadata.json` validation to `validate-marketplace.sh` — rejects `mcp_servers` in `plugin.json`, verifies MCP server references
+- Updated `CANONICAL-PATHS.md` to current version
+
+### Changed
+
+- Deprecated `switch-profile.sh` in favor of `claude-launch.sh`
+
 ---
 
 ## [7.1.0] - 2026-02-04

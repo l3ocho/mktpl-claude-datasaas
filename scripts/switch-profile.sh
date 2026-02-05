@@ -4,6 +4,8 @@
 
 set -euo pipefail
 
+echo "⚠️  DEPRECATED: use scripts/claude-launch.sh instead." >&2
+
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(dirname "$SCRIPT_DIR")"
 MARKETPLACE_DIR="$ROOT_DIR/.claude-plugin"
