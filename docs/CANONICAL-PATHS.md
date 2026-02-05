@@ -2,7 +2,7 @@
 
 **This file defines ALL valid paths in this repository. No exceptions. No inference. No assumptions.**
 
-Last Updated: 2026-01-30 (v5.4.1)
+Last Updated: 2026-02-04 (v7.1.0)
 
 ---
 
@@ -12,10 +12,18 @@ Last Updated: 2026-01-30 (v5.4.1)
 leo-claude-mktplace/
 ├── .claude/                    # Claude Code local settings
 ├── .claude-plugin/             # Marketplace manifest
-│   └── marketplace.json
+│   ├── marketplace.json
+│   ├── marketplace-lean.json   # Lean profile (6 core plugins)
+│   └── marketplace-full.json   # Full profile (all plugins)
+├── .mcp-lean.json              # Lean profile MCP config (gitea only)
+├── .mcp-full.json              # Full profile MCP config (all servers)
 ├── .scratch/                   # Transient work (auto-cleaned)
 ├── docs/                       # All documentation
 │   ├── architecture/           # Draw.io diagrams and specs
+│   ├── prompts/                # Shared prompt templates
+│   │   └── INDEX.md            # Prompt template index
+│   ├── project-lessons-learned/ # Project-level lessons (not sprint-specific)
+│   │   └── INDEX.md            # Lessons index
 │   ├── CANONICAL-PATHS.md      # This file - single source of truth
 │   ├── COMMANDS-CHEATSHEET.md  # All commands quick reference
 │   ├── CONFIGURATION.md        # Centralized configuration guide
@@ -150,7 +158,9 @@ leo-claude-mktplace/
 │   ├── validate-marketplace.sh # Marketplace compliance validation
 │   ├── verify-hooks.sh         # Verify all hooks use correct event types
 │   ├── setup-venvs.sh          # Setup MCP server venvs (create only, never delete)
-│   └── release.sh              # Release automation with version bumping
+│   ├── release.sh              # Release automation with version bumping
+│   ├── claude-launch.sh        # Task-specific launcher with profile selection
+│   └── switch-profile.sh       # DEPRECATED: use claude-launch.sh instead
 ├── CLAUDE.md
 ├── README.md
 ├── LICENSE
@@ -168,6 +178,7 @@ leo-claude-mktplace/
 |---------|---------|---------|
 | Plugin location | `plugins/{plugin-name}/` | `plugins/projman/` |
 | Plugin manifest | `plugins/{plugin-name}/.claude-plugin/plugin.json` | `plugins/projman/.claude-plugin/plugin.json` |
+| Plugin MCP mapping (optional) | `plugins/{plugin-name}/.claude-plugin/metadata.json` | `plugins/projman/.claude-plugin/metadata.json` |
 | Plugin commands | `plugins/{plugin-name}/commands/` | `plugins/projman/commands/` |
 | Plugin agents | `plugins/{plugin-name}/agents/` | `plugins/projman/agents/` |
 | Plugin skills | `plugins/{plugin-name}/skills/` | `plugins/projman/skills/` |
@@ -305,6 +316,7 @@ All MCP servers are defined in `.mcp.json` at repository root:
 
 | Date | Change | By |
 |------|--------|-----|
+| 2026-02-04 | v7.1.0: Added profile configs, prompts/, project-lessons-learned/, metadata.json, deprecated switch-profile.sh | Claude Code |
 | 2026-01-30 | v5.5.0: Removed plugin-level mcp-servers symlinks - all MCP config now in root .mcp.json | Claude Code |
 | 2026-01-26 | v5.0.0: Added contract-validator plugin and MCP server | Claude Code |
 | 2026-01-26 | v4.1.0: Added viz-platform plugin and MCP server | Claude Code |

@@ -206,6 +206,35 @@ for plugin_dir in "$PLUGINS_DIR"/*/; do
     echo "✓ $plugin_name valid"
 done
 
+echo ""
+echo "=== Validating Plugin Metadata (MCP Mappings) ==="
+
+for plugin_dir in "$PLUGINS_DIR"/*/; do
+    plugin_name=$(basename "$plugin_dir")
+    metadata_json="$plugin_dir.claude-plugin/metadata.json"
+
+    if jq -e '.mcp_servers' "$plugin_dir.claude-plugin/plugin.json" >/dev/null 2>&1; then
+        echo "ERROR: $plugin_name/plugin.json contains 'mcp_servers' — move to metadata.json"
+        exit 1
+    fi
+
+    if [[ -f "$metadata_json" ]]; then
+        if ! jq empty "$metadata_json" 2>/dev/null; then
+            echo "ERROR: Invalid JSON in $plugin_name/.claude-plugin/metadata.json"
+            exit 1
+        fi
+        mcp_servers=$(jq -r '.mcp_servers // [] | .[]' "$metadata_json" 2>/dev/null)
+        for server in $mcp_servers; do
+            if [[ ! -d "$ROOT_DIR/mcp-servers/$server" ]]; then
+                echo "ERROR: $plugin_name metadata.json references '$server' but mcp-servers/$server/ missing"
+                exit 1
+            fi
+            echo "  ✓ $plugin_name → $server"
+        done
+    fi
+done
+echo "✓ Plugin metadata validation passed"
+
 # CRITICAL: Validate marketplace.json file references
 echo ""
 echo "=== Validating Marketplace File References (CRITICAL) ==="
