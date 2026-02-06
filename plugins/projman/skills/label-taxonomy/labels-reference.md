@@ -13,7 +13,7 @@ description: Dynamic reference for Gitea label taxonomy (organization + reposito
 
 This skill provides the current label taxonomy used for issue classification in Gitea. Labels are **fetched dynamically** from Gitea and should never be hardcoded.
 
-**Current Taxonomy:** 49 labels (31 organization + 18 repository)
+**Current Taxonomy:** 58 labels (31 organization + 27 repository)
 
 ## Organization Labels (31)
 
@@ -122,6 +122,29 @@ Cross-plugin integration labels for domain-specific validation gates.
 - Keywords: "schema", "migration", "pipeline", "dbt", "table", "column", "query", "PostgreSQL", "lineage", "data model"
 - Also applied when: `Component/Database` or `Component/Data` label is present
 - Example: "Add census demographic data pipeline"
+
+### Epic (5 labels)
+
+Project-level epic labels for multi-sprint work tracking.
+
+| Label | Color | Description |
+|-------|-------|-------------|
+| `Epic/Database` | `#0E8A16` | Database schema, migrations, seed data |
+| `Epic/API` | `#1D76DB` | Backend endpoints, middleware, auth |
+| `Epic/Frontend` | `#E99695` | UI components, routing, state management |
+| `Epic/Auth` | `#D93F0B` | Authentication and authorization |
+| `Epic/Infrastructure` | `#BFD4F2` | CI/CD, deployment, monitoring |
+
+### R&D (4 labels)
+
+Research and development tracking labels for lessons learned.
+
+| Label | Color | Description |
+|-------|-------|-------------|
+| `RnD/Friction` | `#FBCA04` | Workflow friction points |
+| `RnD/Gap` | `#B60205` | Capability gaps discovered |
+| `RnD/Pattern` | `#0075CA` | Reusable patterns identified |
+| `RnD/Automation` | `#5319E7` | Automation opportunities |
 
 ## Label Suggestion Logic
 

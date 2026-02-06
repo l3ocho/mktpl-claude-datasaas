@@ -6,7 +6,7 @@
   },
   "metadata": {
     "description": "Project management plugins with Gitea and NetBox integrations",
-    "version": "8.0.0"
+    "version": "8.1.0"
   },
   "plugins": [
     {
@@ -20,9 +20,6 @@
       },
       "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/projman/README.md",
       "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
-      "hooks": [
-        "./hooks/hooks.json"
-      ],
       "category": "development",
       "tags": [
         "sprint",
@@ -44,9 +41,6 @@
       },
       "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/doc-guardian/README.md",
       "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
-      "hooks": [
-        "./hooks/hooks.json"
-      ],
       "category": "productivity",
       "tags": [
         "documentation",
@@ -90,9 +84,6 @@
       },
       "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/project-hygiene/README.md",
       "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
-      "hooks": [
-        "./hooks/hooks.json"
-      ],
       "category": "productivity",
       "tags": [
         "cleanup",
@@ -139,9 +130,6 @@
       },
       "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/claude-config-maintainer/README.md",
       "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
-      "hooks": [
-        "./hooks/hooks.json"
-      ],
       "category": "development",
       "tags": [
         "claude-md",
@@ -210,9 +198,6 @@
       },
       "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/pr-review/README.md",
       "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
-      "hooks": [
-        "./hooks/hooks.json"
-      ],
       "category": "development",
       "tags": [
         "code-review",
@@ -234,9 +219,6 @@
       },
       "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/data-platform/README.md",
       "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
-      "hooks": [
-        "./hooks/hooks.json"
-      ],
       "category": "data",
       "tags": [
         "pandas",
@@ -260,9 +242,6 @@
       },
       "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/viz-platform/README.md",
       "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
-      "hooks": [
-        "./hooks/hooks.json"
-      ],
       "category": "visualization",
       "tags": [
         "dash",
@@ -287,9 +266,6 @@
       },
       "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/contract-validator/README.md",
       "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
-      "hooks": [
-        "./hooks/hooks.json"
-      ],
       "category": "development",
       "tags": [
         "validation",

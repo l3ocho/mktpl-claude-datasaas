@@ -36,6 +36,8 @@ Run `/labels-sync` when setting up the plugin or after taxonomy updates.
 | Priority/* | Low, Medium, High, Critical |
 | Complexity/* | Simple, Medium, Complex |
 | Efforts/* | XS, S, M, L, XL |
+| Epic/* | Database, API, Frontend, Auth, Infrastructure |
+| RnD/* | Friction, Gap, Pattern, Automation |
 
 ## DO NOT
 

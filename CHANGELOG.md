@@ -8,6 +8,44 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ---
 
+## [8.1.0] - 2026-02-06
+
+### BREAKING CHANGES
+
+#### Hook Migration (v8.1.0)
+
+All `SessionStart` and `PostToolUse` hooks removed. Only `PreToolUse` safety hooks and `UserPromptSubmit` quality hooks remain. Plugins that relied on automatic startup checks or post-write automation must use manual commands instead.
+
+### Added
+
+- **projman:** 7 new skills — `source-analysis`, `project-charter`, `adr-conventions`, `epic-conventions`, `wbs`, `risk-register`, `sprint-roadmap`
+- **projman:** `/project` command family — `initiation`, `plan`, `status`, `close` for full project lifecycle management
+- **projman:** `/adr` command family — `create`, `list`, `update`, `supersede` for Architecture Decision Records
+- **projman:** Expanded `wiki-conventions.md` with dependency headers, R&D notes, page naming patterns
+- **projman:** Epic/* labels (5) and RnD/* labels (4) added to label taxonomy
+- **project-hygiene:** `/hygiene check` manual command replacing PostToolUse hook
+- **contract-validator:** `/cv status` marketplace-wide health check command
+
+### Changed
+
+- `verify-hooks.sh` rewritten to validate post-migration hook inventory (4 plugins, 5 hooks)
+- `config-permissions-map.md` updated to reflect reduced hook inventory
+- `settings-optimization.md` updated for current hook landscape
+- `sprint-plan.md` no longer loads `token-budget-report.md` skill
+- `sprint-close.md` loads `rfc-workflow.md` conditionally; manual CHANGELOG review replaces `/suggest-version`
+- `planner.md` and `orchestrator.md` no longer reference domain consultation or domain gates
+- Label taxonomy updated from 43 to 58 labels (added Status/4, Domain/2, Epic/5, RnD/4)
+
+### Removed
+
+- **hooks:** 8 hooks.json files deleted (projman, pr-review, doc-guardian, project-hygiene, claude-config-maintainer, viz-platform, data-platform, contract-validator SessionStart/PostToolUse hooks)
+- **hooks:** Orphaned shell scripts deleted (startup-check.sh, notify.sh, cleanup.sh, enforce-rules.sh, schema-diff-check.sh, auto-validate.sh, breaking-change-check.sh)
+- **projman:** `/pm-debug`, `/suggest-version`, `/proposal-status` commands deleted
+- **projman:** `domain-consultation.md` skill deleted
+- **cmdb-assistant:** SessionStart hook removed (PreToolUse hook retained)
+
+---
+
 ## [8.0.0] - 2026-02-06
 
 ### BREAKING CHANGES

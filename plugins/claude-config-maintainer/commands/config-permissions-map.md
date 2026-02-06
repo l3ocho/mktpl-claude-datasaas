@@ -38,15 +38,13 @@ Read all plugin hooks from the marketplace:
 
 ```
 plugins/code-sentinel/hooks/hooks.json
-plugins/doc-guardian/hooks/hooks.json
-plugins/project-hygiene/hooks/hooks.json
-plugins/data-platform/hooks/hooks.json
-plugins/contract-validator/hooks/hooks.json
+plugins/git-flow/hooks/hooks.json
 plugins/cmdb-assistant/hooks/hooks.json
+plugins/clarity-assist/hooks/hooks.json
 ```
 
 For each hook, extract:
-- Event type (PreToolUse, PostToolUse, SessionStart, etc.)
+- Event type (PreToolUse, UserPromptSubmit)
 - Tool matchers (Write, Edit, MultiEdit, Bash patterns)
 - Hook command/script
 
@@ -54,12 +52,13 @@ For each hook, extract:
 
 Create a mapping of which review layers cover which operations:
 
-| Operation | PreToolUse Hooks | PostToolUse Hooks | Other Gates |
-|-----------|------------------|-------------------|-------------|
-| Write | code-sentinel | doc-guardian, project-hygiene | PR review |
-| Edit | code-sentinel | doc-guardian, project-hygiene | PR review |
-| MultiEdit | code-sentinel | doc-guardian | PR review |
-| Bash(git *) | git-flow | — | — |
+| Operation | PreToolUse Hooks | Other Gates |
+|-----------|------------------|-------------|
+| Write | code-sentinel | PR review |
+| Edit | code-sentinel | PR review |
+| MultiEdit | code-sentinel | PR review |
+| Bash(git *) | git-flow | — |
+| MCP(netbox create/update) | cmdb-assistant | — |
 
 ### Step 3: Read Current Permissions
 
@@ -94,13 +93,7 @@ flowchart LR
         direction TB
         CS[code-sentinel<br/>Security Scan]
         GF[git-flow<br/>Branch Check]
-    end
-
-    subgraph post[PostToolUse Hooks]
-        direction TB
-        DG[doc-guardian<br/>Drift Detection]
-        PH[project-hygiene<br/>Cleanup]
-        DP[data-platform<br/>Schema Diff]
+        CA[clarity-assist<br/>Prompt Quality]
     end
 
     subgraph perm[Permission Status]
@@ -111,26 +104,22 @@ flowchart LR
     end
 
     W -->|intercepted| CS
-    W -->|tracked| DG
     E -->|intercepted| CS
-    E -->|tracked| DG
     BG -->|checked| GF
 
     CS -->|passed| AA
-    DG -->|logged| AA
     GF -->|valid| AA
     BO -->|no hook| PR
 
     classDef preHook fill:#e3f2fd,stroke:#1976d2
-    classDef postHook fill:#e8f5e9,stroke:#388e3c
-    classDef sprint fill:#fff3e0,stroke:#f57c00
+    classDef quality fill:#fff3e0,stroke:#f57c00
     classDef prReview fill:#f3e5f5,stroke:#7b1fa2
     classDef allowed fill:#c8e6c9,stroke:#2e7d32
     classDef prompted fill:#fff9c4,stroke:#f9a825
     classDef denied fill:#ffcdd2,stroke:#c62828
 
     class CS,GF preHook
-    class DG,PH,DP postHook
+    class CA quality
     class AA allowed
     class PR prompted
     class DN denied
@@ -195,11 +184,10 @@ Review Layer Status
 PreToolUse Hooks (intercept before operation):
   ✓ code-sentinel — Write, Edit, MultiEdit
   ✓ git-flow — Bash(git checkout *), Bash(git commit *)
+  ✓ cmdb-assistant — MCP(netbox create/update)
 
-PostToolUse Hooks (track after operation):
-  ✓ doc-guardian — Write, Edit, MultiEdit
-  ✓ project-hygiene — Write, Edit
-  ✗ data-platform — not detected
+UserPromptSubmit Hooks (check prompt quality):
+  ✓ clarity-assist — vagueness detection
 
 Other Review Gates:
   ✓ Sprint Approval (projman milestone workflow)
@@ -241,7 +229,6 @@ To view:
 | Element | Color | Hex |
 |---------|-------|-----|
 | PreToolUse hooks | Blue | #e3f2fd |
-| PostToolUse hooks | Green | #e8f5e9 |
 | Sprint/Planning gates | Amber | #fff3e0 |
 | PR Review | Purple | #f3e5f5 |
 | Auto-allowed | Light green | #c8e6c9 |

@@ -146,7 +146,7 @@ When user says "fix the sprint-plan command", edit the SOURCE code.
 ## Project Overview
 
 **Repository:** leo-claude-mktplace
-**Version:** 7.0.0
+**Version:** 8.1.0
 **Status:** Production Ready
 
 A plugin marketplace for Claude Code containing:
@@ -164,7 +164,7 @@ A plugin marketplace for Claude Code containing:
 | `data-platform` | pandas, PostgreSQL, and dbt integration for data engineering | 1.3.0 |
 | `viz-platform` | DMC validation, Plotly charts, and theming for dashboards | 1.1.0 |
 | `contract-validator` | Cross-plugin compatibility validation and agent verification | 1.1.0 |
-| `project-hygiene` | Post-task cleanup automation via hooks | 0.1.0 |
+| `project-hygiene` | Project file organization and cleanup checks | 0.1.0 |
 
 ## Quick Start
 
@@ -183,13 +183,14 @@ A plugin marketplace for Claude Code containing:
 | **Setup** | `/pm-setup` (modes: `--full`, `--quick`, `--sync`) |
 | **Sprint** | `/sprint-plan`, `/sprint-start`, `/sprint-status` (with `--diagram`), `/sprint-close` |
 | **Quality** | `/pm-review`, `/pm-test` (modes: `run`, `gen`) |
-| **Versioning** | `/suggest-version` |
+| **Project** | `/project initiation\|plan\|status\|close` |
+| **ADR** | `/adr create\|list\|update\|supersede` |
 | **PR Review** | `/pr-review`, `/pr-summary`, `/pr-findings`, `/pr-diff` |
 | **Docs** | `/doc-audit`, `/doc-sync`, `/changelog-gen`, `/doc-coverage`, `/stale-docs` |
 | **Security** | `/security-scan`, `/refactor`, `/refactor-dry` |
 | **Config** | `/config-analyze`, `/config-optimize`, `/config-diff`, `/config-lint` |
-| **Validation** | `/validate-contracts`, `/check-agent`, `/list-interfaces`, `/dependency-graph` |
-| **Debug** | `/pm-debug` (modes: `report`, `review`) |
+| **Validation** | `/validate-contracts`, `/check-agent`, `/list-interfaces`, `/dependency-graph`, `/cv status` |
+| **Maintenance** | `/hygiene check` |
 
 ### Plugin Commands - NOT RELEVANT to This Project
 
@@ -217,10 +218,9 @@ leo-claude-mktplace/
 ├── plugins/
 │   ├── projman/                  # Sprint management
 │   │   ├── .claude-plugin/plugin.json
-│   │   ├── commands/             # 12 commands
-│   │   ├── hooks/                # SessionStart: mismatch detection
+│   │   ├── commands/             # 19 commands
 │   │   ├── agents/               # 4 agents
-│   │   └── skills/               # 17 reusable skill files
+│   │   └── skills/               # 23 reusable skill files
 │   ├── git-flow/                 # Git workflow automation
 │   │   ├── .claude-plugin/plugin.json
 │   │   ├── commands/             # 8 commands
@@ -228,7 +228,6 @@ leo-claude-mktplace/
 │   ├── pr-review/                # Multi-agent PR review
 │   │   ├── .claude-plugin/plugin.json
 │   │   ├── commands/             # 6 commands
-│   │   ├── hooks/                # SessionStart mismatch detection
 │   │   └── agents/               # 5 agents
 │   ├── clarity-assist/           # Prompt optimization
 │   │   ├── .claude-plugin/plugin.json
@@ -237,12 +236,10 @@ leo-claude-mktplace/
 │   ├── data-platform/            # Data engineering
 │   │   ├── .claude-plugin/plugin.json
 │   │   ├── commands/             # 7 commands
-│   │   ├── hooks/                # SessionStart PostgreSQL check
 │   │   └── agents/               # 2 agents
 │   ├── viz-platform/             # Visualization
 │   │   ├── .claude-plugin/plugin.json
 │   │   ├── commands/             # 7 commands
-│   │   ├── hooks/                # SessionStart DMC check
 │   │   └── agents/               # 3 agents
 │   ├── doc-guardian/             # Documentation drift detection
 │   ├── code-sentinel/            # Security scanning & refactoring
@@ -371,10 +368,10 @@ Wiki-based Request for Comments system for tracking feature ideas from proposal 
 
 ## Label Taxonomy
 
-43 labels total: 27 organization + 16 repository
+58 labels total: 31 organization + 27 repository
 
-**Organization:** Agent/2, Complexity/3, Efforts/5, Priority/4, Risk/3, Source/4, Type/6
-**Repository:** Component/9, Tech/7
+**Organization:** Agent/2, Complexity/3, Efforts/5, Priority/4, Risk/3, Source/4, Status/4, Type/6
+**Repository:** Component/9, Tech/7, Domain/2, Epic/5, RnD/4
 
 Sync with `/labels-sync` command.
 
@@ -468,12 +465,12 @@ See `docs/DEBUGGING-CHECKLIST.md` for systematic troubleshooting.
 | Symptom | Likely Cause | Fix |
 |---------|--------------|-----|
 | "X MCP servers failed" | Missing venv in installed path | `cd ~/.claude/plugins/marketplaces/leo-claude-mktplace && ./scripts/setup.sh` |
-| MCP tools not available | Venv missing or .mcp.json misconfigured | Run `/pm-debug report` to diagnose |
+| MCP tools not available | Venv missing or .mcp.json misconfigured | Run `/cv status` to diagnose |
 | Changes not taking effect | Editing source, not installed | Reinstall plugin or edit installed path |
 
-**Debug Commands:**
-- `/pm-debug report` - Run full diagnostics, create issue if needed
-- `/pm-debug review` - Investigate and propose fixes
+**Diagnostic Commands:**
+- `/cv status` - Marketplace-wide health check (installation, MCP, configuration)
+- `/hygiene check` - Project file organization and cleanup check
 
 ## Versioning Workflow
 
@@ -527,4 +524,4 @@ The script will:
 
 ---
 
-**Last Updated:** 2026-02-03
+**Last Updated:** 2026-02-06

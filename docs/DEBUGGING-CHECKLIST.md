@@ -279,8 +279,8 @@ Error: Could not find a suitable TLS CA certificate bundle, invalid path:
 
 Use these commands for automated checking:
 
-- `/pm-debug report` - Run full diagnostics, create issue if problems found
-- `/pm-debug review` - Investigate existing diagnostic issues and propose fixes
+- `/cv status` - Marketplace-wide health check (installation, MCP, configuration)
+- `/hygiene check` - Project file organization and cleanup check
 
 ---
 

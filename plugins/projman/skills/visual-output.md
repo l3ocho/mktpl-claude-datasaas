@@ -42,12 +42,13 @@ For commands that don't invoke a specific agent phase:
 |---------|-------------|------------|
 | `/sprint-status` | 📊 Chart | STATUS |
 | `/pm-setup` | ⚙️ Gear | SETUP |
-| `/pm-debug` | 🐛 Bug | DEBUG |
 | `/labels-sync` | 🏷️ Label | LABELS |
-| `/suggest-version` | 📦 Package | VERSION |
-| `/proposal-status` | 📋 Clipboard | PROPOSALS |
 | `/pm-test` | 🧪 Flask | TEST |
 | `/rfc` | 📄 Document | RFC [Sub-Command] |
+| `/project` | 📋 Clipboard | PROJECT [Sub-Command] |
+| `/adr` | 📐 Ruler | ADR [Sub-Command] |
+| `/hygiene check` | 🧹 Broom | HYGIENE |
+| `/cv status` | ✅ Check | CV STATUS |
 
 ---
 
