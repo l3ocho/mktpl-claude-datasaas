@@ -18,5 +18,8 @@
     "etl",
     "dataframe"
   ],
-  "commands": ["./commands/"]
+  "commands": [
+    "./commands/"
+  ],
+  "domain": "data"
 }

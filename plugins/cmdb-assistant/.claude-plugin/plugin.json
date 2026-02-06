@@ -19,5 +19,8 @@
     "data-quality",
     "validation"
   ],
-  "commands": ["./commands/"]
+  "commands": [
+    "./commands/"
+  ],
+  "domain": "ops"
 }

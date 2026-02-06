@@ -16,5 +16,8 @@
     "performance",
     "multi-agent"
   ],
-  "commands": ["./commands/"]
+  "commands": [
+    "./commands/"
+  ],
+  "domain": "core"
 }

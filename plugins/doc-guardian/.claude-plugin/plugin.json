@@ -9,6 +9,15 @@
   "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/doc-guardian/README.md",
   "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
   "license": "MIT",
-  "keywords": ["documentation", "sync", "drift-detection", "automation", "hooks"],
-  "commands": ["./commands/"]
+  "keywords": [
+    "documentation",
+    "sync",
+    "drift-detection",
+    "automation",
+    "hooks"
+  ],
+  "commands": [
+    "./commands/"
+  ],
+  "domain": "core"
 }

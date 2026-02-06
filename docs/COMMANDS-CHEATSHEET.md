@@ -16,11 +16,15 @@ Quick reference for all commands in the Leo Claude Marketplace.
 | **projman** | `/sprint-close` | | X | Complete sprint and capture lessons learned to Gitea Wiki |
 | **projman** | `/labels-sync` | | X | Synchronize label taxonomy from Gitea |
 | **projman** | `/pm-setup` | | X | Auto-detect mode or use `--full`, `--quick`, `--sync`, `--clear-cache` |
-| **projman** | *SessionStart hook* | X | | Detects git remote vs .env mismatch, warns to run `/pm-setup --sync` |
-| **projman** | `/pm-debug` | | X | Diagnostics (`/pm-debug report`) or investigate (`/pm-debug review`) |
-| **projman** | `/suggest-version` | | X | Analyze CHANGELOG and recommend semantic version bump |
-| **projman** | `/proposal-status` | | X | View proposal and implementation hierarchy with status |
 | **projman** | `/rfc` | | X | RFC lifecycle management (`/rfc create\|list\|review\|approve\|reject`) |
+| **projman** | `/project initiation` | | X | Source analysis + project charter creation |
+| **projman** | `/project plan` | | X | WBS, risk register, and sprint roadmap |
+| **projman** | `/project status` | | X | Full project hierarchy status view |
+| **projman** | `/project close` | | X | Retrospective, lessons learned, and archive |
+| **projman** | `/adr create` | | X | Create Architecture Decision Record in wiki |
+| **projman** | `/adr list` | | X | List ADRs by status (accepted, proposed, deprecated) |
+| **projman** | `/adr update` | | X | Update ADR content or transition status |
+| **projman** | `/adr supersede` | | X | Supersede an ADR with a new one |
 | **git-flow** | `/git-commit` | | X | Create commit with auto-generated conventional message |
 | **git-flow** | `/git-commit-push` | | X | Commit and push to remote in one operation |
 | **git-flow** | `/git-commit-merge` | | X | Commit current changes, then merge into target branch |
@@ -32,7 +36,6 @@ Quick reference for all commands in the Leo Claude Marketplace.
 | **pr-review** | `/pr-setup` | | X | Setup wizard for pr-review (shares Gitea MCP with projman) |
 | **pr-review** | `/project-init` | | X | Quick project setup for PR reviews |
 | **pr-review** | `/project-sync` | | X | Sync config with git remote after repo move/rename |
-| **pr-review** | *SessionStart hook* | X | | Detects git remote vs .env mismatch |
 | **pr-review** | `/pr-review` | | X | Full multi-agent PR review with confidence scoring |
 | **pr-review** | `/pr-summary` | | X | Quick summary of PR changes |
 | **pr-review** | `/pr-findings` | | X | List and filter review findings by category/severity |
@@ -44,7 +47,6 @@ Quick reference for all commands in the Leo Claude Marketplace.
 | **doc-guardian** | `/changelog-gen` | | X | Generate changelog from conventional commits |
 | **doc-guardian** | `/doc-coverage` | | X | Documentation coverage metrics by function/class |
 | **doc-guardian** | `/stale-docs` | | X | Flag documentation behind code changes |
-| **doc-guardian** | *PostToolUse hook* | X | | Silently detects doc drift on Write/Edit |
 | **code-sentinel** | `/security-scan` | | X | Full security audit (SQL injection, XSS, secrets, etc.) |
 | **code-sentinel** | `/refactor` | | X | Apply refactoring patterns to improve code |
 | **code-sentinel** | `/refactor-dry` | | X | Preview refactoring without applying changes |
@@ -68,7 +70,7 @@ Quick reference for all commands in the Leo Claude Marketplace.
 | **cmdb-assistant** | `/cmdb-topology` | | X | Infrastructure topology diagrams (rack, network, site views) |
 | **cmdb-assistant** | `/change-audit` | | X | NetBox audit trail queries with filtering |
 | **cmdb-assistant** | `/ip-conflicts` | | X | Detect IP conflicts and overlapping prefixes |
-| **project-hygiene** | *PostToolUse hook* | X | | Removes temp files, warns about unexpected root files |
+| **project-hygiene** | `/hygiene check` | | X | Project file organization and cleanup check |
 | **data-platform** | `/data-ingest` | | X | Load data from CSV, Parquet, JSON into DataFrame |
 | **data-platform** | `/data-profile` | | X | Generate data profiling report with statistics |
 | **data-platform** | `/data-schema` | | X | Explore database schemas, tables, columns |
@@ -79,7 +81,6 @@ Quick reference for all commands in the Leo Claude Marketplace.
 | **data-platform** | `/dbt-test` | | X | Formatted dbt test runner with summary and failure details |
 | **data-platform** | `/data-quality` | | X | DataFrame quality checks (nulls, duplicates, types, outliers) |
 | **data-platform** | `/data-setup` | | X | Setup wizard for data-platform MCP servers |
-| **data-platform** | *SessionStart hook* | X | | Checks PostgreSQL connection (non-blocking warning) |
 | **viz-platform** | `/viz-setup` | | X | Setup wizard for viz-platform MCP server |
 | **viz-platform** | `/viz-chart` | | X | Create Plotly charts with theme integration |
 | **viz-platform** | `/viz-dashboard` | | X | Create dashboard layouts with filters and grids |
@@ -92,7 +93,6 @@ Quick reference for all commands in the Leo Claude Marketplace.
 | **viz-platform** | `/viz-breakpoints` | | X | Configure responsive layout breakpoints |
 | **viz-platform** | `/design-review` | | X | Detailed design system audits |
 | **viz-platform** | `/design-gate` | | X | Binary pass/fail design system validation gates |
-| **viz-platform** | *SessionStart hook* | X | | Checks DMC version (non-blocking warning) |
 | **data-platform** | `/data-review` | | X | Comprehensive data integrity audits |
 | **data-platform** | `/data-gate` | | X | Binary pass/fail data integrity gates |
 | **contract-validator** | `/validate-contracts` | | X | Full marketplace compatibility validation |
@@ -100,6 +100,7 @@ Quick reference for all commands in the Leo Claude Marketplace.
 | **contract-validator** | `/list-interfaces` | | X | Show all plugin interfaces |
 | **contract-validator** | `/dependency-graph` | | X | Mermaid visualization of plugin dependencies |
 | **contract-validator** | `/cv-setup` | | X | Setup wizard for contract-validator MCP |
+| **contract-validator** | `/cv status` | | X | Marketplace-wide health check (installation, MCP, configuration) |
 
 ---
 
@@ -116,7 +117,7 @@ Quick reference for all commands in the Leo Claude Marketplace.
 | **Data Engineering** | data-platform | pandas, PostgreSQL, dbt operations |
 | **Visualization** | viz-platform | DMC validation, Plotly charts, theming |
 | **Validation** | contract-validator | Cross-plugin compatibility checks |
-| **Maintenance** | project-hygiene | Automatic cleanup |
+| **Maintenance** | project-hygiene | Manual cleanup via `/hygiene check` |
 
 ---
 
@@ -124,13 +125,10 @@ Quick reference for all commands in the Leo Claude Marketplace.
 
 | Plugin | Hook Event | Behavior |
 |--------|------------|----------|
-| **projman** | SessionStart | Checks git remote vs .env; warns if mismatch detected; suggests sprint planning if issues exist |
-| **pr-review** | SessionStart | Checks git remote vs .env; warns if mismatch detected |
-| **doc-guardian** | PostToolUse (Write/Edit) | Tracks documentation drift; auto-updates dependent docs |
-| **code-sentinel** | PreToolUse (Write/Edit) | Scans for security issues; blocks critical vulnerabilities |
-| **project-hygiene** | PostToolUse (Write/Edit) | Cleans temp files, warns about misplaced files |
-| **data-platform** | SessionStart | Checks PostgreSQL connection; non-blocking warning if unavailable |
-| **viz-platform** | SessionStart | Checks DMC version; non-blocking warning if mismatch detected |
+| **code-sentinel** | PreToolUse (Write/Edit/MultiEdit) | Scans code before writing; blocks critical security issues |
+| **git-flow** | PreToolUse (Bash) | Validates branch naming and commit message conventions |
+| **cmdb-assistant** | PreToolUse (MCP create/update) | Validates input data before NetBox writes |
+| **clarity-assist** | UserPromptSubmit | Detects vague prompts and suggests clarification |
 
 ---
 
@@ -271,7 +269,7 @@ Adding a new project when system config exists:
 
 ## Quick Tips
 
-- **Hooks run automatically** - doc-guardian and code-sentinel protect you without manual invocation
+- **Hooks run automatically** - code-sentinel and git-flow protect you without manual invocation
 - **Use `/git-commit` over `git commit`** - generates better commit messages following conventions
 - **Run `/pm-review` before `/sprint-close`** - catches issues before closing the sprint
 - **Use `/clarify` for vague requests** - especially helpful for complex requirements
@@ -296,4 +294,4 @@ Ensure credentials are configured in `~/.config/claude/gitea.env`, `~/.config/cl
 
 ---
 
-*Last Updated: 2026-02-02*
+*Last Updated: 2026-02-06*

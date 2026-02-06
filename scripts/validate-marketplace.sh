@@ -4,6 +4,9 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(dirname "$SCRIPT_DIR")"
 
+# v8.0.0: Valid domain values
+VALID_DOMAINS="core data saas ops debug"
+
 echo "=== Validating Marketplace ==="
 
 # Check marketplace.json exists and is valid JSON
@@ -89,6 +92,18 @@ for i in $(seq 0 $((PLUGIN_COUNT - 1))); do
         exit 1
     fi
 
+    # v8.0.0: Check domain field
+    PLUGIN_DOMAIN=$(jq -r ".plugins[$i].domain // empty" "$MARKETPLACE_JSON")
+    if [[ -z "$PLUGIN_DOMAIN" ]]; then
+        echo "ERROR: Missing 'domain' in marketplace entry for $PLUGIN_NAME (required v8.0.0+)"
+        exit 1
+    fi
+    if ! echo "$VALID_DOMAINS" | grep -qw "$PLUGIN_DOMAIN"; then
+        echo "ERROR: Invalid domain '$PLUGIN_DOMAIN' in marketplace entry for $PLUGIN_NAME (allowed: $VALID_DOMAINS)"
+        exit 1
+    fi
+    echo "  ✓ domain: $PLUGIN_DOMAIN"
+
     echo "✓ Marketplace entry $PLUGIN_NAME valid"
 done
 
@@ -142,6 +157,18 @@ for plugin_dir in "$PLUGINS_DIR"/*/; do
     if ! jq -e '.keywords | type == "array"' "$plugin_json" >/dev/null; then
         echo "WARNING: Missing 'keywords' array in $plugin_name/plugin.json"
     fi
+
+    # v8.0.0: Check domain field in plugin.json
+    PLUGIN_DOMAIN_PJ=$(jq -r '.domain // empty' "$plugin_json")
+    if [[ -z "$PLUGIN_DOMAIN_PJ" ]]; then
+        echo "ERROR: Missing 'domain' in $plugin_name/plugin.json (required v8.0.0+)"
+        exit 1
+    fi
+    if ! echo "$VALID_DOMAINS" | grep -qw "$PLUGIN_DOMAIN_PJ"; then
+        echo "ERROR: Invalid domain '$PLUGIN_DOMAIN_PJ' in $plugin_name/plugin.json (allowed: $VALID_DOMAINS)"
+        exit 1
+    fi
+    echo "  ✓ domain: $PLUGIN_DOMAIN_PJ"
 
     # Check README exists
     if [[ ! -f "$plugin_dir/README.md" ]]; then
@@ -296,6 +323,23 @@ if [[ ! -f "$ROOT_DIR/.mcp.json" ]]; then
     exit 1
 fi
 echo "✓ .mcp.json configuration exists"
+
+# v8.0.0: Cross-validate domains match between marketplace.json and plugin.json
+echo ""
+echo "=== Cross-Validating Domain Fields ==="
+for i in $(seq 0 $((PLUGIN_COUNT - 1))); do
+    PLUGIN_NAME=$(jq -r ".plugins[$i].name" "$MARKETPLACE_JSON")
+    MARKETPLACE_DOMAIN=$(jq -r ".plugins[$i].domain" "$MARKETPLACE_JSON")
+    PLUGIN_JSON_PATH="$PLUGINS_DIR/$PLUGIN_NAME/.claude-plugin/plugin.json"
+    if [[ -f "$PLUGIN_JSON_PATH" ]]; then
+        PLUGIN_DOMAIN=$(jq -r '.domain' "$PLUGIN_JSON_PATH")
+        if [[ "$MARKETPLACE_DOMAIN" != "$PLUGIN_DOMAIN" ]]; then
+            echo "ERROR: Domain mismatch for $PLUGIN_NAME: marketplace.json='$MARKETPLACE_DOMAIN' vs plugin.json='$PLUGIN_DOMAIN'"
+            exit 1
+        fi
+        echo "✓ $PLUGIN_NAME domain consistent: $MARKETPLACE_DOMAIN"
+    fi
+done
 
 echo ""
 echo "=== All validations passed ==="

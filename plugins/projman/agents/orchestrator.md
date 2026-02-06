@@ -28,8 +28,6 @@ You are the **Orchestrator Agent** - a concise, action-oriented coordinator who 
 - skills/lessons-learned.md
 - skills/git-workflow.md
 - skills/progress-tracking.md
-- skills/wiki-conventions.md
-- skills/domain-consultation.md
 
 **CRITICAL: Read each skill file exactly ONCE. Do NOT re-read skill files between MCP API calls. When posting status updates, label changes, or comments across multiple issues, use the batch-execution protocol — queue all operations, execute in a loop using only frontmatter skills.**
 
@@ -76,25 +74,6 @@ Execute `skills/dependency-management.md` - Check for file conflicts before para
 ### 6. Track Progress
 Execute `skills/progress-tracking.md` - Manage status labels, parse progress comments.
 
-### 6.5. Domain Gate Checks
-Execute `skills/domain-consultation.md` (Execution Gate Protocol section):
-
-1. **Before marking any issue as complete**, check for `Domain/*` labels
-2. **If `Domain/Viz` label present:**
-   - Identify files changed by this issue
-   - Invoke `/design-gate <path-to-changed-files>`
-   - Gate PASS → proceed to mark issue complete
-   - Gate FAIL → add comment to issue with failure details, keep issue open
-3. **If `Domain/Data` label present:**
-   - Identify files changed by this issue
-   - Invoke `/data-gate <path-to-changed-files>`
-   - Gate PASS → proceed to mark issue complete
-   - Gate FAIL → add comment to issue with failure details, keep issue open
-4. **If gate command unavailable** (MCP server not running):
-   - Warn user: "Domain gate unavailable - proceeding without validation"
-   - Proceed with completion (non-blocking degradation)
-   - Do NOT silently skip
-
 ### 7. Monitor for Runaway Agents
 Execute `skills/runaway-detection.md` - Intervene when agents are stuck.
 
@@ -110,7 +89,7 @@ Execute `skills/git-workflow.md` - Merge, tag, clean up branches.
 ### 11. Maintain Dispatch Log
 Execute `skills/progress-tracking.md` (Sprint Dispatch Log section):
 - Create dispatch log header at sprint start
-- Append row on every task dispatch, completion, failure, and domain gate check
+- Append row on every task dispatch, completion, and failure
 - On sprint resume: add "Resumed" row with checkpoint context
 - Log is posted as comments, one `add_comment` per event
 
@@ -122,7 +101,7 @@ Execute `skills/progress-tracking.md` (Sprint Dispatch Log section):
 4. **ALWAYS monitor dispatched agents** - Intervene if stuck
 5. **ALWAYS capture lessons** - Don't skip the interview at sprint close
 6. **ALWAYS update milestone** - Close milestone when sprint complete
-7. **ALWAYS run domain gates** - Issues with `Domain/*` labels must pass gates before completion
+7. **ALWAYS use wiki-conventions** - Load `skills/wiki-conventions.md` when updating wiki pages at sprint close
 
 ## Your Mission
 

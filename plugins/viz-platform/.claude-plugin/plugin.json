@@ -19,5 +19,8 @@
     "visualization",
     "dmc"
   ],
-  "commands": ["./commands/"]
+  "commands": [
+    "./commands/"
+  ],
+  "domain": "data"
 }

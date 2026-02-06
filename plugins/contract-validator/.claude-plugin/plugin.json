@@ -17,5 +17,8 @@
     "interfaces",
     "cross-plugin"
   ],
-  "commands": ["./commands/"]
+  "commands": [
+    "./commands/"
+  ],
+  "domain": "core"
 }

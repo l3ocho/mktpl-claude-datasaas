@@ -6,15 +6,78 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+---
+
+## [8.1.0] - 2026-02-06
+
+### BREAKING CHANGES
+
+#### Hook Migration (v8.1.0)
+
+All `SessionStart` and `PostToolUse` hooks removed. Only `PreToolUse` safety hooks and `UserPromptSubmit` quality hooks remain. Plugins that relied on automatic startup checks or post-write automation must use manual commands instead.
+
+### Added
+
+- **projman:** 7 new skills — `source-analysis`, `project-charter`, `adr-conventions`, `epic-conventions`, `wbs`, `risk-register`, `sprint-roadmap`
+- **projman:** `/project` command family — `initiation`, `plan`, `status`, `close` for full project lifecycle management
+- **projman:** `/adr` command family — `create`, `list`, `update`, `supersede` for Architecture Decision Records
+- **projman:** Expanded `wiki-conventions.md` with dependency headers, R&D notes, page naming patterns
+- **projman:** Epic/* labels (5) and RnD/* labels (4) added to label taxonomy
+- **project-hygiene:** `/hygiene check` manual command replacing PostToolUse hook
+- **contract-validator:** `/cv status` marketplace-wide health check command
+
+### Changed
+
+- `verify-hooks.sh` rewritten to validate post-migration hook inventory (4 plugins, 5 hooks)
+- `config-permissions-map.md` updated to reflect reduced hook inventory
+- `settings-optimization.md` updated for current hook landscape
+- `sprint-plan.md` no longer loads `token-budget-report.md` skill
+- `sprint-close.md` loads `rfc-workflow.md` conditionally; manual CHANGELOG review replaces `/suggest-version`
+- `planner.md` and `orchestrator.md` no longer reference domain consultation or domain gates
+- Label taxonomy updated from 43 to 58 labels (added Status/4, Domain/2, Epic/5, RnD/4)
+
+### Removed
+
+- **hooks:** 8 hooks.json files deleted (projman, pr-review, doc-guardian, project-hygiene, claude-config-maintainer, viz-platform, data-platform, contract-validator SessionStart/PostToolUse hooks)
+- **hooks:** Orphaned shell scripts deleted (startup-check.sh, notify.sh, cleanup.sh, enforce-rules.sh, schema-diff-check.sh, auto-validate.sh, breaking-change-check.sh)
+- **projman:** `/pm-debug`, `/suggest-version`, `/proposal-status` commands deleted
+- **projman:** `domain-consultation.md` skill deleted
+- **cmdb-assistant:** SessionStart hook removed (PreToolUse hook retained)
+
+---
+
+## [8.0.0] - 2026-02-06
+
+### BREAKING CHANGES
+
+#### Domain Metadata Required (v8.0.0)
+
+All plugin manifests now require a `domain` field. `validate-marketplace.sh` rejects plugins without it.
+
+### Added
+
+- **marketplace:** `domain` field added to all 12 `plugin.json` files and all `marketplace.json` entries
+- **marketplace:** Domain validation in `validate-marketplace.sh` — validates presence, allowed values, and cross-file consistency
+- **marketplace:** New launch profiles: `saas`, `ops`, `debug` in `claude-launch.sh`
+- **marketplace:** `data-seed` added to `data` launch profile (forward-looking)
+- **docs:** Domain metadata conventions in `CANONICAL-PATHS.md`
+- **docs:** Domain field requirements in `CLAUDE.md` "Adding a New Plugin" section
+
+### Changed
+
+- `validate-marketplace.sh` now requires `domain` in both `plugin.json` and `marketplace.json` (breaking change for validation pipeline)
+- `claude-launch.sh` profiles expanded: sprint, data, saas, ops, review, debug, full
+
+### Deprecated
+
+- `infra` launch profile — use `ops` instead (auto-redirects with warning)
+
 ### Fixed
 
 - Confirmed projman `metadata.json` exists with gitea MCP mapping
 - Synced `marketplace-full.json` and `marketplace-lean.json` to current version (were stale)
 - Added `metadata.json` validation to `validate-marketplace.sh` — rejects `mcp_servers` in `plugin.json`, verifies MCP server references
 - Updated `CANONICAL-PATHS.md` to current version
-
-### Changed
-
 - Deprecated `switch-profile.sh` in favor of `claude-launch.sh`
 
 ---

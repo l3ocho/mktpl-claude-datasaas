@@ -1,73 +1,98 @@
 ---
-name: wiki-conventions
-description: Proposal and implementation page format and naming conventions
+description: Wiki page naming conventions and dependency headers (Decision #30)
 ---
 
 # Wiki Conventions
 
 ## Purpose
 
-Defines the naming and structure for wiki proposal and implementation pages.
+Defines naming conventions, dependency headers, and structure for all wiki pages in the project management workflow.
 
 ## When to Use
 
 - **Planner agent**: When creating wiki pages during planning
 - **Orchestrator agent**: When updating status at sprint close
-- **Commands**: `/sprint-plan`, `/sprint-close`, `/proposal-status`
+- **Commands**: `/sprint-plan`, `/sprint-close`, `/project initiation`, `/project plan`, `/project status`, `/project close`, `/adr create`
 
 ---
 
-## Page Naming
+## Page Naming Pattern
 
-| Page Type | Naming Convention |
-|-----------|-------------------|
-| Proposal | `Change VXX.X.X: Proposal` |
-| Implementation | `Change VXX.X.X: Proposal (Implementation N)` |
+All wiki pages follow: `{Type}-{ID}: {Title}` or `{Type}: {Title}`
 
-**Examples:**
-- `Change V4.1.0: Proposal`
-- `Change V4.1.0: Proposal (Implementation 1)`
-- `Change V4.1.0: Proposal (Implementation 2)`
+| Type | ID Format | Example |
+|------|-----------|---------|
+| RFC | NNNN (sequential) | `RFC-0001: OAuth2 Provider Support` |
+| ADR | NNNN (sequential) | `ADR-0001: Use PostgreSQL with Alembic` |
+| Project | Name | `Project: Driving School SaaS` |
+| WBS | Name | `WBS: Driving School SaaS` |
+| Risk-Register | Name | `Risk-Register: Driving School SaaS` |
+| Roadmap | Name | `Roadmap: Driving School SaaS` |
+| Sprint-Lessons | Sprint ID | `Sprint-Lessons: Sprint-3` |
+| ADR-Index | — | `ADR-Index` |
+| Change Proposal | Version | `Change VXX.X.X: Proposal` |
+| Implementation | Version + N | `Change VXX.X.X: Proposal (Implementation N)` |
+
+## Dependency Header
+
+Every wiki page MUST include this header block:
+
+```markdown
+> **Project:** [project name or N/A]
+> **Sprint:** [sprint milestone or N/A]
+> **Issues:** #12, #15, #18 [or N/A]
+> **Parent:** [parent wiki page or N/A]
+> **Created:** YYYY-MM-DD
+> **Status:** [lifecycle state]
+```
+
+## Hierarchy
+
+- `Project: {Name}` is the root
+  - `WBS: {Name}` (parent: Project)
+  - `Risk-Register: {Name}` (parent: Project)
+  - `Roadmap: {Name}` (parent: Project)
+  - `ADR-NNNN: {Title}` (parent: Project)
+  - `Sprint-Lessons: Sprint-X` (parent: Project)
 
 ---
 
-## Proposal Page Template
+## Change Proposal Pages (Legacy Format)
+
+### Proposal Page Template
 
 ```markdown
 > **Type:** Change Proposal
-> **Version:** V04.1.0
+> **Version:** VXX.X.X
 > **Plugin:** projman
 > **Status:** In Progress
-> **Date:** 2026-01-26
+> **Date:** YYYY-MM-DD
 
 # Feature Title
 
 [Content migrated from input source or created from discussion]
 
 ## Implementations
-- [Implementation 1](link) - Sprint 17 - In Progress
+- [Implementation 1](link) - Sprint N - In Progress
 ```
 
----
-
-## Implementation Page Template
+### Implementation Page Template
 
 ```markdown
 > **Type:** Change Proposal Implementation
-> **Version:** V04.1.0
+> **Version:** VXX.X.X
 > **Status:** In Progress
-> **Date:** 2026-01-26
+> **Date:** YYYY-MM-DD
 > **Origin:** [Proposal](wiki-link)
-> **Sprint:** Sprint 17
+> **Sprint:** Sprint N
 
 # Implementation Details
 
 [Technical details, scope, approach]
 
 ## Issues
-- #45: JWT token generation
-- #46: Login endpoint
-- #47: Auth tests
+- #45: Issue description
+- #46: Issue description
 ```
 
 ---
@@ -85,71 +110,26 @@ Defines the naming and structure for wiki proposal and implementation pages.
 
 ## Completion Update (Sprint Close)
 
-On sprint close, update implementation page:
+On sprint close, update implementation page status to `Implemented` and add a `## Completion Summary` section with lessons learned link.
 
-```markdown
-> **Type:** Change Proposal Implementation
-> **Version:** V04.1.0
-> **Status:** Implemented ✅
-> **Date:** 2026-01-26
-> **Completed:** 2026-01-28
-> **Origin:** [Proposal](wiki-link)
-> **Sprint:** Sprint 17
-
-# Implementation Details
-[Original content...]
-
-## Completion Summary
-- All planned issues completed
-- Lessons learned: [Link to lesson]
-```
+On proposal page, update implementation entries with completion status.
 
 ---
 
-## Proposal Status Update
+## R&D Notes Section
 
-When all implementations complete, update proposal:
+Lessons learned pages include a `## R&D Notes` section at the bottom for capturing:
 
-```markdown
-> **Type:** Change Proposal
-> **Version:** V04.1.0
-> **Status:** Implemented ✅
-> **Date:** 2026-01-26
-
-# Feature Title
-[Original content...]
-
-## Implementations
-- [Implementation 1](link) - Sprint 17 - ✅ Completed
-```
+| Label | Description | Action |
+|-------|-------------|--------|
+| `RnD/Friction` | Workflow friction points | Consider improvements |
+| `RnD/Gap` | Capability gaps discovered | Prioritize new tools |
+| `RnD/Pattern` | Reusable patterns identified | Document for reuse |
+| `RnD/Automation` | Automation opportunities | Add to backlog |
 
 ---
 
-## Creating Pages
+## Enforcement
 
-**Create proposal:**
-```python
-create_wiki_page(
-    repo="org/repo",
-    title="Change V4.1.0: Proposal",
-    content="[proposal template content]"
-)
-```
-
-**Create implementation:**
-```python
-create_wiki_page(
-    repo="org/repo",
-    title="Change V4.1.0: Proposal (Implementation 1)",
-    content="[implementation template content]"
-)
-```
-
-**Update implementation on close:**
-```python
-update_wiki_page(
-    repo="org/repo",
-    page_name="Change-V4.1.0:-Proposal-(Implementation-1)",
-    content="[updated content with completion status]"
-)
-```
+- Commands creating wiki pages use these templates from their respective skills
+- Malformed pages are flagged, not auto-corrected

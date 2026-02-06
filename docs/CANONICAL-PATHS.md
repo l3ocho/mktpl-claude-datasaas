@@ -2,7 +2,7 @@
 
 **This file defines ALL valid paths in this repository. No exceptions. No inference. No assumptions.**
 
-Last Updated: 2026-02-04 (v7.1.0)
+Last Updated: 2026-02-06 (v8.0.0)
 
 ---
 
@@ -172,6 +172,33 @@ leo-claude-mktplace/
 
 ## Path Patterns (MANDATORY)
 
+### Phase 1a Paths (v8.1.0)
+
+New files added in v8.1.0:
+
+```
+plugins/projman/commands/project.md
+plugins/projman/commands/project-initiation.md
+plugins/projman/commands/project-plan.md
+plugins/projman/commands/project-status.md
+plugins/projman/commands/project-close.md
+plugins/projman/commands/adr.md
+plugins/projman/commands/adr-create.md
+plugins/projman/commands/adr-list.md
+plugins/projman/commands/adr-update.md
+plugins/projman/commands/adr-supersede.md
+plugins/projman/skills/source-analysis.md
+plugins/projman/skills/project-charter.md
+plugins/projman/skills/adr-conventions.md
+plugins/projman/skills/epic-conventions.md
+plugins/projman/skills/wbs.md
+plugins/projman/skills/risk-register.md
+plugins/projman/skills/sprint-roadmap.md
+plugins/projman/skills/wiki-conventions.md
+plugins/project-hygiene/commands/hygiene-check.md
+plugins/contract-validator/commands/cv-status.md
+```
+
 ### Plugin Paths
 
 | Context | Pattern | Example |
@@ -312,10 +339,63 @@ All MCP servers are defined in `.mcp.json` at repository root:
 
 ---
 
+## Domain Metadata
+
+### Domain Field Locations
+
+Both manifest files require a `domain` field (v8.0.0+):
+
+| Location | Field | Example |
+|----------|-------|---------|
+| `plugins/{name}/.claude-plugin/plugin.json` | `"domain": "core"` | `plugins/projman/.claude-plugin/plugin.json` |
+| `.claude-plugin/marketplace.json` | `"domain": "core"` per plugin entry | `.claude-plugin/marketplace.json` |
+
+### Allowed Domain Values
+
+| Domain | Purpose | Existing Plugins |
+|--------|---------|-----------------|
+| `core` | Development workflow plugins | projman, git-flow, pr-review, code-sentinel, doc-guardian, clarity-assist, contract-validator, claude-config-maintainer, project-hygiene |
+| `data` | Data engineering and visualization | data-platform, viz-platform |
+| `ops` | Operations and infrastructure | cmdb-assistant |
+| `saas` | SaaS application development | (Phase 2) |
+| `debug` | Debugging and diagnostics | (Phase 2) |
+
+### Plugin Naming Convention
+
+- **Core plugins:** No prefix (existing names never change)
+- **New plugins:** Domain prefix: `saas-*`, `ops-*`, `data-*`, `debug-*`
+- Domain is always in metadata — prefix is a naming convention, not a requirement
+
+### Domain Query Examples
+
+```bash
+# List all plugins in a domain
+jq '.plugins[] | select(.domain=="saas") | .name' .claude-plugin/marketplace.json
+
+# Count plugins per domain
+jq '[.plugins[] | .domain] | group_by(.) | map({domain: .[0], count: length})' .claude-plugin/marketplace.json
+```
+
+### Future Plugin Path Patterns
+
+```
+plugins/saas-api-platform/
+plugins/saas-db-migrate/
+plugins/saas-react-platform/
+plugins/saas-test-pilot/
+plugins/data-seed/
+plugins/ops-release-manager/
+plugins/ops-deploy-pipeline/
+plugins/debug-mcp/
+```
+
+---
+
 ## Change Log
 
 | Date | Change | By |
 |------|--------|-----|
+| 2026-02-06 | v8.0.0: Added domain metadata section, Phase 1a paths, future plugin paths | Claude Code |
 | 2026-02-04 | v7.1.0: Added profile configs, prompts/, project-lessons-learned/, metadata.json, deprecated switch-profile.sh | Claude Code |
 | 2026-01-30 | v5.5.0: Removed plugin-level mcp-servers symlinks - all MCP config now in root .mcp.json | Claude Code |
 | 2026-01-26 | v5.0.0: Added contract-validator plugin and MCP server | Claude Code |
