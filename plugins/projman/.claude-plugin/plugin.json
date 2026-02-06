@@ -16,5 +16,8 @@
     "agile",
     "lessons-learned"
   ],
-  "commands": ["./commands/"]
+  "commands": [
+    "./commands/"
+  ],
+  "domain": "core"
 }

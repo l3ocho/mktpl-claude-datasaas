@@ -391,12 +391,31 @@ Stored in Gitea Wiki under `lessons-learned/sprints/`.
 
 ### Adding a New Plugin
 
-1. Create `plugins/{name}/.claude-plugin/plugin.json`
-2. Add entry to `.claude-plugin/marketplace.json` with category, tags, license
+1. Create `plugins/{name}/.claude-plugin/plugin.json` — must include `"domain"` field (`core`, `data`, `saas`, `ops`, or `debug`)
+2. Add entry to `.claude-plugin/marketplace.json` with category, tags, license, and `"domain"` field (must match plugin.json)
 3. Create `claude-md-integration.md`
 4. If using new MCP server, add to root `mcp-servers/` and update `.mcp.json`
-5. Run `./scripts/validate-marketplace.sh`
+5. Run `./scripts/validate-marketplace.sh` — rejects plugins without valid `domain` field
 6. Update `CHANGELOG.md`
+
+**Domain field is required (v8.0.0+):**
+```json
+{
+  "name": "plugin-name",
+  "domain": "core",
+  ...
+}
+```
+
+**Naming convention:** New plugins use domain prefix (`saas-*`, `ops-*`, `data-*`, `debug-*`). Core plugins have no prefix.
+
+### Domain Assignments
+
+| Domain | Plugins |
+|--------|---------|
+| `core` | projman, git-flow, pr-review, code-sentinel, doc-guardian, clarity-assist, contract-validator, claude-config-maintainer, project-hygiene |
+| `data` | data-platform, viz-platform |
+| `ops` | cmdb-assistant |
 
 ### Adding a Command to projman
 

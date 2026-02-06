@@ -6,15 +6,40 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+---
+
+## [8.0.0] - 2026-02-06
+
+### BREAKING CHANGES
+
+#### Domain Metadata Required (v8.0.0)
+
+All plugin manifests now require a `domain` field. `validate-marketplace.sh` rejects plugins without it.
+
+### Added
+
+- **marketplace:** `domain` field added to all 12 `plugin.json` files and all `marketplace.json` entries
+- **marketplace:** Domain validation in `validate-marketplace.sh` — validates presence, allowed values, and cross-file consistency
+- **marketplace:** New launch profiles: `saas`, `ops`, `debug` in `claude-launch.sh`
+- **marketplace:** `data-seed` added to `data` launch profile (forward-looking)
+- **docs:** Domain metadata conventions in `CANONICAL-PATHS.md`
+- **docs:** Domain field requirements in `CLAUDE.md` "Adding a New Plugin" section
+
+### Changed
+
+- `validate-marketplace.sh` now requires `domain` in both `plugin.json` and `marketplace.json` (breaking change for validation pipeline)
+- `claude-launch.sh` profiles expanded: sprint, data, saas, ops, review, debug, full
+
+### Deprecated
+
+- `infra` launch profile — use `ops` instead (auto-redirects with warning)
+
 ### Fixed
 
 - Confirmed projman `metadata.json` exists with gitea MCP mapping
 - Synced `marketplace-full.json` and `marketplace-lean.json` to current version (were stale)
 - Added `metadata.json` validation to `validate-marketplace.sh` — rejects `mcp_servers` in `plugin.json`, verifies MCP server references
 - Updated `CANONICAL-PATHS.md` to current version
-
-### Changed
-
 - Deprecated `switch-profile.sh` in favor of `claude-launch.sh`
 
 ---

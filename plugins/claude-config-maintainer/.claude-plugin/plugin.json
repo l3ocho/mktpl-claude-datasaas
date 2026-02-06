@@ -18,5 +18,8 @@
     "settings",
     "permissions"
   ],
-  "commands": ["./commands/"]
+  "commands": [
+    "./commands/"
+  ],
+  "domain": "core"
 }

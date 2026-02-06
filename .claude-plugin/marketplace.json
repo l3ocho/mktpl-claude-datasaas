@@ -6,7 +6,7 @@
   },
   "metadata": {
     "description": "Project management plugins with Gitea and NetBox integrations",
-    "version": "7.1.0"
+    "version": "8.0.0"
   },
   "plugins": [
     {
@@ -20,10 +20,18 @@
       },
       "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/projman/README.md",
       "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
-      "hooks": ["./hooks/hooks.json"],
+      "hooks": [
+        "./hooks/hooks.json"
+      ],
       "category": "development",
-      "tags": ["sprint", "agile", "gitea", "project-management"],
-      "license": "MIT"
+      "tags": [
+        "sprint",
+        "agile",
+        "gitea",
+        "project-management"
+      ],
+      "license": "MIT",
+      "domain": "core"
     },
     {
       "name": "doc-guardian",
@@ -36,10 +44,17 @@
       },
       "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/doc-guardian/README.md",
       "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
-      "hooks": ["./hooks/hooks.json"],
+      "hooks": [
+        "./hooks/hooks.json"
+      ],
       "category": "productivity",
-      "tags": ["documentation", "drift-detection", "sync"],
-      "license": "MIT"
+      "tags": [
+        "documentation",
+        "drift-detection",
+        "sync"
+      ],
+      "license": "MIT",
+      "domain": "core"
     },
     {
       "name": "code-sentinel",
@@ -52,10 +67,17 @@
       },
       "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/code-sentinel/README.md",
       "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
-      "hooks": ["./hooks/hooks.json"],
+      "hooks": [
+        "./hooks/hooks.json"
+      ],
       "category": "security",
-      "tags": ["security-scan", "refactoring", "vulnerabilities"],
-      "license": "MIT"
+      "tags": [
+        "security-scan",
+        "refactoring",
+        "vulnerabilities"
+      ],
+      "license": "MIT",
+      "domain": "core"
     },
     {
       "name": "project-hygiene",
@@ -68,10 +90,17 @@
       },
       "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/project-hygiene/README.md",
       "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
-      "hooks": ["./hooks/hooks.json"],
+      "hooks": [
+        "./hooks/hooks.json"
+      ],
       "category": "productivity",
-      "tags": ["cleanup", "automation", "hygiene"],
-      "license": "MIT"
+      "tags": [
+        "cleanup",
+        "automation",
+        "hygiene"
+      ],
+      "license": "MIT",
+      "domain": "core"
     },
     {
       "name": "cmdb-assistant",
@@ -84,10 +113,20 @@
       },
       "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/cmdb-assistant/README.md",
       "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
-      "hooks": ["./hooks/hooks.json"],
+      "hooks": [
+        "./hooks/hooks.json"
+      ],
       "category": "infrastructure",
-      "tags": ["cmdb", "netbox", "dcim", "ipam", "data-quality", "validation"],
-      "license": "MIT"
+      "tags": [
+        "cmdb",
+        "netbox",
+        "dcim",
+        "ipam",
+        "data-quality",
+        "validation"
+      ],
+      "license": "MIT",
+      "domain": "ops"
     },
     {
       "name": "claude-config-maintainer",
@@ -100,10 +139,17 @@
       },
       "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/claude-config-maintainer/README.md",
       "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
-      "hooks": ["./hooks/hooks.json"],
+      "hooks": [
+        "./hooks/hooks.json"
+      ],
       "category": "development",
-      "tags": ["claude-md", "configuration", "optimization"],
-      "license": "MIT"
+      "tags": [
+        "claude-md",
+        "configuration",
+        "optimization"
+      ],
+      "license": "MIT",
+      "domain": "core"
     },
     {
       "name": "clarity-assist",
@@ -116,10 +162,18 @@
       },
       "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/clarity-assist/README.md",
       "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
-      "hooks": ["./hooks/hooks.json"],
+      "hooks": [
+        "./hooks/hooks.json"
+      ],
       "category": "productivity",
-      "tags": ["prompts", "requirements", "clarification", "nd-friendly"],
-      "license": "MIT"
+      "tags": [
+        "prompts",
+        "requirements",
+        "clarification",
+        "nd-friendly"
+      ],
+      "license": "MIT",
+      "domain": "core"
     },
     {
       "name": "git-flow",
@@ -132,10 +186,18 @@
       },
       "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/git-flow/README.md",
       "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
-      "hooks": ["./hooks/hooks.json"],
+      "hooks": [
+        "./hooks/hooks.json"
+      ],
       "category": "development",
-      "tags": ["git", "workflow", "commits", "branching"],
-      "license": "MIT"
+      "tags": [
+        "git",
+        "workflow",
+        "commits",
+        "branching"
+      ],
+      "license": "MIT",
+      "domain": "core"
     },
     {
       "name": "pr-review",
@@ -148,10 +210,18 @@
       },
       "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/pr-review/README.md",
       "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
-      "hooks": ["./hooks/hooks.json"],
+      "hooks": [
+        "./hooks/hooks.json"
+      ],
       "category": "development",
-      "tags": ["code-review", "pull-requests", "security", "quality"],
-      "license": "MIT"
+      "tags": [
+        "code-review",
+        "pull-requests",
+        "security",
+        "quality"
+      ],
+      "license": "MIT",
+      "domain": "core"
     },
     {
       "name": "data-platform",
@@ -164,10 +234,20 @@
       },
       "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/data-platform/README.md",
       "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
-      "hooks": ["./hooks/hooks.json"],
+      "hooks": [
+        "./hooks/hooks.json"
+      ],
       "category": "data",
-      "tags": ["pandas", "postgresql", "postgis", "dbt", "data-engineering", "etl"],
-      "license": "MIT"
+      "tags": [
+        "pandas",
+        "postgresql",
+        "postgis",
+        "dbt",
+        "data-engineering",
+        "etl"
+      ],
+      "license": "MIT",
+      "domain": "data"
     },
     {
       "name": "viz-platform",
@@ -180,10 +260,21 @@
       },
       "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/viz-platform/README.md",
       "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
-      "hooks": ["./hooks/hooks.json"],
+      "hooks": [
+        "./hooks/hooks.json"
+      ],
       "category": "visualization",
-      "tags": ["dash", "plotly", "mantine", "charts", "dashboards", "theming", "dmc"],
-      "license": "MIT"
+      "tags": [
+        "dash",
+        "plotly",
+        "mantine",
+        "charts",
+        "dashboards",
+        "theming",
+        "dmc"
+      ],
+      "license": "MIT",
+      "domain": "data"
     },
     {
       "name": "contract-validator",
@@ -196,10 +287,20 @@
       },
       "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/contract-validator/README.md",
       "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
-      "hooks": ["./hooks/hooks.json"],
+      "hooks": [
+        "./hooks/hooks.json"
+      ],
       "category": "development",
-      "tags": ["validation", "contracts", "compatibility", "agents", "interfaces", "cross-plugin"],
-      "license": "MIT"
+      "tags": [
+        "validation",
+        "contracts",
+        "compatibility",
+        "agents",
+        "interfaces",
+        "cross-plugin"
+      ],
+      "license": "MIT",
+      "domain": "core"
     }
   ]
 }

@@ -16,5 +16,8 @@
     "requirements",
     "methodology"
   ],
-  "commands": ["./commands/"]
+  "commands": [
+    "./commands/"
+  ],
+  "domain": "core"
 }
