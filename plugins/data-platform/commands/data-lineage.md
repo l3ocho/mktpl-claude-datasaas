@@ -1,4 +1,8 @@
-# /data-lineage - Data Lineage Visualization
+---
+name: data lineage
+---
+
+# /data lineage - Data Lineage Visualization
 
 ## Skills to Load
 - skills/lineage-analysis.md
@@ -12,7 +16,7 @@ Display header: `DATA-PLATFORM - Lineage`
 ## Usage
 
 ```
-/data-lineage <model_name> [--depth N]
+/data lineage <model_name> [--depth N]
 ```
 
 ## Workflow
@@ -25,8 +29,8 @@ Display header: `DATA-PLATFORM - Lineage`
 ## Examples
 
 ```
-/data-lineage dim_customers
-/data-lineage fct_orders --depth 3
+/data lineage dim_customers
+/data lineage fct_orders --depth 3
 ```
 
 ## Required MCP Tools

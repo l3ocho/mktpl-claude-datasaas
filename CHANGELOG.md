@@ -6,6 +6,55 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Added
+
+- **Phase 3: 8 new plugin scaffolds**
+  - `saas-api-platform` (domain: saas) — REST/GraphQL API scaffolding for FastAPI and Express. 6 commands, 2 agents, 5 skills
+  - `saas-db-migrate` (domain: saas) — Database migration management for Alembic, Prisma, and raw SQL. 6 commands, 2 agents, 5 skills
+  - `saas-react-platform` (domain: saas) — React frontend toolkit for Next.js and Vite projects. 6 commands, 2 agents, 6 skills
+  - `saas-test-pilot` (domain: saas) — Test automation for pytest, Jest, Vitest, and Playwright. 6 commands, 2 agents, 6 skills
+  - `data-seed` (domain: data) — Test data generation and database seeding. 5 commands, 2 agents, 5 skills
+  - `ops-release-manager` (domain: ops) — Release management with SemVer, changelogs, and tag automation. 6 commands, 2 agents, 5 skills
+  - `ops-deploy-pipeline` (domain: ops) — CI/CD deployment pipeline for Docker Compose and systemd. 6 commands, 2 agents, 6 skills
+  - `debug-mcp` (domain: debug) — MCP server debugging, inspection, and development toolkit. 5 commands, 1 agent, 5 skills
+- 8 design documents in `docs/designs/` for all new plugins
+
+---
+
+## [9.0.0] - 2026-02-06
+
+### BREAKING CHANGES
+
+#### Command Consolidation (v9.0.0)
+
+All commands renamed to `/<noun> <action>` sub-command pattern. Every command across all 12 plugins now follows this convention. See [MIGRATION-v9.md](./docs/MIGRATION-v9.md) for the complete old-to-new mapping.
+
+**Key changes:**
+- **projman:** `/sprint-plan` → `/sprint plan`, `/pm-setup` → `/projman setup`, `/pm-review` → `/sprint review`, `/pm-test` → `/sprint test`, `/labels-sync` → `/labels sync`
+- **git-flow:** 8→5 commands. `/git-commit` → `/gitflow commit`. Three commit variants (`-push`, `-merge`, `-sync`) consolidated into `--push`/`--merge`/`--sync` flags. `/branch-start` → `/gitflow branch-start`, `/git-status` → `/gitflow status`, `/git-config` → `/gitflow config`
+- **pr-review:** `/pr-review` → `/pr review`, `/project-init` → `/pr init`, `/project-sync` → `/pr sync`
+- **clarity-assist:** `/clarify` → `/clarity clarify`, `/quick-clarify` → `/clarity quick-clarify`
+- **doc-guardian:** `/doc-audit` → `/doc audit`, `/changelog-gen` → `/doc changelog-gen`, `/stale-docs` → `/doc stale-docs`
+- **code-sentinel:** `/security-scan` → `/sentinel scan`, `/refactor` → `/sentinel refactor`
+- **claude-config-maintainer:** `/config-analyze` → `/claude-config analyze` (all 8 commands prefixed)
+- **contract-validator:** `/validate-contracts` → `/cv validate`, `/check-agent` → `/cv check-agent`
+- **cmdb-assistant:** `/cmdb-search` → `/cmdb search`, `/change-audit` → `/cmdb change-audit`, `/ip-conflicts` → `/cmdb ip-conflicts`
+- **data-platform:** `/data-ingest` → `/data ingest`, `/dbt-test` → `/data dbt-test`, `/lineage-viz` → `/data lineage-viz`
+- **viz-platform:** `/accessibility-check` → `/viz accessibility-check`, `/design-gate` → `/viz design-gate`, `/design-review` → `/viz design-review`
+
+### Added
+
+- Dispatch files for all 12 plugins — each plugin now has a `<noun>.md` routing table listing all sub-commands
+- `name:` frontmatter field added to all command files for sub-command resolution
+- `docs/MIGRATION-v9.md` — Complete old-to-new command mapping for consumer migration
+- `docs/COMMANDS-CHEATSHEET.md` — Full rewrite with v9.0.0 command names
+
+### Changed
+
+- All documentation updated with new command names: CLAUDE.md, README.md, CONFIGURATION.md, UPDATING.md, agent-workflow.spec.md, netbox/README.md
+- All cross-plugin references updated (skills, agents, integration files)
+- `marketplace.json` version bumped to 9.0.0
+
 ---
 
 ## [8.1.0] - 2026-02-06

@@ -1,8 +1,9 @@
 ---
+name: viz chart-export
 description: Export a Plotly chart to PNG, SVG, or PDF format
 ---
 
-# Viz Chart Export
+# /viz chart-export
 
 ## Skills to Load
 - skills/mcp-tools-reference.md
@@ -21,7 +22,7 @@ Export a Plotly chart to static image formats.
 ## Usage
 
 ```
-/viz-chart-export {format}
+/viz chart-export {format}
 ```
 
 ## Arguments
@@ -38,5 +39,5 @@ Requires `kaleido` package: `pip install kaleido`
 
 ## Related Commands
 
-- `/viz-chart {type}` - Create a chart
-- `/viz-theme {name}` - Apply theme before export
+- `/viz chart {type}` - Create a chart
+- `/viz theme {name}` - Apply theme before export

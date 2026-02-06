@@ -40,11 +40,11 @@ Use conventional commits:
 
 | Command | Use Case |
 |---------|----------|
-| `/git-commit` | Create commit with smart message |
-| `/git-commit-push` | Commit and push |
-| `/git-commit-merge` | Commit and merge to base |
-| `/branch-start` | Start new branch |
-| `/git-status` | Enhanced status |
+| `/gitflow commit` | Smart commit with optional --push, --merge, --sync |
+| `/gitflow commit --push` | Commit and push to remote |
+| `/gitflow commit --merge` | Commit and merge into target branch |
+| `/gitflow branch-start` | Start new branch |
+| `/gitflow status` | Enhanced status |
 
 ### Protected Branches
 

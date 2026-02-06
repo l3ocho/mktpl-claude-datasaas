@@ -1,4 +1,10 @@
-# /pr-diff - Annotated PR Diff Viewer
+---
+name: pr diff
+description: Formatted diff with inline review comments
+agent: coordinator
+---
+
+# /pr diff - Annotated PR Diff Viewer
 
 ## Visual Output
 
@@ -13,7 +19,7 @@ Display header: `PR-REVIEW - Diff Viewer`
 ## Usage
 
 ```
-/pr-diff <pr-number> [--repo owner/repo] [--context <n>] [--no-comments] [--file <pattern>]
+/pr diff <pr-number> [--repo owner/repo] [--context <n>] [--no-comments] [--file <pattern>]
 ```
 
 ## Workflow
@@ -43,6 +49,6 @@ Use annotated diff format from `skills/output-formats.md`
 
 | Command | Purpose |
 |---------|---------|
-| `/pr-summary` | Quick overview |
-| `/pr-review` | Full review |
-| `/pr-findings` | Filter findings |
+| `/pr summary` | Quick overview |
+| `/pr review` | Full review |
+| `/pr findings` | Filter findings |

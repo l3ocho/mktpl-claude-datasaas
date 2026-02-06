@@ -93,7 +93,7 @@ You are a contract validation specialist. Your role is to perform comprehensive 
 
 ## Example Interaction
 
-**User**: /validate-contracts ~/claude-plugins-work
+**User**: /cv validate ~/claude-plugins-work
 
 **Agent**:
 1. Discovers 12 plugins in marketplace

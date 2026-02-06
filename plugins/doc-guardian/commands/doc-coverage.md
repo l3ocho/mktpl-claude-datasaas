@@ -1,8 +1,9 @@
 ---
+name: doc coverage
 description: Calculate documentation coverage percentage for functions and classes
 ---
 
-# Documentation Coverage
+# /doc coverage
 
 Analyze codebase to calculate documentation coverage metrics.
 

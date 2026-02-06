@@ -13,7 +13,7 @@ Defines the Request for Comments (RFC) system for capturing, reviewing, and trac
 
 - **Planner agent**: When detecting approved RFCs for sprint planning
 - **Commands**: `/rfc create`, `/rfc list`, `/rfc review`, `/rfc approve`, `/rfc reject`
-- **Integration**: With `/sprint-plan` to select approved RFCs for implementation
+- **Integration**: With `/sprint plan` to select approved RFCs for implementation
 
 ---
 
@@ -78,12 +78,12 @@ Defines the Request for Comments (RFC) system for capturing, reviewing, and trac
 - **Action**: Update status, add Decision section with rejection reason
 
 ### Approved → Implementing
-- **Who can transition**: Planner agent via `/sprint-plan`
+- **Who can transition**: Planner agent via `/sprint plan`
 - **Requirements**: RFC selected for sprint
 - **Action**: Update status, add Sprint reference, update RFC-Index
 
 ### Implementing → Implemented
-- **Who can transition**: Orchestrator agent via `/sprint-close`
+- **Who can transition**: Orchestrator agent via `/sprint close`
 - **Requirements**: Sprint completed successfully
 - **Action**: Update status, add completion date, link to lessons learned
 
@@ -303,6 +303,6 @@ When RFC status changes:
 | `/rfc review` | Transitions Draft -> Review |
 | `/rfc approve` | Transitions Review -> Approved |
 | `/rfc reject` | Transitions Review/Draft -> Rejected |
-| `/sprint-plan` | Detects Approved RFCs, transitions to Implementing |
-| `/sprint-close` | Transitions Implementing -> Implemented |
+| `/sprint plan` | Detects Approved RFCs, transitions to Implementing |
+| `/sprint close` | Transitions Implementing -> Implemented |
 | `clarity-assist` | Suggests `/rfc create` for feature ideas |

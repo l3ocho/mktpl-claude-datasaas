@@ -60,7 +60,7 @@ High impact, low risk opportunities:
    - Description of the change
    - Impact: High/Medium/Low (specific metric improvement)
    - Risk: Low/Medium/High (why)
-   - Run: `/refactor <target> --pattern=<pattern>`
+   - Run: `/sentinel refactor <target> --pattern=<pattern>`
 ```
 
 ### Optional Section

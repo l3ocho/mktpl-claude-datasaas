@@ -16,7 +16,7 @@ Load these skills:
 dcim_list_devices name=<hostname>
 ```
 
-If not found, suggest `/cmdb-register` first.
+If not found, suggest `/cmdb register` first.
 
 If found:
 - Store device ID and current field values
@@ -167,7 +167,7 @@ virt_update_vm id=<id> status="offline"
 extras_create_journal_entry
   assigned_object_type="dcim.device"
   assigned_object_id=<device_id>
-  comments="Device synced via /cmdb-sync command\n\nChanges applied:\n- <list>"
+  comments="Device synced via /cmdb sync command\n\nChanges applied:\n- <list>"
 ```
 
 ## Sync Modes
@@ -185,7 +185,7 @@ extras_create_journal_entry
 
 | Error | Action |
 |-------|--------|
-| Device not found | Suggest `/cmdb-register` |
+| Device not found | Suggest `/cmdb register` |
 | Permission denied | Note which failed, continue others |
 | Cluster not found | Offer to create or skip container sync |
 | API errors | Log error, continue with remaining |

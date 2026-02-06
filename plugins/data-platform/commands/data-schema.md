@@ -1,4 +1,8 @@
-# /data-schema - Schema Exploration
+---
+name: data schema
+---
+
+# /data schema - Schema Exploration
 
 ## Skills to Load
 - skills/mcp-tools-reference.md
@@ -11,7 +15,7 @@ Display header: `DATA-PLATFORM - Schema Explorer`
 ## Usage
 
 ```
-/data-schema [table_name | data_ref]
+/data schema [table_name | data_ref]
 ```
 
 ## Workflow
@@ -30,9 +34,9 @@ Display header: `DATA-PLATFORM - Schema Explorer`
 ## Examples
 
 ```
-/data-schema                    # List all tables and DataFrames
-/data-schema customers          # Show table schema
-/data-schema sales_data         # Show DataFrame schema
+/data schema                    # List all tables and DataFrames
+/data schema customers          # Show table schema
+/data schema sales_data         # Show DataFrame schema
 ```
 
 ## Required MCP Tools

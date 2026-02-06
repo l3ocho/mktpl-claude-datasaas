@@ -12,7 +12,7 @@ Defines naming conventions, dependency headers, and structure for all wiki pages
 
 - **Planner agent**: When creating wiki pages during planning
 - **Orchestrator agent**: When updating status at sprint close
-- **Commands**: `/sprint-plan`, `/sprint-close`, `/project initiation`, `/project plan`, `/project status`, `/project close`, `/adr create`
+- **Commands**: `/sprint plan`, `/sprint close`, `/project initiation`, `/project plan`, `/project status`, `/project close`, `/adr create`
 
 ---
 

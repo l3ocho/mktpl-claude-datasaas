@@ -9,7 +9,7 @@ Centralized configuration documentation for all plugins and MCP servers in the L
 **After installing the marketplace and plugins via Claude Code:**
 
 ```
-/pm-setup
+/projman setup
 ```
 
 The interactive wizard auto-detects what's needed and handles everything except manually adding your API tokens.
@@ -25,8 +25,8 @@ The interactive wizard auto-detects what's needed and handles everything except 
 └─────────────────────────────────────────────────────────────────────────────┘
                                     │
                                     ▼
-                             /pm-setup --full
-                         (or /pm-setup auto-detects)
+                             /projman setup --full
+                         (or /projman setup auto-detects)
                                     │
      ┌──────────────────────────────┼──────────────────────────────┐
      ▼                              ▼                              ▼
@@ -79,7 +79,7 @@ The interactive wizard auto-detects what's needed and handles everything except 
                                     │
                     ┌───────────────┴───────────────┐
                     ▼                               ▼
-            /pm-setup --quick                  /pm-setup
+            /projman setup --quick                  /projman setup
              (explicit mode)               (auto-detects mode)
                     │                               │
                     │                    ┌──────────┴──────────┐
@@ -109,7 +109,7 @@ The interactive wizard auto-detects what's needed and handles everything except 
 
 ## What Runs Automatically vs User Interaction
 
-### `/pm-setup --full` - Full Setup
+### `/projman setup --full` - Full Setup
 
 | Phase | Type | What Happens |
 |-------|------|--------------|
@@ -121,7 +121,7 @@ The interactive wizard auto-detects what's needed and handles everything except 
 | **6. Project Config** | Automated | Creates `.env` file, checks `.gitignore` |
 | **7. Validation** | Automated | Tests API connectivity, shows summary |
 
-### `/pm-setup --quick` - Quick Project Setup
+### `/projman setup --quick` - Quick Project Setup
 
 | Phase | Type | What Happens |
 |-------|------|--------------|
@@ -136,10 +136,10 @@ The interactive wizard auto-detects what's needed and handles everything except 
 
 | Mode | When to Use | What It Does |
 |------|-------------|--------------|
-| `/pm-setup` | Any time | Auto-detects: runs full, quick, or sync as needed |
-| `/pm-setup --full` | First time on a machine | Full setup: MCP server + system config + project config |
-| `/pm-setup --quick` | Starting a new project | Quick setup: project config only (assumes system is ready) |
-| `/pm-setup --sync` | After repo move/rename | Updates .env to match current git remote |
+| `/projman setup` | Any time | Auto-detects: runs full, quick, or sync as needed |
+| `/projman setup --full` | First time on a machine | Full setup: MCP server + system config + project config |
+| `/projman setup --quick` | Starting a new project | Quick setup: project config only (assumes system is ready) |
+| `/projman setup --sync` | After repo move/rename | Updates .env to match current git remote |
 
 **Auto-detection logic:**
 1. No system config → **full** mode
@@ -148,9 +148,9 @@ The interactive wizard auto-detects what's needed and handles everything except 
 4. Both exist, match → already configured, offer to reconfigure
 
 **Typical workflow:**
-1. Install plugin → run `/pm-setup` (auto-runs full mode)
-2. Start new project → run `/pm-setup` (auto-runs quick mode)
-3. Repository moved? → run `/pm-setup` (auto-runs sync mode)
+1. Install plugin → run `/projman setup` (auto-runs full mode)
+2. Start new project → run `/projman setup` (auto-runs quick mode)
+3. Repository moved? → run `/projman setup` (auto-runs sync mode)
 
 ---
 
@@ -182,7 +182,7 @@ This marketplace uses a **hybrid configuration** approach:
 
 **Benefits:**
 - Single token per service (update once, use everywhere)
-- Easy multi-project setup (just run `/pm-setup` in each project)
+- Easy multi-project setup (just run `/projman setup` in each project)
 - Security (tokens never committed to git, never typed into AI chat)
 - Project isolation (each project can override defaults)
 
@@ -190,7 +190,7 @@ This marketplace uses a **hybrid configuration** approach:
 
 ## Prerequisites
 
-Before running `/pm-setup`:
+Before running `/projman setup`:
 
 1. **Python 3.10+** installed
    ```bash
@@ -213,7 +213,7 @@ Before running `/pm-setup`:
 Run the setup wizard in Claude Code:
 
 ```
-/pm-setup
+/projman setup
 ```
 
 The wizard will guide you through each step interactively and auto-detect the appropriate mode.
@@ -387,18 +387,18 @@ PR_REVIEW_AUTO_SUBMIT=false
 
 | Plugin | System Config | Project Config | Setup Command |
 |--------|---------------|----------------|---------------|
-| **projman** | gitea.env | .env (GITEA_REPO=owner/repo) | `/pm-setup` |
-| **pr-review** | gitea.env | .env (GITEA_REPO=owner/repo) | `/pr-setup` |
+| **projman** | gitea.env | .env (GITEA_REPO=owner/repo) | `/projman setup` |
+| **pr-review** | gitea.env | .env (GITEA_REPO=owner/repo) | `/pr setup` |
 | **git-flow** | git-flow.env (optional) | .env (optional) | None needed |
 | **clarity-assist** | None | None | None needed |
-| **cmdb-assistant** | netbox.env | None | `/cmdb-setup` |
-| **data-platform** | postgres.env | .env (optional) | `/data-setup` |
-| **viz-platform** | None | .env (optional DMC_VERSION) | `/viz-setup` |
+| **cmdb-assistant** | netbox.env | None | `/cmdb setup` |
+| **data-platform** | postgres.env | .env (optional) | `/data setup` |
+| **viz-platform** | None | .env (optional DMC_VERSION) | `/viz setup` |
 | **doc-guardian** | None | None | None needed |
 | **code-sentinel** | None | None | None needed |
 | **project-hygiene** | None | None | None needed |
 | **claude-config-maintainer** | None | None | None needed |
-| **contract-validator** | None | None | `/cv-setup` |
+| **contract-validator** | None | None | `/cv setup` |
 
 ---
 
@@ -408,7 +408,7 @@ Once system-level config is set up, adding new projects is simple:
 
 ```
 cd ~/projects/new-project
-/pm-setup
+/projman setup
 ```
 
 The command auto-detects that system config exists and runs quick project setup.
@@ -631,7 +631,7 @@ For agents with 8+ skills, use **phase-based loading** in the agent body text. T
 
 ### API Validation
 
-When running `/pm-setup`, the command:
+When running `/projman setup`, the command:
 
 1. **Detects** organization and repository from git remote URL
 2. **Validates** via Gitea API: `GET /api/v1/repos/{org}/{repo}`
@@ -646,7 +646,7 @@ When you start a Claude Code session, a hook automatically:
 
 1. Reads `GITEA_REPO` (in `owner/repo` format) from `.env`
 2. Compares with current `git remote get-url origin`
-3. **Warns** if mismatch detected: "Repository location mismatch. Run `/pm-setup --sync` to update."
+3. **Warns** if mismatch detected: "Repository location mismatch. Run `/projman setup --sync` to update."
 
 This helps when you:
 - Move a repository to a different organization
@@ -668,7 +668,7 @@ curl -H "Authorization: token $GITEA_API_TOKEN" "$GITEA_API_URL/user"
 
 In Claude Code, after restarting your session:
 ```
-/labels-sync
+/labels sync
 ```
 
 If this works, your setup is complete.
@@ -741,7 +741,7 @@ cat .env
 
 3. **Never type tokens into AI chat**
    - Always edit config files directly in your editor
-   - The `/pm-setup` wizard respects this
+   - The `/projman setup` wizard respects this
 
 4. **Rotate tokens periodically**
    - Every 6-12 months

@@ -36,6 +36,6 @@ Page name: `Roadmap: {Name}` (e.g., `Roadmap: Driving School SaaS`)
 ## Integration
 
 - `/project plan` creates the initial roadmap from epic decomposition + dependency analysis
-- `/sprint-plan` references the roadmap to determine sprint scope
-- `/sprint-close` updates sprint status in roadmap
+- `/sprint plan` references the roadmap to determine sprint scope
+- `/sprint close` updates sprint status in roadmap
 - `/project status` shows roadmap progress

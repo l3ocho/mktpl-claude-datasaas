@@ -6,12 +6,12 @@ This project uses the **projman** plugin for sprint planning and project managem
 
 | Command | Description |
 |---------|-------------|
-| `/sprint-plan` | Start sprint planning with AI-guided architecture analysis |
-| `/sprint-start` | Begin sprint execution with relevant lessons learned |
-| `/sprint-status` | Check current sprint progress and identify blockers |
-| `/sprint-close` | Complete sprint and capture lessons learned to Gitea Wiki |
-| `/labels-sync` | Synchronize label taxonomy from Gitea |
-| `/pm-setup` | Run initial setup for projman plugin |
+| `/sprint plan` | Start sprint planning with AI-guided architecture analysis |
+| `/sprint start` | Begin sprint execution with relevant lessons learned |
+| `/sprint status` | Check current sprint progress and identify blockers |
+| `/sprint close` | Complete sprint and capture lessons learned to Gitea Wiki |
+| `/labels sync` | Synchronize label taxonomy from Gitea |
+| `/projman setup` | Run initial setup for projman plugin |
 | `/rfc create` | Create new RFC from conversation or clarified spec |
 | `/rfc list` | List all RFCs grouped by status |
 | `/rfc review` | Submit Draft RFC for review |
@@ -56,8 +56,8 @@ The following Gitea MCP tools are available for issue and project management:
 
 ### Usage Guidelines
 
-- **Always use `/sprint-plan`** when starting new development work
-- **Check `/sprint-status`** regularly during active sprints
-- **Run `/sprint-close`** at the end of each sprint to capture lessons learned
+- **Always use `/sprint plan`** when starting new development work
+- **Check `/sprint status`** regularly during active sprints
+- **Run `/sprint close`** at the end of each sprint to capture lessons learned
 - Use `suggest_labels` when creating issues to ensure proper categorization
 - Search lessons learned with `search_lessons` before implementing features to avoid repeated mistakes

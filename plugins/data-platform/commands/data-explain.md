@@ -1,4 +1,8 @@
-# /data-explain - dbt Model Explanation
+---
+name: data explain
+---
+
+# /data explain - dbt Model Explanation
 
 ## Skills to Load
 - skills/dbt-workflow.md
@@ -13,7 +17,7 @@ Display header: `DATA-PLATFORM - Model Explanation`
 ## Usage
 
 ```
-/data-explain <model_name>
+/data explain <model_name>
 ```
 
 ## Workflow
@@ -26,8 +30,8 @@ Display header: `DATA-PLATFORM - Model Explanation`
 ## Examples
 
 ```
-/data-explain dim_customers
-/data-explain fct_orders
+/data explain dim_customers
+/data explain fct_orders
 ```
 
 ## Required MCP Tools

@@ -11,8 +11,8 @@ Defines how to calculate documentation coverage and thresholds.
 
 ## When to Use
 
-- **doc-coverage**: Full coverage analysis
-- **doc-audit**: Completeness checks
+- **doc coverage**: Full coverage analysis
+- **doc audit**: Completeness checks
 
 ---
 

@@ -104,7 +104,7 @@ gitGraph
    ```
    Or use git-flow command:
    ```
-   /branch-start add user authentication
+   /gitflow branch-start add user authentication
    ```
 
 2. **Implement changes**
@@ -125,7 +125,7 @@ gitGraph
 5. **Cleanup**
    - Delete feature branch after merge
    ```
-   /branch-cleanup
+   /gitflow branch-cleanup
    ```
 
 ### Release Promotion

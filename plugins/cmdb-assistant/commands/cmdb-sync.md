@@ -1,8 +1,9 @@
 ---
+name: cmdb sync
 description: Synchronize current machine state with existing NetBox record
 ---
 
-# CMDB Machine Sync
+# /cmdb sync
 
 Update an existing NetBox device record with the current machine state.
 
@@ -16,7 +17,7 @@ Update an existing NetBox device record with the current machine state.
 ## Usage
 
 ```
-/cmdb-sync [--full] [--dry-run]
+/cmdb sync [--full] [--dry-run]
 ```
 
 **Options:**
@@ -48,7 +49,7 @@ Execute `skills/sync-workflow.md` which covers:
 
 | Error | Action |
 |-------|--------|
-| Device not found | Suggest `/cmdb-register` |
+| Device not found | Suggest `/cmdb register` |
 | Permission denied | Note which failed, continue others |
 | Cluster not found | Offer to create or skip container sync |
 

@@ -215,7 +215,7 @@ Blocking Issues (N):
 2. <location> - <violation description>
    Fix: <actionable fix>
 
-Run /data-review for full audit report.
+Run /data review for full audit report.
 ```
 
 ### Review Mode (Detailed)
@@ -293,7 +293,7 @@ Do not flag violations in:
 When called as a domain gate:
 1. Orchestrator detects `Domain/Data` label on issue
 2. Orchestrator identifies changed files
-3. Orchestrator invokes `/data-gate <path>`
+3. Orchestrator invokes `/data gate <path>`
 4. Agent runs gate mode scan
 5. Returns PASS/FAIL to orchestrator
 6. Orchestrator decides whether to complete issue
@@ -301,7 +301,7 @@ When called as a domain gate:
 ### Standalone Usage
 
 For manual audits:
-1. User runs `/data-review <path>`
+1. User runs `/data review <path>`
 2. Agent runs full review mode scan
 3. Returns detailed report with all severity levels
 4. User decides on actions

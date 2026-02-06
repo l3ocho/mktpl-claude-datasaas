@@ -27,7 +27,7 @@
 
 | ID | Label | Type | Lane | Sequence |
 |----|-------|------|------|----------|
-| p1-start | /sprint-plan | rounded-rect | user-lane | 1 |
+| p1-start | /sprint plan | rounded-rect | user-lane | 1 |
 | p1-activate | Planner Activates | rectangle | planner-lane | 2 |
 | p1-search-lessons | Search Lessons Learned | rectangle | planner-lane | 3 |
 | p1-gitea-wiki-query | Query Past Lessons (Wiki) | rectangle | gitea-lane | 4 |
@@ -61,7 +61,7 @@
 
 | ID | Label | Type | Lane | Sequence |
 |----|-------|------|------|----------|
-| p2-start | /sprint-start | rounded-rect | user-lane | 11 |
+| p2-start | /sprint start | rounded-rect | user-lane | 11 |
 | p2-orch-activate | Orchestrator Activates | rectangle | orchestrator-lane | 12 |
 | p2-fetch-issues | Fetch Sprint Issues | rectangle | orchestrator-lane | 13 |
 | p2-gitea-list | List Open Issues | rectangle | gitea-lane | 14 |
@@ -128,7 +128,7 @@
 
 | ID | Label | Type | Lane | Sequence |
 |----|-------|------|------|----------|
-| p3-start | /sprint-close | rounded-rect | user-lane | 31 |
+| p3-start | /sprint close | rounded-rect | user-lane | 31 |
 | p3-orch-activate | Orchestrator Activates | rectangle | orchestrator-lane | 32 |
 | p3-review | Review Sprint | rectangle | orchestrator-lane | 33 |
 | p3-gitea-status | Get Final Status | rectangle | gitea-lane | 34 |

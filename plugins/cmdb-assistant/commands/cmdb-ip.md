@@ -1,4 +1,8 @@
-# CMDB IP Management
+---
+name: cmdb ip
+---
+
+# /cmdb ip
 
 Manage IP addresses and prefixes in NetBox.
 
@@ -11,7 +15,7 @@ Manage IP addresses and prefixes in NetBox.
 ## Usage
 
 ```
-/cmdb-ip <action> [options]
+/cmdb ip <action> [options]
 ```
 
 ## Instructions
@@ -42,10 +46,10 @@ Execute operations from `skills/ip-management.md`.
 
 ## Examples
 
-- `/cmdb-ip prefixes`
-- `/cmdb-ip available in 10.0.1.0/24`
-- `/cmdb-ip allocate from 10.0.1.0/24`
-- `/cmdb-ip assign 10.0.1.50/24 to web-server-01 eth0`
+- `/cmdb ip prefixes`
+- `/cmdb ip available in 10.0.1.0/24`
+- `/cmdb ip allocate from 10.0.1.0/24`
+- `/cmdb ip assign 10.0.1.50/24 to web-server-01 eth0`
 
 ## User Request
 

@@ -58,8 +58,8 @@ Our design philosophy centers on three principles:
 ### 3. Customizable Verbosity
 
 **Detail Levels**
-- `/clarify` - Full methodology for complex requests (more thorough, more questions)
-- `/quick-clarify` - Rapid mode for simple disambiguation (fewer questions, faster)
+- `/clarity clarify` - Full methodology for complex requests (more thorough, more questions)
+- `/clarity quick-clarify` - Rapid mode for simple disambiguation (fewer questions, faster)
 
 **User Control**
 - Users can always say "that's enough detail" to end questioning early
@@ -68,7 +68,7 @@ Our design philosophy centers on three principles:
 
 ### 4. Vagueness Detection
 
-The `UserPromptSubmit` hook automatically detects prompts that might benefit from clarification and gently suggests using `/clarify`.
+The `UserPromptSubmit` hook automatically detects prompts that might benefit from clarification and gently suggests using `/clarity clarify`.
 
 **Detection Signals**
 - Short prompts (< 10 words) without specific technical terms
@@ -156,10 +156,10 @@ This triggers vagueness detection because:
 - No specific technical context
 - No measurable outcome
 
-### After: Clarified with /clarify
+### After: Clarified with /clarity clarify
 
 ```
-User: /clarify Make the app faster
+User: /clarity clarify Make the app faster
 
 Claude: Let me help clarify what kind of performance improvements you're looking for.
 
@@ -235,7 +235,7 @@ Optimize initial page load time to under 2 seconds by addressing bundle size and
 For simpler requests that just need minor disambiguation:
 
 ```
-User: /quick-clarify Add a delete button to the user list
+User: /clarity quick-clarify Add a delete button to the user list
 
 Claude: I'll add a delete button to each row in the user list.
 
@@ -286,14 +286,14 @@ export CLARITY_ASSIST_VAGUENESS_THRESHOLD=0.8
 
 ### If You're Feeling Overwhelmed
 
-- Use `/quick-clarify` instead of `/clarify` for faster interactions
+- Use `/clarity quick-clarify` instead of `/clarity clarify` for faster interactions
 - Say "let's focus on just one thing" to narrow scope
 - Ask to "pause and summarize" at any point
 - It's OK to say "I don't know" - the plugin will offer concrete alternatives
 
 ### If You Have Executive Function Challenges
 
-- Start with `/clarify` even for tasks you think are simple - it helps with planning
+- Start with `/clarity clarify` even for tasks you think are simple - it helps with planning
 - The structured specification can serve as a checklist
 - Use the scope boundaries to prevent scope creep
 

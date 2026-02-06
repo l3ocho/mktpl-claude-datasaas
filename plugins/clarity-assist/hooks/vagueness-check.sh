@@ -240,7 +240,7 @@ if (( $(echo "$SCORE >= $THRESHOLD" | bc -l) )); then
 
     # Gentle, non-blocking suggestion
     echo "$PREFIX Your prompt could benefit from more clarity."
-    echo "$PREFIX Consider running /clarify to refine your request."
+    echo "$PREFIX Consider running /clarity clarify to refine your request."
     echo "$PREFIX (Vagueness score: ${SCORE_PCT}% - this is a suggestion, not a block)"
 
     # Additional RFC suggestion if feature request detected

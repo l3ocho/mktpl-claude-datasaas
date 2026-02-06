@@ -12,7 +12,7 @@ Defines how to analyze dependencies, plan parallel execution, and prevent file c
 ## When to Use
 
 - **Orchestrator agent**: When starting sprint execution
-- **Commands**: `/sprint-start`, `/sprint-diagram`
+- **Commands**: `/sprint start`, `/sprint-diagram`
 
 ---
 

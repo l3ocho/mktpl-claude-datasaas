@@ -13,7 +13,7 @@ Defines the approval workflow that gates sprint execution.
 
 - **Planner agent**: After creating issues, request approval
 - **Orchestrator agent**: Before execution, verify approval exists
-- **Commands**: `/sprint-plan`, `/sprint-start`
+- **Commands**: `/sprint plan`, `/sprint start`
 
 ---
 
@@ -89,11 +89,11 @@ get_milestone(repo="org/repo", milestone_id=17)
 Sprint 17 milestone does not contain an approval record.
 Execution cannot proceed without approval.
 
-Required: Run /sprint-plan first to:
+Required: Run /sprint plan first to:
 1. Review the sprint scope
 2. Get explicit approval for execution
 
-To override (emergency only): /sprint-start --force
+To override (emergency only): /sprint start --force
 This bypasses the approval gate and logs a warning to the milestone.
 ```
 
@@ -125,7 +125,7 @@ Task #48 wants to create: feat/48-api-docs
 → STOP and ask user to approve expanded scope
 ```
 
-**Operations outside scope should trigger re-approval via `/sprint-plan`.**
+**Operations outside scope should trigger re-approval via `/sprint plan`.**
 
 ---
 

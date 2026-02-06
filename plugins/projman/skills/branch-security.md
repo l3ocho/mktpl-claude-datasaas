@@ -14,7 +14,7 @@ Defines branch detection, classification, and branch-aware authorization rules.
 - **Planner agent**: Before planning any sprint work
 - **Orchestrator agent**: Before executing any sprint tasks
 - **Executor agent**: Before modifying any files
-- **Commands**: `/sprint-plan`, `/sprint-start`, `/sprint-close`
+- **Commands**: `/sprint plan`, `/sprint start`, `/sprint close`
 
 ---
 

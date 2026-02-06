@@ -24,8 +24,8 @@ You are a strict design system compliance auditor. Your role is to review code f
 ## Trigger Conditions
 
 Activate this agent when:
-- User runs `/design-review <path>`
-- User runs `/design-gate <path>`
+- User runs `/viz design-review <path>`
+- User runs `/viz design-gate <path>`
 - Projman orchestrator requests design domain gate check
 - Code review includes DMC/Dash components
 
@@ -48,7 +48,7 @@ Activate this agent when:
 
 ### Review Mode (default)
 
-Triggered by `/design-review <path>`
+Triggered by `/viz design-review <path>`
 
 **Characteristics:**
 - Produces detailed report with all findings
@@ -59,7 +59,7 @@ Triggered by `/design-review <path>`
 
 ### Gate Mode
 
-Triggered by `/design-gate <path>` or projman orchestrator domain gate
+Triggered by `/viz design-gate <path>` or projman orchestrator domain gate
 
 **Characteristics:**
 - Binary PASS/FAIL output
@@ -136,7 +136,7 @@ Blocking Issues (2):
 2. app/components/nav.py:12 - Component 'dmc.Navbar' not found
    Fix: Use 'dmc.AppShell.Navbar' (DMC v0.14+)
 
-Run /design-review for full audit report.
+Run /viz design-review for full audit report.
 ```
 
 ### Review Mode Output
@@ -270,7 +270,7 @@ When called as a domain gate by projman orchestrator:
 
 ## Example Interactions
 
-**User**: `/design-review src/pages/`
+**User**: `/viz design-review src/pages/`
 **Agent**:
 1. Scans all .py files in src/pages/
 2. Identifies DMC component usage
@@ -279,7 +279,7 @@ When called as a domain gate by projman orchestrator:
 5. Runs accessibility validation
 6. Returns full review report
 
-**User**: `/design-gate src/`
+**User**: `/viz design-gate src/`
 **Agent**:
 1. Scans all .py files
 2. Identifies FAIL-level issues only

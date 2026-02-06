@@ -25,7 +25,7 @@ Use commands from `system-discovery` skill to gather:
    ```
    dcim_list_devices name=<hostname>
    ```
-   If exists, suggest `/cmdb-sync` instead.
+   If exists, suggest `/cmdb sync` instead.
 
 2. **Verify/Create site:**
    ```
@@ -131,7 +131,7 @@ Add journal entry:
 extras_create_journal_entry
   assigned_object_type="dcim.device"
   assigned_object_id=<device_id>
-  comments="Device registered via /cmdb-register command\n\nDiscovered:\n- X network interfaces\n- Y IP addresses\n- Z Docker containers"
+  comments="Device registered via /cmdb register command\n\nDiscovered:\n- X network interfaces\n- Y IP addresses\n- Z Docker containers"
 ```
 
 ## Summary Report Template
@@ -162,8 +162,8 @@ extras_create_journal_entry
 | media_jellyfin | Media Server | 2.0 | 2048MB | Active |
 
 ### Next Steps
-- Run `/cmdb-sync` periodically to keep data current
-- Run `/cmdb-audit` to check data quality
+- Run `/cmdb sync` periodically to keep data current
+- Run `/cmdb audit` to check data quality
 - Add tags for classification
 ```
 
@@ -171,7 +171,7 @@ extras_create_journal_entry
 
 | Error | Action |
 |-------|--------|
-| Device already exists | Suggest `/cmdb-sync` or ask to proceed |
+| Device already exists | Suggest `/cmdb sync` or ask to proceed |
 | Site not found | List available sites, offer to create new |
 | Docker not available | Skip container registration, note in summary |
 | Permission denied | Note which operations failed, suggest fixes |

@@ -12,10 +12,13 @@ This project uses the pr-review plugin for automated code review.
 
 | Command | Use Case |
 |---------|----------|
-| `/pr-review <pr#>` | Full multi-agent review |
-| `/pr-summary <pr#>` | Quick change summary |
-| `/pr-findings <pr#>` | Filter review findings |
-| `/pr-diff <pr#>` | View diff with inline comments |
+| `/pr review <pr#>` | Full multi-agent review |
+| `/pr summary <pr#>` | Quick change summary |
+| `/pr findings <pr#>` | Filter review findings |
+| `/pr diff <pr#>` | View diff with inline comments |
+| `/pr init` | Quick project setup |
+| `/pr sync` | Sync config with git remote |
+| `/pr setup` | Full setup wizard |
 
 ### Review Categories
 

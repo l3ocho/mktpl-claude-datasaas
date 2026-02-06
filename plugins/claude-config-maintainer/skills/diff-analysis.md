@@ -6,7 +6,7 @@ This skill defines how to analyze and present CLAUDE.md differences.
 
 | Mode | Command | Description |
 |------|---------|-------------|
-| Working vs HEAD | `/config-diff` | Uncommitted changes |
+| Working vs HEAD | `/claude-config diff` | Uncommitted changes |
 | Working vs Commit | `--commit=REF` | Changes since specific point |
 | Commit to Commit | `--from=X --to=Y` | Historical comparison |
 | Branch Comparison | `--branch=NAME` | Cross-branch differences |

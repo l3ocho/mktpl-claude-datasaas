@@ -1,0 +1,26 @@
+{
+  "name": "saas-test-pilot",
+  "version": "1.0.0",
+  "description": "Test automation toolkit for unit, integration, and end-to-end testing",
+  "author": {
+    "name": "Leo Miranda",
+    "email": "leobmiranda@gmail.com"
+  },
+  "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/saas-test-pilot/README.md",
+  "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
+  "license": "MIT",
+  "keywords": [
+    "testing",
+    "unit-tests",
+    "integration-tests",
+    "e2e",
+    "coverage",
+    "fixtures",
+    "mocks",
+    "test-generation"
+  ],
+  "commands": [
+    "./commands/"
+  ],
+  "domain": "saas"
+}

@@ -11,8 +11,8 @@ Defines how to measure documentation staleness relative to code changes.
 
 ## When to Use
 
-- **stale-docs**: Commit-based staleness detection
-- **doc-audit**: Age-based analysis
+- **doc stale-docs**: Commit-based staleness detection
+- **doc audit**: Age-based analysis
 
 ---
 
