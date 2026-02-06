@@ -1,4 +1,4 @@
-# Leo Claude Marketplace - v8.1.0
+# Leo Claude Marketplace - v9.0.0
 
 A collection of Claude Code plugins for project management, infrastructure automation, and development workflows.
 
@@ -16,7 +16,7 @@ Use the launcher script to load only the plugins you need, reducing token overhe
 | `review` | pr-review, code-sentinel | Lightweight code review |
 | `data` | data-platform, viz-platform | Data engineering and visualization |
 | `infra` | cmdb-assistant | Infrastructure/CMDB management |
-| `full` | All 12 plugins via marketplace.json | When you need everything |
+| `full` | All 20 plugins via marketplace.json | When you need everything |
 
 **Examples:**
 ```bash
@@ -45,7 +45,7 @@ AI-guided sprint planning with full Gitea integration. Transforms a proven 15-sp
 - Branch-aware security (development/staging/production)
 - Pre-sprint-close code quality review and test verification
 
-**Commands:** `/sprint-plan`, `/sprint-start`, `/sprint-status`, `/sprint-close`, `/labels-sync`, `/pm-setup`, `/pm-review`, `/pm-test`, `/pm-debug`, `/suggest-version`, `/proposal-status`, `/rfc`
+**Commands:** `/sprint plan`, `/sprint start`, `/sprint status`, `/sprint close`, `/labels sync`, `/projman setup`, `/sprint review`, `/sprint test`, `/projman debug`, `/projman suggest-version`, `/projman proposal-status`, `/rfc`
 
 #### [git-flow](./plugins/git-flow)
 **Git Workflow Automation**
@@ -58,7 +58,7 @@ Smart git operations with intelligent commit messages and branch management.
 - Merge and cleanup automation
 - Protected branch awareness
 
-**Commands:** `/git-commit`, `/git-commit-push`, `/git-commit-merge`, `/git-commit-sync`, `/branch-start`, `/branch-cleanup`, `/git-status`, `/git-config`
+**Commands:** `/gitflow commit` (with `--push`, `--merge`, `--sync` flags), `/gitflow branch-start`, `/gitflow branch-cleanup`, `/gitflow status`, `/gitflow config`
 
 #### [pr-review](./plugins/pr-review)
 **Multi-Agent PR Review**
@@ -70,14 +70,14 @@ Comprehensive pull request review using specialized agents.
 - Actionable feedback with suggested fixes
 - Gitea integration for automated review submission
 
-**Commands:** `/pr-review`, `/pr-summary`, `/pr-findings`, `/pr-diff`, `/pr-setup`, `/project-init`, `/project-sync`
+**Commands:** `/pr review`, `/pr summary`, `/pr findings`, `/pr diff`, `/pr setup`, `/pr init`, `/pr sync`
 
 #### [claude-config-maintainer](./plugins/claude-config-maintainer)
 **CLAUDE.md and Settings Optimization**
 
 Analyze, optimize, and create CLAUDE.md configuration files. Audit and optimize settings.local.json permissions.
 
-**Commands:** `/analyze`, `/optimize`, `/init`, `/config-diff`, `/config-lint`, `/config-audit-settings`, `/config-optimize-settings`, `/config-permissions-map`
+**Commands:** `/claude-config analyze`, `/claude-config optimize`, `/claude-config init`, `/claude-config diff`, `/claude-config lint`, `/claude-config audit-settings`, `/claude-config optimize-settings`, `/claude-config permissions-map`
 
 #### [contract-validator](./plugins/contract-validator)
 **Cross-Plugin Compatibility Validation**
@@ -90,7 +90,7 @@ Validate plugin marketplaces for command conflicts, tool overlaps, and broken ag
 - Data flow validation for agent sequences
 - Markdown or JSON reports with actionable suggestions
 
-**Commands:** `/validate-contracts`, `/check-agent`, `/list-interfaces`, `/dependency-graph`, `/cv-setup`
+**Commands:** `/cv validate`, `/cv check-agent`, `/cv list-interfaces`, `/cv dependency-graph`, `/cv setup`
 
 ### Productivity
 
@@ -103,14 +103,14 @@ Transform vague requests into clear specifications using structured methodology.
 - ND-friendly question patterns (option-based, chunked)
 - Conflict detection and escalation protocols
 
-**Commands:** `/clarify`, `/quick-clarify`
+**Commands:** `/clarity clarify`, `/clarity quick-clarify`
 
 #### [doc-guardian](./plugins/doc-guardian)
 **Documentation Lifecycle Management**
 
 Automatic documentation drift detection and synchronization.
 
-**Commands:** `/doc-audit`, `/doc-sync`, `/changelog-gen`, `/doc-coverage`, `/stale-docs`
+**Commands:** `/doc audit`, `/doc sync`, `/doc changelog-gen`, `/doc coverage`, `/doc stale-docs`
 
 #### [project-hygiene](./plugins/project-hygiene)
 **Post-Task Cleanup Automation**
@@ -124,7 +124,7 @@ Hook-based cleanup that runs after Claude completes work.
 
 Security vulnerability detection and code refactoring tools.
 
-**Commands:** `/security-scan`, `/refactor`, `/refactor-dry`
+**Commands:** `/sentinel scan`, `/sentinel refactor`, `/sentinel refactor-dry`
 
 ### Infrastructure
 
@@ -133,7 +133,7 @@ Security vulnerability detection and code refactoring tools.
 
 Full CRUD operations for network infrastructure management directly from Claude Code.
 
-**Commands:** `/cmdb-setup`, `/cmdb-search`, `/cmdb-device`, `/cmdb-ip`, `/cmdb-site`, `/cmdb-audit`, `/cmdb-register`, `/cmdb-sync`, `/cmdb-topology`, `/change-audit`, `/ip-conflicts`
+**Commands:** `/cmdb setup`, `/cmdb search`, `/cmdb device`, `/cmdb ip`, `/cmdb site`, `/cmdb audit`, `/cmdb register`, `/cmdb sync`, `/cmdb topology`, `/cmdb change-audit`, `/cmdb ip-conflicts`
 
 ### Data Engineering
 
@@ -148,7 +148,7 @@ Comprehensive data engineering toolkit with persistent DataFrame storage.
 - 100k row limit with chunking support
 - Auto-detection of dbt projects
 
-**Commands:** `/data-ingest`, `/data-profile`, `/data-schema`, `/data-explain`, `/data-lineage`, `/lineage-viz`, `/data-run`, `/dbt-test`, `/data-quality`, `/data-review`, `/data-gate`, `/data-setup`
+**Commands:** `/data ingest`, `/data profile`, `/data schema`, `/data explain`, `/data lineage`, `/data lineage-viz`, `/data run`, `/data dbt-test`, `/data quality`, `/data review`, `/data gate`, `/data setup`
 
 ### Visualization
 
@@ -164,7 +164,109 @@ Visualization toolkit with version-locked component validation and design token 
 - 5 Page tools for multi-page app structure
 - Dual theme storage: user-level and project-level
 
-**Commands:** `/viz-chart`, `/viz-chart-export`, `/viz-dashboard`, `/viz-theme`, `/viz-theme-new`, `/viz-theme-css`, `/viz-component`, `/accessibility-check`, `/viz-breakpoints`, `/design-review`, `/design-gate`, `/viz-setup`
+**Commands:** `/viz chart`, `/viz chart-export`, `/viz dashboard`, `/viz theme`, `/viz theme-new`, `/viz theme-css`, `/viz component`, `/viz accessibility-check`, `/viz breakpoints`, `/viz design-review`, `/viz design-gate`, `/viz setup`
+
+#### [data-seed](./plugins/data-seed)
+**Test Data Generation and Database Seeding**
+
+Relationship-aware test data generation with reusable seed profiles.
+
+- Schema inference from existing databases
+- Faker-based data generation with locale support
+- Foreign key relationship resolution
+- Reusable seed profiles for consistent test environments
+
+**Commands:** `/seed setup`, `/seed generate`, `/seed profile`, `/seed validate`, `/seed apply`
+
+### SaaS Development
+
+#### [saas-api-platform](./plugins/saas-api-platform)
+**REST and GraphQL API Scaffolding**
+
+API development toolkit for FastAPI and Express projects with OpenAPI integration.
+
+- Framework-aware scaffolding (FastAPI, Express)
+- OpenAPI spec generation and validation
+- Middleware catalog with authentication, CORS, rate limiting
+- Route pattern enforcement and test generation
+
+**Commands:** `/api setup`, `/api scaffold`, `/api validate`, `/api docs`, `/api middleware`, `/api test-routes`
+
+#### [saas-db-migrate](./plugins/saas-db-migrate)
+**Database Migration Management**
+
+Migration toolkit for Alembic, Prisma, and raw SQL with safety validation.
+
+- ORM/tool auto-detection
+- Migration safety analysis (data loss, locks, rollback)
+- Execution planning with rollback strategies
+- Migration history tracking
+
+**Commands:** `/db-migrate setup`, `/db-migrate generate`, `/db-migrate validate`, `/db-migrate plan`, `/db-migrate history`, `/db-migrate rollback`
+
+#### [saas-react-platform](./plugins/saas-react-platform)
+**React Frontend Development Toolkit**
+
+Component scaffolding, routing, and state management for Next.js and Vite projects.
+
+- Framework detection (Next.js App Router/Pages, Vite, CRA, Remix)
+- TypeScript-first component generation with co-located tests
+- State management pattern selection (Context, Zustand, Redux Toolkit)
+- Anti-pattern detection and component tree analysis
+
+**Commands:** `/react setup`, `/react component`, `/react route`, `/react state`, `/react hook`, `/react lint`
+
+#### [saas-test-pilot](./plugins/saas-test-pilot)
+**Test Automation Toolkit**
+
+Test generation and coverage analysis for pytest, Jest, Vitest, and Playwright.
+
+- Framework auto-detection and configuration
+- Test case generation from code analysis
+- Coverage gap detection with risk prioritization
+- E2E test scenario generation from user stories
+
+**Commands:** `/test setup`, `/test generate`, `/test coverage`, `/test fixtures`, `/test e2e`, `/test run`
+
+### Operations
+
+#### [ops-release-manager](./plugins/ops-release-manager)
+**Release Management Automation**
+
+Semantic versioning, changelog generation, and tag management.
+
+- Version location auto-detection across manifests
+- Conventional commit-based bump suggestions
+- Keep a Changelog format automation
+- Release branch/tag creation and rollback
+
+**Commands:** `/release setup`, `/release prepare`, `/release validate`, `/release tag`, `/release rollback`, `/release status`
+
+#### [ops-deploy-pipeline](./plugins/ops-deploy-pipeline)
+**Deployment Pipeline Management**
+
+CI/CD for Docker Compose and systemd-based services on self-hosted infrastructure.
+
+- Docker Compose configuration generation
+- Caddy reverse proxy patterns
+- Environment-specific config management
+- Pre-deployment health checks and rollback planning
+
+**Commands:** `/deploy setup`, `/deploy generate`, `/deploy validate`, `/deploy env`, `/deploy check`, `/deploy rollback`
+
+### Debugging
+
+#### [debug-mcp](./plugins/debug-mcp)
+**MCP Server Debugging Toolkit**
+
+Diagnostic tools for MCP server health, testing, and development.
+
+- MCP server health status dashboard
+- Individual tool call testing
+- Server log analysis with error pattern recognition
+- MCP server scaffold generation
+
+**Commands:** `/debug-mcp status`, `/debug-mcp test`, `/debug-mcp logs`, `/debug-mcp inspect`, `/debug-mcp scaffold`
 
 ## Domain Advisory Pattern
 
@@ -172,14 +274,14 @@ The marketplace supports cross-plugin domain advisory integration:
 
 - **Domain Detection**: projman automatically detects when issues involve specialized domains (frontend/viz, data engineering)
 - **Acceptance Criteria**: Domain-specific acceptance criteria are added to issues during planning
-- **Execution Gates**: Domain validation gates (`/design-gate`, `/data-gate`) run before issue completion
+- **Execution Gates**: Domain validation gates (`/viz design-gate`, `/data gate`) run before issue completion
 - **Extensible**: New domains can be added by creating advisory agents and gate commands
 
 **Current Domains:**
 | Domain | Plugin | Gate Command |
 |--------|--------|--------------|
-| Visualization | viz-platform | `/design-gate` |
-| Data | data-platform | `/data-gate` |
+| Visualization | viz-platform | `/viz design-gate` |
+| Data | data-platform | `/data gate` |
 
 ## MCP Servers
 
@@ -280,7 +382,7 @@ Add to `.claude/settings.json` in your target project:
 After installing plugins, run the setup wizard:
 
 ```
-/pm-setup
+/projman setup
 ```
 
 The wizard handles everything:
@@ -292,12 +394,12 @@ The wizard handles everything:
 
 **For new projects** (when system is already configured):
 ```
-/project-init
+/pr init
 ```
 
 **After moving a repository:**
 ```
-/project-sync
+/pr sync
 ```
 
 See [docs/CONFIGURATION.md](./docs/CONFIGURATION.md) for manual setup and advanced options.
@@ -332,17 +434,17 @@ After installing plugins, the `/plugin` command may show `(no content)` - this i
 
 | Plugin | Test Command |
 |--------|--------------|
-| git-flow | `/git-flow:git-status` |
+| git-flow | `/git-flow:gitflow-status` |
 | projman | `/projman:sprint-status` |
 | pr-review | `/pr-review:pr-summary` |
-| clarity-assist | `/clarity-assist:clarify` |
+| clarity-assist | `/clarity-assist:clarity-clarify` |
 | doc-guardian | `/doc-guardian:doc-audit` |
-| code-sentinel | `/code-sentinel:security-scan` |
-| claude-config-maintainer | `/claude-config-maintainer:analyze` |
+| code-sentinel | `/code-sentinel:sentinel-scan` |
+| claude-config-maintainer | `/claude-config-maintainer:claude-config-analyze` |
 | cmdb-assistant | `/cmdb-assistant:cmdb-search` |
 | data-platform | `/data-platform:data-ingest` |
 | viz-platform | `/viz-platform:viz-chart` |
-| contract-validator | `/contract-validator:validate-contracts` |
+| contract-validator | `/contract-validator:cv-validate` |
 
 ## Repository Structure
 

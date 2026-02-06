@@ -1,0 +1,26 @@
+{
+  "name": "saas-react-platform",
+  "version": "1.0.0",
+  "description": "React frontend development toolkit with component scaffolding, routing, and state management",
+  "author": {
+    "name": "Leo Miranda",
+    "email": "leobmiranda@gmail.com"
+  },
+  "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/saas-react-platform/README.md",
+  "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
+  "license": "MIT",
+  "keywords": [
+    "react",
+    "nextjs",
+    "vite",
+    "typescript",
+    "components",
+    "routing",
+    "state-management",
+    "frontend"
+  ],
+  "commands": [
+    "./commands/"
+  ],
+  "domain": "saas"
+}

@@ -11,7 +11,7 @@ Defines how to synchronize documentation with code changes.
 
 ## When to Use
 
-- **doc-sync**: Apply pending documentation updates
+- **doc sync**: Apply pending documentation updates
 - **PostToolUse hook**: Queue drift for later sync
 
 ---

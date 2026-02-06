@@ -11,8 +11,8 @@ Defines common documentation file structures and their contents.
 
 ## When to Use
 
-- **doc-audit**: Understanding what to check in each doc type
-- **doc-coverage**: Identifying documentation locations
+- **doc audit**: Understanding what to check in each doc type
+- **doc coverage**: Identifying documentation locations
 
 ---
 

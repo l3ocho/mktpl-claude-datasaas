@@ -12,7 +12,7 @@ Validates that the repository belongs to an organization and has the required la
 ## When to Use
 
 - **Planner agent**: At start of sprint planning
-- **Commands**: `/sprint-plan`, `/labels-sync`, `/project-init`
+- **Commands**: `/sprint plan`, `/labels sync`, `/pr init`
 
 ---
 

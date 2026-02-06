@@ -1,6 +1,6 @@
 # Setup Workflows
 
-Shared workflows for the `/pm-setup` command modes.
+Shared workflows for the `/projman setup` command modes.
 
 ## Mode Detection Logic
 

@@ -1,4 +1,10 @@
-# /pr-review - Full Multi-Agent Review
+---
+name: pr review
+description: Full multi-agent PR review with confidence scoring
+agent: coordinator
+---
+
+# /pr review - Full Multi-Agent Review
 
 ## Visual Output
 
@@ -14,7 +20,7 @@ Display header: `PR-REVIEW - Full Review`
 ## Usage
 
 ```
-/pr-review <pr-number> [--repo owner/repo]
+/pr review <pr-number> [--repo owner/repo]
 ```
 
 ## Workflow

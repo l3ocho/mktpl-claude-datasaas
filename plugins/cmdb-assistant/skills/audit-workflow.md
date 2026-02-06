@@ -147,8 +147,8 @@ dcim_update_device id=X platform=Y
 
 ### Next Steps
 
-- Run `/cmdb-register` to properly register new machines
-- Use `/cmdb-sync` to update existing registrations
+- Run `/cmdb register` to properly register new machines
+- Use `/cmdb sync` to update existing registrations
 - Consider bulk updates via NetBox web UI for >10 items
 ```
 

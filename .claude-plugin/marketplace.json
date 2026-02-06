@@ -6,7 +6,7 @@
   },
   "metadata": {
     "description": "Project management plugins with Gitea and NetBox integrations",
-    "version": "8.1.0"
+    "version": "9.0.0"
   },
   "plugins": [
     {
@@ -277,6 +277,186 @@
       ],
       "license": "MIT",
       "domain": "core"
+    },
+    {
+      "name": "saas-api-platform",
+      "version": "0.1.0",
+      "description": "REST and GraphQL API scaffolding for FastAPI and Express projects",
+      "source": "./plugins/saas-api-platform",
+      "author": {
+        "name": "Leo Miranda",
+        "email": "leobmiranda@gmail.com"
+      },
+      "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/saas-api-platform/README.md",
+      "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
+      "category": "development",
+      "tags": [
+        "api",
+        "rest",
+        "graphql",
+        "fastapi",
+        "express",
+        "openapi"
+      ],
+      "license": "MIT",
+      "domain": "saas"
+    },
+    {
+      "name": "saas-db-migrate",
+      "version": "0.1.0",
+      "description": "Database migration management for Alembic, Prisma, and raw SQL",
+      "source": "./plugins/saas-db-migrate",
+      "author": {
+        "name": "Leo Miranda",
+        "email": "leobmiranda@gmail.com"
+      },
+      "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/saas-db-migrate/README.md",
+      "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
+      "category": "development",
+      "tags": [
+        "database",
+        "migrations",
+        "alembic",
+        "prisma",
+        "sql",
+        "schema"
+      ],
+      "license": "MIT",
+      "domain": "saas"
+    },
+    {
+      "name": "saas-react-platform",
+      "version": "0.1.0",
+      "description": "React frontend development toolkit for Next.js and Vite projects",
+      "source": "./plugins/saas-react-platform",
+      "author": {
+        "name": "Leo Miranda",
+        "email": "leobmiranda@gmail.com"
+      },
+      "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/saas-react-platform/README.md",
+      "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
+      "category": "development",
+      "tags": [
+        "react",
+        "nextjs",
+        "vite",
+        "typescript",
+        "frontend",
+        "components"
+      ],
+      "license": "MIT",
+      "domain": "saas"
+    },
+    {
+      "name": "saas-test-pilot",
+      "version": "0.1.0",
+      "description": "Test automation toolkit for pytest, Jest, Vitest, and Playwright",
+      "source": "./plugins/saas-test-pilot",
+      "author": {
+        "name": "Leo Miranda",
+        "email": "leobmiranda@gmail.com"
+      },
+      "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/saas-test-pilot/README.md",
+      "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
+      "category": "development",
+      "tags": [
+        "testing",
+        "pytest",
+        "jest",
+        "vitest",
+        "playwright",
+        "coverage"
+      ],
+      "license": "MIT",
+      "domain": "saas"
+    },
+    {
+      "name": "data-seed",
+      "version": "0.1.0",
+      "description": "Test data generation and database seeding with relationship-aware profiles",
+      "source": "./plugins/data-seed",
+      "author": {
+        "name": "Leo Miranda",
+        "email": "leobmiranda@gmail.com"
+      },
+      "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/data-seed/README.md",
+      "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
+      "category": "data",
+      "tags": [
+        "seed-data",
+        "test-data",
+        "faker",
+        "fixtures",
+        "database"
+      ],
+      "license": "MIT",
+      "domain": "data"
+    },
+    {
+      "name": "ops-release-manager",
+      "version": "0.1.0",
+      "description": "Release management with semantic versioning, changelogs, and tag automation",
+      "source": "./plugins/ops-release-manager",
+      "author": {
+        "name": "Leo Miranda",
+        "email": "leobmiranda@gmail.com"
+      },
+      "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/ops-release-manager/README.md",
+      "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
+      "category": "development",
+      "tags": [
+        "release",
+        "semver",
+        "changelog",
+        "versioning",
+        "tags"
+      ],
+      "license": "MIT",
+      "domain": "ops"
+    },
+    {
+      "name": "ops-deploy-pipeline",
+      "version": "0.1.0",
+      "description": "CI/CD deployment pipeline management for Docker Compose and systemd services",
+      "source": "./plugins/ops-deploy-pipeline",
+      "author": {
+        "name": "Leo Miranda",
+        "email": "leobmiranda@gmail.com"
+      },
+      "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/ops-deploy-pipeline/README.md",
+      "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
+      "category": "infrastructure",
+      "tags": [
+        "deploy",
+        "docker-compose",
+        "systemd",
+        "caddy",
+        "cicd"
+      ],
+      "license": "MIT",
+      "domain": "ops"
+    },
+    {
+      "name": "debug-mcp",
+      "version": "0.1.0",
+      "description": "MCP server debugging, inspection, and development toolkit",
+      "source": "./plugins/debug-mcp",
+      "author": {
+        "name": "Leo Miranda",
+        "email": "leobmiranda@gmail.com"
+      },
+      "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/debug-mcp/README.md",
+      "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
+      "category": "development",
+      "tags": [
+        "mcp",
+        "debugging",
+        "diagnostics",
+        "server",
+        "development"
+      ],
+      "license": "MIT",
+      "domain": "debug"
     }
   ]
 }

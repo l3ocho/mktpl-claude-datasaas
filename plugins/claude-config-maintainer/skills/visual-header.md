@@ -12,56 +12,56 @@ This skill defines the standard visual header for claude-config-maintainer comma
 
 ## Command-Specific Headers
 
-### /config-analyze
+### /claude-config analyze
 ```
 +-----------------------------------------------------------------+
 |  CONFIG-MAINTAINER - CLAUDE.md Analysis                          |
 +-----------------------------------------------------------------+
 ```
 
-### /config-optimize
+### /claude-config optimize
 ```
 +-----------------------------------------------------------------+
 |  CONFIG-MAINTAINER - CLAUDE.md Optimization                      |
 +-----------------------------------------------------------------+
 ```
 
-### /config-lint
+### /claude-config lint
 ```
 +-----------------------------------------------------------------+
 |  CONFIG-MAINTAINER - CLAUDE.md Lint                              |
 +-----------------------------------------------------------------+
 ```
 
-### /config-diff
+### /claude-config diff
 ```
 +-----------------------------------------------------------------+
 |  CONFIG-MAINTAINER - CLAUDE.md Diff                              |
 +-----------------------------------------------------------------+
 ```
 
-### /config-init
+### /claude-config init
 ```
 +-----------------------------------------------------------------+
 |  CONFIG-MAINTAINER - CLAUDE.md Initialization                    |
 +-----------------------------------------------------------------+
 ```
 
-### /config-audit-settings
+### /claude-config audit-settings
 ```
 +-----------------------------------------------------------------+
 |  CONFIG-MAINTAINER - Settings Audit                              |
 +-----------------------------------------------------------------+
 ```
 
-### /config-optimize-settings
+### /claude-config optimize-settings
 ```
 +-----------------------------------------------------------------+
 |  CONFIG-MAINTAINER - Settings Optimization                       |
 +-----------------------------------------------------------------+
 ```
 
-### /config-permissions-map
+### /claude-config permissions-map
 ```
 +-----------------------------------------------------------------+
 |  CONFIG-MAINTAINER - Permissions Map                             |

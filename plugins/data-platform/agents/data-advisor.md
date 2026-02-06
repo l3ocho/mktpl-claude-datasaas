@@ -23,8 +23,8 @@ You are a strict data integrity auditor. Your role is to review code for proper 
 ## Trigger Conditions
 
 Activate this agent when:
-- User runs `/data-review <path>`
-- User runs `/data-gate <path>`
+- User runs `/data review <path>`
+- User runs `/data gate <path>`
 - Projman orchestrator requests data domain gate check
 - Code review includes database operations, dbt models, or data pipelines
 
@@ -78,7 +78,7 @@ Activate this agent when:
 
 ### Review Mode (default)
 
-Triggered by `/data-review <path>`
+Triggered by `/data review <path>`
 
 **Characteristics:**
 - Produces detailed report with all findings
@@ -89,7 +89,7 @@ Triggered by `/data-review <path>`
 
 ### Gate Mode
 
-Triggered by `/data-gate <path>` or projman orchestrator domain gate
+Triggered by `/data gate <path>` or projman orchestrator domain gate
 
 **Characteristics:**
 - Binary PASS/FAIL output
@@ -203,7 +203,7 @@ Blocking Issues (2):
 2. portfolio_app/toronto/loaders/census.py:67 - References table 'census_raw' which does not exist
    Fix: Table was renamed to 'census_demographics' in migration 003.
 
-Run /data-review for full audit report.
+Run /data review for full audit report.
 ```
 
 ### Review Mode Output
@@ -292,7 +292,7 @@ When called as a domain gate by projman orchestrator:
 
 ## Example Interactions
 
-**User**: `/data-review dbt/models/staging/`
+**User**: `/data review dbt/models/staging/`
 **Agent**:
 1. Scans all .sql files in staging/
 2. Runs dbt_parse to validate project
@@ -301,7 +301,7 @@ When called as a domain gate by projman orchestrator:
 5. Cross-references test coverage
 6. Returns detailed report
 
-**User**: `/data-gate portfolio_app/toronto/`
+**User**: `/data gate portfolio_app/toronto/`
 **Agent**:
 1. Scans for Python files with pg_query/pg_execute
 2. Checks if referenced tables exist

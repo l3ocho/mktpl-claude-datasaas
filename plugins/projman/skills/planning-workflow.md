@@ -11,8 +11,8 @@ Defines the complete 11-step planning workflow from validation through approval.
 
 ## When to Use
 
-- **Planner agent**: When executing `/sprint-plan`
-- **Commands**: `/sprint-plan`
+- **Planner agent**: When executing `/sprint plan`
+- **Commands**: `/sprint plan`
 
 ---
 

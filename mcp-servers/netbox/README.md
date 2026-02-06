@@ -98,10 +98,10 @@ If unset, all modules are enabled (backward compatible).
 
 | Module | Tool Count | Description | cmdb-assistant Commands |
 |--------|------------|-------------|------------------------|
-| `dcim` | ~60 | Sites, devices, racks, interfaces, cables | `/cmdb-device`, `/cmdb-site`, `/cmdb-search`, `/cmdb-topology` |
-| `ipam` | ~40 | IP addresses, prefixes, VLANs, VRFs | `/cmdb-ip`, `/ip-conflicts`, `/cmdb-search` |
-| `virtualization` | ~20 | Clusters, VMs, VM interfaces | `/cmdb-search`, `/cmdb-audit`, `/cmdb-register` |
-| `extras` | ~12 | Tags, journal entries, audit log | `/change-audit`, `/cmdb-register` |
+| `dcim` | ~60 | Sites, devices, racks, interfaces, cables | `/cmdb device`, `/cmdb site`, `/cmdb search`, `/cmdb topology` |
+| `ipam` | ~40 | IP addresses, prefixes, VLANs, VRFs | `/cmdb ip`, `/cmdb ip-conflicts`, `/cmdb search` |
+| `virtualization` | ~20 | Clusters, VMs, VM interfaces | `/cmdb search`, `/cmdb audit`, `/cmdb register` |
+| `extras` | ~12 | Tags, journal entries, audit log | `/cmdb change-audit`, `/cmdb register` |
 | `circuits` | ~15 | Providers, circuits, terminations | — |
 | `tenancy` | ~12 | Tenants, contacts | — |
 | `vpn` | ~15 | Tunnels, IKE/IPSec policies, L2VPN | — |

@@ -102,7 +102,7 @@ Also check for hook-based plugins (project-hygiene uses `PostToolUse` hooks).
 
 For each detected plugin, search CLAUDE.md for:
 - Plugin name mention (e.g., "projman", "cmdb-assistant")
-- Command references (e.g., `/sprint-plan`, `/cmdb-search`)
+- Command references (e.g., `/sprint plan`, `/cmdb search`)
 - MCP tool mentions (e.g., `list_issues`, `dcim_list_devices`)
 
 **Step 3: Load Integration Snippets**

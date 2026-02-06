@@ -10,9 +10,9 @@ Provides directional token consumption estimates at sprint workflow boundaries. 
 
 ## When to Display
 
-- End of `/sprint-plan` (after all issues created)
-- End of `/sprint-close` (after lessons captured)
-- On explicit request: `/sprint-status --tokens`
+- End of `/sprint plan` (after all issues created)
+- End of `/sprint close` (after lessons captured)
+- On explicit request: `/sprint status --tokens`
 
 ---
 
@@ -36,10 +36,10 @@ These are loaded once at session start. Update this table if MCP servers change.
 
 | Phase | Typical Skills Loaded | Est. Tokens |
 |-------|----------------------|-------------|
-| Planning (`/sprint-plan`) | mcp-tools-reference, label-taxonomy, sprint-planning, architecture-analysis, rfc-workflow | ~3,000–5,000 |
-| Execution (`/sprint-start`) | mcp-tools-reference, branch-security, plan-then-batch | ~2,000–3,000 |
-| Review (`/pm-review`) | mcp-tools-reference, review-checklist | ~1,500–2,500 |
-| Close (`/sprint-close`) | mcp-tools-reference, sprint-lifecycle, lessons-learned | ~2,000–3,000 |
+| Planning (`/sprint plan`) | mcp-tools-reference, label-taxonomy, sprint-planning, architecture-analysis, rfc-workflow | ~3,000–5,000 |
+| Execution (`/sprint start`) | mcp-tools-reference, branch-security, plan-then-batch | ~2,000–3,000 |
+| Review (`/sprint review`) | mcp-tools-reference, review-checklist | ~1,500–2,500 |
+| Close (`/sprint close`) | mcp-tools-reference, sprint-lifecycle, lessons-learned | ~2,000–3,000 |
 
 To get actual numbers: count characters in each skill file loaded during the phase, divide by 4.
 

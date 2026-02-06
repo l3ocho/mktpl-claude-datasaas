@@ -55,4 +55,4 @@ Page name: `Risk-Register: {Name}` (e.g., `Risk-Register: Driving School SaaS`)
 
 - `/project plan` creates initial risk register
 - `/project status` summarizes open risk count and top-3 by score
-- `/sprint-close` updates risk statuses in lessons learned
+- `/sprint close` updates risk statuses in lessons learned

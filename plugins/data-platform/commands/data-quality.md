@@ -1,4 +1,8 @@
-# /data-quality - Data Quality Assessment
+---
+name: data quality
+---
+
+# /data quality - Data Quality Assessment
 
 ## Skills to Load
 - skills/data-profiling.md
@@ -12,7 +16,7 @@ Display header: `DATA-PLATFORM - Data Quality`
 ## Usage
 
 ```
-/data-quality <data_ref> [--strict]
+/data quality <data_ref> [--strict]
 ```
 
 ## Workflow
@@ -33,8 +37,8 @@ Execute `skills/data-profiling.md` quality assessment:
 ## Examples
 
 ```
-/data-quality sales_data
-/data-quality df_customers --strict
+/data quality sales_data
+/data quality df_customers --strict
 ```
 
 ## Quality Thresholds

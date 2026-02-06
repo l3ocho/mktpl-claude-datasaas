@@ -44,7 +44,7 @@ Update `Project: {Name}` wiki page:
 - Change status: `Initiating` → `Planning`
 
 ### Step 6: Present and Confirm
-Show all artifacts to user. Approval transitions to `Executing` (ready for first `/sprint-plan`).
+Show all artifacts to user. Approval transitions to `Executing` (ready for first `/sprint plan`).
 
 ## Output
 

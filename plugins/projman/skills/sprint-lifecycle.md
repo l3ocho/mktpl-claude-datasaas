@@ -20,17 +20,17 @@ Defines the valid sprint lifecycle states and transitions, enforced via labels o
 
 ```
 idle -> Sprint/Planning -> Sprint/Executing -> Sprint/Reviewing -> idle
-         (sprint-plan)    (sprint-start)       (pm-review)    (sprint-close)
+         (sprint plan)    (sprint start)       (sprint review)    (sprint close)
 ```
 
 ## State Labels
 
 | Label | Set By | Meaning |
 |-------|--------|---------|
-| *(no Sprint/* label)* | `/sprint-close` or initial state | Idle - no active sprint phase |
-| `Sprint/Planning` | `/sprint-plan` | Planning in progress |
-| `Sprint/Executing` | `/sprint-start` | Execution in progress |
-| `Sprint/Reviewing` | `/pm-review` | Code review in progress |
+| *(no Sprint/* label)* | `/sprint close` or initial state | Idle - no active sprint phase |
+| `Sprint/Planning` | `/sprint plan` | Planning in progress |
+| `Sprint/Executing` | `/sprint start` | Execution in progress |
+| `Sprint/Reviewing` | `/sprint review` | Code review in progress |
 
 **Rule:** Only ONE `Sprint/*` label may exist on a milestone at a time. Setting a new one removes the previous one.
 
@@ -40,11 +40,11 @@ idle -> Sprint/Planning -> Sprint/Executing -> Sprint/Reviewing -> idle
 
 | Command | Expected State | Sets State | On Wrong State |
 |---------|---------------|------------|----------------|
-| `/sprint-plan` | idle (no Sprint/* label) | `Sprint/Planning` | Warn: "Sprint is in [state]. Run `/sprint-close` first or use `--force` to re-plan." Allow with `--force`. |
-| `/sprint-start` | `Sprint/Planning` | `Sprint/Executing` | Warn: "Expected Sprint/Planning state but found [state]. Run `/sprint-plan` first or use `--force`." Allow with `--force`. |
-| `/pm-review` | `Sprint/Executing` | `Sprint/Reviewing` | Warn: "Expected Sprint/Executing state but found [state]." Allow with `--force`. |
-| `/sprint-close` | `Sprint/Reviewing` | Remove all Sprint/* labels (idle) | Warn: "Expected Sprint/Reviewing state but found [state]. Run `/pm-review` first or use `--force`." Allow with `--force`. |
-| `/sprint-status` | Any | No change (read-only) | Display current state in output. |
+| `/sprint plan` | idle (no Sprint/* label) | `Sprint/Planning` | Warn: "Sprint is in [state]. Run `/sprint close` first or use `--force` to re-plan." Allow with `--force`. |
+| `/sprint start` | `Sprint/Planning` | `Sprint/Executing` | Warn: "Expected Sprint/Planning state but found [state]. Run `/sprint plan` first or use `--force`." Allow with `--force`. |
+| `/sprint review` | `Sprint/Executing` | `Sprint/Reviewing` | Warn: "Expected Sprint/Executing state but found [state]." Allow with `--force`. |
+| `/sprint close` | `Sprint/Reviewing` | Remove all Sprint/* labels (idle) | Warn: "Expected Sprint/Reviewing state but found [state]. Run `/sprint review` first or use `--force`." Allow with `--force`. |
+| `/sprint status` | Any | No change (read-only) | Display current state in output. |
 
 ---
 
@@ -86,7 +86,7 @@ After command completes successfully:
 
 ## Displaying State
 
-In `/sprint-status` output, include:
+In `/sprint status` output, include:
 
 ```
 Sprint Phase: Executing (since 2026-02-01)

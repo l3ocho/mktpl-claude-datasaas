@@ -1,4 +1,5 @@
 ---
+name: labels sync
 description: Fetch and validate label taxonomy from Gitea, create missing required labels
 ---
 
@@ -16,7 +17,7 @@ Fetch current label taxonomy from Gitea, validate required labels exist, and cre
 
 ## Invocation
 
-Run `/labels-sync` when setting up the plugin or after taxonomy updates.
+Run `/labels sync` when setting up the plugin or after taxonomy updates.
 
 ## Workflow
 

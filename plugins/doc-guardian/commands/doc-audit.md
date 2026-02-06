@@ -1,8 +1,9 @@
 ---
+name: doc audit
 description: Full documentation audit - scans entire project for doc drift without making changes
 ---
 
-# Documentation Audit
+# /doc audit
 
 Perform a comprehensive documentation drift analysis.
 

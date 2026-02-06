@@ -11,8 +11,8 @@ Defines how to detect documentation drift through cross-reference analysis.
 
 ## When to Use
 
-- **doc-audit**: Full cross-reference analysis
-- **stale-docs**: Commit-based staleness detection
+- **doc audit**: Full cross-reference analysis
+- **doc stale-docs**: Commit-based staleness detection
 - **SessionStart hook**: Real-time drift detection
 
 ---

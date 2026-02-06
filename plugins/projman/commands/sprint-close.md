@@ -1,4 +1,5 @@
 ---
+name: sprint close
 description: Complete sprint and capture lessons learned to Gitea Wiki
 agent: orchestrator
 ---
@@ -21,7 +22,7 @@ Complete the sprint, capture lessons learned to Gitea Wiki, and update documenta
 
 ## Invocation
 
-Run `/sprint-close` when sprint work is complete.
+Run `/sprint close` when sprint work is complete.
 
 ## Workflow
 

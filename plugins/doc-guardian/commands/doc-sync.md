@@ -1,8 +1,9 @@
 ---
+name: doc sync
 description: Synchronize all pending documentation updates in a single commit
 ---
 
-# Documentation Sync
+# /doc sync
 
 Apply all pending documentation updates detected by doc-guardian hooks.
 

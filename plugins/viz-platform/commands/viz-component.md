@@ -1,8 +1,9 @@
 ---
+name: viz component
 description: Inspect Dash Mantine Component props and validation
 ---
 
-# Viz Component
+# /viz component
 
 ## Skills to Load
 - skills/mcp-tools-reference.md
@@ -21,7 +22,7 @@ Inspect a DMC component's props, types, and defaults.
 ## Usage
 
 ```
-/viz-component {name}
+/viz component {name}
 ```
 
 ## Arguments
@@ -38,5 +39,5 @@ validate_component(component="Button", props={"variant": "filled"})
 
 ## Related Commands
 
-- `/viz-chart {type}` - Create charts
-- `/viz-dashboard {template}` - Create layouts
+- `/viz chart {type}` - Create charts
+- `/viz dashboard {template}` - Create layouts

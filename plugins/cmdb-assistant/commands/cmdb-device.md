@@ -1,4 +1,8 @@
-# CMDB Device Management
+---
+name: cmdb device
+---
+
+# /cmdb device
 
 Manage network devices in NetBox.
 
@@ -10,7 +14,7 @@ Manage network devices in NetBox.
 ## Usage
 
 ```
-/cmdb-device <action> [options]
+/cmdb device <action> [options]
 ```
 
 ## Instructions
@@ -45,10 +49,10 @@ After creating a device, offer to:
 
 ## Examples
 
-- `/cmdb-device list`
-- `/cmdb-device show core-router-01`
-- `/cmdb-device create web-server-03`
-- `/cmdb-device at headquarters`
+- `/cmdb device list`
+- `/cmdb device show core-router-01`
+- `/cmdb device create web-server-03`
+- `/cmdb device at headquarters`
 
 ## User Request
 

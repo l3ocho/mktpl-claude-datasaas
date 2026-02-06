@@ -1,4 +1,5 @@
 ---
+name: cv status
 description: Marketplace-wide health check across all installed plugins
 ---
 

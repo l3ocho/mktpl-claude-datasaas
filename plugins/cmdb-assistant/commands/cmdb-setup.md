@@ -1,8 +1,9 @@
 ---
+name: cmdb setup
 description: Interactive setup wizard for cmdb-assistant plugin
 ---
 
-# CMDB Assistant Setup Wizard
+# /cmdb setup
 
 Configure the cmdb-assistant plugin with NetBox integration.
 
@@ -18,7 +19,7 @@ Configure the cmdb-assistant plugin with NetBox integration.
 ## Usage
 
 ```
-/cmdb-setup
+/cmdb setup
 ```
 
 ## Instructions
@@ -63,10 +64,10 @@ System Config:         ~/.config/claude/netbox.env
 Restart your Claude Code session for MCP tools.
 
 After restart, try:
-- /cmdb-device <hostname>
-- /cmdb-ip <address>
-- /cmdb-site <name>
-- /cmdb-search <query>
+- /cmdb device <hostname>
+- /cmdb ip <address>
+- /cmdb site <name>
+- /cmdb search <query>
 ```
 
 ## User Request

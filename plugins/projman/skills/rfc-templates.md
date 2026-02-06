@@ -369,7 +369,7 @@ For rapid RFC creation from conversation:
 
 ## Creating RFC from Clarified Spec
 
-When `/clarify` provides a clarified specification, map sections:
+When `/clarity clarify` provides a clarified specification, map sections:
 
 | Clarify Output | RFC Section |
 |----------------|-------------|

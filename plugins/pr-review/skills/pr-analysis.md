@@ -106,7 +106,7 @@ Key files:
 ```
 Scope: [Small|Medium|Large]
 Risk: [Low|Medium|High]
-Recommendation: [/pr-review suggested | Looks good to merge]
+Recommendation: [/pr review suggested | Looks good to merge]
 ```
 
 ## Annotated Diff Display

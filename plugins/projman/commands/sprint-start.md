@@ -1,4 +1,5 @@
 ---
+name: sprint start
 description: Begin sprint execution with relevant lessons learned from previous sprints
 agent: orchestrator
 ---
@@ -24,7 +25,7 @@ Initiate sprint execution. The orchestrator agent verifies approval, analyzes de
 
 ## Invocation
 
-Run `/sprint-start` when ready to begin executing a planned sprint.
+Run `/sprint start` when ready to begin executing a planned sprint.
 
 **Flags:**
 - `--force` — Bypass approval gate (emergency only, logged to milestone)

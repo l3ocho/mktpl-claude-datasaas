@@ -46,7 +46,7 @@ Show the charter to the user. Wait for approval before proceeding to `/project p
 
 ## DO NOT
 
-- Create sprint issues — that's `/sprint-plan`
+- Create sprint issues — that's `/sprint plan`
 - Create WBS or roadmap — that's `/project plan`
 - Make architecture decisions — suggest ADRs via `/adr create`
 - Skip user approval of the charter

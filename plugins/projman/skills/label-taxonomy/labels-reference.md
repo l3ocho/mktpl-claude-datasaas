@@ -317,21 +317,21 @@ Most issues should have multiple labels from different categories:
 
 This skill is loaded when agents need to suggest labels:
 
-**In /sprint-plan:**
+**In /sprint plan:**
 The planner agent uses this reference along with `suggest_labels` MCP tool to recommend appropriate labels for newly created issues.
 
-**In /labels-sync:**
+**In /labels sync:**
 The command updates this file with the latest taxonomy from Gitea.
 
 ## Keeping This Updated
 
-**IMPORTANT:** Run `/labels-sync` to:
+**IMPORTANT:** Run `/labels sync` to:
 1. Fetch actual labels from Gitea
 2. Update this reference file
 3. Ensure suggestion logic matches current taxonomy
 
 **Update frequency:**
-- First time setup: Run `/labels-sync` immediately
+- First time setup: Run `/labels sync` immediately
 - Regular updates: Monthly or when taxonomy changes
 - Team notification: When new labels are added to Gitea
 
@@ -341,6 +341,6 @@ The command updates this file with the latest taxonomy from Gitea.
 1. Fetch labels dynamically using `get_labels` MCP tool
 2. Use `suggest_labels` for intelligent suggestions
 3. Reference this skill for context and patterns
-4. Update this file via `/labels-sync` when taxonomy changes
+4. Update this file via `/labels sync` when taxonomy changes
 
 This ensures the plugin adapts to taxonomy evolution without code changes.

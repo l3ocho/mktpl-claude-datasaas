@@ -12,7 +12,7 @@ Defines standard formats for issue titles, bodies, and wiki references.
 ## When to Use
 
 - **Planner agent**: When creating issues during sprint planning
-- **Commands**: `/sprint-plan`
+- **Commands**: `/sprint plan`
 
 ---
 

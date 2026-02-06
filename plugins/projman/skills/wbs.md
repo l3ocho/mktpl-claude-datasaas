@@ -6,7 +6,7 @@ description: Work Breakdown Structure skill for decomposing projects and sprints
 
 ## Purpose
 
-Bridges project-level epics and sprint-level issues. Used by `/project plan` to create the initial decomposition and by `/sprint-plan` to refine sprint scope.
+Bridges project-level epics and sprint-level issues. Used by `/project plan` to create the initial decomposition and by `/sprint plan` to refine sprint scope.
 
 ## Wiki Page
 
@@ -31,7 +31,7 @@ Page name: `WBS: {Name}` (e.g., `WBS: Driving School SaaS`)
 
 ## Sprint Refinement
 
-During `/sprint-plan`, the planner:
+During `/sprint plan`, the planner:
 1. Loads the WBS
 2. Identifies the next unstarted work packages
 3. Creates issues from Level 3 tasks
@@ -40,6 +40,6 @@ During `/sprint-plan`, the planner:
 ## Integration
 
 - `/project plan` creates the initial WBS from epic decomposition
-- `/sprint-plan` consumes WBS work packages to create sprint issues
-- `/sprint-close` updates WBS with completion status
+- `/sprint plan` consumes WBS work packages to create sprint issues
+- `/sprint close` updates WBS with completion status
 - `/project status` aggregates WBS progress for project-level view

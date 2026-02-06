@@ -1,8 +1,9 @@
 ---
+name: viz setup
 description: Interactive setup wizard for viz-platform plugin
 ---
 
-# Viz Setup
+# /viz setup
 
 ## Visual Output
 
@@ -41,5 +42,5 @@ Verify MCP server loads, display summary, prompt session restart.
 
 ## Related Commands
 
-- `/viz-component {name}` - Inspect component props
-- `/viz-chart {type}` - Create a chart
+- `/viz component {name}` - Inspect component props
+- `/viz chart {type}` - Create a chart

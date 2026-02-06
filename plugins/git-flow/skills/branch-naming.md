@@ -6,7 +6,7 @@ Defines branch naming conventions and validation rules for consistent repository
 
 ## When to Use
 
-- Creating new branches with `/branch-start`
+- Creating new branches with `/gitflow branch-start`
 - Validating branch names
 - Converting descriptions to branch names
 
