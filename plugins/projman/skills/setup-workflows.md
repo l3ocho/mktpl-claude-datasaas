@@ -33,25 +33,37 @@ If Python < 3.10, stop and ask user to install.
 
 ### Phase 2: MCP Server Setup
 
-1. **Locate Plugin Installation**
+1. **Locate Marketplace Installation**
    ```bash
-   ls ~/.claude/plugins/marketplaces/leo-claude-mktplace/mcp-servers/gitea/
+   MKTPLACE_DIR=$(find ~/.claude/plugins/marketplaces -maxdepth 1 -name "leo-claude-mktplace" -type d 2>/dev/null)
+   echo "Marketplace at: $MKTPLACE_DIR"
    ```
+   If not found, stop — marketplace not installed.
 
-2. **Check Virtual Environment**
+2. **Run setup-venvs.sh**
    ```bash
-   ls ~/.claude/plugins/marketplaces/leo-claude-mktplace/mcp-servers/gitea/venv/
+   cd "$MKTPLACE_DIR" && ./scripts/setup-venvs.sh
    ```
+   This handles all 5 MCP servers (gitea, netbox, data-platform, viz-platform, contract-validator):
+   - Creates venvs in `~/.cache/claude-mcp-venvs/leo-claude-mktplace/{server}/.venv/`
+   - Installs requirements and editable packages
+   - Creates symlinks back to `mcp-servers/{server}/.venv`
+   - Uses hash-based change detection for incremental updates
 
-3. **Create venv if Missing**
+3. **Verify**
    ```bash
-   cd ~/.claude/plugins/marketplaces/leo-claude-mktplace/mcp-servers/gitea/
-   python3 -m venv venv
-   ./venv/bin/pip install -r requirements.txt
+   cd "$MKTPLACE_DIR" && ./scripts/setup-venvs.sh --check
    ```
+   All 5 servers should report OK.
 
-4. **Optional: NetBox MCP Setup**
-   Ask user if they need NetBox integration.
+4. **If setup-venvs.sh fails**, fall back to manual per-server setup:
+   ```bash
+   cd "$MKTPLACE_DIR/mcp-servers/gitea"
+   python3 -m venv .venv
+   .venv/bin/pip install -r requirements.txt
+   [ -f pyproject.toml ] && .venv/bin/pip install -e .
+   ```
+   Repeat for each server the user needs.
 
 ### Phase 3: System-Level Configuration
 
