@@ -1,4 +1,4 @@
-# Leo Claude Marketplace — v9.1.1
+# Leo Claude Marketplace — v9.1.2
 
 A plugin marketplace for Claude Code providing sprint management, code review, security scanning, infrastructure automation, and development workflow tools. 20 plugins across 5 domains, backed by 5 shared MCP servers.
 

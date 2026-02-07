@@ -1,1 +1,6 @@
-{"mcp_servers": ["viz-platform"]}
+{
+  "mcp_servers": [
+    "viz-platform"
+  ],
+  "domain": "data"
+}

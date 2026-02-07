@@ -384,14 +384,13 @@ All MCP servers are defined in `.mcp.json` at repository root:
 
 ## Domain Metadata
 
-### Domain Field Locations
+### Domain Field Location
 
-Both manifest files require a `domain` field (v8.0.0+):
+Domain metadata is stored in `metadata.json` (v9.1.2+, moved from plugin.json/marketplace.json for Claude Code schema compliance):
 
 | Location | Field | Example |
 |----------|-------|---------|
-| `plugins/{name}/.claude-plugin/plugin.json` | `"domain": "core"` | `plugins/projman/.claude-plugin/plugin.json` |
-| `.claude-plugin/marketplace.json` | `"domain": "core"` per plugin entry | `.claude-plugin/marketplace.json` |
+| `plugins/{name}/.claude-plugin/metadata.json` | `"domain": "core"` | `plugins/projman/.claude-plugin/metadata.json` |
 
 ### Allowed Domain Values
 
@@ -413,10 +412,15 @@ Both manifest files require a `domain` field (v8.0.0+):
 
 ```bash
 # List all plugins in a domain
-jq '.plugins[] | select(.domain=="saas") | .name' .claude-plugin/marketplace.json
+for p in plugins/*; do
+  d=$(jq -r '.domain // empty' "$p/.claude-plugin/metadata.json" 2>/dev/null)
+  [[ "$d" == "saas" ]] && basename "$p"
+done
 
 # Count plugins per domain
-jq '[.plugins[] | .domain] | group_by(.) | map({domain: .[0], count: length})' .claude-plugin/marketplace.json
+for p in plugins/*; do
+  jq -r '.domain // empty' "$p/.claude-plugin/metadata.json" 2>/dev/null
+done | sort | uniq -c | sort -rn
 ```
 
 ---
@@ -425,6 +429,7 @@ jq '[.plugins[] | .domain] | group_by(.) | map({domain: .[0], count: length})' .
 
 | Date | Change | By |
 |------|--------|-----|
+| 2026-02-07 | v9.1.2: Moved domain field from plugin.json/marketplace.json to metadata.json for Claude Code schema compliance | Claude Code |
 | 2026-02-07 | v9.1.0: Removed deleted dirs (architecture/, prompts/, project-lessons-learned/), added Phase 3 plugins, added ARCHITECTURE.md, MIGRATION-v9.md, updated Domain table, removed stale hooks/ dirs | Claude Code |
 | 2026-02-06 | v8.0.0: Added domain metadata section, Phase 1a paths, future plugin paths | Claude Code |
 | 2026-02-04 | v7.1.0: Added profile configs, prompts/, project-lessons-learned/, metadata.json, deprecated switch-profile.sh | Claude Code |

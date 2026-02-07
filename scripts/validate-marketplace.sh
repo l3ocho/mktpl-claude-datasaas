@@ -92,17 +92,23 @@ for i in $(seq 0 $((PLUGIN_COUNT - 1))); do
         exit 1
     fi
 
-    # v8.0.0: Check domain field
-    PLUGIN_DOMAIN=$(jq -r ".plugins[$i].domain // empty" "$MARKETPLACE_JSON")
+    # v8.0.0/v9.1.2: Check domain field in metadata.json (moved from marketplace.json for schema compliance)
+    PLUGIN_SOURCE=$(jq -r ".plugins[$i].source" "$MARKETPLACE_JSON")
+    METADATA_JSON="$ROOT_DIR/$PLUGIN_SOURCE/.claude-plugin/metadata.json"
+    if [[ -f "$METADATA_JSON" ]]; then
+        PLUGIN_DOMAIN=$(jq -r '.domain // empty' "$METADATA_JSON")
+    else
+        PLUGIN_DOMAIN=""
+    fi
     if [[ -z "$PLUGIN_DOMAIN" ]]; then
-        echo "ERROR: Missing 'domain' in marketplace entry for $PLUGIN_NAME (required v8.0.0+)"
+        echo "ERROR: Missing 'domain' in $PLUGIN_NAME/.claude-plugin/metadata.json (required v8.0.0+)"
         exit 1
     fi
     if ! echo "$VALID_DOMAINS" | grep -qw "$PLUGIN_DOMAIN"; then
-        echo "ERROR: Invalid domain '$PLUGIN_DOMAIN' in marketplace entry for $PLUGIN_NAME (allowed: $VALID_DOMAINS)"
+        echo "ERROR: Invalid domain '$PLUGIN_DOMAIN' in $PLUGIN_NAME/metadata.json (allowed: $VALID_DOMAINS)"
         exit 1
     fi
-    echo "  ✓ domain: $PLUGIN_DOMAIN"
+    echo "  ✓ domain: $PLUGIN_DOMAIN (from metadata.json)"
 
     echo "✓ Marketplace entry $PLUGIN_NAME valid"
 done
@@ -158,17 +164,22 @@ for plugin_dir in "$PLUGINS_DIR"/*/; do
         echo "WARNING: Missing 'keywords' array in $plugin_name/plugin.json"
     fi
 
-    # v8.0.0: Check domain field in plugin.json
-    PLUGIN_DOMAIN_PJ=$(jq -r '.domain // empty' "$plugin_json")
-    if [[ -z "$PLUGIN_DOMAIN_PJ" ]]; then
-        echo "ERROR: Missing 'domain' in $plugin_name/plugin.json (required v8.0.0+)"
+    # v8.0.0/v9.1.2: Check domain field in metadata.json (moved from plugin.json for schema compliance)
+    metadata_json="$plugin_dir.claude-plugin/metadata.json"
+    if [[ -f "$metadata_json" ]]; then
+        PLUGIN_DOMAIN_MD=$(jq -r '.domain // empty' "$metadata_json")
+    else
+        PLUGIN_DOMAIN_MD=""
+    fi
+    if [[ -z "$PLUGIN_DOMAIN_MD" ]]; then
+        echo "ERROR: Missing 'domain' in $plugin_name/.claude-plugin/metadata.json (required v8.0.0+)"
         exit 1
     fi
-    if ! echo "$VALID_DOMAINS" | grep -qw "$PLUGIN_DOMAIN_PJ"; then
-        echo "ERROR: Invalid domain '$PLUGIN_DOMAIN_PJ' in $plugin_name/plugin.json (allowed: $VALID_DOMAINS)"
+    if ! echo "$VALID_DOMAINS" | grep -qw "$PLUGIN_DOMAIN_MD"; then
+        echo "ERROR: Invalid domain '$PLUGIN_DOMAIN_MD' in $plugin_name/metadata.json (allowed: $VALID_DOMAINS)"
         exit 1
     fi
-    echo "  ✓ domain: $PLUGIN_DOMAIN_PJ"
+    echo "  ✓ domain: $PLUGIN_DOMAIN_MD (from metadata.json)"
 
     # Check README exists
     if [[ ! -f "$plugin_dir/README.md" ]]; then
@@ -324,20 +335,23 @@ if [[ ! -f "$ROOT_DIR/.mcp.json" ]]; then
 fi
 echo "✓ .mcp.json configuration exists"
 
-# v8.0.0: Cross-validate domains match between marketplace.json and plugin.json
+# v8.0.0/v9.1.2: Validate domain in metadata.json for all plugins (single source of truth)
 echo ""
-echo "=== Cross-Validating Domain Fields ==="
-for i in $(seq 0 $((PLUGIN_COUNT - 1))); do
-    PLUGIN_NAME=$(jq -r ".plugins[$i].name" "$MARKETPLACE_JSON")
-    MARKETPLACE_DOMAIN=$(jq -r ".plugins[$i].domain" "$MARKETPLACE_JSON")
-    PLUGIN_JSON_PATH="$PLUGINS_DIR/$PLUGIN_NAME/.claude-plugin/plugin.json"
-    if [[ -f "$PLUGIN_JSON_PATH" ]]; then
-        PLUGIN_DOMAIN=$(jq -r '.domain' "$PLUGIN_JSON_PATH")
-        if [[ "$MARKETPLACE_DOMAIN" != "$PLUGIN_DOMAIN" ]]; then
-            echo "ERROR: Domain mismatch for $PLUGIN_NAME: marketplace.json='$MARKETPLACE_DOMAIN' vs plugin.json='$PLUGIN_DOMAIN'"
+echo "=== Validating Domain Fields (metadata.json) ==="
+for plugin_dir in "$PLUGINS_DIR"/*/; do
+    plugin_name=$(basename "$plugin_dir")
+    metadata_file="$plugin_dir.claude-plugin/metadata.json"
+    if [[ -f "$metadata_file" ]]; then
+        domain=$(jq -r '.domain // empty' "$metadata_file")
+        if [[ -n "$domain" ]]; then
+            echo "✓ $plugin_name domain: $domain"
+        else
+            echo "ERROR: $plugin_name/metadata.json exists but missing domain field"
             exit 1
         fi
-        echo "✓ $PLUGIN_NAME domain consistent: $MARKETPLACE_DOMAIN"
+    else
+        echo "ERROR: $plugin_name missing .claude-plugin/metadata.json"
+        exit 1
     fi
 done
 

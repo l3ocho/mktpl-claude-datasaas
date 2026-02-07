@@ -19,6 +19,5 @@
   ],
   "commands": [
     "./commands/"
-  ],
-  "domain": "core"
+  ]
 }

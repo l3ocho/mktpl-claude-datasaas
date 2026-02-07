@@ -6,7 +6,7 @@
   },
   "metadata": {
     "description": "Project management plugins with Gitea and NetBox integrations",
-    "version": "9.1.1"
+    "version": "9.1.2"
   },
   "plugins": [
     {
@@ -27,8 +27,7 @@
         "gitea",
         "project-management"
       ],
-      "license": "MIT",
-      "domain": "core"
+      "license": "MIT"
     },
     {
       "name": "doc-guardian",
@@ -47,8 +46,7 @@
         "drift-detection",
         "sync"
       ],
-      "license": "MIT",
-      "domain": "core"
+      "license": "MIT"
     },
     {
       "name": "code-sentinel",
@@ -70,8 +68,7 @@
         "refactoring",
         "vulnerabilities"
       ],
-      "license": "MIT",
-      "domain": "core"
+      "license": "MIT"
     },
     {
       "name": "project-hygiene",
@@ -91,8 +88,7 @@
         "maintenance",
         "manual-check"
       ],
-      "license": "MIT",
-      "domain": "core"
+      "license": "MIT"
     },
     {
       "name": "cmdb-assistant",
@@ -117,8 +113,7 @@
         "data-quality",
         "validation"
       ],
-      "license": "MIT",
-      "domain": "ops"
+      "license": "MIT"
     },
     {
       "name": "claude-config-maintainer",
@@ -137,8 +132,7 @@
         "configuration",
         "optimization"
       ],
-      "license": "MIT",
-      "domain": "core"
+      "license": "MIT"
     },
     {
       "name": "clarity-assist",
@@ -161,8 +155,7 @@
         "clarification",
         "nd-friendly"
       ],
-      "license": "MIT",
-      "domain": "core"
+      "license": "MIT"
     },
     {
       "name": "git-flow",
@@ -185,8 +178,7 @@
         "commits",
         "branching"
       ],
-      "license": "MIT",
-      "domain": "core"
+      "license": "MIT"
     },
     {
       "name": "pr-review",
@@ -206,8 +198,7 @@
         "security",
         "quality"
       ],
-      "license": "MIT",
-      "domain": "core"
+      "license": "MIT"
     },
     {
       "name": "data-platform",
@@ -229,8 +220,7 @@
         "data-engineering",
         "etl"
       ],
-      "license": "MIT",
-      "domain": "data"
+      "license": "MIT"
     },
     {
       "name": "viz-platform",
@@ -253,8 +243,7 @@
         "theming",
         "dmc"
       ],
-      "license": "MIT",
-      "domain": "data"
+      "license": "MIT"
     },
     {
       "name": "contract-validator",
@@ -276,8 +265,7 @@
         "interfaces",
         "cross-plugin"
       ],
-      "license": "MIT",
-      "domain": "core"
+      "license": "MIT"
     },
     {
       "name": "saas-api-platform",
@@ -299,8 +287,7 @@
         "express",
         "openapi"
       ],
-      "license": "MIT",
-      "domain": "saas"
+      "license": "MIT"
     },
     {
       "name": "saas-db-migrate",
@@ -322,8 +309,7 @@
         "sql",
         "schema"
       ],
-      "license": "MIT",
-      "domain": "saas"
+      "license": "MIT"
     },
     {
       "name": "saas-react-platform",
@@ -345,8 +331,7 @@
         "frontend",
         "components"
       ],
-      "license": "MIT",
-      "domain": "saas"
+      "license": "MIT"
     },
     {
       "name": "saas-test-pilot",
@@ -368,8 +353,7 @@
         "playwright",
         "coverage"
       ],
-      "license": "MIT",
-      "domain": "saas"
+      "license": "MIT"
     },
     {
       "name": "data-seed",
@@ -390,8 +374,7 @@
         "fixtures",
         "database"
       ],
-      "license": "MIT",
-      "domain": "data"
+      "license": "MIT"
     },
     {
       "name": "ops-release-manager",
@@ -412,8 +395,7 @@
         "versioning",
         "tags"
       ],
-      "license": "MIT",
-      "domain": "ops"
+      "license": "MIT"
     },
     {
       "name": "ops-deploy-pipeline",
@@ -434,8 +416,7 @@
         "caddy",
         "cicd"
       ],
-      "license": "MIT",
-      "domain": "ops"
+      "license": "MIT"
     },
     {
       "name": "debug-mcp",
@@ -456,8 +437,7 @@
         "server",
         "development"
       ],
-      "license": "MIT",
-      "domain": "debug"
+      "license": "MIT"
     }
   ]
 }
