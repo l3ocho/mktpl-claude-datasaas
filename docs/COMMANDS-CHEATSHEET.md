@@ -18,9 +18,19 @@ All commands follow the `/<noun> <action>` sub-command pattern.
 | **projman** | `/sprint close` | | X | Complete sprint and capture lessons learned to Gitea Wiki |
 | **projman** | `/labels sync` | | X | Synchronize label taxonomy from Gitea |
 | **projman** | `/projman setup` | | X | Auto-detect mode or use `--full`, `--quick`, `--sync`, `--clear-cache` |
-| **projman** | `/rfc create\|list\|review\|approve\|reject` | | X | RFC lifecycle management |
-| **projman** | `/project initiation\|plan\|status\|close` | | X | Project lifecycle management |
-| **projman** | `/adr create\|list\|update\|supersede` | | X | Architecture Decision Records |
+| **projman** | `/rfc create` | | X | Create new RFC from conversation or spec |
+| **projman** | `/rfc list` | | X | List all RFCs grouped by status |
+| **projman** | `/rfc review` | | X | Submit RFC for maintainer review |
+| **projman** | `/rfc approve` | | X | Approve RFC for sprint planning |
+| **projman** | `/rfc reject` | | X | Reject RFC with documented reason |
+| **projman** | `/project initiation` | | X | Discovery, source analysis, project charter |
+| **projman** | `/project plan` | | X | WBS, risk register, sprint roadmap |
+| **projman** | `/project status` | | X | Project health check across all sprints |
+| **projman** | `/project close` | | X | Final retrospective and archival |
+| **projman** | `/adr create` | | X | Create new Architecture Decision Record |
+| **projman** | `/adr list` | | X | List all ADRs with status |
+| **projman** | `/adr update` | | X | Update existing ADR |
+| **projman** | `/adr supersede` | | X | Supersede ADR with new decision |
 | **git-flow** | `/gitflow commit` | | X | Create commit with auto-generated conventional message. Flags: `--push`, `--merge`, `--sync` |
 | **git-flow** | `/gitflow branch-start` | | X | Create new feature/fix/chore branch with naming conventions |
 | **git-flow** | `/gitflow branch-cleanup` | | X | Remove merged branches locally and optionally on remote |

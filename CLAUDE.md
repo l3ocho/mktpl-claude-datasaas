@@ -154,25 +154,25 @@ When user says "fix the sprint plan command", edit the SOURCE code.
 ## Project Overview
 
 **Repository:** leo-claude-mktplace
-**Version:** 9.0.1
+**Version:** 9.1.1
 **Status:** Production Ready
 
 A plugin marketplace for Claude Code containing:
 
 | Plugin | Description | Version |
 |--------|-------------|---------|
-| `projman` | Sprint planning and project management with Gitea integration | 3.3.0 |
-| `git-flow` | Git workflow automation with smart commits and branch management | 1.0.0 |
-| `pr-review` | Multi-agent PR review with confidence scoring | 1.1.0 |
-| `clarity-assist` | Prompt optimization with ND-friendly accommodations | 1.0.0 |
-| `doc-guardian` | Automatic documentation drift detection and synchronization | 1.0.0 |
-| `code-sentinel` | Security scanning and code refactoring tools | 1.0.1 |
-| `claude-config-maintainer` | CLAUDE.md optimization and maintenance | 1.0.0 |
-| `cmdb-assistant` | NetBox CMDB integration for infrastructure management | 1.2.0 |
-| `data-platform` | pandas, PostgreSQL, and dbt integration for data engineering | 1.3.0 |
-| `viz-platform` | DMC validation, Plotly charts, and theming for dashboards | 1.1.0 |
-| `contract-validator` | Cross-plugin compatibility validation and agent verification | 1.1.0 |
-| `project-hygiene` | Project file organization and cleanup checks | 0.1.0 |
+| `projman` | Sprint planning and project management with Gitea integration | 9.0.1 |
+| `git-flow` | Git workflow automation with smart commits and branch management | 9.0.1 |
+| `pr-review` | Multi-agent PR review with confidence scoring | 9.0.1 |
+| `clarity-assist` | Prompt optimization with ND-friendly accommodations | 9.0.1 |
+| `doc-guardian` | Automatic documentation drift detection and synchronization | 9.0.1 |
+| `code-sentinel` | Security scanning and code refactoring tools | 9.0.1 |
+| `claude-config-maintainer` | CLAUDE.md optimization and maintenance | 9.0.1 |
+| `cmdb-assistant` | NetBox CMDB integration for infrastructure management | 9.0.1 |
+| `data-platform` | pandas, PostgreSQL, and dbt integration for data engineering | 9.0.1 |
+| `viz-platform` | DMC validation, Plotly charts, and theming for dashboards | 9.0.1 |
+| `contract-validator` | Cross-plugin compatibility validation and agent verification | 9.0.1 |
+| `project-hygiene` | Manual project hygiene checks | 9.0.1 |
 | `saas-api-platform` | REST/GraphQL API scaffolding for FastAPI and Express | 0.1.0 |
 | `saas-db-migrate` | Database migration management for Alembic, Prisma, raw SQL | 0.1.0 |
 | `saas-react-platform` | React frontend toolkit for Next.js and Vite | 0.1.0 |
@@ -199,8 +199,9 @@ A plugin marketplace for Claude Code containing:
 | **Setup** | `/projman setup` (modes: `--full`, `--quick`, `--sync`) |
 | **Sprint** | `/sprint plan`, `/sprint start`, `/sprint status` (with `--diagram`), `/sprint close` |
 | **Quality** | `/sprint review`, `/sprint test` (modes: `run`, `gen`) |
-| **Project** | `/project initiation\|plan\|status\|close` |
-| **ADR** | `/adr create\|list\|update\|supersede` |
+| **Project** | `/project initiation`, `/project plan`, `/project status`, `/project close` |
+| **ADR** | `/adr create`, `/adr list`, `/adr update`, `/adr supersede` |
+| **RFC** | `/rfc create`, `/rfc list`, `/rfc review`, `/rfc approve`, `/rfc reject` |
 | **PR Review** | `/pr review`, `/pr summary`, `/pr findings`, `/pr diff` |
 | **Docs** | `/doc audit`, `/doc sync`, `/doc changelog-gen`, `/doc coverage`, `/doc stale-docs` |
 | **Security** | `/sentinel scan`, `/sentinel refactor`, `/sentinel refactor-dry` |
@@ -230,55 +231,66 @@ These commands are being developed but don't apply to this project's workflow:
 
 ```
 leo-claude-mktplace/
-├── .claude-plugin/
-│   └── marketplace.json          # Marketplace manifest
+├── .claude-plugin/                # Marketplace manifest
+│   ├── marketplace.json
+│   ├── marketplace-lean.json      # Lean profile (6 core plugins)
+│   └── marketplace-full.json      # Full profile (all plugins)
 ├── .mcp.json                     # MCP server configuration (all servers)
 ├── mcp-servers/                  # SHARED MCP servers
-│   ├── gitea/                    # Gitea MCP (issues, PRs, wiki)
-│   ├── netbox/                   # NetBox MCP (CMDB)
+│   ├── gitea/                    # Gitea (issues, PRs, wiki)
+│   ├── netbox/                   # NetBox (DCIM, IPAM)
 │   ├── data-platform/            # pandas, PostgreSQL, dbt
-│   ├── viz-platform/             # DMC validation, charts, themes
+│   ├── viz-platform/             # DMC, Plotly, theming
 │   └── contract-validator/       # Plugin compatibility validation
-├── plugins/
-│   ├── projman/                  # Sprint management
+├── plugins/                      # All plugins (20 total)
+│   ├── projman/                  # [core] Sprint management
 │   │   ├── .claude-plugin/plugin.json
 │   │   ├── commands/             # 19 commands
 │   │   ├── agents/               # 4 agents
 │   │   └── skills/               # 23 reusable skill files
-│   ├── git-flow/                 # Git workflow automation
-│   │   ├── .claude-plugin/plugin.json
-│   │   ├── commands/             # 5 commands
-│   │   └── agents/
-│   ├── pr-review/                # Multi-agent PR review
-│   │   ├── .claude-plugin/plugin.json
-│   │   ├── commands/             # 8 commands
-│   │   └── agents/               # 5 agents
-│   ├── clarity-assist/           # Prompt optimization
-│   │   ├── .claude-plugin/plugin.json
-│   │   ├── commands/             # 2 commands
-│   │   └── agents/
-│   ├── data-platform/            # Data engineering
-│   │   ├── .claude-plugin/plugin.json
-│   │   ├── commands/             # 7 commands
-│   │   └── agents/               # 2 agents
-│   ├── viz-platform/             # Visualization
-│   │   ├── .claude-plugin/plugin.json
-│   │   ├── commands/             # 7 commands
-│   │   └── agents/               # 3 agents
-│   ├── doc-guardian/             # Documentation drift detection
-│   ├── code-sentinel/            # Security scanning & refactoring
-│   ├── claude-config-maintainer/
-│   ├── cmdb-assistant/
-│   ├── contract-validator/
-│   └── project-hygiene/
-├── scripts/
-│   ├── setup.sh, post-update.sh
+│   ├── git-flow/                 # [core] Git workflow automation
+│   ├── pr-review/                # [core] PR review
+│   ├── clarity-assist/           # [core] Prompt optimization
+│   ├── doc-guardian/             # [core] Documentation drift detection
+│   ├── code-sentinel/            # [core] Security scanning
+│   ├── claude-config-maintainer/ # [core] CLAUDE.md optimization
+│   ├── contract-validator/       # [core] Cross-plugin validation
+│   ├── project-hygiene/          # [core] Manual cleanup checks
+│   ├── cmdb-assistant/           # [ops] NetBox CMDB integration
+│   ├── data-platform/            # [data] Data engineering
+│   ├── viz-platform/             # [data] Visualization
+│   ├── data-seed/                # [data] Test data generation (scaffold)
+│   ├── saas-api-platform/        # [saas] API scaffolding (scaffold)
+│   ├── saas-db-migrate/          # [saas] DB migrations (scaffold)
+│   ├── saas-react-platform/      # [saas] React toolkit (scaffold)
+│   ├── saas-test-pilot/          # [saas] Test automation (scaffold)
+│   ├── ops-release-manager/      # [ops] Release management (scaffold)
+│   ├── ops-deploy-pipeline/      # [ops] Deployment pipeline (scaffold)
+│   └── debug-mcp/                # [debug] MCP debugging (scaffold)
+├── scripts/                      # Setup and maintenance
+│   ├── setup.sh                  # Initial setup (create venvs, config)
+│   ├── post-update.sh            # Post-update (clear cache, changelog)
+│   ├── setup-venvs.sh            # MCP server venv management (cache-based)
 │   ├── validate-marketplace.sh   # Marketplace compliance validation
-│   ├── verify-hooks.sh           # Verify all hooks are command type
-│   └── check-venv.sh             # Check MCP server venvs exist
-└── docs/
-    ├── CANONICAL-PATHS.md        # Single source of truth for paths
-    └── CONFIGURATION.md          # Centralized configuration guide
+│   ├── verify-hooks.sh           # Hook inventory verification
+│   ├── release.sh                # Release automation with version bumping
+│   ├── claude-launch.sh          # Profile-based launcher
+│   ├── install-plugin.sh         # Install plugin to consumer project
+│   ├── list-installed.sh         # Show installed plugins in a project
+│   └── uninstall-plugin.sh       # Remove plugin from consumer project
+├── docs/                         # Documentation
+│   ├── ARCHITECTURE.md           # System architecture & plugin reference
+│   ├── CANONICAL-PATHS.md        # Authoritative path reference
+│   ├── COMMANDS-CHEATSHEET.md    # All commands quick reference
+│   ├── CONFIGURATION.md          # Centralized setup guide
+│   ├── DEBUGGING-CHECKLIST.md    # Systematic troubleshooting guide
+│   ├── MIGRATION-v9.md           # v8.x to v9.0.0 migration guide
+│   └── UPDATING.md               # Update guide
+├── CLAUDE.md                      # Project instructions for Claude Code
+├── README.md
+├── CHANGELOG.md
+├── LICENSE
+└── .gitignore
 ```
 
 ## Architecture
@@ -464,10 +476,12 @@ Stored in Gitea Wiki under `lessons-learned/sprints/`.
 
 | Document | Purpose |
 |----------|---------|
+| `docs/ARCHITECTURE.md` | System architecture and plugin reference |
 | `docs/CANONICAL-PATHS.md` | **Single source of truth** for paths |
 | `docs/COMMANDS-CHEATSHEET.md` | All commands quick reference |
 | `docs/CONFIGURATION.md` | Centralized setup guide |
 | `docs/DEBUGGING-CHECKLIST.md` | Systematic troubleshooting guide |
+| `docs/MIGRATION-v9.md` | v8.x to v9.0.0 migration guide |
 | `docs/UPDATING.md` | Update guide for the marketplace |
 | `plugins/projman/CONFIGURATION.md` | Projman quick reference (links to central) |
 
@@ -550,4 +564,4 @@ The script will:
 
 ---
 
-**Last Updated:** 2026-02-06
+**Last Updated:** 2026-02-07

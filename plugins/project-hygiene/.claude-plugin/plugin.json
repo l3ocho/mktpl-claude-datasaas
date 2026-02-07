@@ -1,7 +1,7 @@
 {
   "name": "project-hygiene",
-  "version": "0.1.0",
-  "description": "Post-task cleanup hook that removes temp files, warns about unexpected root files, and manages orphaned supporting files",
+  "version": "9.0.1",
+  "description": "Manual project hygiene checks — temp files, misplaced files, empty dirs, debug artifacts",
   "author": {
     "name": "Leo Miranda",
     "email": "leobmiranda@gmail.com"
@@ -12,10 +12,11 @@
   "keywords": [
     "cleanup",
     "hygiene",
-    "automation",
-    "hooks",
-    "maintenance"
+    "maintenance",
+    "manual-check"
   ],
   "domain": "core",
-  "commands": ["./commands/"]
+  "commands": [
+    "./commands/"
+  ]
 }

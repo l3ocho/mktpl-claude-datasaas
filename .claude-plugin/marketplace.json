@@ -6,12 +6,12 @@
   },
   "metadata": {
     "description": "Project management plugins with Gitea and NetBox integrations",
-    "version": "9.0.1"
+    "version": "9.1.1"
   },
   "plugins": [
     {
       "name": "projman",
-      "version": "7.1.0",
+      "version": "9.0.1",
       "description": "Sprint planning and project management with Gitea integration",
       "source": "./plugins/projman",
       "author": {
@@ -32,7 +32,7 @@
     },
     {
       "name": "doc-guardian",
-      "version": "7.1.0",
+      "version": "9.0.1",
       "description": "Automatic documentation drift detection and synchronization",
       "source": "./plugins/doc-guardian",
       "author": {
@@ -52,7 +52,7 @@
     },
     {
       "name": "code-sentinel",
-      "version": "7.1.0",
+      "version": "9.0.1",
       "description": "Security scanning and code refactoring tools",
       "source": "./plugins/code-sentinel",
       "author": {
@@ -75,8 +75,8 @@
     },
     {
       "name": "project-hygiene",
-      "version": "7.1.0",
-      "description": "Post-task cleanup hook that removes temp files and manages orphaned files",
+      "version": "9.0.1",
+      "description": "Manual project hygiene checks — temp files, misplaced files, empty dirs, debug artifacts",
       "source": "./plugins/project-hygiene",
       "author": {
         "name": "Leo Miranda",
@@ -87,15 +87,16 @@
       "category": "productivity",
       "tags": [
         "cleanup",
-        "automation",
-        "hygiene"
+        "hygiene",
+        "maintenance",
+        "manual-check"
       ],
       "license": "MIT",
       "domain": "core"
     },
     {
       "name": "cmdb-assistant",
-      "version": "7.1.0",
+      "version": "9.0.1",
       "description": "NetBox CMDB integration with data quality validation and machine registration",
       "source": "./plugins/cmdb-assistant",
       "author": {
@@ -121,7 +122,7 @@
     },
     {
       "name": "claude-config-maintainer",
-      "version": "7.1.0",
+      "version": "9.0.1",
       "description": "CLAUDE.md and settings.local.json optimization for Claude Code projects",
       "source": "./plugins/claude-config-maintainer",
       "author": {
@@ -141,7 +142,7 @@
     },
     {
       "name": "clarity-assist",
-      "version": "7.1.0",
+      "version": "9.0.1",
       "description": "Prompt optimization and requirement clarification with ND-friendly accommodations",
       "source": "./plugins/clarity-assist",
       "author": {
@@ -165,7 +166,7 @@
     },
     {
       "name": "git-flow",
-      "version": "7.1.0",
+      "version": "9.0.1",
       "description": "Git workflow automation with intelligent commit messages and branch management",
       "source": "./plugins/git-flow",
       "author": {
@@ -189,7 +190,7 @@
     },
     {
       "name": "pr-review",
-      "version": "7.1.0",
+      "version": "9.0.1",
       "description": "Multi-agent pull request review with confidence scoring and actionable feedback",
       "source": "./plugins/pr-review",
       "author": {
@@ -210,7 +211,7 @@
     },
     {
       "name": "data-platform",
-      "version": "7.1.0",
+      "version": "9.0.1",
       "description": "Data engineering tools with pandas, PostgreSQL/PostGIS, and dbt integration",
       "source": "./plugins/data-platform",
       "author": {
@@ -233,7 +234,7 @@
     },
     {
       "name": "viz-platform",
-      "version": "7.1.0",
+      "version": "9.0.1",
       "description": "Visualization tools with Dash Mantine Components validation, Plotly charts, and theming",
       "source": "./plugins/viz-platform",
       "author": {
@@ -257,7 +258,7 @@
     },
     {
       "name": "contract-validator",
-      "version": "7.1.0",
+      "version": "9.0.1",
       "description": "Cross-plugin compatibility validation and Claude.md agent verification",
       "source": "./plugins/contract-validator",
       "author": {

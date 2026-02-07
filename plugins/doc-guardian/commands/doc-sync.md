@@ -22,11 +22,11 @@ Apply all pending documentation updates detected by `/doc audit`.
 
 ## Process
 
-1. **Review Pending Queue**
-   Execute `skills/sync-workflow.md` - read `.doc-guardian-queue`
+1. **Detect Drift**
+   Run `/doc audit` first (or use its most recent results) to identify documentation that is out of sync with code.
 
 2. **Batch Updates**
-   For each pending item:
+   For each drift item:
    - Show the specific change needed
    - Apply the update
    - Track in change list
@@ -36,8 +36,5 @@ Apply all pending documentation updates detected by `/doc audit`.
    - Single commit: `docs: sync documentation with code changes`
    - Include summary in commit body
 
-4. **Clear Queue**
-   After successful sync, clear the queue file
-
-5. **Output**
+4. **Output**
    Use format from `skills/sync-workflow.md`

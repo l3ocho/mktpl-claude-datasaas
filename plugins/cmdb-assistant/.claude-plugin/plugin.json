@@ -1,6 +1,6 @@
 {
   "name": "cmdb-assistant",
-  "version": "1.2.0",
+  "version": "9.0.1",
   "description": "NetBox CMDB integration with data quality validation - query, create, update, and manage network devices, IP addresses, sites, and more with best practices enforcement",
   "author": {
     "name": "Leo Miranda",
