@@ -1,4 +1,5 @@
 ---
+name: data gate
 description: Data integrity compliance gate (pass/fail) for sprint execution
 gate_contract: v1
 arguments:
@@ -7,21 +8,21 @@ arguments:
     required: true
 ---
 
-# /data-gate
+# /data gate
 
 Binary pass/fail validation for data integrity compliance. Used by projman orchestrator during sprint execution to gate issue completion.
 
 ## Usage
 
 ```
-/data-gate <path>
+/data gate <path>
 ```
 
 **Examples:**
 ```
-/data-gate ./dbt/models/staging/
-/data-gate ./portfolio_app/toronto/parsers/
-/data-gate ./dbt/
+/data gate ./dbt/models/staging/
+/data gate ./portfolio_app/toronto/parsers/
+/data gate ./dbt/
 ```
 
 ## What It Does
@@ -63,7 +64,7 @@ Blocking Issues (2):
 2. portfolio_app/toronto/loaders/census.py:67 - References table 'census_raw' which does not exist
    Fix: Table was renamed to 'census_demographics' in migration 003.
 
-Run /data-review for full audit report.
+Run /data review for full audit report.
 ```
 
 ## Integration with projman
@@ -78,9 +79,9 @@ This command is automatically invoked by the projman orchestrator when:
 - PASS: Issue can be marked complete
 - FAIL: Issue stays open, blocker comment added with failure details
 
-## Differences from /data-review
+## Differences from /data review
 
-| Aspect | /data-gate | /data-review |
+| Aspect | /data gate | /data review |
 |--------|------------|--------------|
 | Output | Binary PASS/FAIL | Detailed report with all severities |
 | Severity | FAIL only | FAIL + WARN + INFO |
@@ -95,7 +96,7 @@ This command is automatically invoked by the projman orchestrator when:
 - **Quick validation**: Fast pass/fail without full report
 - **Pre-merge checks**: Verify data changes before integration
 
-For detailed findings including warnings and suggestions, use `/data-review` instead.
+For detailed findings including warnings and suggestions, use `/data review` instead.
 
 ## Requirements
 

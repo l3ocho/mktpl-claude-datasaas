@@ -16,11 +16,11 @@ PreToolUse hooks scan all code changes for:
 Critical issues are blocked. Warnings are noted but allowed.
 
 ### Commands
-- `/security-scan` - Full project security audit
-- `/refactor <target>` - Apply refactoring pattern
-- `/refactor-dry <target>` - Preview refactoring opportunities
+- `/sentinel scan` - Full project security audit
+- `/sentinel refactor <target>` - Apply refactoring pattern
+- `/sentinel refactor-dry <target>` - Preview refactoring opportunities
 
 ### Severity Levels
-- 🔴 Critical: Must fix immediately
-- 🟠 High: Fix before release
-- 🟡 Medium: Improve when possible
+- Critical: Must fix immediately
+- High: Fix before release
+- Medium: Improve when possible

@@ -1,0 +1,25 @@
+{
+  "name": "data-seed",
+  "version": "1.0.0",
+  "description": "Test data generation and database seeding with reproducible profiles",
+  "author": {
+    "name": "Leo Miranda",
+    "email": "leobmiranda@gmail.com"
+  },
+  "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/data-seed/README.md",
+  "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
+  "license": "MIT",
+  "keywords": [
+    "test-data",
+    "seeding",
+    "faker",
+    "fixtures",
+    "schema",
+    "database",
+    "reproducible"
+  ],
+  "commands": [
+    "./commands/"
+  ],
+  "domain": "data"
+}

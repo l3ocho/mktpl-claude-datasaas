@@ -38,7 +38,7 @@ cd ~/.claude/plugins/marketplaces/leo-claude-mktplace && ./scripts/setup.sh
 
 ## What the Post-Update Script Does
 
-1. **Updates Python dependencies** for MCP servers (gitea, netbox)
+1. **Updates Python dependencies** for all 5 MCP servers (gitea, netbox, data-platform, viz-platform, contract-validator)
 2. **Shows recent changelog entries** so you know what changed
 3. **Validates your configuration** is still compatible
 
@@ -48,7 +48,7 @@ cd ~/.claude/plugins/marketplaces/leo-claude-mktplace && ./scripts/setup.sh
 
 ### When to Re-run Setup
 
-You typically **don't need** to re-run setup after updates. However, re-run your plugin's setup command (e.g., `/pm-setup`, `/pr-setup`, `/cmdb-setup`) if:
+You typically **don't need** to re-run setup after updates. However, re-run your plugin's setup command (e.g., `/projman setup`, `/pr setup`, `/cmdb setup`) if:
 
 - Changelog mentions **new required environment variables**
 - Changelog mentions **breaking changes** to configuration
@@ -59,7 +59,7 @@ You typically **don't need** to re-run setup after updates. However, re-run your
 If an update requires new project-level configuration:
 
 ```
-/project-init
+/pr init
 ```
 
 This will detect existing settings and only add what's missing.
@@ -98,8 +98,8 @@ When updating, review if changes affect the setup workflow:
 1. **Check for setup command changes:**
    ```bash
    git diff HEAD~1 plugins/*/commands/*-setup.md
-   git diff HEAD~1 plugins/*/commands/project-init.md
-   git diff HEAD~1 plugins/*/commands/project-sync.md
+   git diff HEAD~1 plugins/*/commands/pr-init.md
+   git diff HEAD~1 plugins/*/commands/pr-sync.md
    ```
 
 2. **Check for hook changes:**
@@ -114,7 +114,7 @@ When updating, review if changes affect the setup workflow:
 
 **If setup commands changed:**
 - Review what's new (new validation steps, new prompts, etc.)
-- Consider re-running your plugin's setup command or `/project-init` to benefit from improvements
+- Consider re-running your plugin's setup command or `/pr init` to benefit from improvements
 - Existing configurations remain valid unless changelog notes breaking changes
 
 **If hooks changed:**
@@ -123,7 +123,7 @@ When updating, review if changes affect the setup workflow:
 
 **If configuration structure changed:**
 - Check if new variables are required
-- Run `/project-sync` if repository detection logic improved
+- Run `/pr sync` if repository detection logic improved
 
 ---
 
@@ -142,7 +142,7 @@ deactivate
 ### Configuration no longer works
 
 1. Check CHANGELOG.md for breaking changes
-2. Run your plugin's setup command (e.g., `/pm-setup`) to re-validate and fix configuration
+2. Run your plugin's setup command (e.g., `/projman setup`) to re-validate and fix configuration
 3. Compare your config files with documentation in `docs/CONFIGURATION.md`
 
 ### MCP server won't start after update
@@ -157,10 +157,11 @@ cd ~/.claude/plugins/marketplaces/leo-claude-mktplace && ./scripts/setup.sh
 If that doesn't work:
 
 1. Check Python version: `python3 --version` (requires 3.10+)
-2. Verify venv exists in INSTALLED location:
+2. Verify venvs exist in INSTALLED location:
    ```bash
-   ls ~/.claude/plugins/marketplaces/leo-claude-mktplace/mcp-servers/gitea/.venv
-   ls ~/.claude/plugins/marketplaces/leo-claude-mktplace/mcp-servers/netbox/.venv
+   for server in gitea netbox data-platform viz-platform contract-validator; do
+     ls ~/.claude/plugins/marketplaces/leo-claude-mktplace/mcp-servers/$server/.venv && echo "$server: OK" || echo "$server: MISSING"
+   done
    ```
 3. If missing, run setup.sh as shown above.
 4. Restart Claude Code session

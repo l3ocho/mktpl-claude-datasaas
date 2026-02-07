@@ -18,8 +18,8 @@ This project uses the clarity-assist plugin for requirement gathering.
 
 | Command | Use Case |
 |---------|----------|
-| `/clarify` | Full 4-D methodology for complex requests |
-| `/quick-clarify` | Rapid mode for simple disambiguation |
+| `/clarity clarify` | Full 4-D methodology for complex requests |
+| `/clarity quick-clarify` | Rapid mode for simple disambiguation |
 
 ### Communication Style
 

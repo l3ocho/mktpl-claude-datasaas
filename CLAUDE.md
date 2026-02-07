@@ -128,43 +128,59 @@ These plugins exist in source but are **NOT relevant** to this project's workflo
 | **data-platform** | For data engineering projects (pandas, PostgreSQL, dbt) |
 | **viz-platform** | For dashboard projects (Dash, Plotly) |
 | **cmdb-assistant** | For infrastructure projects (NetBox) |
+| **saas-api-platform** | For REST/GraphQL API projects (FastAPI, Express) |
+| **saas-db-migrate** | For database migration projects (Alembic, Prisma) |
+| **saas-react-platform** | For React frontend projects (Next.js, Vite) |
+| **saas-test-pilot** | For test automation projects (pytest, Jest, Playwright) |
+| **data-seed** | For test data generation and seeding |
+| **ops-release-manager** | For release management workflows |
+| **ops-deploy-pipeline** | For deployment pipeline management |
+| **debug-mcp** | For MCP server debugging and development |
 
-**Do NOT suggest** `/data-ingest`, `/data-profile`, `/viz-chart`, `/cmdb-*` commands - they don't apply here.
+**Do NOT suggest** `/data ingest`, `/data profile`, `/viz chart`, `/cmdb *`, `/api *`, `/db-migrate *`, `/react *`, `/test *`, `/seed *`, `/release *`, `/deploy *`, `/debug-mcp *` commands - they don't apply here.
 
 ### Key Distinction
 
 | Context | Path | What To Do |
 |---------|------|------------|
 | **Editing plugin source** | `~/claude-plugins-work/plugins/` | Modify code, add features |
-| **Using installed plugins** | `~/.claude/plugins/marketplaces/` | Run commands like `/sprint-plan` |
+| **Using installed plugins** | `~/.claude/plugins/marketplaces/` | Run commands like `/sprint plan` |
 
-When user says "run /sprint-plan", use the INSTALLED plugin.
-When user says "fix the sprint-plan command", edit the SOURCE code.
+When user says "run /sprint plan", use the INSTALLED plugin.
+When user says "fix the sprint plan command", edit the SOURCE code.
 
 ---
 
 ## Project Overview
 
 **Repository:** leo-claude-mktplace
-**Version:** 7.0.0
+**Version:** 9.1.1
 **Status:** Production Ready
 
 A plugin marketplace for Claude Code containing:
 
 | Plugin | Description | Version |
 |--------|-------------|---------|
-| `projman` | Sprint planning and project management with Gitea integration | 3.3.0 |
-| `git-flow` | Git workflow automation with smart commits and branch management | 1.0.0 |
-| `pr-review` | Multi-agent PR review with confidence scoring | 1.1.0 |
-| `clarity-assist` | Prompt optimization with ND-friendly accommodations | 1.0.0 |
-| `doc-guardian` | Automatic documentation drift detection and synchronization | 1.0.0 |
-| `code-sentinel` | Security scanning and code refactoring tools | 1.0.1 |
-| `claude-config-maintainer` | CLAUDE.md optimization and maintenance | 1.0.0 |
-| `cmdb-assistant` | NetBox CMDB integration for infrastructure management | 1.2.0 |
-| `data-platform` | pandas, PostgreSQL, and dbt integration for data engineering | 1.3.0 |
-| `viz-platform` | DMC validation, Plotly charts, and theming for dashboards | 1.1.0 |
-| `contract-validator` | Cross-plugin compatibility validation and agent verification | 1.1.0 |
-| `project-hygiene` | Post-task cleanup automation via hooks | 0.1.0 |
+| `projman` | Sprint planning and project management with Gitea integration | 9.0.1 |
+| `git-flow` | Git workflow automation with smart commits and branch management | 9.0.1 |
+| `pr-review` | Multi-agent PR review with confidence scoring | 9.0.1 |
+| `clarity-assist` | Prompt optimization with ND-friendly accommodations | 9.0.1 |
+| `doc-guardian` | Automatic documentation drift detection and synchronization | 9.0.1 |
+| `code-sentinel` | Security scanning and code refactoring tools | 9.0.1 |
+| `claude-config-maintainer` | CLAUDE.md optimization and maintenance | 9.0.1 |
+| `cmdb-assistant` | NetBox CMDB integration for infrastructure management | 9.0.1 |
+| `data-platform` | pandas, PostgreSQL, and dbt integration for data engineering | 9.0.1 |
+| `viz-platform` | DMC validation, Plotly charts, and theming for dashboards | 9.0.1 |
+| `contract-validator` | Cross-plugin compatibility validation and agent verification | 9.0.1 |
+| `project-hygiene` | Manual project hygiene checks | 9.0.1 |
+| `saas-api-platform` | REST/GraphQL API scaffolding for FastAPI and Express | 0.1.0 |
+| `saas-db-migrate` | Database migration management for Alembic, Prisma, raw SQL | 0.1.0 |
+| `saas-react-platform` | React frontend toolkit for Next.js and Vite | 0.1.0 |
+| `saas-test-pilot` | Test automation for pytest, Jest, Vitest, Playwright | 0.1.0 |
+| `data-seed` | Test data generation and database seeding | 0.1.0 |
+| `ops-release-manager` | Release management with SemVer and changelog automation | 0.1.0 |
+| `ops-deploy-pipeline` | Deployment pipeline for Docker Compose and systemd | 0.1.0 |
+| `debug-mcp` | MCP server debugging and development toolkit | 0.1.0 |
 
 ## Quick Start
 
@@ -180,16 +196,18 @@ A plugin marketplace for Claude Code containing:
 
 | Category | Commands |
 |----------|----------|
-| **Setup** | `/pm-setup` (modes: `--full`, `--quick`, `--sync`) |
-| **Sprint** | `/sprint-plan`, `/sprint-start`, `/sprint-status` (with `--diagram`), `/sprint-close` |
-| **Quality** | `/pm-review`, `/pm-test` (modes: `run`, `gen`) |
-| **Versioning** | `/suggest-version` |
-| **PR Review** | `/pr-review`, `/pr-summary`, `/pr-findings`, `/pr-diff` |
-| **Docs** | `/doc-audit`, `/doc-sync`, `/changelog-gen`, `/doc-coverage`, `/stale-docs` |
-| **Security** | `/security-scan`, `/refactor`, `/refactor-dry` |
-| **Config** | `/config-analyze`, `/config-optimize`, `/config-diff`, `/config-lint` |
-| **Validation** | `/validate-contracts`, `/check-agent`, `/list-interfaces`, `/dependency-graph` |
-| **Debug** | `/pm-debug` (modes: `report`, `review`) |
+| **Setup** | `/projman setup` (modes: `--full`, `--quick`, `--sync`) |
+| **Sprint** | `/sprint plan`, `/sprint start`, `/sprint status` (with `--diagram`), `/sprint close` |
+| **Quality** | `/sprint review`, `/sprint test` (modes: `run`, `gen`) |
+| **Project** | `/project initiation`, `/project plan`, `/project status`, `/project close` |
+| **ADR** | `/adr create`, `/adr list`, `/adr update`, `/adr supersede` |
+| **RFC** | `/rfc create`, `/rfc list`, `/rfc review`, `/rfc approve`, `/rfc reject` |
+| **PR Review** | `/pr review`, `/pr summary`, `/pr findings`, `/pr diff` |
+| **Docs** | `/doc audit`, `/doc sync`, `/doc changelog-gen`, `/doc coverage`, `/doc stale-docs` |
+| **Security** | `/sentinel scan`, `/sentinel refactor`, `/sentinel refactor-dry` |
+| **Config** | `/claude-config analyze`, `/claude-config optimize`, `/claude-config diff`, `/claude-config lint` |
+| **Validation** | `/cv validate`, `/cv check-agent`, `/cv list-interfaces`, `/cv dependency-graph`, `/cv status` |
+| **Maintenance** | `/hygiene check` |
 
 ### Plugin Commands - NOT RELEVANT to This Project
 
@@ -197,67 +215,82 @@ These commands are being developed but don't apply to this project's workflow:
 
 | Category | Commands | For Projects Using |
 |----------|----------|-------------------|
-| **Data** | `/data-ingest`, `/data-profile`, `/data-schema`, `/data-lineage`, `/dbt-test` | pandas, PostgreSQL, dbt |
-| **Visualization** | `/viz-component`, `/viz-chart`, `/viz-dashboard`, `/viz-theme` | Dash, Plotly dashboards |
-| **CMDB** | `/cmdb-search`, `/cmdb-device`, `/cmdb-sync` | NetBox infrastructure |
+| **Data** | `/data ingest`, `/data profile`, `/data schema`, `/data lineage`, `/data dbt-test` | pandas, PostgreSQL, dbt |
+| **Visualization** | `/viz component`, `/viz chart`, `/viz dashboard`, `/viz theme` | Dash, Plotly dashboards |
+| **CMDB** | `/cmdb search`, `/cmdb device`, `/cmdb sync` | NetBox infrastructure |
+| **API** | `/api scaffold`, `/api validate`, `/api docs`, `/api middleware` | FastAPI, Express |
+| **DB Migrate** | `/db-migrate generate`, `/db-migrate validate`, `/db-migrate plan` | Alembic, Prisma |
+| **React** | `/react component`, `/react route`, `/react state`, `/react hook` | Next.js, Vite |
+| **Testing** | `/test generate`, `/test coverage`, `/test fixtures`, `/test e2e` | pytest, Jest, Playwright |
+| **Seeding** | `/seed generate`, `/seed profile`, `/seed apply` | Faker, test data |
+| **Release** | `/release prepare`, `/release validate`, `/release tag` | SemVer releases |
+| **Deploy** | `/deploy generate`, `/deploy validate`, `/deploy check` | Docker Compose, systemd |
+| **Debug MCP** | `/debug-mcp status`, `/debug-mcp test`, `/debug-mcp logs` | MCP server development |
 
 ## Repository Structure
 
 ```
 leo-claude-mktplace/
-├── .claude-plugin/
-│   └── marketplace.json          # Marketplace manifest
+├── .claude-plugin/                # Marketplace manifest
+│   ├── marketplace.json
+│   ├── marketplace-lean.json      # Lean profile (6 core plugins)
+│   └── marketplace-full.json      # Full profile (all plugins)
 ├── .mcp.json                     # MCP server configuration (all servers)
 ├── mcp-servers/                  # SHARED MCP servers
-│   ├── gitea/                    # Gitea MCP (issues, PRs, wiki)
-│   ├── netbox/                   # NetBox MCP (CMDB)
+│   ├── gitea/                    # Gitea (issues, PRs, wiki)
+│   ├── netbox/                   # NetBox (DCIM, IPAM)
 │   ├── data-platform/            # pandas, PostgreSQL, dbt
-│   ├── viz-platform/             # DMC validation, charts, themes
+│   ├── viz-platform/             # DMC, Plotly, theming
 │   └── contract-validator/       # Plugin compatibility validation
-├── plugins/
-│   ├── projman/                  # Sprint management
+├── plugins/                      # All plugins (20 total)
+│   ├── projman/                  # [core] Sprint management
 │   │   ├── .claude-plugin/plugin.json
-│   │   ├── commands/             # 12 commands
-│   │   ├── hooks/                # SessionStart: mismatch detection
+│   │   ├── commands/             # 19 commands
 │   │   ├── agents/               # 4 agents
-│   │   └── skills/               # 17 reusable skill files
-│   ├── git-flow/                 # Git workflow automation
-│   │   ├── .claude-plugin/plugin.json
-│   │   ├── commands/             # 8 commands
-│   │   └── agents/
-│   ├── pr-review/                # Multi-agent PR review
-│   │   ├── .claude-plugin/plugin.json
-│   │   ├── commands/             # 6 commands
-│   │   ├── hooks/                # SessionStart mismatch detection
-│   │   └── agents/               # 5 agents
-│   ├── clarity-assist/           # Prompt optimization
-│   │   ├── .claude-plugin/plugin.json
-│   │   ├── commands/             # 2 commands
-│   │   └── agents/
-│   ├── data-platform/            # Data engineering
-│   │   ├── .claude-plugin/plugin.json
-│   │   ├── commands/             # 7 commands
-│   │   ├── hooks/                # SessionStart PostgreSQL check
-│   │   └── agents/               # 2 agents
-│   ├── viz-platform/             # Visualization
-│   │   ├── .claude-plugin/plugin.json
-│   │   ├── commands/             # 7 commands
-│   │   ├── hooks/                # SessionStart DMC check
-│   │   └── agents/               # 3 agents
-│   ├── doc-guardian/             # Documentation drift detection
-│   ├── code-sentinel/            # Security scanning & refactoring
-│   ├── claude-config-maintainer/
-│   ├── cmdb-assistant/
-│   ├── contract-validator/
-│   └── project-hygiene/
-├── scripts/
-│   ├── setup.sh, post-update.sh
+│   │   └── skills/               # 23 reusable skill files
+│   ├── git-flow/                 # [core] Git workflow automation
+│   ├── pr-review/                # [core] PR review
+│   ├── clarity-assist/           # [core] Prompt optimization
+│   ├── doc-guardian/             # [core] Documentation drift detection
+│   ├── code-sentinel/            # [core] Security scanning
+│   ├── claude-config-maintainer/ # [core] CLAUDE.md optimization
+│   ├── contract-validator/       # [core] Cross-plugin validation
+│   ├── project-hygiene/          # [core] Manual cleanup checks
+│   ├── cmdb-assistant/           # [ops] NetBox CMDB integration
+│   ├── data-platform/            # [data] Data engineering
+│   ├── viz-platform/             # [data] Visualization
+│   ├── data-seed/                # [data] Test data generation (scaffold)
+│   ├── saas-api-platform/        # [saas] API scaffolding (scaffold)
+│   ├── saas-db-migrate/          # [saas] DB migrations (scaffold)
+│   ├── saas-react-platform/      # [saas] React toolkit (scaffold)
+│   ├── saas-test-pilot/          # [saas] Test automation (scaffold)
+│   ├── ops-release-manager/      # [ops] Release management (scaffold)
+│   ├── ops-deploy-pipeline/      # [ops] Deployment pipeline (scaffold)
+│   └── debug-mcp/                # [debug] MCP debugging (scaffold)
+├── scripts/                      # Setup and maintenance
+│   ├── setup.sh                  # Initial setup (create venvs, config)
+│   ├── post-update.sh            # Post-update (clear cache, changelog)
+│   ├── setup-venvs.sh            # MCP server venv management (cache-based)
 │   ├── validate-marketplace.sh   # Marketplace compliance validation
-│   ├── verify-hooks.sh           # Verify all hooks are command type
-│   └── check-venv.sh             # Check MCP server venvs exist
-└── docs/
-    ├── CANONICAL-PATHS.md        # Single source of truth for paths
-    └── CONFIGURATION.md          # Centralized configuration guide
+│   ├── verify-hooks.sh           # Hook inventory verification
+│   ├── release.sh                # Release automation with version bumping
+│   ├── claude-launch.sh          # Profile-based launcher
+│   ├── install-plugin.sh         # Install plugin to consumer project
+│   ├── list-installed.sh         # Show installed plugins in a project
+│   └── uninstall-plugin.sh       # Remove plugin from consumer project
+├── docs/                         # Documentation
+│   ├── ARCHITECTURE.md           # System architecture & plugin reference
+│   ├── CANONICAL-PATHS.md        # Authoritative path reference
+│   ├── COMMANDS-CHEATSHEET.md    # All commands quick reference
+│   ├── CONFIGURATION.md          # Centralized setup guide
+│   ├── DEBUGGING-CHECKLIST.md    # Systematic troubleshooting guide
+│   ├── MIGRATION-v9.md           # v8.x to v9.0.0 migration guide
+│   └── UPDATING.md               # Update guide
+├── CLAUDE.md                      # Project instructions for Claude Code
+├── README.md
+├── CHANGELOG.md
+├── LICENSE
+└── .gitignore
 ```
 
 ## Architecture
@@ -366,17 +399,17 @@ Wiki-based Request for Comments system for tracking feature ideas from proposal 
 **Lifecycle:** Draft → Review → Approved → Implementing → Implemented
 
 **Integration with Sprint Planning:**
-- `/sprint-plan` detects approved RFCs and offers selection
-- `/sprint-close` updates RFC status on completion
+- `/sprint plan` detects approved RFCs and offers selection
+- `/sprint close` updates RFC status on completion
 
 ## Label Taxonomy
 
-43 labels total: 27 organization + 16 repository
+58 labels total: 31 organization + 27 repository
 
-**Organization:** Agent/2, Complexity/3, Efforts/5, Priority/4, Risk/3, Source/4, Type/6
-**Repository:** Component/9, Tech/7
+**Organization:** Agent/2, Complexity/3, Efforts/5, Priority/4, Risk/3, Source/4, Status/4, Type/6
+**Repository:** Component/9, Tech/7, Domain/2, Epic/5, RnD/4
 
-Sync with `/labels-sync` command.
+Sync with `/labels sync` command.
 
 ## Lessons Learned System
 
@@ -391,12 +424,33 @@ Stored in Gitea Wiki under `lessons-learned/sprints/`.
 
 ### Adding a New Plugin
 
-1. Create `plugins/{name}/.claude-plugin/plugin.json`
-2. Add entry to `.claude-plugin/marketplace.json` with category, tags, license
+1. Create `plugins/{name}/.claude-plugin/plugin.json` — must include `"domain"` field (`core`, `data`, `saas`, `ops`, or `debug`)
+2. Add entry to `.claude-plugin/marketplace.json` with category, tags, license, and `"domain"` field (must match plugin.json)
 3. Create `claude-md-integration.md`
 4. If using new MCP server, add to root `mcp-servers/` and update `.mcp.json`
-5. Run `./scripts/validate-marketplace.sh`
+5. Run `./scripts/validate-marketplace.sh` — rejects plugins without valid `domain` field
 6. Update `CHANGELOG.md`
+
+**Domain field is required (v8.0.0+):**
+```json
+{
+  "name": "plugin-name",
+  "domain": "core",
+  ...
+}
+```
+
+**Naming convention:** New plugins use domain prefix (`saas-*`, `ops-*`, `data-*`, `debug-*`). Core plugins have no prefix.
+
+### Domain Assignments
+
+| Domain | Plugins |
+|--------|---------|
+| `core` | projman, git-flow, pr-review, code-sentinel, doc-guardian, clarity-assist, contract-validator, claude-config-maintainer, project-hygiene |
+| `data` | data-platform, viz-platform, data-seed |
+| `saas` | saas-api-platform, saas-db-migrate, saas-react-platform, saas-test-pilot |
+| `ops` | cmdb-assistant, ops-release-manager, ops-deploy-pipeline |
+| `debug` | debug-mcp |
 
 ### Adding a Command to projman
 
@@ -422,10 +476,12 @@ Stored in Gitea Wiki under `lessons-learned/sprints/`.
 
 | Document | Purpose |
 |----------|---------|
+| `docs/ARCHITECTURE.md` | System architecture and plugin reference |
 | `docs/CANONICAL-PATHS.md` | **Single source of truth** for paths |
 | `docs/COMMANDS-CHEATSHEET.md` | All commands quick reference |
 | `docs/CONFIGURATION.md` | Centralized setup guide |
 | `docs/DEBUGGING-CHECKLIST.md` | Systematic troubleshooting guide |
+| `docs/MIGRATION-v9.md` | v8.x to v9.0.0 migration guide |
 | `docs/UPDATING.md` | Update guide for the marketplace |
 | `plugins/projman/CONFIGURATION.md` | Projman quick reference (links to central) |
 
@@ -449,12 +505,12 @@ See `docs/DEBUGGING-CHECKLIST.md` for systematic troubleshooting.
 | Symptom | Likely Cause | Fix |
 |---------|--------------|-----|
 | "X MCP servers failed" | Missing venv in installed path | `cd ~/.claude/plugins/marketplaces/leo-claude-mktplace && ./scripts/setup.sh` |
-| MCP tools not available | Venv missing or .mcp.json misconfigured | Run `/pm-debug report` to diagnose |
+| MCP tools not available | Venv missing or .mcp.json misconfigured | Run `/cv status` to diagnose |
 | Changes not taking effect | Editing source, not installed | Reinstall plugin or edit installed path |
 
-**Debug Commands:**
-- `/pm-debug report` - Run full diagnostics, create issue if needed
-- `/pm-debug review` - Investigate and propose fixes
+**Diagnostic Commands:**
+- `/cv status` - Marketplace-wide health check (installation, MCP, configuration)
+- `/hygiene check` - Project file organization and cleanup check
 
 ## Versioning Workflow
 
@@ -508,4 +564,4 @@ The script will:
 
 ---
 
-**Last Updated:** 2026-02-03
+**Last Updated:** 2026-02-07

@@ -13,7 +13,7 @@ Defines structured progress comment format and status label management.
 
 - **Orchestrator agent**: When tracking sprint execution
 - **Executor agent**: When posting progress updates
-- **Commands**: `/sprint-start`, `/sprint-status`
+- **Commands**: `/sprint start`, `/sprint status`
 
 ---
 

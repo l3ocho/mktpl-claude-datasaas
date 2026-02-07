@@ -5,6 +5,6 @@ See **[docs/CONFIGURATION.md](../../docs/CONFIGURATION.md)** for complete setup 
 ## Quick Commands
 
 ```
-/pm-setup --full   # First time on this machine
-/pm-setup --quick  # New project (system already configured)
+/projman setup --full   # First time on this machine
+/projman setup --quick  # New project (system already configured)
 ```

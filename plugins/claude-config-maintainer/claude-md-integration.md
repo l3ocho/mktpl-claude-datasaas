@@ -6,14 +6,14 @@ This project uses the **claude-config-maintainer** plugin to analyze and optimiz
 
 | Command | Description |
 |---------|-------------|
-| `/config-analyze` | Analyze CLAUDE.md for optimization opportunities with 100-point scoring |
-| `/config-optimize` | Automatically optimize CLAUDE.md structure and content |
-| `/config-init` | Initialize a new CLAUDE.md file for a project |
-| `/config-diff` | Track CLAUDE.md changes over time with behavioral impact analysis |
-| `/config-lint` | Lint CLAUDE.md for anti-patterns and best practices (31 rules) |
-| `/config-audit-settings` | Audit settings.local.json permissions with 100-point scoring |
-| `/config-optimize-settings` | Optimize permission patterns and apply named profiles |
-| `/config-permissions-map` | Visual map of review layers and permission coverage |
+| `/claude-config analyze` | Analyze CLAUDE.md for optimization opportunities with 100-point scoring |
+| `/claude-config optimize` | Automatically optimize CLAUDE.md structure and content |
+| `/claude-config init` | Initialize a new CLAUDE.md file for a project |
+| `/claude-config diff` | Track CLAUDE.md changes over time with behavioral impact analysis |
+| `/claude-config lint` | Lint CLAUDE.md for anti-patterns and best practices (31 rules) |
+| `/claude-config audit-settings` | Audit settings.local.json permissions with 100-point scoring |
+| `/claude-config optimize-settings` | Optimize permission patterns and apply named profiles |
+| `/claude-config permissions-map` | Visual map of review layers and permission coverage |
 
 ### CLAUDE.md Scoring System
 
@@ -47,10 +47,10 @@ The settings audit uses a 100-point scoring system across four categories:
 
 ### Usage Guidelines
 
-- Run `/config-analyze` periodically to assess CLAUDE.md quality
-- Run `/config-audit-settings` to check permission efficiency
+- Run `/claude-config analyze` periodically to assess CLAUDE.md quality
+- Run `/claude-config audit-settings` to check permission efficiency
 - Target a score of **70+/100** for effective Claude Code operation
 - Address HIGH priority issues first when optimizing
-- Use `/config-init` when setting up new projects to start with best practices
-- Use `/config-permissions-map` to visualize review layer coverage
+- Use `/claude-config init` when setting up new projects to start with best practices
+- Use `/claude-config permissions-map` to visualize review layer coverage
 - Re-analyze after making changes to verify improvements

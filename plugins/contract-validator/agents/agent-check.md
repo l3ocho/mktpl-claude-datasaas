@@ -91,7 +91,7 @@ You are an agent definition validator. Your role is to verify that a specific ag
 
 ## Example Interaction
 
-**User**: /check-agent Orchestrator
+**User**: /cv check-agent Orchestrator
 
 **Agent**:
 1. Parses CLAUDE.md, finds Orchestrator agent
@@ -101,7 +101,7 @@ You are an agent definition validator. Your role is to verify that a specific ag
 5. Validates data flow: no data producers/consumers used
 6. Reports: "Agent Orchestrator: VALID - all 3 tool references found"
 
-**User**: /check-agent InvalidAgent
+**User**: /cv check-agent InvalidAgent
 
 **Agent**:
 1. Parses CLAUDE.md, agent not found

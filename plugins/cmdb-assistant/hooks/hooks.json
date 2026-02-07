@@ -1,16 +1,5 @@
 {
   "hooks": {
-    "SessionStart": [
-      {
-        "matcher": "",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "${CLAUDE_PLUGIN_ROOT}/hooks/startup-check.sh"
-          }
-        ]
-      }
-    ],
     "PreToolUse": [
       {
         "matcher": "mcp__plugin_cmdb-assistant_netbox__virt_create|mcp__plugin_cmdb-assistant_netbox__virt_update|mcp__plugin_cmdb-assistant_netbox__dcim_create|mcp__plugin_cmdb-assistant_netbox__dcim_update",

@@ -119,7 +119,7 @@ Track gathered information in a mental model:
 
 ### After Clarification
 
-Produce a clear specification (see /clarify command for format).
+Produce a clear specification (see /clarity clarify command for format).
 
 ## Example Session
 

@@ -6,15 +6,183 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+## [9.1.1] - 2026-02-07
+
+### Changed
+
+- README.md fully rewritten — clean structure with plugins grouped by domain, accurate structure tree, all 10 scripts, all 7 docs
+- CLAUDE.md structure tree updated to match README (was showing only 12 plugins, 3 scripts, 2 docs)
+- doc-guardian `/doc sync` and `sync-workflow.md` updated to remove stale `.doc-guardian-queue` references (queue file deleted in v8.1.0)
+
+### Removed
+
+- `scripts/check-venv.sh` — dead code designed for SessionStart hooks that were never implemented; functionality covered by `setup-venvs.sh`
+
+## [9.1.0] - 2026-02-07
+
+### Added
+
+- `docs/ARCHITECTURE.md` — Consolidated architecture document covering all 20 plugins, 5 MCP servers, hook inventory, agent model, launch profiles, and per-plugin command reference
+
+### Changed
+
+- All 12 original plugin versions bumped to 9.0.1 in both `plugin.json` and `marketplace.json` (were at various pre-9.x versions)
+- `project-hygiene` description updated from "Post-task cleanup hook" to "Manual project hygiene checks" in both manifests; removed "hooks" and "automation" keywords
+- `CANONICAL-PATHS.md` refreshed for v9.1.0: added Phase 3 plugins, added ARCHITECTURE.md and MIGRATION-v9.md, removed stale hooks/ dirs, updated Domain table
+- `UPDATING.md` updated with all 5 MCP servers
+- `COMMANDS-CHEATSHEET.md` expanded /rfc, /project, /adr to individual rows per sub-command
+- `README.md` documentation table and structure tree updated; command rows normalized; project-hygiene description corrected
+- `CLAUDE.md` documentation index updated with ARCHITECTURE.md and MIGRATION-v9.md; plugin version table updated; /rfc, /project, /adr commands expanded
+
+### Removed
+
+- `.doc-guardian-queue` — orphan file from deleted PostToolUse hook
+- `.claude/backups/CLAUDE.md.2026-01-22_132037` — v3.0.1 backup, superseded by git history
+- `scripts/switch-profile.sh` — deprecated in favor of `claude-launch.sh`
+- `docs/architecture/` — stale pre-v3.0.0 Draw.io specs (replaced by `docs/ARCHITECTURE.md`)
+- `docs/designs/` — Phase 3 design specs (implemented as plugin scaffolds, now redundant)
+- `docs/prompts/` — moved to Gitea Wiki
+
+## [9.0.1] - 2026-02-06
+
+### Fixed
+
+- **claude-config-maintainer:** `claude-config-audit-settings.md` Step 4 referenced deleted hooks.json files (doc-guardian, project-hygiene, data-platform, contract-validator) — updated to current hook inventory (code-sentinel, git-flow, cmdb-assistant, clarity-assist)
+- **claude-config-maintainer:** `maintainer.md` agent referenced project-hygiene PostToolUse hooks — updated to current hook types
+- **claude-config-maintainer:** `claude-config-audit-settings.md` output format referenced doc-guardian review layer — updated to git-flow, cmdb-assistant, clarity-assist
+- **claude-config-maintainer:** `claude-config-audit-settings.md` Mermaid diagram referenced doc-guardian — updated to git-flow
+- **claude-config-maintainer:** `claude-config-optimize-settings.md` reviewed profile prerequisites referenced doc-guardian PostToolUse — updated to git-flow PreToolUse
+- **project-hygiene:** `claude-md-integration.md` described PostToolUse hook behavior that was removed in v8.1.0 — rewritten for manual `/hygiene check` command
+- **doc-guardian:** `doc-sync.md` referenced doc-guardian hooks — updated to reference `/doc audit`
+- **doc-guardian:** `sync-workflow.md` referenced PostToolUse hook — updated to note removal per Decision #29
+- **projman:** `task-sizing.md` example referenced PostToolUse — updated to PreToolUse
+- **docs:** `MIGRATION-v9.md` listed `/pm-debug`, `/suggest-version`, `/proposal-status` as renamed to `/projman` sub-commands — corrected to show as **Removed** (these were deleted in v8.1.0, not renamed in v9.0.0)
+- **docs:** `CONFIGURATION.md` listed doc-guardian as "Commands and hooks only" — corrected to "Commands only"
+- **scripts:** `setup.sh` referenced old `/labels-sync` command — updated to `/labels sync`
+
+## [9.0.0] - 2026-02-06
+
+### Added
+
+- **Phase 3: 8 new plugin scaffolds**
+  - `saas-api-platform` (domain: saas) — REST/GraphQL API scaffolding for FastAPI and Express. 6 commands, 2 agents, 5 skills
+  - `saas-db-migrate` (domain: saas) — Database migration management for Alembic, Prisma, and raw SQL. 6 commands, 2 agents, 5 skills
+  - `saas-react-platform` (domain: saas) — React frontend toolkit for Next.js and Vite projects. 6 commands, 2 agents, 6 skills
+  - `saas-test-pilot` (domain: saas) — Test automation for pytest, Jest, Vitest, and Playwright. 6 commands, 2 agents, 6 skills
+  - `data-seed` (domain: data) — Test data generation and database seeding. 5 commands, 2 agents, 5 skills
+  - `ops-release-manager` (domain: ops) — Release management with SemVer, changelogs, and tag automation. 6 commands, 2 agents, 5 skills
+  - `ops-deploy-pipeline` (domain: ops) — CI/CD deployment pipeline for Docker Compose and systemd. 6 commands, 2 agents, 6 skills
+  - `debug-mcp` (domain: debug) — MCP server debugging, inspection, and development toolkit. 5 commands, 1 agent, 5 skills
+- 8 design documents in `docs/designs/` for all new plugins
+
+---
+
+## [9.0.0] - 2026-02-06
+
+### BREAKING CHANGES
+
+#### Command Consolidation (v9.0.0)
+
+All commands renamed to `/<noun> <action>` sub-command pattern. Every command across all 12 plugins now follows this convention. See [MIGRATION-v9.md](./docs/MIGRATION-v9.md) for the complete old-to-new mapping.
+
+**Key changes:**
+- **projman:** `/sprint-plan` → `/sprint plan`, `/pm-setup` → `/projman setup`, `/pm-review` → `/sprint review`, `/pm-test` → `/sprint test`, `/labels-sync` → `/labels sync`
+- **git-flow:** 8→5 commands. `/git-commit` → `/gitflow commit`. Three commit variants (`-push`, `-merge`, `-sync`) consolidated into `--push`/`--merge`/`--sync` flags. `/branch-start` → `/gitflow branch-start`, `/git-status` → `/gitflow status`, `/git-config` → `/gitflow config`
+- **pr-review:** `/pr-review` → `/pr review`, `/project-init` → `/pr init`, `/project-sync` → `/pr sync`
+- **clarity-assist:** `/clarify` → `/clarity clarify`, `/quick-clarify` → `/clarity quick-clarify`
+- **doc-guardian:** `/doc-audit` → `/doc audit`, `/changelog-gen` → `/doc changelog-gen`, `/stale-docs` → `/doc stale-docs`
+- **code-sentinel:** `/security-scan` → `/sentinel scan`, `/refactor` → `/sentinel refactor`
+- **claude-config-maintainer:** `/config-analyze` → `/claude-config analyze` (all 8 commands prefixed)
+- **contract-validator:** `/validate-contracts` → `/cv validate`, `/check-agent` → `/cv check-agent`
+- **cmdb-assistant:** `/cmdb-search` → `/cmdb search`, `/change-audit` → `/cmdb change-audit`, `/ip-conflicts` → `/cmdb ip-conflicts`
+- **data-platform:** `/data-ingest` → `/data ingest`, `/dbt-test` → `/data dbt-test`, `/lineage-viz` → `/data lineage-viz`
+- **viz-platform:** `/accessibility-check` → `/viz accessibility-check`, `/design-gate` → `/viz design-gate`, `/design-review` → `/viz design-review`
+
+### Added
+
+- Dispatch files for all 12 plugins — each plugin now has a `<noun>.md` routing table listing all sub-commands
+- `name:` frontmatter field added to all command files for sub-command resolution
+- `docs/MIGRATION-v9.md` — Complete old-to-new command mapping for consumer migration
+- `docs/COMMANDS-CHEATSHEET.md` — Full rewrite with v9.0.0 command names
+
+### Changed
+
+- All documentation updated with new command names: CLAUDE.md, README.md, CONFIGURATION.md, UPDATING.md, agent-workflow.spec.md, netbox/README.md
+- All cross-plugin references updated (skills, agents, integration files)
+- `marketplace.json` version bumped to 9.0.0
+
+---
+
+## [8.1.0] - 2026-02-06
+
+### BREAKING CHANGES
+
+#### Hook Migration (v8.1.0)
+
+All `SessionStart` and `PostToolUse` hooks removed. Only `PreToolUse` safety hooks and `UserPromptSubmit` quality hooks remain. Plugins that relied on automatic startup checks or post-write automation must use manual commands instead.
+
+### Added
+
+- **projman:** 7 new skills — `source-analysis`, `project-charter`, `adr-conventions`, `epic-conventions`, `wbs`, `risk-register`, `sprint-roadmap`
+- **projman:** `/project` command family — `initiation`, `plan`, `status`, `close` for full project lifecycle management
+- **projman:** `/adr` command family — `create`, `list`, `update`, `supersede` for Architecture Decision Records
+- **projman:** Expanded `wiki-conventions.md` with dependency headers, R&D notes, page naming patterns
+- **projman:** Epic/* labels (5) and RnD/* labels (4) added to label taxonomy
+- **project-hygiene:** `/hygiene check` manual command replacing PostToolUse hook
+- **contract-validator:** `/cv status` marketplace-wide health check command
+
+### Changed
+
+- `verify-hooks.sh` rewritten to validate post-migration hook inventory (4 plugins, 5 hooks)
+- `config-permissions-map.md` updated to reflect reduced hook inventory
+- `settings-optimization.md` updated for current hook landscape
+- `sprint-plan.md` no longer loads `token-budget-report.md` skill
+- `sprint-close.md` loads `rfc-workflow.md` conditionally; manual CHANGELOG review replaces `/suggest-version`
+- `planner.md` and `orchestrator.md` no longer reference domain consultation or domain gates
+- Label taxonomy updated from 43 to 58 labels (added Status/4, Domain/2, Epic/5, RnD/4)
+
+### Removed
+
+- **hooks:** 8 hooks.json files deleted (projman, pr-review, doc-guardian, project-hygiene, claude-config-maintainer, viz-platform, data-platform, contract-validator SessionStart/PostToolUse hooks)
+- **hooks:** Orphaned shell scripts deleted (startup-check.sh, notify.sh, cleanup.sh, enforce-rules.sh, schema-diff-check.sh, auto-validate.sh, breaking-change-check.sh)
+- **projman:** `/pm-debug`, `/suggest-version`, `/proposal-status` commands deleted
+- **projman:** `domain-consultation.md` skill deleted
+- **cmdb-assistant:** SessionStart hook removed (PreToolUse hook retained)
+
+---
+
+## [8.0.0] - 2026-02-06
+
+### BREAKING CHANGES
+
+#### Domain Metadata Required (v8.0.0)
+
+All plugin manifests now require a `domain` field. `validate-marketplace.sh` rejects plugins without it.
+
+### Added
+
+- **marketplace:** `domain` field added to all 12 `plugin.json` files and all `marketplace.json` entries
+- **marketplace:** Domain validation in `validate-marketplace.sh` — validates presence, allowed values, and cross-file consistency
+- **marketplace:** New launch profiles: `saas`, `ops`, `debug` in `claude-launch.sh`
+- **marketplace:** `data-seed` added to `data` launch profile (forward-looking)
+- **docs:** Domain metadata conventions in `CANONICAL-PATHS.md`
+- **docs:** Domain field requirements in `CLAUDE.md` "Adding a New Plugin" section
+
+### Changed
+
+- `validate-marketplace.sh` now requires `domain` in both `plugin.json` and `marketplace.json` (breaking change for validation pipeline)
+- `claude-launch.sh` profiles expanded: sprint, data, saas, ops, review, debug, full
+
+### Deprecated
+
+- `infra` launch profile — use `ops` instead (auto-redirects with warning)
+
 ### Fixed
 
 - Confirmed projman `metadata.json` exists with gitea MCP mapping
 - Synced `marketplace-full.json` and `marketplace-lean.json` to current version (were stale)
 - Added `metadata.json` validation to `validate-marketplace.sh` — rejects `mcp_servers` in `plugin.json`, verifies MCP server references
 - Updated `CANONICAL-PATHS.md` to current version
-
-### Changed
-
 - Deprecated `switch-profile.sh` in favor of `claude-launch.sh`
 
 ---

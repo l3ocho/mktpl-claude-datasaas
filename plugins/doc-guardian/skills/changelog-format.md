@@ -11,7 +11,7 @@ Defines Keep a Changelog format and how to parse Conventional Commits.
 
 ## When to Use
 
-- **changelog-gen**: Generating changelog entries from commits
+- **doc changelog-gen**: Generating changelog entries from commits
 - **git-flow integration**: Validating commit message format
 
 ---

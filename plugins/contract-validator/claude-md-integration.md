@@ -13,15 +13,15 @@ This marketplace uses the contract-validator plugin for cross-plugin compatibili
 
 | Command | Purpose |
 |---------|---------|
-| `/validate-contracts` | Full marketplace compatibility validation |
-| `/check-agent` | Validate single agent definition |
-| `/list-interfaces` | Show all plugin interfaces |
+| `/cv validate` | Full marketplace compatibility validation |
+| `/cv check-agent` | Validate single agent definition |
+| `/cv list-interfaces` | Show all plugin interfaces |
 
 ### Validation Workflow
 
 Run before merging plugin changes:
 
-1. `/validate-contracts` - Check for conflicts
+1. `/cv validate` - Check for conflicts
 2. Review errors (must fix) and warnings (should review)
 3. Fix issues before merging
 
@@ -91,7 +91,7 @@ Avoid generic names that may conflict:
 | `/setup` | Setup wizard |
 
 # GOOD - Plugin-specific prefix
-| `/data-setup` | Data platform setup wizard |
+| `/data setup` | Data platform setup wizard |
 ```
 
 ### Document All Tools
@@ -125,20 +125,20 @@ This agent uses tools from:
 
 ```
 # Before merging new plugin
-/validate-contracts
+/cv validate
 
 # Check specific agent after changes
-/check-agent Orchestrator
+/cv check-agent Orchestrator
 ```
 
 ### Plugin Development
 
 ```
 # See what interfaces exist
-/list-interfaces
+/cv list-interfaces
 
 # After adding new command, verify no conflicts
-/validate-contracts
+/cv validate
 ```
 
 ### CI/CD Integration
@@ -148,5 +148,5 @@ Add to your pipeline:
 ```yaml
 - name: Validate Plugin Contracts
   run: |
-    claude --skill contract-validator:validate-contracts --args "${{ github.workspace }}"
+    claude --skill contract-validator:cv-validate --args "${{ github.workspace }}"
 ```

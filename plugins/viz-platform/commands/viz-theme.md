@@ -1,8 +1,9 @@
 ---
+name: viz theme
 description: Apply an existing theme to the current context
 ---
 
-# Viz Theme
+# /viz theme
 
 ## Skills to Load
 - skills/mcp-tools-reference.md
@@ -21,7 +22,7 @@ Apply an existing theme to activate its design tokens.
 ## Usage
 
 ```
-/viz-theme {name}
+/viz theme {name}
 ```
 
 ## Arguments
@@ -41,5 +42,5 @@ When activated, new charts/layouts automatically use theme tokens.
 
 ## Related Commands
 
-- `/viz-theme-new {name}` - Create a new theme
-- `/viz-theme-css {name}` - Export theme as CSS
+- `/viz theme-new {name}` - Create a new theme
+- `/viz theme-css {name}` - Export theme as CSS

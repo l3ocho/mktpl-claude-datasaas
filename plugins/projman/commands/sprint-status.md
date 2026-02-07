@@ -1,4 +1,5 @@
 ---
+name: sprint status
 description: Check current sprint progress, identify blockers, optionally generate dependency diagram or token budget report
 ---
 
@@ -22,9 +23,9 @@ Check current sprint progress, identify blockers, and show execution status. Opt
 ## Invocation
 
 ```
-/sprint-status              # Text-based status report
-/sprint-status --diagram    # Include Mermaid dependency diagram
-/sprint-status --tokens     # Show token budget estimation report
+/sprint status              # Text-based status report
+/sprint status --diagram    # Include Mermaid dependency diagram
+/sprint status --tokens     # Show token budget estimation report
 ```
 
 ## Workflow

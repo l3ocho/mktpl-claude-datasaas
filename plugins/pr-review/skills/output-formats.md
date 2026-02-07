@@ -167,9 +167,9 @@ Fix: <suggestion>
 +============================================================+
 
 Ready to review PRs:
-- /pr-review <number>   Full multi-agent review
-- /pr-summary <number>  Quick summary
-- /pr-findings <number> List findings
+- /pr review <number>   Full multi-agent review
+- /pr summary <number>  Quick summary
+- /pr findings <number> List findings
 ```
 
 ## Annotated Diff Format

@@ -13,7 +13,7 @@ Defines the workflow for capturing lessons at sprint close and searching them at
 
 - **Planner agent**: Search lessons at sprint start
 - **Orchestrator agent**: Capture lessons at sprint close
-- **Commands**: `/sprint-plan`, `/sprint-start`, `/sprint-close`
+- **Commands**: `/sprint plan`, `/sprint start`, `/sprint close`
 
 ---
 

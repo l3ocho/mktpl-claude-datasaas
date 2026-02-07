@@ -1,6 +1,6 @@
 {
   "name": "pr-review",
-  "version": "1.1.0",
+  "version": "9.0.1",
   "description": "Multi-agent pull request review with confidence scoring and actionable feedback",
   "author": {
     "name": "Leo Miranda",
@@ -16,5 +16,8 @@
     "performance",
     "multi-agent"
   ],
-  "commands": ["./commands/"]
+  "commands": [
+    "./commands/"
+  ],
+  "domain": "core"
 }

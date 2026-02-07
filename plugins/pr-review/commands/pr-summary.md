@@ -1,4 +1,10 @@
-# /pr-summary - Quick PR Summary
+---
+name: pr summary
+description: Quick summary of PR changes
+agent: coordinator
+---
+
+# /pr summary - Quick PR Summary
 
 ## Visual Output
 
@@ -13,7 +19,7 @@ Display header: `PR-REVIEW - Quick Summary`
 ## Usage
 
 ```
-/pr-summary <pr-number> [--repo owner/repo]
+/pr summary <pr-number> [--repo owner/repo]
 ```
 
 ## Workflow
@@ -38,4 +44,4 @@ Use summary format from `skills/output-formats.md`
 
 - Quick overview before full review
 - Triage multiple PRs
-- Decide if /pr-review is needed
+- Decide if `/pr review` is needed

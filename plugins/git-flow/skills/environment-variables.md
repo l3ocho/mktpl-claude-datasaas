@@ -6,7 +6,7 @@ Centralized reference for all git-flow environment variables and their defaults.
 
 ## When to Use
 
-- Configuring git-flow behavior in `/git-config`
+- Configuring git-flow behavior in `/gitflow config`
 - Documenting available options to users
 - Setting up project-specific overrides
 

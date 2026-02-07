@@ -1,6 +1,6 @@
 {
   "name": "contract-validator",
-  "version": "1.2.0",
+  "version": "9.0.1",
   "description": "Cross-plugin compatibility validation and Claude.md agent verification",
   "author": {
     "name": "Leo Miranda",
@@ -17,5 +17,8 @@
     "interfaces",
     "cross-plugin"
   ],
-  "commands": ["./commands/"]
+  "commands": [
+    "./commands/"
+  ],
+  "domain": "core"
 }

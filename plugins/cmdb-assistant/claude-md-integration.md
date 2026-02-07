@@ -6,10 +6,10 @@ This project uses the **cmdb-assistant** plugin for NetBox CMDB integration to m
 
 | Command | Description |
 |---------|-------------|
-| `/cmdb-search` | Search across all NetBox objects |
-| `/cmdb-device` | Manage devices (create, update, list) |
-| `/cmdb-ip` | Manage IP addresses and prefixes |
-| `/cmdb-site` | Manage sites and locations |
+| `/cmdb search` | Search across all NetBox objects |
+| `/cmdb device` | Manage devices (create, update, list) |
+| `/cmdb ip` | Manage IP addresses and prefixes |
+| `/cmdb site` | Manage sites and locations |
 
 ### MCP Tools Available
 

@@ -1,4 +1,8 @@
-# CMDB Search
+---
+name: cmdb search
+---
+
+# /cmdb search
 
 ## Visual Output
 
@@ -17,7 +21,7 @@ Search NetBox for devices, IPs, sites, or any CMDB object.
 ## Usage
 
 ```
-/cmdb-search <query>
+/cmdb search <query>
 ```
 
 ## Instructions
@@ -37,9 +41,9 @@ For broad searches, query multiple endpoints and consolidate results.
 
 ## Examples
 
-- `/cmdb-search router` - Find all devices with "router" in the name
-- `/cmdb-search 10.0.1.0/24` - Find prefix and IPs within it
-- `/cmdb-search datacenter` - Find sites matching "datacenter"
+- `/cmdb search router` - Find all devices with "router" in the name
+- `/cmdb search 10.0.1.0/24` - Find prefix and IPs within it
+- `/cmdb search datacenter` - Find sites matching "datacenter"
 
 ## User Query
 

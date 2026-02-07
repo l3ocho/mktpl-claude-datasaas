@@ -1,8 +1,9 @@
 ---
+name: cmdb topology
 description: Generate infrastructure topology diagrams from NetBox data
 ---
 
-# CMDB Topology Visualization
+# /cmdb topology
 
 Generate Mermaid diagrams showing infrastructure topology from NetBox.
 
@@ -15,7 +16,7 @@ Generate Mermaid diagrams showing infrastructure topology from NetBox.
 ## Usage
 
 ```
-/cmdb-topology <view> [scope]
+/cmdb topology <view> [scope]
 ```
 
 **Views:**
@@ -43,11 +44,11 @@ Always provide:
 
 ## Examples
 
-- `/cmdb-topology rack server-rack-01` - Rack elevation
-- `/cmdb-topology network` - All network connections
-- `/cmdb-topology network Home` - Network for Home site
-- `/cmdb-topology site Headquarters` - Site overview
-- `/cmdb-topology full` - Full infrastructure
+- `/cmdb topology rack server-rack-01` - Rack elevation
+- `/cmdb topology network` - All network connections
+- `/cmdb topology network Home` - Network for Home site
+- `/cmdb topology site Headquarters` - Site overview
+- `/cmdb topology full` - Full infrastructure
 
 ## User Request
 

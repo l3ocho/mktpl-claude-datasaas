@@ -1,4 +1,8 @@
-# /data-profile - Data Profiling
+---
+name: data profile
+---
+
+# /data profile - Data Profiling
 
 ## Skills to Load
 - skills/data-profiling.md
@@ -12,7 +16,7 @@ Display header: `DATA-PLATFORM - Data Profile`
 ## Usage
 
 ```
-/data-profile <data_ref>
+/data profile <data_ref>
 ```
 
 ## Workflow
@@ -27,8 +31,8 @@ Execute `skills/data-profiling.md` profiling workflow:
 ## Examples
 
 ```
-/data-profile sales_data
-/data-profile df_a1b2c3d4
+/data profile sales_data
+/data profile df_a1b2c3d4
 ```
 
 ## Required MCP Tools

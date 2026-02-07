@@ -97,13 +97,13 @@ ipam_list_prefixes prefix=<proposed-prefix>
 
 | Command | Purpose |
 |---------|---------|
-| `/cmdb-search <query>` | Search across all CMDB objects |
-| `/cmdb-device <action>` | Device CRUD operations |
-| `/cmdb-ip <action>` | IP address and prefix management |
-| `/cmdb-site <action>` | Site and location management |
-| `/cmdb-audit [scope]` | Data quality analysis |
-| `/cmdb-register` | Register current machine |
-| `/cmdb-sync` | Sync machine state with NetBox |
-| `/cmdb-topology <view>` | Generate infrastructure diagrams |
-| `/change-audit [filters]` | Audit NetBox changes |
-| `/ip-conflicts [scope]` | Detect IP conflicts |
+| `/cmdb search <query>` | Search across all CMDB objects |
+| `/cmdb device <action>` | Device CRUD operations |
+| `/cmdb ip <action>` | IP address and prefix management |
+| `/cmdb site <action>` | Site and location management |
+| `/cmdb audit [scope]` | Data quality analysis |
+| `/cmdb register` | Register current machine |
+| `/cmdb sync` | Sync machine state with NetBox |
+| `/cmdb topology <view>` | Generate infrastructure diagrams |
+| `/cmdb change-audit [filters]` | Audit NetBox changes |
+| `/cmdb ip-conflicts [scope]` | Detect IP conflicts |

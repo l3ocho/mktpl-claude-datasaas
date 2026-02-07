@@ -1,8 +1,9 @@
 ---
+name: cmdb audit
 description: Audit NetBox data quality and identify consistency issues
 ---
 
-# CMDB Data Quality Audit
+# /cmdb audit
 
 Analyze NetBox data for quality issues and best practice violations.
 
@@ -16,7 +17,7 @@ Analyze NetBox data for quality issues and best practice violations.
 ## Usage
 
 ```
-/cmdb-audit [scope]
+/cmdb audit [scope]
 ```
 
 **Scopes:**
@@ -49,9 +50,9 @@ Execute `skills/audit-workflow.md` which covers:
 
 ## Examples
 
-- `/cmdb-audit` - Full audit
-- `/cmdb-audit vms` - VM-specific checks
-- `/cmdb-audit naming` - Naming conventions
+- `/cmdb audit` - Full audit
+- `/cmdb audit vms` - VM-specific checks
+- `/cmdb audit naming` - Naming conventions
 
 ## User Request
 

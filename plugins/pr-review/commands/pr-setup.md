@@ -1,8 +1,9 @@
 ---
+name: pr setup
 description: Interactive setup wizard for pr-review plugin
 ---
 
-# PR Review Setup Wizard
+# /pr setup - PR Review Setup Wizard
 
 ## Visual Output
 
@@ -40,6 +41,6 @@ Test API connection, display completion summary, remind to restart session
 
 ## Available Commands After Setup
 
-- `/pr-review <number>` - Full multi-agent review
-- `/pr-summary <number>` - Quick summary
-- `/pr-findings <number>` - List findings
+- `/pr review <number>` - Full multi-agent review
+- `/pr summary <number>` - Quick summary
+- `/pr findings <number>` - List findings

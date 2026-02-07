@@ -1,4 +1,5 @@
 ---
+name: data review
 description: Audit data integrity, schema validity, and dbt compliance
 arguments:
   - name: path
@@ -6,21 +7,21 @@ arguments:
     required: true
 ---
 
-# /data-review
+# /data review
 
 Comprehensive data integrity audit producing a detailed report with findings at all severity levels. For human review and standalone codebase auditing.
 
 ## Usage
 
 ```
-/data-review <path>
+/data review <path>
 ```
 
 **Examples:**
 ```
-/data-review ./dbt/
-/data-review ./portfolio_app/toronto/
-/data-review ./dbt/models/marts/
+/data review ./dbt/
+/data review ./portfolio_app/toronto/
+/data review ./dbt/models/marts/
 ```
 
 ## What It Does
@@ -79,46 +80,46 @@ VERDICT: PASS | FAIL (N blocking issues)
 ### Before Sprint Planning
 Audit data layer health to identify tech debt and inform sprint scope.
 ```
-/data-review ./dbt/
+/data review ./dbt/
 ```
 
 ### During Code Review
 Get detailed data integrity findings alongside code review comments.
 ```
-/data-review ./dbt/models/staging/stg_new_source.sql
+/data review ./dbt/models/staging/stg_new_source.sql
 ```
 
 ### After Migrations
 Verify schema changes didn't break anything downstream.
 ```
-/data-review ./migrations/
+/data review ./migrations/
 ```
 
 ### Periodic Health Checks
 Regular data infrastructure audits for proactive maintenance.
 ```
-/data-review ./data_pipeline/
+/data review ./data_pipeline/
 ```
 
 ### New Project Onboarding
 Understand the current state of data architecture.
 ```
-/data-review .
+/data review .
 ```
 
 ## Severity Levels
 
 | Level | Meaning | Gate Impact |
 |-------|---------|-------------|
-| **FAIL** | Blocking issues that will cause runtime errors | Would block `/data-gate` |
+| **FAIL** | Blocking issues that will cause runtime errors | Would block `/data gate` |
 | **WARN** | Quality issues that should be addressed | Does not block gate |
 | **INFO** | Suggestions for improvement | Does not block gate |
 
-## Differences from /data-gate
+## Differences from /data gate
 
-`/data-review` gives you the full picture. `/data-gate` gives the orchestrator a yes/no.
+`/data review` gives you the full picture. `/data gate` gives the orchestrator a yes/no.
 
-| Aspect | /data-gate | /data-review |
+| Aspect | /data gate | /data review |
 |--------|------------|--------------|
 | Output | Binary PASS/FAIL | Detailed report |
 | Severity | FAIL only | FAIL + WARN + INFO |
@@ -126,8 +127,8 @@ Understand the current state of data architecture.
 | Verbosity | Minimal | Comprehensive |
 | Speed | Fast (skips INFO) | Thorough |
 
-Use `/data-review` when you want to understand.
-Use `/data-gate` when you want to automate.
+Use `/data review` when you want to understand.
+Use `/data gate` when you want to automate.
 
 ## Requirements
 
@@ -144,6 +145,6 @@ Use `/data-gate` when you want to automate.
 
 ## Related Commands
 
-- `/data-gate` - Binary pass/fail for automation
-- `/data-lineage` - Visualize dbt model dependencies
-- `/data-schema` - Explore database schema
+- `/data gate` - Binary pass/fail for automation
+- `/data lineage` - Visualize dbt model dependencies
+- `/data schema` - Explore database schema

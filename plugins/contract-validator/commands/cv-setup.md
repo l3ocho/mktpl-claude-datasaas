@@ -1,8 +1,9 @@
 ---
+name: cv setup
 description: Interactive setup wizard for contract-validator plugin
 ---
 
-# /cv-setup - Contract Validator Setup Wizard
+# /cv setup
 
 ## Skills to Load
 - skills/visual-output.md
@@ -40,9 +41,9 @@ description: Interactive setup wizard for contract-validator plugin
 
 ## Post-Setup Commands
 
-- `/validate-contracts` - Full marketplace validation
-- `/check-agent` - Validate single agent
-- `/list-interfaces` - Show all plugin interfaces
+- `/cv validate` - Full marketplace validation
+- `/cv check-agent` - Validate single agent
+- `/cv list-interfaces` - Show all plugin interfaces
 
 ## No Configuration Required
 

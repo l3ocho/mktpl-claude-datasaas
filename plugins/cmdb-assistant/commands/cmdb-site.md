@@ -1,4 +1,8 @@
-# CMDB Site Management
+---
+name: cmdb site
+---
+
+# /cmdb site
 
 Manage sites and locations in NetBox.
 
@@ -10,7 +14,7 @@ Manage sites and locations in NetBox.
 ## Usage
 
 ```
-/cmdb-site <action> [options]
+/cmdb site <action> [options]
 ```
 
 ## Instructions
@@ -40,10 +44,10 @@ Execute `skills/visual-header.md` with context "Site Management".
 
 ## Examples
 
-- `/cmdb-site list`
-- `/cmdb-site show headquarters`
-- `/cmdb-site create branch-office-nyc`
-- `/cmdb-site racks at headquarters`
+- `/cmdb site list`
+- `/cmdb site show headquarters`
+- `/cmdb site create branch-office-nyc`
+- `/cmdb site racks at headquarters`
 
 ## User Request
 

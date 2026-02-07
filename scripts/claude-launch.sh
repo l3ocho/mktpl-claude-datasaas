@@ -6,9 +6,11 @@
 #
 # Profiles:
 #   sprint  - Project management, git, PR review, security, docs (default)
-#   infra   - Infrastructure/CMDB management
 #   data    - Data engineering and visualization
+#   saas    - SaaS development (API, frontend, DB, testing)
+#   ops     - Operations and infrastructure (CMDB, releases, deploy)
 #   review  - Code review only (lightweight)
+#   debug   - MCP debugging tools
 #   full    - All plugins via marketplace.json (~22K tokens)
 #
 # Examples:
@@ -42,16 +44,26 @@ fi
 # Define plugin lists for each profile
 declare -A PROFILES
 PROFILES[sprint]="projman git-flow pr-review code-sentinel doc-guardian clarity-assist"
-PROFILES[infra]="cmdb-assistant"
-PROFILES[data]="data-platform viz-platform"
+PROFILES[infra]="DEPRECATED"
+PROFILES[data]="data-platform viz-platform data-seed"
+PROFILES[saas]="saas-api-platform saas-react-platform saas-db-migrate saas-test-pilot"
+PROFILES[ops]="cmdb-assistant ops-release-manager ops-deploy-pipeline"
 PROFILES[review]="pr-review code-sentinel"
+PROFILES[debug]="debug-mcp"
 PROFILES[full]=""  # Empty = use marketplace.json
 
 # Validate profile
 if [[ ! ${PROFILES[$PROFILE]+_} ]]; then
     echo -e "${YELLOW}Unknown profile: $PROFILE${NC}"
-    echo "Available profiles: sprint, infra, data, review, full"
+    echo "Available profiles: sprint, data, saas, ops, review, debug, full"
     exit 1
+fi
+
+# Handle deprecated profiles
+if [[ "$PROFILE" == "infra" ]]; then
+    echo -e "${YELLOW}Warning: 'infra' profile is deprecated. Use 'ops' instead.${NC}"
+    echo -e "${YELLOW}   The 'ops' profile includes cmdb-assistant plus future ops plugins.${NC}"
+    PROFILE="ops"
 fi
 
 # Build --plugin-dir arguments

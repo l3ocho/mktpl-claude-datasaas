@@ -1,14 +1,23 @@
 ## Project Cleanup (project-hygiene)
 
-This project uses the **project-hygiene** plugin for automated post-task cleanup.
+This project uses the **project-hygiene** plugin for file organization and cleanup checks.
 
 ### How It Works
 
-The plugin automatically runs after file Write or Edit operations to:
+Run `/hygiene check` to scan for common project cleanliness issues:
 
-1. **Delete temporary files** - Removes `*.tmp`, `*.bak`, `__pycache__/`, `.pytest_cache/`, etc.
-2. **Warn about unexpected root files** - Alerts when files are created outside expected locations
-3. **Identify orphaned files** - Detects supporting files that may no longer be needed
+1. **Temp file detection** — finds `*.tmp`, `*.bak`, `*.swp`, `*~` files
+2. **Misplaced files** — files outside their expected directories
+3. **Empty directories** — directories with no files
+4. **Large files** — files exceeding reasonable size thresholds
+5. **Debug artifacts** — leftover debug logs, console.log, print statements
+
+### Usage
+
+```
+/hygiene check              # Run all checks
+/hygiene check --fix        # Auto-fix safe issues (delete temp files, remove empty dirs)
+```
 
 ### Configuration
 
@@ -23,14 +32,7 @@ The plugin can be configured via `.hygiene.json` in the project root:
 }
 ```
 
-### Hook Events
+### Notes
 
-The plugin registers on the following events:
-- `PostToolUse` (matcher: `Write|Edit`) - Runs cleanup after file modifications
-
-### Usage Guidelines
-
-- Let the hook run automatically - no manual intervention needed
-- Review warnings about unexpected root files
-- Configure `.hygiene.json` to customize cleanup behavior for your project
-- Check cleanup output if files seem to disappear unexpectedly
+- This was previously a PostToolUse hook (automatic). Since v8.1.0 (Decision #29), it runs manually via `/hygiene check`.
+- Add `/hygiene check` as an explicit step in your prompt files where project cleanliness matters.

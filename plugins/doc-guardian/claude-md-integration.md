@@ -9,11 +9,11 @@ This project uses doc-guardian for automatic documentation synchronization.
 ### Behavior
 - Documentation drift is detected automatically when files change
 - Pending updates are queued silently during work
-- Run `/doc-sync` to apply all pending documentation updates
-- Run `/doc-audit` for a full project documentation review
-- Run `/changelog-gen` to generate changelog from conventional commits
-- Run `/doc-coverage` to check documentation coverage metrics
-- Run `/stale-docs` to find documentation that may be outdated
+- Run `/doc sync` to apply all pending documentation updates
+- Run `/doc audit` for a full project documentation review
+- Run `/doc changelog-gen` to generate changelog from conventional commits
+- Run `/doc coverage` to check documentation coverage metrics
+- Run `/doc stale-docs` to find documentation that may be outdated
 
 ### Documentation Files Tracked
 - README.md (root and subdirectories)

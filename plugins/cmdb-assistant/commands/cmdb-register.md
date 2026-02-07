@@ -1,8 +1,9 @@
 ---
+name: cmdb register
 description: Register the current machine into NetBox with all running applications
 ---
 
-# CMDB Machine Registration
+# /cmdb register
 
 Register the current machine into NetBox, including hardware info, network interfaces, and running applications.
 
@@ -17,7 +18,7 @@ Register the current machine into NetBox, including hardware info, network inter
 ## Usage
 
 ```
-/cmdb-register [--site <site-name>] [--tenant <tenant-name>] [--role <role-name>]
+/cmdb register [--site <site-name>] [--tenant <tenant-name>] [--role <role-name>]
 ```
 
 **Options:**
@@ -41,7 +42,7 @@ Execute `skills/device-registration.md` which covers:
 
 | Error | Action |
 |-------|--------|
-| Device already exists | Suggest `/cmdb-sync` or ask to proceed |
+| Device already exists | Suggest `/cmdb sync` or ask to proceed |
 | Site not found | List available sites, offer to create new |
 | Docker not available | Skip container registration, note in summary |
 | Permission denied | Note which operations failed, suggest fixes |

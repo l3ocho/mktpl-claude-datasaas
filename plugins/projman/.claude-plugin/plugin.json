@@ -1,6 +1,6 @@
 {
   "name": "projman",
-  "version": "3.4.0",
+  "version": "9.0.1",
   "description": "Sprint planning and project management with Gitea integration",
   "author": {
     "name": "Leo Miranda",
@@ -16,5 +16,8 @@
     "agile",
     "lessons-learned"
   ],
-  "commands": ["./commands/"]
+  "commands": [
+    "./commands/"
+  ],
+  "domain": "core"
 }

@@ -219,10 +219,10 @@ setup_labels() {
 
     if [[ -f "$labels_file" ]]; then
         log_success "Label reference file exists"
-        log_info "Run '/labels-sync' command after setup to sync with Gitea"
+        log_info "Run '/labels sync' command after setup to sync with Gitea"
     else
         log_error "Label reference file not found at $labels_file"
-        log_todo "Run '/labels-sync' to create label reference from Gitea"
+        log_todo "Run '/labels sync' to create label reference from Gitea"
     fi
 }
 

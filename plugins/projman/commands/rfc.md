@@ -38,14 +38,14 @@ Manage the full RFC lifecycle through sub-commands. RFCs provide a structured wa
 Create a new RFC wiki page to track a feature idea through the review lifecycle.
 
 **Workflow:**
-1. Check if conversation has clarified specification (from `/clarify`)
+1. Check if conversation has clarified specification (from `/clarity clarify`)
 2. If no context: prompt for Summary, Motivation, and initial Design
 3. Call `allocate_rfc_number` MCP tool for next sequential number
 4. Create RFC page using template from `skills/rfc-templates.md`
 5. Update RFC-Index wiki page (create if doesn't exist)
 6. Display RFC number, wiki link, and next steps
 
-**Input Mapping (from /clarify):**
+**Input Mapping (from /clarity clarify):**
 
 | Clarify Section | RFC Section |
 |-----------------|-------------|

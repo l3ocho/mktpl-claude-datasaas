@@ -12,7 +12,7 @@ Defines how to detect where planning input is coming from and how to handle each
 ## When to Use
 
 - **Planner agent**: At start of sprint planning
-- **Commands**: `/sprint-plan`
+- **Commands**: `/sprint plan`
 
 ---
 

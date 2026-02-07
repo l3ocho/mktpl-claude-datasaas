@@ -2,7 +2,7 @@
 
 **This file defines ALL valid paths in this repository. No exceptions. No inference. No assumptions.**
 
-Last Updated: 2026-02-04 (v7.1.0)
+Last Updated: 2026-02-07 (v9.1.0)
 
 ---
 
@@ -19,17 +19,13 @@ leo-claude-mktplace/
 ├── .mcp-full.json              # Full profile MCP config (all servers)
 ├── .scratch/                   # Transient work (auto-cleaned)
 ├── docs/                       # All documentation
-│   ├── architecture/           # Draw.io diagrams and specs
-│   ├── prompts/                # Shared prompt templates
-│   │   └── INDEX.md            # Prompt template index
-│   ├── project-lessons-learned/ # Project-level lessons (not sprint-specific)
-│   │   └── INDEX.md            # Lessons index
+│   ├── ARCHITECTURE.md         # System architecture and plugin reference
 │   ├── CANONICAL-PATHS.md      # This file - single source of truth
 │   ├── COMMANDS-CHEATSHEET.md  # All commands quick reference
 │   ├── CONFIGURATION.md        # Centralized configuration guide
 │   ├── DEBUGGING-CHECKLIST.md  # Systematic troubleshooting guide
+│   ├── MIGRATION-v9.md         # v8.x → v9.0.0 migration guide
 │   └── UPDATING.md             # Update guide
-├── hooks/                      # Shared hooks (if any)
 ├── mcp-servers/                # SHARED MCP servers (v3.0.0+)
 │   ├── gitea/                  # Gitea MCP server
 │   │   ├── mcp_server/
@@ -90,7 +86,6 @@ leo-claude-mktplace/
 │   │   └── claude-md-integration.md
 │   ├── doc-guardian/           # Documentation drift detection
 │   │   ├── .claude-plugin/
-│   │   ├── hooks/
 │   │   ├── commands/
 │   │   ├── agents/
 │   │   ├── skills/
@@ -114,7 +109,7 @@ leo-claude-mktplace/
 │   │   └── claude-md-integration.md
 │   ├── project-hygiene/
 │   │   ├── .claude-plugin/
-│   │   ├── hooks/
+│   │   ├── commands/
 │   │   └── claude-md-integration.md
 │   ├── clarity-assist/
 │   │   ├── .claude-plugin/
@@ -138,29 +133,76 @@ leo-claude-mktplace/
 │   │   ├── .claude-plugin/
 │   │   ├── commands/
 │   │   ├── agents/
-│   │   ├── hooks/
 │   │   └── claude-md-integration.md
 │   ├── contract-validator/
 │   │   ├── .claude-plugin/
 │   │   ├── commands/
 │   │   ├── agents/
 │   │   └── claude-md-integration.md
-│   └── viz-platform/
+│   ├── viz-platform/
+│   │   ├── .claude-plugin/
+│   │   ├── commands/
+│   │   ├── agents/
+│   │   └── claude-md-integration.md
+│   ├── saas-api-platform/       # REST/GraphQL API scaffolding (scaffold)
+│   │   ├── .claude-plugin/
+│   │   ├── commands/
+│   │   ├── agents/
+│   │   ├── skills/
+│   │   └── claude-md-integration.md
+│   ├── saas-db-migrate/         # Database migration management (scaffold)
+│   │   ├── .claude-plugin/
+│   │   ├── commands/
+│   │   ├── agents/
+│   │   ├── skills/
+│   │   └── claude-md-integration.md
+│   ├── saas-react-platform/     # React frontend toolkit (scaffold)
+│   │   ├── .claude-plugin/
+│   │   ├── commands/
+│   │   ├── agents/
+│   │   ├── skills/
+│   │   └── claude-md-integration.md
+│   ├── saas-test-pilot/         # Test automation (scaffold)
+│   │   ├── .claude-plugin/
+│   │   ├── commands/
+│   │   ├── agents/
+│   │   ├── skills/
+│   │   └── claude-md-integration.md
+│   ├── data-seed/               # Test data generation (scaffold)
+│   │   ├── .claude-plugin/
+│   │   ├── commands/
+│   │   ├── agents/
+│   │   ├── skills/
+│   │   └── claude-md-integration.md
+│   ├── ops-release-manager/     # Release management (scaffold)
+│   │   ├── .claude-plugin/
+│   │   ├── commands/
+│   │   ├── agents/
+│   │   ├── skills/
+│   │   └── claude-md-integration.md
+│   ├── ops-deploy-pipeline/     # Deployment pipeline (scaffold)
+│   │   ├── .claude-plugin/
+│   │   ├── commands/
+│   │   ├── agents/
+│   │   ├── skills/
+│   │   └── claude-md-integration.md
+│   └── debug-mcp/               # MCP debugging toolkit (scaffold)
 │       ├── .claude-plugin/
 │       ├── commands/
 │       ├── agents/
-│       ├── hooks/
+│       ├── skills/
 │       └── claude-md-integration.md
 ├── scripts/                    # Setup and maintenance scripts
 │   ├── setup.sh                # Initial setup (create venvs, config templates)
 │   ├── post-update.sh          # Post-update (clear cache, show changelog)
-│   ├── check-venv.sh           # Check if venvs exist (read-only)
+│   ├── setup-venvs.sh          # Setup MCP server venvs (create only, never delete)
 │   ├── validate-marketplace.sh # Marketplace compliance validation
 │   ├── verify-hooks.sh         # Verify all hooks use correct event types
-│   ├── setup-venvs.sh          # Setup MCP server venvs (create only, never delete)
 │   ├── release.sh              # Release automation with version bumping
 │   ├── claude-launch.sh        # Task-specific launcher with profile selection
-│   └── switch-profile.sh       # DEPRECATED: use claude-launch.sh instead
+│   ├── install-plugin.sh       # Install plugin to consumer project
+│   ├── list-installed.sh       # Show installed plugins in a project
+│   └── uninstall-plugin.sh     # Remove plugin from consumer project
 ├── CLAUDE.md
 ├── README.md
 ├── LICENSE
@@ -171,6 +213,33 @@ leo-claude-mktplace/
 ---
 
 ## Path Patterns (MANDATORY)
+
+### Phase 1a Paths (v8.1.0)
+
+New files added in v8.1.0:
+
+```
+plugins/projman/commands/project.md
+plugins/projman/commands/project-initiation.md
+plugins/projman/commands/project-plan.md
+plugins/projman/commands/project-status.md
+plugins/projman/commands/project-close.md
+plugins/projman/commands/adr.md
+plugins/projman/commands/adr-create.md
+plugins/projman/commands/adr-list.md
+plugins/projman/commands/adr-update.md
+plugins/projman/commands/adr-supersede.md
+plugins/projman/skills/source-analysis.md
+plugins/projman/skills/project-charter.md
+plugins/projman/skills/adr-conventions.md
+plugins/projman/skills/epic-conventions.md
+plugins/projman/skills/wbs.md
+plugins/projman/skills/risk-register.md
+plugins/projman/skills/sprint-roadmap.md
+plugins/projman/skills/wiki-conventions.md
+plugins/project-hygiene/commands/hygiene-check.md
+plugins/contract-validator/commands/cv-status.md
+```
 
 ### Plugin Paths
 
@@ -233,12 +302,13 @@ fi
 
 | Type | Location |
 |------|----------|
-| Architecture diagrams | `docs/architecture/` |
+| Architecture & plugin reference | `docs/ARCHITECTURE.md` |
 | This file | `docs/CANONICAL-PATHS.md` |
 | Update guide | `docs/UPDATING.md` |
 | Configuration guide | `docs/CONFIGURATION.md` |
 | Commands cheat sheet | `docs/COMMANDS-CHEATSHEET.md` |
 | Debugging checklist | `docs/DEBUGGING-CHECKLIST.md` |
+| Migration guide (v8→v9) | `docs/MIGRATION-v9.md` |
 
 ---
 
@@ -312,10 +382,51 @@ All MCP servers are defined in `.mcp.json` at repository root:
 
 ---
 
+## Domain Metadata
+
+### Domain Field Locations
+
+Both manifest files require a `domain` field (v8.0.0+):
+
+| Location | Field | Example |
+|----------|-------|---------|
+| `plugins/{name}/.claude-plugin/plugin.json` | `"domain": "core"` | `plugins/projman/.claude-plugin/plugin.json` |
+| `.claude-plugin/marketplace.json` | `"domain": "core"` per plugin entry | `.claude-plugin/marketplace.json` |
+
+### Allowed Domain Values
+
+| Domain | Purpose | Existing Plugins |
+|--------|---------|-----------------|
+| `core` | Development workflow plugins | projman, git-flow, pr-review, code-sentinel, doc-guardian, clarity-assist, contract-validator, claude-config-maintainer, project-hygiene |
+| `data` | Data engineering and visualization | data-platform, viz-platform, data-seed |
+| `ops` | Operations and infrastructure | cmdb-assistant, ops-release-manager, ops-deploy-pipeline |
+| `saas` | SaaS application development | saas-api-platform, saas-db-migrate, saas-react-platform, saas-test-pilot |
+| `debug` | Debugging and diagnostics | debug-mcp |
+
+### Plugin Naming Convention
+
+- **Core plugins:** No prefix (existing names never change)
+- **New plugins:** Domain prefix: `saas-*`, `ops-*`, `data-*`, `debug-*`
+- Domain is always in metadata — prefix is a naming convention, not a requirement
+
+### Domain Query Examples
+
+```bash
+# List all plugins in a domain
+jq '.plugins[] | select(.domain=="saas") | .name' .claude-plugin/marketplace.json
+
+# Count plugins per domain
+jq '[.plugins[] | .domain] | group_by(.) | map({domain: .[0], count: length})' .claude-plugin/marketplace.json
+```
+
+---
+
 ## Change Log
 
 | Date | Change | By |
 |------|--------|-----|
+| 2026-02-07 | v9.1.0: Removed deleted dirs (architecture/, prompts/, project-lessons-learned/), added Phase 3 plugins, added ARCHITECTURE.md, MIGRATION-v9.md, updated Domain table, removed stale hooks/ dirs | Claude Code |
+| 2026-02-06 | v8.0.0: Added domain metadata section, Phase 1a paths, future plugin paths | Claude Code |
 | 2026-02-04 | v7.1.0: Added profile configs, prompts/, project-lessons-learned/, metadata.json, deprecated switch-profile.sh | Claude Code |
 | 2026-01-30 | v5.5.0: Removed plugin-level mcp-servers symlinks - all MCP config now in root .mcp.json | Claude Code |
 | 2026-01-26 | v5.0.0: Added contract-validator plugin and MCP server | Claude Code |

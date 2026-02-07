@@ -6,8 +6,8 @@ Defines push/pull patterns, rebase strategies, upstream tracking, and stale bran
 
 ## When to Use
 
-- Pushing commits in `/git-commit-push`
-- Full sync operations in `/git-commit-sync`
+- Pushing commits in `/gitflow commit --push`
+- Full sync operations in `/gitflow commit --sync`
 - Detecting and reporting stale branches
 
 ## Push Workflow
@@ -92,7 +92,7 @@ Stale local branches (remote deleted):
   - feat/old-feature (was tracking origin/feat/old-feature)
   - fix/merged-bugfix (was tracking origin/fix/merged-bugfix)
 
-Run /branch-cleanup to remove these branches.
+Run /gitflow branch-cleanup to remove these branches.
 ```
 
 ## Remote Pruning
@@ -123,7 +123,7 @@ No conflicts detected.
 
 Cleanup:
   Remote refs pruned: 2
-  Stale local branches: 2 (run /branch-cleanup to remove)
+  Stale local branches: 2 (run /gitflow branch-cleanup to remove)
 ```
 
 ## Tracking Setup

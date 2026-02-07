@@ -1,8 +1,9 @@
 ---
+name: viz breakpoints
 description: Configure responsive breakpoints for dashboard layouts
 ---
 
-# Viz Breakpoints
+# /viz breakpoints
 
 ## Skills to Load
 - skills/mcp-tools-reference.md
@@ -21,7 +22,7 @@ Configure responsive breakpoints for mobile-first design across screen sizes.
 ## Usage
 
 ```
-/viz-breakpoints {layout_ref}
+/viz breakpoints {layout_ref}
 ```
 
 ## Arguments
@@ -30,7 +31,7 @@ Configure responsive breakpoints for mobile-first design across screen sizes.
 
 ## Workflow
 
-1. **User invokes**: `/viz-breakpoints my-dashboard`
+1. **User invokes**: `/viz breakpoints my-dashboard`
 2. **Agent asks**: Which breakpoints to customize? (shows current settings)
 3. **Agent asks**: Mobile column count? (xs, typically 1-2)
 4. **Agent asks**: Tablet column count? (md, typically 4-6)
@@ -39,5 +40,5 @@ Configure responsive breakpoints for mobile-first design across screen sizes.
 
 ## Related Commands
 
-- `/viz-dashboard {template}` - Create layout with default breakpoints
-- `/viz-theme {name}` - Theme includes default spacing values
+- `/viz dashboard {template}` - Create layout with default breakpoints
+- `/viz theme {name}` - Theme includes default spacing values

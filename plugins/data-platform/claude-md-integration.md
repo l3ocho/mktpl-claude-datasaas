@@ -18,12 +18,12 @@ This project uses the data-platform plugin for data engineering workflows.
 
 | Command | Purpose |
 |---------|---------|
-| `/data-ingest` | Load data from files or database |
-| `/data-profile` | Generate statistical profile |
-| `/data-schema` | Show schema information |
-| `/data-explain` | Explain dbt model |
-| `/data-lineage` | Show data lineage |
-| `/data-run` | Execute dbt models |
+| `/data ingest` | Load data from files or database |
+| `/data profile` | Generate statistical profile |
+| `/data schema` | Show schema information |
+| `/data explain` | Explain dbt model |
+| `/data lineage` | Show data lineage |
+| `/data run` | Execute dbt models |
 
 ### data_ref Convention
 
@@ -36,9 +36,9 @@ DataFrames are stored with references. Use meaningful names:
 
 ### dbt Workflow
 
-1. Always validate before running: `/data-run` includes automatic `dbt_parse`
+1. Always validate before running: `/data run` includes automatic `dbt_parse`
 2. For dbt 1.9+, check for deprecated syntax before commits
-3. Use `/data-lineage` to understand impact of changes
+3. Use `/data lineage` to understand impact of changes
 
 ### Database Access
 
@@ -69,22 +69,22 @@ DATA_PLATFORM_MAX_ROWS=100000
 
 ### Data Exploration
 ```
-/data-ingest data/raw_customers.csv
-/data-profile raw_customers
-/data-schema
+/data ingest data/raw_customers.csv
+/data profile raw_customers
+/data schema
 ```
 
 ### ETL Development
 ```
-/data-schema orders              # Understand source
-/data-explain stg_orders         # Understand transformation
-/data-run stg_orders             # Test the model
-/data-lineage fct_orders         # Check downstream impact
+/data schema orders              # Understand source
+/data explain stg_orders         # Understand transformation
+/data run stg_orders             # Test the model
+/data lineage fct_orders         # Check downstream impact
 ```
 
 ### Database Analysis
 ```
-/data-schema                     # List all tables
+/data schema                     # List all tables
 pg_columns orders           # Detailed schema
 st_tables                   # Find spatial data
 ```

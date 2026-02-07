@@ -119,14 +119,14 @@ This is the key section. Map upstream review processes to directory scopes:
 
 | Directory Scope | Active Review Layers | Auto-Allow Recommendation |
 |----------------|---------------------|---------------------------|
-| `plugins/*/commands/*.md` | Sprint approval, PR review, doc-guardian PostToolUse | `Write(plugins/*/commands/**)` — 3 layers cover this |
+| `plugins/*/commands/*.md` | Sprint approval, PR review | `Write(plugins/*/commands/**)` — 2 layers cover this |
 | `plugins/*/skills/*.md` | Sprint approval, PR review | `Write(plugins/*/skills/**)` — 2 layers |
-| `plugins/*/agents/*.md` | Sprint approval, PR review, contract-validator | `Write(plugins/*/agents/**)` — 3 layers |
+| `plugins/*/agents/*.md` | Sprint approval, PR review | `Write(plugins/*/agents/**)` — 2 layers |
 | `mcp-servers/*/mcp_server/*.py` | Code-sentinel PreToolUse, sprint approval, PR review | `Write(mcp-servers/**)` + `Edit(mcp-servers/**)` — sentinel catches secrets |
-| `docs/*.md` | Doc-guardian PostToolUse, PR review | `Write(docs/**)` + `Edit(docs/**)` |
+| `docs/*.md` | PR review | `Write(docs/**)` + `Edit(docs/**)` — with caution flag |
 | `.claude-plugin/*.json` | validate-marketplace.sh, PR review | `Write(.claude-plugin/**)` |
 | `scripts/*.sh` | Code-sentinel, PR review | `Write(scripts/**)` — with caution flag |
-| `CLAUDE.md`, `CHANGELOG.md`, `README.md` | Doc-guardian, PR review | `Write(CLAUDE.md)`, `Write(CHANGELOG.md)`, `Write(README.md)` |
+| `CLAUDE.md`, `CHANGELOG.md`, `README.md` | PR review | `Write(CLAUDE.md)`, `Write(CHANGELOG.md)`, `Write(README.md)` |
 
 ### Critical Rule: Hook Verification
 
@@ -134,10 +134,11 @@ This is the key section. Map upstream review processes to directory scopes:
 
 Read the relevant `plugins/*/hooks/hooks.json` file:
 - If code-sentinel's hook is missing or disabled, do NOT recommend auto-allowing `mcp-servers/**` writes
-- If doc-guardian's hook is missing, do NOT recommend auto-allowing `docs/**` without caution
+- If git-flow's hook is missing, do NOT recommend auto-allowing `Bash(git *)` operations
+- If cmdb-assistant's hook is missing, do NOT recommend auto-allowing MCP netbox create/update operations
 - Count the number of verified review layers before making recommendations
 
-**Minimum threshold:** Recommend auto-allow only for scopes covered by ≥2 verified review layers.
+**Minimum threshold:** Only recommend auto-allow for scopes with ≥2 verified review layers.
 
 ---
 
@@ -333,10 +334,9 @@ To verify which review layers are active, read these files:
 | File | Hook Type | Tool Matcher | Purpose |
 |------|-----------|--------------|---------|
 | `plugins/code-sentinel/hooks/hooks.json` | PreToolUse | Write\|Edit\|MultiEdit | Blocks hardcoded secrets |
-| `plugins/doc-guardian/hooks/hooks.json` | PostToolUse | Write\|Edit\|MultiEdit | Tracks documentation drift |
-| `plugins/project-hygiene/hooks/hooks.json` | PostToolUse | Write\|Edit | Cleanup tracking |
-| `plugins/data-platform/hooks/hooks.json` | PostToolUse | Edit\|Write | Schema diff detection |
-| `plugins/cmdb-assistant/hooks/hooks.json` | PreToolUse | (if exists) | Input validation |
+| `plugins/git-flow/hooks/hooks.json` | PreToolUse | Bash | Branch naming + commit format |
+| `plugins/cmdb-assistant/hooks/hooks.json` | PreToolUse | MCP create/update | NetBox input validation |
+| `plugins/clarity-assist/hooks/hooks.json` | UserPromptSubmit | (all prompts) | Vagueness detection |
 
 ### Verification Process
 
@@ -351,14 +351,19 @@ To verify which review layers are active, read these files:
 
 ```json
 {
-  "hooks": [
-    {
-      "event": "PreToolUse",
-      "type": "command",
-      "command": "./hooks/security-check.sh",
-      "tools": ["Write", "Edit", "MultiEdit"]
-    }
-  ]
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "./hooks/security-check.sh"
+          }
+        ]
+      }
+    ]
+  }
 }
 ```
 
@@ -370,8 +375,8 @@ Count verified review layers for each scope:
 |-------|-------------|
 | Sprint approval | Check if projman plugin is installed (milestone workflow) |
 | PR review | Check if pr-review plugin is installed |
-| code-sentinel PreToolUse | hooks.json exists with PreToolUse on Write/Edit |
-| doc-guardian PostToolUse | hooks.json exists with PostToolUse on Write/Edit |
-| contract-validator | Plugin installed + hooks present |
+| code-sentinel PreToolUse | hooks.json exists with PreToolUse on Write/Edit/MultiEdit |
+| git-flow PreToolUse | hooks.json exists with PreToolUse on Bash |
+| cmdb-assistant PreToolUse | hooks.json exists with PreToolUse on MCP create/update |
 
 **Recommendation threshold:** Only recommend auto-allow for scopes with ≥2 verified layers.

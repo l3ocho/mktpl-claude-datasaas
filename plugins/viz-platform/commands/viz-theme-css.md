@@ -1,8 +1,9 @@
 ---
+name: viz theme-css
 description: Export a theme as CSS custom properties
 ---
 
-# Viz Theme CSS
+# /viz theme-css
 
 ## Skills to Load
 - skills/mcp-tools-reference.md
@@ -21,7 +22,7 @@ Export a theme's design tokens as CSS custom properties.
 ## Usage
 
 ```
-/viz-theme-css {name}
+/viz theme-css {name}
 ```
 
 ## Arguments
@@ -38,5 +39,5 @@ Use cases: external CSS, design handoff, documentation, other frameworks.
 
 ## Related Commands
 
-- `/viz-theme {name}` - Apply a theme
-- `/viz-theme-new {name}` - Create a new theme
+- `/viz theme {name}` - Apply a theme
+- `/viz theme-new {name}` - Create a new theme

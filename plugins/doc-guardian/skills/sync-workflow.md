@@ -11,25 +11,16 @@ Defines how to synchronize documentation with code changes.
 
 ## When to Use
 
-- **doc-sync**: Apply pending documentation updates
-- **PostToolUse hook**: Queue drift for later sync
+- **doc sync**: Apply pending documentation updates
+- **doc audit**: Detect drift manually (PostToolUse hook removed per Decision #29)
 
 ---
 
-## Queue File
+## Drift Detection
 
-Location: `.doc-guardian-queue` in project root
+Run `/doc audit` to detect documentation drift. The audit produces a list of files and changes that need synchronization. Use those results as input to the sync process below.
 
-Format:
-```
-# Doc Guardian Queue
-# Generated: YYYY-MM-DD HH:MM:SS
-
-## Pending Updates
-- README.md:45 | reference | calculate_total -> compute_total
-- CLAUDE.md:23 | version | Python 3.9 -> 3.11
-- src/api/README.md:12 | path | old/path.py -> new/path.py
-```
+> **Note:** The queue file (`.doc-guardian-queue`) was removed in v8.1.0 when the PostToolUse hook was deleted (Decision #29). Drift detection is now manual via `/doc audit`.
 
 ---
 
@@ -55,9 +46,9 @@ Format:
 
 ## Sync Process
 
-1. **Review Queue**
-   - Read `.doc-guardian-queue`
-   - List all pending items
+1. **Review Drift Results**
+   - Use output from `/doc audit`
+   - List all items needing sync
 
 2. **Batch Updates**
    - Apply each update
@@ -67,11 +58,6 @@ Format:
    - Stage all doc changes together
    - Single commit: `docs: sync documentation with code changes`
    - Include summary in commit body
-
-4. **Clear Queue**
-   ```bash
-   echo "# Doc Guardian Queue - cleared after sync on $(date +%Y-%m-%d)" > .doc-guardian-queue
-   ```
 
 ---
 

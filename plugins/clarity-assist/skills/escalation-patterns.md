@@ -40,7 +40,7 @@ add the other parts. Sound good?"
 
 ## Choosing Initial Mode
 
-### Use /quick-clarify When
+### Use /clarity quick-clarify When
 
 - Request is fairly clear, just one or two ambiguities
 - User is in a hurry
@@ -48,7 +48,7 @@ add the other parts. Sound good?"
 - Simple feature additions or bug fixes
 - Confidence is high (>90%)
 
-### Use /clarify When
+### Use /clarity clarify When
 
 - Complex multi-step requests
 - Requirements with multiple possible interpretations

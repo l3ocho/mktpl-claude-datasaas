@@ -6,12 +6,12 @@
   },
   "metadata": {
     "description": "Project management plugins with Gitea and NetBox integrations",
-    "version": "7.1.0"
+    "version": "9.1.1"
   },
   "plugins": [
     {
       "name": "projman",
-      "version": "7.1.0",
+      "version": "9.0.1",
       "description": "Sprint planning and project management with Gitea integration",
       "source": "./plugins/projman",
       "author": {
@@ -20,14 +20,19 @@
       },
       "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/projman/README.md",
       "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
-      "hooks": ["./hooks/hooks.json"],
       "category": "development",
-      "tags": ["sprint", "agile", "gitea", "project-management"],
-      "license": "MIT"
+      "tags": [
+        "sprint",
+        "agile",
+        "gitea",
+        "project-management"
+      ],
+      "license": "MIT",
+      "domain": "core"
     },
     {
       "name": "doc-guardian",
-      "version": "7.1.0",
+      "version": "9.0.1",
       "description": "Automatic documentation drift detection and synchronization",
       "source": "./plugins/doc-guardian",
       "author": {
@@ -36,14 +41,18 @@
       },
       "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/doc-guardian/README.md",
       "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
-      "hooks": ["./hooks/hooks.json"],
       "category": "productivity",
-      "tags": ["documentation", "drift-detection", "sync"],
-      "license": "MIT"
+      "tags": [
+        "documentation",
+        "drift-detection",
+        "sync"
+      ],
+      "license": "MIT",
+      "domain": "core"
     },
     {
       "name": "code-sentinel",
-      "version": "7.1.0",
+      "version": "9.0.1",
       "description": "Security scanning and code refactoring tools",
       "source": "./plugins/code-sentinel",
       "author": {
@@ -52,15 +61,22 @@
       },
       "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/code-sentinel/README.md",
       "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
-      "hooks": ["./hooks/hooks.json"],
+      "hooks": [
+        "./hooks/hooks.json"
+      ],
       "category": "security",
-      "tags": ["security-scan", "refactoring", "vulnerabilities"],
-      "license": "MIT"
+      "tags": [
+        "security-scan",
+        "refactoring",
+        "vulnerabilities"
+      ],
+      "license": "MIT",
+      "domain": "core"
     },
     {
       "name": "project-hygiene",
-      "version": "7.1.0",
-      "description": "Post-task cleanup hook that removes temp files and manages orphaned files",
+      "version": "9.0.1",
+      "description": "Manual project hygiene checks — temp files, misplaced files, empty dirs, debug artifacts",
       "source": "./plugins/project-hygiene",
       "author": {
         "name": "Leo Miranda",
@@ -68,14 +84,19 @@
       },
       "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/project-hygiene/README.md",
       "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
-      "hooks": ["./hooks/hooks.json"],
       "category": "productivity",
-      "tags": ["cleanup", "automation", "hygiene"],
-      "license": "MIT"
+      "tags": [
+        "cleanup",
+        "hygiene",
+        "maintenance",
+        "manual-check"
+      ],
+      "license": "MIT",
+      "domain": "core"
     },
     {
       "name": "cmdb-assistant",
-      "version": "7.1.0",
+      "version": "9.0.1",
       "description": "NetBox CMDB integration with data quality validation and machine registration",
       "source": "./plugins/cmdb-assistant",
       "author": {
@@ -84,14 +105,24 @@
       },
       "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/cmdb-assistant/README.md",
       "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
-      "hooks": ["./hooks/hooks.json"],
+      "hooks": [
+        "./hooks/hooks.json"
+      ],
       "category": "infrastructure",
-      "tags": ["cmdb", "netbox", "dcim", "ipam", "data-quality", "validation"],
-      "license": "MIT"
+      "tags": [
+        "cmdb",
+        "netbox",
+        "dcim",
+        "ipam",
+        "data-quality",
+        "validation"
+      ],
+      "license": "MIT",
+      "domain": "ops"
     },
     {
       "name": "claude-config-maintainer",
-      "version": "7.1.0",
+      "version": "9.0.1",
       "description": "CLAUDE.md and settings.local.json optimization for Claude Code projects",
       "source": "./plugins/claude-config-maintainer",
       "author": {
@@ -100,14 +131,18 @@
       },
       "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/claude-config-maintainer/README.md",
       "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
-      "hooks": ["./hooks/hooks.json"],
       "category": "development",
-      "tags": ["claude-md", "configuration", "optimization"],
-      "license": "MIT"
+      "tags": [
+        "claude-md",
+        "configuration",
+        "optimization"
+      ],
+      "license": "MIT",
+      "domain": "core"
     },
     {
       "name": "clarity-assist",
-      "version": "7.1.0",
+      "version": "9.0.1",
       "description": "Prompt optimization and requirement clarification with ND-friendly accommodations",
       "source": "./plugins/clarity-assist",
       "author": {
@@ -116,14 +151,22 @@
       },
       "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/clarity-assist/README.md",
       "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
-      "hooks": ["./hooks/hooks.json"],
+      "hooks": [
+        "./hooks/hooks.json"
+      ],
       "category": "productivity",
-      "tags": ["prompts", "requirements", "clarification", "nd-friendly"],
-      "license": "MIT"
+      "tags": [
+        "prompts",
+        "requirements",
+        "clarification",
+        "nd-friendly"
+      ],
+      "license": "MIT",
+      "domain": "core"
     },
     {
       "name": "git-flow",
-      "version": "7.1.0",
+      "version": "9.0.1",
       "description": "Git workflow automation with intelligent commit messages and branch management",
       "source": "./plugins/git-flow",
       "author": {
@@ -132,14 +175,22 @@
       },
       "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/git-flow/README.md",
       "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
-      "hooks": ["./hooks/hooks.json"],
+      "hooks": [
+        "./hooks/hooks.json"
+      ],
       "category": "development",
-      "tags": ["git", "workflow", "commits", "branching"],
-      "license": "MIT"
+      "tags": [
+        "git",
+        "workflow",
+        "commits",
+        "branching"
+      ],
+      "license": "MIT",
+      "domain": "core"
     },
     {
       "name": "pr-review",
-      "version": "7.1.0",
+      "version": "9.0.1",
       "description": "Multi-agent pull request review with confidence scoring and actionable feedback",
       "source": "./plugins/pr-review",
       "author": {
@@ -148,14 +199,19 @@
       },
       "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/pr-review/README.md",
       "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
-      "hooks": ["./hooks/hooks.json"],
       "category": "development",
-      "tags": ["code-review", "pull-requests", "security", "quality"],
-      "license": "MIT"
+      "tags": [
+        "code-review",
+        "pull-requests",
+        "security",
+        "quality"
+      ],
+      "license": "MIT",
+      "domain": "core"
     },
     {
       "name": "data-platform",
-      "version": "7.1.0",
+      "version": "9.0.1",
       "description": "Data engineering tools with pandas, PostgreSQL/PostGIS, and dbt integration",
       "source": "./plugins/data-platform",
       "author": {
@@ -164,14 +220,21 @@
       },
       "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/data-platform/README.md",
       "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
-      "hooks": ["./hooks/hooks.json"],
       "category": "data",
-      "tags": ["pandas", "postgresql", "postgis", "dbt", "data-engineering", "etl"],
-      "license": "MIT"
+      "tags": [
+        "pandas",
+        "postgresql",
+        "postgis",
+        "dbt",
+        "data-engineering",
+        "etl"
+      ],
+      "license": "MIT",
+      "domain": "data"
     },
     {
       "name": "viz-platform",
-      "version": "7.1.0",
+      "version": "9.0.1",
       "description": "Visualization tools with Dash Mantine Components validation, Plotly charts, and theming",
       "source": "./plugins/viz-platform",
       "author": {
@@ -180,14 +243,22 @@
       },
       "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/viz-platform/README.md",
       "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
-      "hooks": ["./hooks/hooks.json"],
       "category": "visualization",
-      "tags": ["dash", "plotly", "mantine", "charts", "dashboards", "theming", "dmc"],
-      "license": "MIT"
+      "tags": [
+        "dash",
+        "plotly",
+        "mantine",
+        "charts",
+        "dashboards",
+        "theming",
+        "dmc"
+      ],
+      "license": "MIT",
+      "domain": "data"
     },
     {
       "name": "contract-validator",
-      "version": "7.1.0",
+      "version": "9.0.1",
       "description": "Cross-plugin compatibility validation and Claude.md agent verification",
       "source": "./plugins/contract-validator",
       "author": {
@@ -196,10 +267,197 @@
       },
       "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/contract-validator/README.md",
       "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
-      "hooks": ["./hooks/hooks.json"],
       "category": "development",
-      "tags": ["validation", "contracts", "compatibility", "agents", "interfaces", "cross-plugin"],
-      "license": "MIT"
+      "tags": [
+        "validation",
+        "contracts",
+        "compatibility",
+        "agents",
+        "interfaces",
+        "cross-plugin"
+      ],
+      "license": "MIT",
+      "domain": "core"
+    },
+    {
+      "name": "saas-api-platform",
+      "version": "0.1.0",
+      "description": "REST and GraphQL API scaffolding for FastAPI and Express projects",
+      "source": "./plugins/saas-api-platform",
+      "author": {
+        "name": "Leo Miranda",
+        "email": "leobmiranda@gmail.com"
+      },
+      "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/saas-api-platform/README.md",
+      "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
+      "category": "development",
+      "tags": [
+        "api",
+        "rest",
+        "graphql",
+        "fastapi",
+        "express",
+        "openapi"
+      ],
+      "license": "MIT",
+      "domain": "saas"
+    },
+    {
+      "name": "saas-db-migrate",
+      "version": "0.1.0",
+      "description": "Database migration management for Alembic, Prisma, and raw SQL",
+      "source": "./plugins/saas-db-migrate",
+      "author": {
+        "name": "Leo Miranda",
+        "email": "leobmiranda@gmail.com"
+      },
+      "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/saas-db-migrate/README.md",
+      "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
+      "category": "development",
+      "tags": [
+        "database",
+        "migrations",
+        "alembic",
+        "prisma",
+        "sql",
+        "schema"
+      ],
+      "license": "MIT",
+      "domain": "saas"
+    },
+    {
+      "name": "saas-react-platform",
+      "version": "0.1.0",
+      "description": "React frontend development toolkit for Next.js and Vite projects",
+      "source": "./plugins/saas-react-platform",
+      "author": {
+        "name": "Leo Miranda",
+        "email": "leobmiranda@gmail.com"
+      },
+      "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/saas-react-platform/README.md",
+      "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
+      "category": "development",
+      "tags": [
+        "react",
+        "nextjs",
+        "vite",
+        "typescript",
+        "frontend",
+        "components"
+      ],
+      "license": "MIT",
+      "domain": "saas"
+    },
+    {
+      "name": "saas-test-pilot",
+      "version": "0.1.0",
+      "description": "Test automation toolkit for pytest, Jest, Vitest, and Playwright",
+      "source": "./plugins/saas-test-pilot",
+      "author": {
+        "name": "Leo Miranda",
+        "email": "leobmiranda@gmail.com"
+      },
+      "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/saas-test-pilot/README.md",
+      "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
+      "category": "development",
+      "tags": [
+        "testing",
+        "pytest",
+        "jest",
+        "vitest",
+        "playwright",
+        "coverage"
+      ],
+      "license": "MIT",
+      "domain": "saas"
+    },
+    {
+      "name": "data-seed",
+      "version": "0.1.0",
+      "description": "Test data generation and database seeding with relationship-aware profiles",
+      "source": "./plugins/data-seed",
+      "author": {
+        "name": "Leo Miranda",
+        "email": "leobmiranda@gmail.com"
+      },
+      "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/data-seed/README.md",
+      "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
+      "category": "data",
+      "tags": [
+        "seed-data",
+        "test-data",
+        "faker",
+        "fixtures",
+        "database"
+      ],
+      "license": "MIT",
+      "domain": "data"
+    },
+    {
+      "name": "ops-release-manager",
+      "version": "0.1.0",
+      "description": "Release management with semantic versioning, changelogs, and tag automation",
+      "source": "./plugins/ops-release-manager",
+      "author": {
+        "name": "Leo Miranda",
+        "email": "leobmiranda@gmail.com"
+      },
+      "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/ops-release-manager/README.md",
+      "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
+      "category": "development",
+      "tags": [
+        "release",
+        "semver",
+        "changelog",
+        "versioning",
+        "tags"
+      ],
+      "license": "MIT",
+      "domain": "ops"
+    },
+    {
+      "name": "ops-deploy-pipeline",
+      "version": "0.1.0",
+      "description": "CI/CD deployment pipeline management for Docker Compose and systemd services",
+      "source": "./plugins/ops-deploy-pipeline",
+      "author": {
+        "name": "Leo Miranda",
+        "email": "leobmiranda@gmail.com"
+      },
+      "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/ops-deploy-pipeline/README.md",
+      "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
+      "category": "infrastructure",
+      "tags": [
+        "deploy",
+        "docker-compose",
+        "systemd",
+        "caddy",
+        "cicd"
+      ],
+      "license": "MIT",
+      "domain": "ops"
+    },
+    {
+      "name": "debug-mcp",
+      "version": "0.1.0",
+      "description": "MCP server debugging, inspection, and development toolkit",
+      "source": "./plugins/debug-mcp",
+      "author": {
+        "name": "Leo Miranda",
+        "email": "leobmiranda@gmail.com"
+      },
+      "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/debug-mcp/README.md",
+      "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
+      "category": "development",
+      "tags": [
+        "mcp",
+        "debugging",
+        "diagnostics",
+        "server",
+        "development"
+      ],
+      "license": "MIT",
+      "domain": "debug"
     }
   ]
 }

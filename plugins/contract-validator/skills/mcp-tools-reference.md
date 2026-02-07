@@ -65,6 +65,6 @@ Available MCP tools for contract-validator operations.
 ## Error Handling
 
 If MCP tools fail:
-1. Check if `/cv-setup` has been run
+1. Check if `/cv setup` has been run
 2. Verify session was restarted after setup
 3. Check MCP server venv exists and is valid

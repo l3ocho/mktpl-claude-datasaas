@@ -13,7 +13,7 @@ Defines branch naming conventions, merge protocols, and git operations.
 
 - **Orchestrator agent**: When coordinating git operations
 - **Executor agent**: When creating branches and commits
-- **Commands**: `/sprint-start`, `/sprint-close`
+- **Commands**: `/sprint start`, `/sprint close`
 
 ---
 
