@@ -154,25 +154,25 @@ When user says "fix the sprint plan command", edit the SOURCE code.
 ## Project Overview
 
 **Repository:** leo-claude-mktplace
-**Version:** 9.0.1
+**Version:** 9.1.0
 **Status:** Production Ready
 
 A plugin marketplace for Claude Code containing:
 
 | Plugin | Description | Version |
 |--------|-------------|---------|
-| `projman` | Sprint planning and project management with Gitea integration | 3.3.0 |
-| `git-flow` | Git workflow automation with smart commits and branch management | 1.0.0 |
-| `pr-review` | Multi-agent PR review with confidence scoring | 1.1.0 |
-| `clarity-assist` | Prompt optimization with ND-friendly accommodations | 1.0.0 |
-| `doc-guardian` | Automatic documentation drift detection and synchronization | 1.0.0 |
-| `code-sentinel` | Security scanning and code refactoring tools | 1.0.1 |
-| `claude-config-maintainer` | CLAUDE.md optimization and maintenance | 1.0.0 |
-| `cmdb-assistant` | NetBox CMDB integration for infrastructure management | 1.2.0 |
-| `data-platform` | pandas, PostgreSQL, and dbt integration for data engineering | 1.3.0 |
-| `viz-platform` | DMC validation, Plotly charts, and theming for dashboards | 1.1.0 |
-| `contract-validator` | Cross-plugin compatibility validation and agent verification | 1.1.0 |
-| `project-hygiene` | Project file organization and cleanup checks | 0.1.0 |
+| `projman` | Sprint planning and project management with Gitea integration | 9.0.1 |
+| `git-flow` | Git workflow automation with smart commits and branch management | 9.0.1 |
+| `pr-review` | Multi-agent PR review with confidence scoring | 9.0.1 |
+| `clarity-assist` | Prompt optimization with ND-friendly accommodations | 9.0.1 |
+| `doc-guardian` | Automatic documentation drift detection and synchronization | 9.0.1 |
+| `code-sentinel` | Security scanning and code refactoring tools | 9.0.1 |
+| `claude-config-maintainer` | CLAUDE.md optimization and maintenance | 9.0.1 |
+| `cmdb-assistant` | NetBox CMDB integration for infrastructure management | 9.0.1 |
+| `data-platform` | pandas, PostgreSQL, and dbt integration for data engineering | 9.0.1 |
+| `viz-platform` | DMC validation, Plotly charts, and theming for dashboards | 9.0.1 |
+| `contract-validator` | Cross-plugin compatibility validation and agent verification | 9.0.1 |
+| `project-hygiene` | Manual project hygiene checks | 9.0.1 |
 | `saas-api-platform` | REST/GraphQL API scaffolding for FastAPI and Express | 0.1.0 |
 | `saas-db-migrate` | Database migration management for Alembic, Prisma, raw SQL | 0.1.0 |
 | `saas-react-platform` | React frontend toolkit for Next.js and Vite | 0.1.0 |
@@ -199,8 +199,9 @@ A plugin marketplace for Claude Code containing:
 | **Setup** | `/projman setup` (modes: `--full`, `--quick`, `--sync`) |
 | **Sprint** | `/sprint plan`, `/sprint start`, `/sprint status` (with `--diagram`), `/sprint close` |
 | **Quality** | `/sprint review`, `/sprint test` (modes: `run`, `gen`) |
-| **Project** | `/project initiation\|plan\|status\|close` |
-| **ADR** | `/adr create\|list\|update\|supersede` |
+| **Project** | `/project initiation`, `/project plan`, `/project status`, `/project close` |
+| **ADR** | `/adr create`, `/adr list`, `/adr update`, `/adr supersede` |
+| **RFC** | `/rfc create`, `/rfc list`, `/rfc review`, `/rfc approve`, `/rfc reject` |
 | **PR Review** | `/pr review`, `/pr summary`, `/pr findings`, `/pr diff` |
 | **Docs** | `/doc audit`, `/doc sync`, `/doc changelog-gen`, `/doc coverage`, `/doc stale-docs` |
 | **Security** | `/sentinel scan`, `/sentinel refactor`, `/sentinel refactor-dry` |
@@ -464,10 +465,12 @@ Stored in Gitea Wiki under `lessons-learned/sprints/`.
 
 | Document | Purpose |
 |----------|---------|
+| `docs/ARCHITECTURE.md` | System architecture and plugin reference |
 | `docs/CANONICAL-PATHS.md` | **Single source of truth** for paths |
 | `docs/COMMANDS-CHEATSHEET.md` | All commands quick reference |
 | `docs/CONFIGURATION.md` | Centralized setup guide |
 | `docs/DEBUGGING-CHECKLIST.md` | Systematic troubleshooting guide |
+| `docs/MIGRATION-v9.md` | v8.x to v9.0.0 migration guide |
 | `docs/UPDATING.md` | Update guide for the marketplace |
 | `plugins/projman/CONFIGURATION.md` | Projman quick reference (links to central) |
 
@@ -550,4 +553,4 @@ The script will:
 
 ---
 
-**Last Updated:** 2026-02-06
+**Last Updated:** 2026-02-07

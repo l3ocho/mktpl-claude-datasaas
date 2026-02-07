@@ -1,6 +1,6 @@
 {
   "name": "git-flow",
-  "version": "1.2.0",
+  "version": "9.0.1",
   "description": "Git workflow automation with intelligent commit messages and branch management",
   "author": {
     "name": "Leo Miranda",

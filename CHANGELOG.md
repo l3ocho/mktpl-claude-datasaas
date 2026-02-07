@@ -6,6 +6,31 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+## [9.1.0] - 2026-02-07
+
+### Added
+
+- `docs/ARCHITECTURE.md` — Consolidated architecture document covering all 20 plugins, 5 MCP servers, hook inventory, agent model, launch profiles, and per-plugin command reference
+
+### Changed
+
+- All 12 original plugin versions bumped to 9.0.1 in both `plugin.json` and `marketplace.json` (were at various pre-9.x versions)
+- `project-hygiene` description updated from "Post-task cleanup hook" to "Manual project hygiene checks" in both manifests; removed "hooks" and "automation" keywords
+- `CANONICAL-PATHS.md` refreshed for v9.1.0: added Phase 3 plugins, added ARCHITECTURE.md and MIGRATION-v9.md, removed stale hooks/ dirs, updated Domain table
+- `UPDATING.md` updated with all 5 MCP servers
+- `COMMANDS-CHEATSHEET.md` expanded /rfc, /project, /adr to individual rows per sub-command
+- `README.md` documentation table and structure tree updated; command rows normalized; project-hygiene description corrected
+- `CLAUDE.md` documentation index updated with ARCHITECTURE.md and MIGRATION-v9.md; plugin version table updated; /rfc, /project, /adr commands expanded
+
+### Removed
+
+- `.doc-guardian-queue` — orphan file from deleted PostToolUse hook
+- `.claude/backups/CLAUDE.md.2026-01-22_132037` — v3.0.1 backup, superseded by git history
+- `scripts/switch-profile.sh` — deprecated in favor of `claude-launch.sh`
+- `docs/architecture/` — stale pre-v3.0.0 Draw.io specs (replaced by `docs/ARCHITECTURE.md`)
+- `docs/designs/` — Phase 3 design specs (implemented as plugin scaffolds, now redundant)
+- `docs/prompts/` — moved to Gitea Wiki
+
 ## [9.0.1] - 2026-02-06
 
 ### Fixed

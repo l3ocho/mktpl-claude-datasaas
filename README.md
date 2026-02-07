@@ -1,4 +1,4 @@
-# Leo Claude Marketplace - v9.0.1
+# Leo Claude Marketplace - v9.1.0
 
 A collection of Claude Code plugins for project management, infrastructure automation, and development workflows.
 
@@ -45,7 +45,7 @@ AI-guided sprint planning with full Gitea integration. Transforms a proven 15-sp
 - Branch-aware security (development/staging/production)
 - Pre-sprint-close code quality review and test verification
 
-**Commands:** `/sprint plan`, `/sprint start`, `/sprint status`, `/sprint close`, `/labels sync`, `/projman setup`, `/sprint review`, `/sprint test`, `/projman debug`, `/projman suggest-version`, `/projman proposal-status`, `/rfc`
+**Commands:** `/sprint plan`, `/sprint start`, `/sprint status`, `/sprint close`, `/sprint review`, `/sprint test`, `/labels sync`, `/projman setup`, `/projman debug`, `/projman suggest-version`, `/projman proposal-status`, `/rfc create`, `/rfc list`, `/rfc review`, `/rfc approve`, `/rfc reject`, `/project initiation`, `/project plan`, `/project status`, `/project close`, `/adr create`, `/adr list`, `/adr update`, `/adr supersede`
 
 #### [git-flow](./plugins/git-flow)
 **Git Workflow Automation**
@@ -113,9 +113,11 @@ Automatic documentation drift detection and synchronization.
 **Commands:** `/doc audit`, `/doc sync`, `/doc changelog-gen`, `/doc coverage`, `/doc stale-docs`
 
 #### [project-hygiene](./plugins/project-hygiene)
-**Post-Task Cleanup Automation**
+**Manual Project Hygiene Checks**
 
-Hook-based cleanup that runs after Claude completes work.
+Project file organization and cleanup checks — temp files, misplaced files, empty dirs, debug artifacts.
+
+**Commands:** `/hygiene check` (with `--fix` flag for auto-fix)
 
 ### Security
 
@@ -458,22 +460,32 @@ leo-claude-mktplace/
 │   ├── data-platform/             # Data engineering (pandas, PostgreSQL, dbt)
 │   ├── viz-platform/              # Visualization (DMC, Plotly, theming)
 │   └── contract-validator/        # Cross-plugin validation (v5.0.0)
-├── plugins/                       # All plugins
+├── plugins/                       # All plugins (20 total)
 │   ├── projman/                   # Sprint management
 │   ├── git-flow/                  # Git workflow automation
 │   ├── pr-review/                 # PR review
 │   ├── clarity-assist/            # Prompt optimization
-│   ├── data-platform/             # Data engineering
-│   ├── viz-platform/              # Visualization
-│   ├── contract-validator/        # Cross-plugin validation (NEW)
-│   ├── claude-config-maintainer/  # CLAUDE.md optimization
-│   ├── cmdb-assistant/            # NetBox CMDB integration
 │   ├── doc-guardian/              # Documentation drift detection
 │   ├── code-sentinel/             # Security scanning
-│   └── project-hygiene/           # Cleanup automation
+│   ├── claude-config-maintainer/  # CLAUDE.md optimization
+│   ├── contract-validator/        # Cross-plugin validation
+│   ├── project-hygiene/           # Manual cleanup checks
+│   ├── cmdb-assistant/            # NetBox CMDB integration
+│   ├── data-platform/             # Data engineering
+│   ├── viz-platform/              # Visualization
+│   ├── data-seed/                 # Test data generation (scaffold)
+│   ├── saas-api-platform/         # API scaffolding (scaffold)
+│   ├── saas-db-migrate/           # DB migrations (scaffold)
+│   ├── saas-react-platform/       # React toolkit (scaffold)
+│   ├── saas-test-pilot/           # Test automation (scaffold)
+│   ├── ops-release-manager/       # Release management (scaffold)
+│   ├── ops-deploy-pipeline/       # Deployment pipeline (scaffold)
+│   └── debug-mcp/                 # MCP debugging (scaffold)
 ├── docs/                          # Documentation
+│   ├── ARCHITECTURE.md            # System architecture & plugin reference
 │   ├── CANONICAL-PATHS.md         # Path reference
-│   └── CONFIGURATION.md           # Setup guide
+│   ├── CONFIGURATION.md           # Setup guide
+│   └── MIGRATION-v9.md            # v8→v9 migration guide
 ├── scripts/                       # Setup scripts
 └── CHANGELOG.md                   # Version history
 ```
@@ -483,11 +495,13 @@ leo-claude-mktplace/
 | Document | Description |
 |----------|-------------|
 | [CLAUDE.md](./CLAUDE.md) | Main project instructions |
+| [ARCHITECTURE.md](./docs/ARCHITECTURE.md) | System architecture and plugin reference |
 | [CONFIGURATION.md](./docs/CONFIGURATION.md) | Centralized setup guide |
 | [COMMANDS-CHEATSHEET.md](./docs/COMMANDS-CHEATSHEET.md) | All commands quick reference |
 | [UPDATING.md](./docs/UPDATING.md) | Update guide for the marketplace |
 | [CANONICAL-PATHS.md](./docs/CANONICAL-PATHS.md) | Authoritative path reference |
 | [DEBUGGING-CHECKLIST.md](./docs/DEBUGGING-CHECKLIST.md) | Systematic troubleshooting guide |
+| [MIGRATION-v9.md](./docs/MIGRATION-v9.md) | v8.x to v9.0.0 migration guide |
 | [CHANGELOG.md](./CHANGELOG.md) | Version history |
 
 ## License

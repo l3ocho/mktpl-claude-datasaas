@@ -38,7 +38,7 @@ cd ~/.claude/plugins/marketplaces/leo-claude-mktplace && ./scripts/setup.sh
 
 ## What the Post-Update Script Does
 
-1. **Updates Python dependencies** for MCP servers (gitea, netbox)
+1. **Updates Python dependencies** for all 5 MCP servers (gitea, netbox, data-platform, viz-platform, contract-validator)
 2. **Shows recent changelog entries** so you know what changed
 3. **Validates your configuration** is still compatible
 
@@ -157,10 +157,11 @@ cd ~/.claude/plugins/marketplaces/leo-claude-mktplace && ./scripts/setup.sh
 If that doesn't work:
 
 1. Check Python version: `python3 --version` (requires 3.10+)
-2. Verify venv exists in INSTALLED location:
+2. Verify venvs exist in INSTALLED location:
    ```bash
-   ls ~/.claude/plugins/marketplaces/leo-claude-mktplace/mcp-servers/gitea/.venv
-   ls ~/.claude/plugins/marketplaces/leo-claude-mktplace/mcp-servers/netbox/.venv
+   for server in gitea netbox data-platform viz-platform contract-validator; do
+     ls ~/.claude/plugins/marketplaces/leo-claude-mktplace/mcp-servers/$server/.venv && echo "$server: OK" || echo "$server: MISSING"
+   done
    ```
 3. If missing, run setup.sh as shown above.
 4. Restart Claude Code session
