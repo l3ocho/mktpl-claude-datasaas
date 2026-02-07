@@ -154,7 +154,7 @@ When user says "fix the sprint plan command", edit the SOURCE code.
 ## Project Overview
 
 **Repository:** leo-claude-mktplace
-**Version:** 9.1.1
+**Version:** 9.1.2
 **Status:** Production Ready
 
 A plugin marketplace for Claude Code containing:
@@ -424,19 +424,18 @@ Stored in Gitea Wiki under `lessons-learned/sprints/`.
 
 ### Adding a New Plugin
 
-1. Create `plugins/{name}/.claude-plugin/plugin.json` — must include `"domain"` field (`core`, `data`, `saas`, `ops`, or `debug`)
-2. Add entry to `.claude-plugin/marketplace.json` with category, tags, license, and `"domain"` field (must match plugin.json)
-3. Create `claude-md-integration.md`
-4. If using new MCP server, add to root `mcp-servers/` and update `.mcp.json`
-5. Run `./scripts/validate-marketplace.sh` — rejects plugins without valid `domain` field
-6. Update `CHANGELOG.md`
+1. Create `plugins/{name}/.claude-plugin/plugin.json` (standard schema fields only — no custom fields)
+2. Create `plugins/{name}/.claude-plugin/metadata.json` — must include `"domain"` field (`core`, `data`, `saas`, `ops`, or `debug`)
+3. Add entry to `.claude-plugin/marketplace.json` with category, tags, license (no custom fields — Claude Code schema is strict)
+4. Create `claude-md-integration.md`
+5. If using new MCP server, add to root `mcp-servers/` and update `.mcp.json`
+6. Run `./scripts/validate-marketplace.sh` — rejects plugins without valid `domain` field
+7. Update `CHANGELOG.md`
 
-**Domain field is required (v8.0.0+):**
+**Domain field is required in metadata.json (v8.0.0+, moved from plugin.json in v9.1.2):**
 ```json
 {
-  "name": "plugin-name",
-  "domain": "core",
-  ...
+  "domain": "core"
 }
 ```
 

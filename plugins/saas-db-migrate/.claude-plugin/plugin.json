@@ -20,6 +20,5 @@
   ],
   "commands": [
     "./commands/"
-  ],
-  "domain": "saas"
+  ]
 }

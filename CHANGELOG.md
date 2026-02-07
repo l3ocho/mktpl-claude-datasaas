@@ -6,6 +6,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+## [9.1.2] - 2026-02-07
+
+### Fixed
+
+- **BREAKING FIX:** Removed `"domain"` field from all `marketplace.json` and `plugin.json` files — Claude Code's strict schema validator rejects unrecognized keys, causing `Failed to load marketplace` error
+- Domain metadata moved to `metadata.json` per plugin (same pattern as `mcp_servers`)
+- `validate-marketplace.sh` updated to read domain from `metadata.json` instead of `marketplace.json`/`plugin.json`
+- All documentation updated to reference `metadata.json` as domain source
+
 ## [9.1.1] - 2026-02-07
 
 ### Changed

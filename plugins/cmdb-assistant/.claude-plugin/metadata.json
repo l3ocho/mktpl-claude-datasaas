@@ -1,1 +1,6 @@
-{"mcp_servers": ["netbox"]}
+{
+  "mcp_servers": [
+    "netbox"
+  ],
+  "domain": "ops"
+}

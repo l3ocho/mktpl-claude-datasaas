@@ -15,7 +15,6 @@
     "maintenance",
     "manual-check"
   ],
-  "domain": "core",
   "commands": [
     "./commands/"
   ]
