@@ -6,7 +6,7 @@
   },
   "metadata": {
     "description": "Project management plugins with Gitea and NetBox integrations",
-    "version": "9.0.0"
+    "version": "9.0.1"
   },
   "plugins": [
     {

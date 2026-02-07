@@ -21,10 +21,10 @@ v9.0.0 standardizes all commands to the `/<noun> <action>` sub-command pattern. 
 | `/pm-review` | `/sprint review` | Moved under `/sprint` |
 | `/pm-test` | `/sprint test` | Moved under `/sprint` |
 | `/pm-setup` | `/projman setup` | Moved under `/projman` |
-| `/pm-debug` | `/projman debug` | Moved under `/projman` |
+| `/pm-debug` | **Removed** | Deleted in v8.1.0 — migrated to `debug-mcp` plugin (Decision #11) |
 | `/labels-sync` | `/labels sync` | |
-| `/suggest-version` | `/projman suggest-version` | Moved under `/projman` |
-| `/proposal-status` | `/projman proposal-status` | Moved under `/projman` |
+| `/suggest-version` | **Removed** | Deleted in v8.1.0 — migrated to `ops-release-manager` plugin (Decision #18) |
+| `/proposal-status` | **Removed** | Deleted in v8.1.0 — absorbed into `/project status` (Decision #19) |
 | `/rfc <sub>` | `/rfc <sub>` | Unchanged |
 | `/project <sub>` | `/project <sub>` | Unchanged |
 | `/adr <sub>` | `/adr <sub>` | Unchanged |

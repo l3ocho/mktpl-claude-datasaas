@@ -351,14 +351,19 @@ To verify which review layers are active, read these files:
 
 ```json
 {
-  "hooks": [
-    {
-      "event": "PreToolUse",
-      "type": "command",
-      "command": "./hooks/security-check.sh",
-      "tools": ["Write", "Edit", "MultiEdit"]
-    }
-  ]
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Write|Edit|MultiEdit",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "./hooks/security-check.sh"
+          }
+        ]
+      }
+    ]
+  }
 }
 ```
 

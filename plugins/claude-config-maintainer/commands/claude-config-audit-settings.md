@@ -62,21 +62,20 @@ Using `settings-optimization.md` Section 3, detect:
 
 ### Step 4: Detect Active Marketplace Hooks
 
-Read `plugins/*/hooks/hooks.json` files:
+Read `plugins/*/hooks/hooks.json` files (post-Decision #29 — only PreToolUse safety hooks and UserPromptSubmit quality hooks exist):
 
 ```bash
-# Check each plugin's hooks
-plugins/code-sentinel/hooks/hooks.json     # PreToolUse security
-plugins/doc-guardian/hooks/hooks.json      # PostToolUse drift detection
-plugins/project-hygiene/hooks/hooks.json   # PostToolUse cleanup
-plugins/data-platform/hooks/hooks.json     # PostToolUse schema diff
-plugins/contract-validator/hooks/hooks.json # Plugin validation
+# Check each plugin's hooks (exhaustive post-v8.1.0 inventory)
+plugins/code-sentinel/hooks/hooks.json     # PreToolUse: Write|Edit|MultiEdit → security-check.sh
+plugins/git-flow/hooks/hooks.json          # PreToolUse: Bash → branch-check.sh, commit-msg-check.sh
+plugins/cmdb-assistant/hooks/hooks.json    # PreToolUse: MCP create/update → validate-input.sh
+plugins/clarity-assist/hooks/hooks.json    # UserPromptSubmit → vagueness-check.sh
 ```
 
 Parse each to identify:
-- Hook event type (PreToolUse, PostToolUse)
-- Tool matchers (Write, Edit, MultiEdit, Bash)
-- Whether hook is command type (reliable) or prompt type (unreliable)
+- Hook event type (PreToolUse or UserPromptSubmit only — no other types should exist)
+- Tool matchers (Write, Edit, MultiEdit, Bash, MCP patterns)
+- Whether hook is command type (must be — prompt type is forbidden)
 
 ### Step 5: Map Review Layers to Directory Scopes
 
@@ -118,9 +117,9 @@ Issues Found:
 
 Active Review Layers Detected:
   ✓ code-sentinel (PreToolUse: Write|Edit|MultiEdit)
-  ✓ doc-guardian (PostToolUse: Write|Edit|MultiEdit)
-  ✓ project-hygiene (PostToolUse: Write|Edit)
-  ✗ data-platform schema-diff (not detected)
+  ✓ git-flow (PreToolUse: Bash — branch naming + commit format)
+  ✓ cmdb-assistant (PreToolUse: MCP create/update)
+  ✓ clarity-assist (UserPromptSubmit: vagueness detection)
 
 Recommendations:
   1. [specific action with pattern]
@@ -146,7 +145,7 @@ When `--diagram` is specified, generate a Mermaid flowchart showing:
 
 **Color coding:**
 - PreToolUse hooks: Blue
-- PostToolUse hooks: Green
+- UserPromptSubmit hooks: Green
 - Sprint Approval: Amber
 - PR Review: Purple
 
@@ -161,7 +160,7 @@ flowchart LR
 
     subgraph Review Layers
         CS[code-sentinel]
-        DG[doc-guardian]
+        GF[git-flow]
         PR[pr-review]
     end
 
@@ -172,18 +171,17 @@ flowchart LR
     end
 
     W --> CS
-    W --> DG
     E --> CS
-    E --> DG
+    B --> GF
     CS --> A
-    DG --> A
+    GF --> A
     B --> P
 
     classDef preHook fill:#e3f2fd
-    classDef postHook fill:#e8f5e9
+    classDef userPrompt fill:#e8f5e9
     classDef prReview fill:#f3e5f5
     class CS preHook
-    class DG postHook
+    class GF preHook
     class PR prReview
 ```
 

@@ -5,7 +5,7 @@ description: Synchronize all pending documentation updates in a single commit
 
 # /doc sync
 
-Apply all pending documentation updates detected by doc-guardian hooks.
+Apply all pending documentation updates detected by `/doc audit`.
 
 ## Skills to Load
 

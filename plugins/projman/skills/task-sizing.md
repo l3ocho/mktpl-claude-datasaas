@@ -82,7 +82,7 @@ Labels: Efforts/S
 
 [Sprint 3] chore: Register hook in hooks.json
 Labels: Efforts/XS
-- [ ] Add PostToolUse:Edit hook entry
+- [ ] Add PreToolUse:Edit hook entry
 ```
 
 ---

@@ -485,7 +485,7 @@ Not all plugins have MCP servers. The install script handles this automatically:
 | projman | ✓ (via gitea) | Issue, wiki, PR tools |
 | pr-review | ✓ (via gitea) | PR review tools |
 | git-flow | ✗ | Commands only |
-| doc-guardian | ✗ | Commands and hooks only |
+| doc-guardian | ✗ | Commands only |
 | code-sentinel | ✗ | Commands and hooks only |
 | clarity-assist | ✗ | Commands only |
 
