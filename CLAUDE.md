@@ -154,7 +154,7 @@ When user says "fix the sprint plan command", edit the SOURCE code.
 ## Project Overview
 
 **Repository:** leo-claude-mktplace
-**Version:** 9.1.0
+**Version:** 9.1.1
 **Status:** Production Ready
 
 A plugin marketplace for Claude Code containing:
@@ -231,55 +231,66 @@ These commands are being developed but don't apply to this project's workflow:
 
 ```
 leo-claude-mktplace/
-├── .claude-plugin/
-│   └── marketplace.json          # Marketplace manifest
+├── .claude-plugin/                # Marketplace manifest
+│   ├── marketplace.json
+│   ├── marketplace-lean.json      # Lean profile (6 core plugins)
+│   └── marketplace-full.json      # Full profile (all plugins)
 ├── .mcp.json                     # MCP server configuration (all servers)
 ├── mcp-servers/                  # SHARED MCP servers
-│   ├── gitea/                    # Gitea MCP (issues, PRs, wiki)
-│   ├── netbox/                   # NetBox MCP (CMDB)
+│   ├── gitea/                    # Gitea (issues, PRs, wiki)
+│   ├── netbox/                   # NetBox (DCIM, IPAM)
 │   ├── data-platform/            # pandas, PostgreSQL, dbt
-│   ├── viz-platform/             # DMC validation, charts, themes
+│   ├── viz-platform/             # DMC, Plotly, theming
 │   └── contract-validator/       # Plugin compatibility validation
-├── plugins/
-│   ├── projman/                  # Sprint management
+├── plugins/                      # All plugins (20 total)
+│   ├── projman/                  # [core] Sprint management
 │   │   ├── .claude-plugin/plugin.json
 │   │   ├── commands/             # 19 commands
 │   │   ├── agents/               # 4 agents
 │   │   └── skills/               # 23 reusable skill files
-│   ├── git-flow/                 # Git workflow automation
-│   │   ├── .claude-plugin/plugin.json
-│   │   ├── commands/             # 5 commands
-│   │   └── agents/
-│   ├── pr-review/                # Multi-agent PR review
-│   │   ├── .claude-plugin/plugin.json
-│   │   ├── commands/             # 8 commands
-│   │   └── agents/               # 5 agents
-│   ├── clarity-assist/           # Prompt optimization
-│   │   ├── .claude-plugin/plugin.json
-│   │   ├── commands/             # 2 commands
-│   │   └── agents/
-│   ├── data-platform/            # Data engineering
-│   │   ├── .claude-plugin/plugin.json
-│   │   ├── commands/             # 7 commands
-│   │   └── agents/               # 2 agents
-│   ├── viz-platform/             # Visualization
-│   │   ├── .claude-plugin/plugin.json
-│   │   ├── commands/             # 7 commands
-│   │   └── agents/               # 3 agents
-│   ├── doc-guardian/             # Documentation drift detection
-│   ├── code-sentinel/            # Security scanning & refactoring
-│   ├── claude-config-maintainer/
-│   ├── cmdb-assistant/
-│   ├── contract-validator/
-│   └── project-hygiene/
-├── scripts/
-│   ├── setup.sh, post-update.sh
+│   ├── git-flow/                 # [core] Git workflow automation
+│   ├── pr-review/                # [core] PR review
+│   ├── clarity-assist/           # [core] Prompt optimization
+│   ├── doc-guardian/             # [core] Documentation drift detection
+│   ├── code-sentinel/            # [core] Security scanning
+│   ├── claude-config-maintainer/ # [core] CLAUDE.md optimization
+│   ├── contract-validator/       # [core] Cross-plugin validation
+│   ├── project-hygiene/          # [core] Manual cleanup checks
+│   ├── cmdb-assistant/           # [ops] NetBox CMDB integration
+│   ├── data-platform/            # [data] Data engineering
+│   ├── viz-platform/             # [data] Visualization
+│   ├── data-seed/                # [data] Test data generation (scaffold)
+│   ├── saas-api-platform/        # [saas] API scaffolding (scaffold)
+│   ├── saas-db-migrate/          # [saas] DB migrations (scaffold)
+│   ├── saas-react-platform/      # [saas] React toolkit (scaffold)
+│   ├── saas-test-pilot/          # [saas] Test automation (scaffold)
+│   ├── ops-release-manager/      # [ops] Release management (scaffold)
+│   ├── ops-deploy-pipeline/      # [ops] Deployment pipeline (scaffold)
+│   └── debug-mcp/                # [debug] MCP debugging (scaffold)
+├── scripts/                      # Setup and maintenance
+│   ├── setup.sh                  # Initial setup (create venvs, config)
+│   ├── post-update.sh            # Post-update (clear cache, changelog)
+│   ├── setup-venvs.sh            # MCP server venv management (cache-based)
 │   ├── validate-marketplace.sh   # Marketplace compliance validation
-│   ├── verify-hooks.sh           # Verify all hooks are command type
-│   └── check-venv.sh             # Check MCP server venvs exist
-└── docs/
-    ├── CANONICAL-PATHS.md        # Single source of truth for paths
-    └── CONFIGURATION.md          # Centralized configuration guide
+│   ├── verify-hooks.sh           # Hook inventory verification
+│   ├── release.sh                # Release automation with version bumping
+│   ├── claude-launch.sh          # Profile-based launcher
+│   ├── install-plugin.sh         # Install plugin to consumer project
+│   ├── list-installed.sh         # Show installed plugins in a project
+│   └── uninstall-plugin.sh       # Remove plugin from consumer project
+├── docs/                         # Documentation
+│   ├── ARCHITECTURE.md           # System architecture & plugin reference
+│   ├── CANONICAL-PATHS.md        # Authoritative path reference
+│   ├── COMMANDS-CHEATSHEET.md    # All commands quick reference
+│   ├── CONFIGURATION.md          # Centralized setup guide
+│   ├── DEBUGGING-CHECKLIST.md    # Systematic troubleshooting guide
+│   ├── MIGRATION-v9.md           # v8.x to v9.0.0 migration guide
+│   └── UPDATING.md               # Update guide
+├── CLAUDE.md                      # Project instructions for Claude Code
+├── README.md
+├── CHANGELOG.md
+├── LICENSE
+└── .gitignore
 ```
 
 ## Architecture

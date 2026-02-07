@@ -6,6 +6,18 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+## [9.1.1] - 2026-02-07
+
+### Changed
+
+- README.md fully rewritten — clean structure with plugins grouped by domain, accurate structure tree, all 10 scripts, all 7 docs
+- CLAUDE.md structure tree updated to match README (was showing only 12 plugins, 3 scripts, 2 docs)
+- doc-guardian `/doc sync` and `sync-workflow.md` updated to remove stale `.doc-guardian-queue` references (queue file deleted in v8.1.0)
+
+### Removed
+
+- `scripts/check-venv.sh` — dead code designed for SessionStart hooks that were never implemented; functionality covered by `setup-venvs.sh`
+
 ## [9.1.0] - 2026-02-07
 
 ### Added

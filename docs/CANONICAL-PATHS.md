@@ -195,12 +195,14 @@ leo-claude-mktplace/
 ├── scripts/                    # Setup and maintenance scripts
 │   ├── setup.sh                # Initial setup (create venvs, config templates)
 │   ├── post-update.sh          # Post-update (clear cache, show changelog)
-│   ├── check-venv.sh           # Check if venvs exist (read-only)
+│   ├── setup-venvs.sh          # Setup MCP server venvs (create only, never delete)
 │   ├── validate-marketplace.sh # Marketplace compliance validation
 │   ├── verify-hooks.sh         # Verify all hooks use correct event types
-│   ├── setup-venvs.sh          # Setup MCP server venvs (create only, never delete)
 │   ├── release.sh              # Release automation with version bumping
-│   └── claude-launch.sh        # Task-specific launcher with profile selection
+│   ├── claude-launch.sh        # Task-specific launcher with profile selection
+│   ├── install-plugin.sh       # Install plugin to consumer project
+│   ├── list-installed.sh       # Show installed plugins in a project
+│   └── uninstall-plugin.sh     # Remove plugin from consumer project
 ├── CLAUDE.md
 ├── README.md
 ├── LICENSE
