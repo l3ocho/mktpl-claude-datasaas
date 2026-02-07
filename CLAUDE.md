@@ -154,7 +154,7 @@ When user says "fix the sprint plan command", edit the SOURCE code.
 ## Project Overview
 
 **Repository:** leo-claude-mktplace
-**Version:** 9.0.0
+**Version:** 9.0.1
 **Status:** Production Ready
 
 A plugin marketplace for Claude Code containing:

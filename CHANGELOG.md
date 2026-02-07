@@ -6,6 +6,25 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+## [9.0.1] - 2026-02-06
+
+### Fixed
+
+- **claude-config-maintainer:** `claude-config-audit-settings.md` Step 4 referenced deleted hooks.json files (doc-guardian, project-hygiene, data-platform, contract-validator) — updated to current hook inventory (code-sentinel, git-flow, cmdb-assistant, clarity-assist)
+- **claude-config-maintainer:** `maintainer.md` agent referenced project-hygiene PostToolUse hooks — updated to current hook types
+- **claude-config-maintainer:** `claude-config-audit-settings.md` output format referenced doc-guardian review layer — updated to git-flow, cmdb-assistant, clarity-assist
+- **claude-config-maintainer:** `claude-config-audit-settings.md` Mermaid diagram referenced doc-guardian — updated to git-flow
+- **claude-config-maintainer:** `claude-config-optimize-settings.md` reviewed profile prerequisites referenced doc-guardian PostToolUse — updated to git-flow PreToolUse
+- **project-hygiene:** `claude-md-integration.md` described PostToolUse hook behavior that was removed in v8.1.0 — rewritten for manual `/hygiene check` command
+- **doc-guardian:** `doc-sync.md` referenced doc-guardian hooks — updated to reference `/doc audit`
+- **doc-guardian:** `sync-workflow.md` referenced PostToolUse hook — updated to note removal per Decision #29
+- **projman:** `task-sizing.md` example referenced PostToolUse — updated to PreToolUse
+- **docs:** `MIGRATION-v9.md` listed `/pm-debug`, `/suggest-version`, `/proposal-status` as renamed to `/projman` sub-commands — corrected to show as **Removed** (these were deleted in v8.1.0, not renamed in v9.0.0)
+- **docs:** `CONFIGURATION.md` listed doc-guardian as "Commands and hooks only" — corrected to "Commands only"
+- **scripts:** `setup.sh` referenced old `/labels-sync` command — updated to `/labels sync`
+
+## [9.0.0] - 2026-02-06
+
 ### Added
 
 - **Phase 3: 8 new plugin scaffolds**

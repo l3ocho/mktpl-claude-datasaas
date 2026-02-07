@@ -171,7 +171,7 @@ Switching to reviewed profile...
 
 Prerequisites verified:
   ✓ code-sentinel hook active (PreToolUse)
-  ✓ doc-guardian hook active (PostToolUse)
+  ✓ git-flow hook active (PreToolUse)
   ✓ 2+ review layers detected
 
 This profile:

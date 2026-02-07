@@ -96,7 +96,7 @@ Use this mapping to identify active plugins:
 | `gitea` | projman |
 | `netbox` | cmdb-assistant |
 
-Also check for hook-based plugins (project-hygiene uses `PostToolUse` hooks).
+Also check for hook-based plugins (code-sentinel, git-flow, cmdb-assistant use `PreToolUse` safety hooks; clarity-assist uses `UserPromptSubmit` quality hook).
 
 **Step 2: Check CLAUDE.md for Plugin References**
 
@@ -151,7 +151,7 @@ Evaluate using `skills/settings-optimization.md`:
 Before recommending auto-allow patterns, verify active review layers:
 
 1. Read `plugins/*/hooks/hooks.json` for each installed plugin
-2. Map hook types (PreToolUse, PostToolUse) to tool matchers (Write, Edit, Bash)
+2. Map hook types (PreToolUse, UserPromptSubmit) to tool matchers (Write, Edit, MultiEdit, Bash, MCP patterns)
 3. Confirm plugins are listed in `.claude-plugin/marketplace.json`
 4. Only recommend auto-allow for scopes covered by ≥2 verified review layers
 
