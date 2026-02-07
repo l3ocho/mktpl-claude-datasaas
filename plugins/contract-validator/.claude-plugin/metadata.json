@@ -1,1 +1,6 @@
-{"mcp_servers": ["contract-validator"]}
+{
+  "mcp_servers": [
+    "contract-validator"
+  ],
+  "domain": "core"
+}
