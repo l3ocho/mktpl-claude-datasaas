@@ -16,7 +16,7 @@ agent: planner
 
 Manage the full RFC lifecycle through sub-commands. RFCs provide a structured way to document, discuss, and approve changes before implementation.
 
-When invoked without a sub-command, display available actions and ask which to run.
+When invoked without a sub-command or with `$ARGUMENTS`, handle sub-commands inline using the documentation below.
 
 ## Invocation
 
@@ -34,11 +34,19 @@ When invoked without a sub-command, display available actions and ask which to r
 | `approve` | `/rfc approve <number>` | Approve RFC in Review status |
 | `reject` | `/rfc reject <number>` | Reject RFC with documented reason |
 
-## Workflow
+## Routing
 
-1. Display the table above
+If `$ARGUMENTS` is provided (e.g., user typed `/rfc create`):
+1. Match the first word of `$ARGUMENTS` against the Command column above
+2. Execute the corresponding sub-command using the inline documentation below
+3. Pass any remaining arguments to the sub-command handler
+
+If no arguments provided:
+1. Display the Available Commands table
 2. Ask: "Which command would you like to run?"
-3. Route to the selected sub-command
+3. When the user responds, execute the matching sub-command using the inline documentation below
+
+**Note:** RFC commands are handled inline in this file - there are no separate command files to invoke.
 
 ---
 

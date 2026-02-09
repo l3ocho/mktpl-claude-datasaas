@@ -8,6 +8,40 @@ v9.0.0 standardizes all commands to the `/<noun> <action>` sub-command pattern. 
 
 ---
 
+## Command Invocation
+
+The `/<noun> <action>` pattern is a **display convention** for user-friendly command invocation. Under the hood, Claude Code resolves commands by filename using hyphens.
+
+### How It Works
+
+| You Type | What Happens | Actual Command Loaded |
+|----------|--------------|----------------------|
+| `/doc audit` | Dispatch file `doc.md` receives `$ARGUMENTS="audit"` | Routes to `/doc-guardian:doc-audit` (file: `doc-audit.md`) |
+| `/sprint plan` | Dispatch file `sprint.md` receives `$ARGUMENTS="plan"` | Routes to `/projman:sprint-plan` (file: `sprint-plan.md`) |
+| `/doc-guardian:doc-audit` | Direct invocation (bypasses dispatch) | Loads `doc-audit.md` directly |
+
+### Two Invocation Methods
+
+1. **User-friendly (via dispatch):** `/doc audit` — space-separated, routes through dispatch file
+2. **Direct (plugin-prefixed):** `/doc-guardian:doc-audit` — bypasses dispatch, invokes command directly
+
+Both methods work identically. The dispatch file provides `$ARGUMENTS` parsing and a menu interface when invoked without arguments.
+
+### Command Name Mapping
+
+**Pattern:** Spaces in display names become hyphens in filenames.
+
+| Display Name | Filename | Plugin-Prefixed |
+|--------------|----------|-----------------|
+| `/doc audit` | `doc-audit.md` | `/doc-guardian:doc-audit` |
+| `/sprint plan` | `sprint-plan.md` | `/projman:sprint-plan` |
+| `/pr review` | `pr-review.md` | `/pr-review:pr-review` |
+| `/gitflow commit` | `gitflow-commit.md` | `/git-flow:gitflow-commit` |
+
+If dispatch routing fails, use the direct plugin-prefixed format.
+
+---
+
 ## Complete Command Mapping
 
 ### projman

@@ -4,6 +4,22 @@ Quick reference for all commands in the Leo Claude Marketplace (v9.0.0+).
 
 All commands follow the `/<noun> <action>` sub-command pattern.
 
+## Invocation
+
+Commands can be invoked in two ways:
+
+1. **Via dispatch file:** `/doc audit` (routes through dispatch file to invoke `/doc-guardian:doc-audit`)
+2. **Direct plugin-prefixed:** `/doc-guardian:doc-audit` (invokes command directly)
+
+Both methods work identically. The dispatch file provides a user-friendly interface with `$ARGUMENTS` parsing, while the direct format bypasses the dispatcher.
+
+If dispatch routing fails, use the direct plugin-prefixed format: `/<plugin-name>:<command-name>`.
+
+**Examples:**
+- `/sprint plan` → routes to `/projman:sprint-plan`
+- `/doc audit` → routes to `/doc-guardian:doc-audit`
+- `/pr review` → routes to `/pr-review:pr-review`
+
 ---
 
 ## Command Reference Table
