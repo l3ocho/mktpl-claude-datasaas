@@ -20,8 +20,9 @@
 # 2. Installs dependencies
 # 3. Creates config file templates (if missing)
 # 4. Validates existing configuration
-# 5. Validates label reference file
-# 6. Reports remaining manual steps
+# 5. Installs personal skill aliases to ~/.claude/skills/
+# 6. Validates label reference file
+# 7. Reports remaining manual steps
 #
 
 set -euo pipefail
@@ -209,7 +210,25 @@ validate_config() {
     fi
 }
 
-# --- Section 5: Label Sync ---
+# --- Section 5: Skill Aliases ---
+setup_skill_aliases() {
+    log_info "Installing personal skill aliases..."
+
+    local alias_script="$REPO_ROOT/scripts/install-skill-aliases.sh"
+
+    if [[ -f "$alias_script" ]]; then
+        if bash "$alias_script"; then
+            log_success "Skill aliases installed to ~/.claude/skills/"
+        else
+            log_error "Failed to install skill aliases"
+            log_todo "Run $alias_script manually to install skill aliases"
+        fi
+    else
+        log_error "install-skill-aliases.sh not found at $alias_script"
+    fi
+}
+
+# --- Section 6: Label Sync ---
 # Note: This requires Gitea MCP to be functional
 # For initial setup, we just validate the label reference file exists
 setup_labels() {
@@ -226,7 +245,7 @@ setup_labels() {
     fi
 }
 
-# --- Section 6: Final Report ---
+# --- Section 7: Final Report ---
 print_report() {
     echo ""
     echo "=============================================="
@@ -295,6 +314,9 @@ main() {
     # Configuration
     setup_config_templates
     validate_config
+
+    # Skill aliases
+    setup_skill_aliases
 
     # Labels
     setup_labels
