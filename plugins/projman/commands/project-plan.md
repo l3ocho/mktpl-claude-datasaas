@@ -1,4 +1,5 @@
 ---
+name: projman project plan
 description: Create WBS, risk register, and sprint roadmap for an initiated project
 agent: planner
 ---

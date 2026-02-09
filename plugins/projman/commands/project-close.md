@@ -1,4 +1,5 @@
 ---
+name: projman project close
 description: Close a completed project — retrospective, archive, lessons learned
 agent: orchestrator
 ---

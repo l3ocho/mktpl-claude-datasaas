@@ -1,5 +1,5 @@
 ---
-name: labels sync
+name: projman labels sync
 description: Fetch and validate label taxonomy from Gitea, create missing required labels
 ---
 

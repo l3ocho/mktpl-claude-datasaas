@@ -1,5 +1,5 @@
 ---
-name: sprint close
+name: projman sprint close
 description: Complete sprint and capture lessons learned to Gitea Wiki
 agent: orchestrator
 ---

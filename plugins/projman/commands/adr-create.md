@@ -1,4 +1,5 @@
 ---
+name: projman adr create
 description: Create a new Architecture Decision Record wiki page
 agent: planner
 ---

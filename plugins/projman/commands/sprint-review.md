@@ -1,5 +1,5 @@
 ---
-name: sprint review
+name: projman sprint review
 description: Pre-sprint-close code quality review
 agent: code-reviewer
 ---
