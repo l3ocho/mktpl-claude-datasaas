@@ -20,6 +20,9 @@ mcp-servers/<name>/
 └── README.md
 ```
 
+**Exception:** The gitea server uses the `gitea-mcp` package from Gitea PyPI
+instead of local source. Its module is `gitea_mcp`, not `mcp_server`.
+
 ## FastMCP Pattern (Recommended)
 
 The FastMCP decorator pattern provides the simplest server implementation:

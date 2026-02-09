@@ -55,8 +55,12 @@ This reports broken dependencies (missing or incompatible versions).
 Verify the server's main module can be imported:
 
 ```bash
-cd <server_cwd> && .venv/bin/python -c "import mcp_server.server" 2>&1
+cd <server_cwd> && .venv/bin/python -c "import <module>.server" 2>&1
 ```
+
+Where `<module>` is the server's Python module:
+- gitea: `gitea_mcp` (pip-installed package)
+- All others: `mcp_server` (local source)
 
 Common failures:
 | Error | Cause | Fix |

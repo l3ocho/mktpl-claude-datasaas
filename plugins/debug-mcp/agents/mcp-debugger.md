@@ -43,6 +43,9 @@ The `.mcp.json` file in the project root defines all MCP servers:
     }
   }
 }
+
+**Note:** Most servers use `mcp_server.server` (local source).
+Exception: gitea uses `gitea_mcp.server` (pip-installed package).
 ```
 
 ### MCP Server Lifecycle
