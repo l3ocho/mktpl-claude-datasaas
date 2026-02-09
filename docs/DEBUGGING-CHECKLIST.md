@@ -2,7 +2,7 @@
 
 **Purpose:** Systematic approach to diagnose and fix plugin loading issues.
 
-Last Updated: 2026-01-28
+Last Updated: 2026-02-08
 
 ---
 
@@ -95,9 +95,9 @@ Manually test if the MCP server can start:
 ```bash
 RUNTIME=~/.claude/plugins/marketplaces/leo-claude-mktplace
 
-# Test Gitea MCP
+# Test Gitea MCP (uses gitea-mcp package from registry)
 cd $RUNTIME/mcp-servers/gitea
-PYTHONPATH=. .venv/bin/python -c "from mcp_server.server import main; print('OK')"
+.venv/bin/python -c "from gitea_mcp.server import main; print('OK')"
 
 # Test NetBox MCP
 cd $RUNTIME/mcp-servers/netbox
