@@ -1,27 +1,22 @@
 """
 MCP Server entry point for NetBox integration.
 
-Provides comprehensive NetBox tools to Claude Code via JSON-RPC 2.0 over stdio.
-Covers the entire NetBox REST API: DCIM, IPAM, Circuits, Virtualization,
-Tenancy, VPN, Wireless, and Extras.
+Provides essential NetBox tools to Claude Code via JSON-RPC 2.0 over stdio.
+Covers DCIM, IPAM, Virtualization, and Extras modules.
 """
 import asyncio
 import logging
 import json
-from typing import Optional, Set
+from typing import Optional
 from mcp.server import Server
 from mcp.server.stdio import stdio_server
 from mcp.types import Tool, TextContent
 
-from .config import NetBoxConfig, ALL_MODULES
+from .config import NetBoxConfig
 from .netbox_client import NetBoxClient
 from .tools.dcim import DCIMTools
 from .tools.ipam import IPAMTools
-from .tools.circuits import CircuitsTools
 from .tools.virtualization import VirtualizationTools
-from .tools.tenancy import TenancyTools
-from .tools.vpn import VPNTools
-from .tools.wireless import WirelessTools
 from .tools.extras import ExtrasTools
 
 # Suppress noisy MCP validation warnings on stderr
@@ -31,51 +26,14 @@ logging.getLogger("mcp").setLevel(logging.ERROR)
 logger = logging.getLogger(__name__)
 
 
-# Tool definitions organized by category
+# Tool definitions - 37 essential tools for tracking servers, services, IPs, and databases
 TOOL_DEFINITIONS = {
-    # ==================== DCIM Tools ====================
-    'dcim_list_regions': {
-        'description': 'List all regions in NetBox',
-        'properties': {
-            'name': {'type': 'string', 'description': 'Filter by name'},
-            'slug': {'type': 'string', 'description': 'Filter by slug'}
-        }
-    },
-    'dcim_get_region': {
-        'description': 'Get a specific region by ID',
-        'properties': {'id': {'type': 'integer', 'description': 'Region ID'}},
-        'required': ['id']
-    },
-    'dcim_create_region': {
-        'description': 'Create a new region',
-        'properties': {
-            'name': {'type': 'string', 'description': 'Region name'},
-            'slug': {'type': 'string', 'description': 'URL-friendly slug'},
-            'parent': {'type': 'integer', 'description': 'Parent region ID'}
-        },
-        'required': ['name', 'slug']
-    },
-    'dcim_update_region': {
-        'description': 'Update an existing region',
-        'properties': {
-            'id': {'type': 'integer', 'description': 'Region ID'},
-            'name': {'type': 'string', 'description': 'New name'},
-            'slug': {'type': 'string', 'description': 'New slug'}
-        },
-        'required': ['id']
-    },
-    'dcim_delete_region': {
-        'description': 'Delete a region',
-        'properties': {'id': {'type': 'integer', 'description': 'Region ID'}},
-        'required': ['id']
-    },
+    # ==================== DCIM: Servers, Sites, Interfaces ====================
     'dcim_list_sites': {
         'description': 'List all sites in NetBox',
         'properties': {
             'name': {'type': 'string', 'description': 'Filter by name'},
-            'status': {'type': 'string', 'description': 'Filter by status (active, planned, staging, decommissioning, retired)'},
-            'region_id': {'type': 'integer', 'description': 'Filter by region ID'},
-            'tenant_id': {'type': 'integer', 'description': 'Filter by tenant ID'}
+            'status': {'type': 'string', 'description': 'Filter by status'},
         }
     },
     'dcim_get_site': {
@@ -88,14 +46,7 @@ TOOL_DEFINITIONS = {
         'properties': {
             'name': {'type': 'string', 'description': 'Site name'},
             'slug': {'type': 'string', 'description': 'URL-friendly slug'},
-            'status': {'type': 'string', 'description': 'Site status'},
-            'region': {'type': 'integer', 'description': 'Region ID'},
-            'tenant': {'type': 'integer', 'description': 'Tenant ID'},
-            'facility': {'type': 'string', 'description': 'Facility name'},
-            'time_zone': {'type': 'string', 'description': 'Time zone'},
-            'description': {'type': 'string', 'description': 'Description'},
-            'physical_address': {'type': 'string', 'description': 'Physical address'},
-            'shipping_address': {'type': 'string', 'description': 'Shipping address'}
+            'status': {'type': 'string', 'description': 'Status'},
         },
         'required': ['name', 'slug']
     },
@@ -104,269 +55,17 @@ TOOL_DEFINITIONS = {
         'properties': {
             'id': {'type': 'integer', 'description': 'Site ID'},
             'name': {'type': 'string', 'description': 'New name'},
-            'slug': {'type': 'string', 'description': 'New slug'},
-            'status': {'type': 'string', 'description': 'Status'},
-            'region': {'type': 'integer', 'description': 'Region ID'},
-            'group': {'type': 'integer', 'description': 'Site group ID'},
-            'tenant': {'type': 'integer', 'description': 'Tenant ID'},
-            'facility': {'type': 'string', 'description': 'Facility name'},
-            'time_zone': {'type': 'string', 'description': 'Time zone'},
-            'description': {'type': 'string', 'description': 'Description'},
-            'physical_address': {'type': 'string', 'description': 'Physical address'},
-            'shipping_address': {'type': 'string', 'description': 'Shipping address'},
-            'latitude': {'type': 'number', 'description': 'Latitude'},
-            'longitude': {'type': 'number', 'description': 'Longitude'},
-            'comments': {'type': 'string', 'description': 'Comments'}
+            'status': {'type': 'string', 'description': 'New status'},
         },
-        'required': ['id']
-    },
-    'dcim_delete_site': {
-        'description': 'Delete a site',
-        'properties': {'id': {'type': 'integer', 'description': 'Site ID'}},
-        'required': ['id']
-    },
-    'dcim_list_locations': {
-        'description': 'List all locations in NetBox',
-        'properties': {
-            'name': {'type': 'string', 'description': 'Filter by name'},
-            'site_id': {'type': 'integer', 'description': 'Filter by site ID'}
-        }
-    },
-    'dcim_get_location': {
-        'description': 'Get a specific location by ID',
-        'properties': {'id': {'type': 'integer', 'description': 'Location ID'}},
-        'required': ['id']
-    },
-    'dcim_create_location': {
-        'description': 'Create a new location',
-        'properties': {
-            'name': {'type': 'string', 'description': 'Location name'},
-            'slug': {'type': 'string', 'description': 'URL-friendly slug'},
-            'site': {'type': 'integer', 'description': 'Site ID'},
-            'parent': {'type': 'integer', 'description': 'Parent location ID'}
-        },
-        'required': ['name', 'slug', 'site']
-    },
-    'dcim_update_location': {
-        'description': 'Update an existing location',
-        'properties': {
-            'id': {'type': 'integer', 'description': 'Location ID'},
-            'name': {'type': 'string', 'description': 'New name'},
-            'slug': {'type': 'string', 'description': 'New slug'},
-            'site': {'type': 'integer', 'description': 'Site ID'},
-            'parent': {'type': 'integer', 'description': 'Parent location ID'},
-            'description': {'type': 'string', 'description': 'Description'}
-        },
-        'required': ['id']
-    },
-    'dcim_delete_location': {
-        'description': 'Delete a location',
-        'properties': {'id': {'type': 'integer', 'description': 'Location ID'}},
-        'required': ['id']
-    },
-    'dcim_list_racks': {
-        'description': 'List all racks in NetBox',
-        'properties': {
-            'name': {'type': 'string', 'description': 'Filter by name'},
-            'site_id': {'type': 'integer', 'description': 'Filter by site ID'},
-            'location_id': {'type': 'integer', 'description': 'Filter by location ID'},
-            'status': {'type': 'string', 'description': 'Filter by status'}
-        }
-    },
-    'dcim_get_rack': {
-        'description': 'Get a specific rack by ID',
-        'properties': {'id': {'type': 'integer', 'description': 'Rack ID'}},
-        'required': ['id']
-    },
-    'dcim_create_rack': {
-        'description': 'Create a new rack',
-        'properties': {
-            'name': {'type': 'string', 'description': 'Rack name'},
-            'site': {'type': 'integer', 'description': 'Site ID'},
-            'location': {'type': 'integer', 'description': 'Location ID'},
-            'status': {'type': 'string', 'description': 'Rack status'},
-            'u_height': {'type': 'integer', 'description': 'Rack height in U'}
-        },
-        'required': ['name', 'site']
-    },
-    'dcim_update_rack': {
-        'description': 'Update an existing rack',
-        'properties': {
-            'id': {'type': 'integer', 'description': 'Rack ID'},
-            'name': {'type': 'string', 'description': 'New name'},
-            'site': {'type': 'integer', 'description': 'Site ID'},
-            'location': {'type': 'integer', 'description': 'Location ID'},
-            'status': {'type': 'string', 'description': 'Status'},
-            'role': {'type': 'integer', 'description': 'Role ID'},
-            'tenant': {'type': 'integer', 'description': 'Tenant ID'},
-            'u_height': {'type': 'integer', 'description': 'Rack height in U'},
-            'description': {'type': 'string', 'description': 'Description'},
-            'comments': {'type': 'string', 'description': 'Comments'}
-        },
-        'required': ['id']
-    },
-    'dcim_delete_rack': {
-        'description': 'Delete a rack',
-        'properties': {'id': {'type': 'integer', 'description': 'Rack ID'}},
-        'required': ['id']
-    },
-    'dcim_list_manufacturers': {
-        'description': 'List all manufacturers in NetBox',
-        'properties': {'name': {'type': 'string', 'description': 'Filter by name'}}
-    },
-    'dcim_get_manufacturer': {
-        'description': 'Get a specific manufacturer by ID',
-        'properties': {'id': {'type': 'integer', 'description': 'Manufacturer ID'}},
-        'required': ['id']
-    },
-    'dcim_create_manufacturer': {
-        'description': 'Create a new manufacturer',
-        'properties': {
-            'name': {'type': 'string', 'description': 'Manufacturer name'},
-            'slug': {'type': 'string', 'description': 'URL-friendly slug'}
-        },
-        'required': ['name', 'slug']
-    },
-    'dcim_update_manufacturer': {
-        'description': 'Update an existing manufacturer',
-        'properties': {
-            'id': {'type': 'integer', 'description': 'Manufacturer ID'},
-            'name': {'type': 'string', 'description': 'New name'},
-            'slug': {'type': 'string', 'description': 'New slug'},
-            'description': {'type': 'string', 'description': 'Description'}
-        },
-        'required': ['id']
-    },
-    'dcim_delete_manufacturer': {
-        'description': 'Delete a manufacturer',
-        'properties': {'id': {'type': 'integer', 'description': 'Manufacturer ID'}},
-        'required': ['id']
-    },
-    'dcim_list_device_types': {
-        'description': 'List all device types in NetBox',
-        'properties': {
-            'manufacturer_id': {'type': 'integer', 'description': 'Filter by manufacturer ID'},
-            'model': {'type': 'string', 'description': 'Filter by model name'}
-        }
-    },
-    'dcim_get_device_type': {
-        'description': 'Get a specific device type by ID',
-        'properties': {'id': {'type': 'integer', 'description': 'Device type ID'}},
-        'required': ['id']
-    },
-    'dcim_create_device_type': {
-        'description': 'Create a new device type',
-        'properties': {
-            'manufacturer': {'type': 'integer', 'description': 'Manufacturer ID'},
-            'model': {'type': 'string', 'description': 'Model name'},
-            'slug': {'type': 'string', 'description': 'URL-friendly slug'},
-            'u_height': {'type': 'number', 'description': 'Height in rack units'}
-        },
-        'required': ['manufacturer', 'model', 'slug']
-    },
-    'dcim_update_device_type': {
-        'description': 'Update an existing device type',
-        'properties': {
-            'id': {'type': 'integer', 'description': 'Device type ID'},
-            'manufacturer': {'type': 'integer', 'description': 'Manufacturer ID'},
-            'model': {'type': 'string', 'description': 'Model name'},
-            'slug': {'type': 'string', 'description': 'New slug'},
-            'u_height': {'type': 'number', 'description': 'Height in rack units'},
-            'is_full_depth': {'type': 'boolean', 'description': 'Is full depth'},
-            'description': {'type': 'string', 'description': 'Description'},
-            'comments': {'type': 'string', 'description': 'Comments'}
-        },
-        'required': ['id']
-    },
-    'dcim_delete_device_type': {
-        'description': 'Delete a device type',
-        'properties': {'id': {'type': 'integer', 'description': 'Device type ID'}},
-        'required': ['id']
-    },
-    'dcim_list_device_roles': {
-        'description': 'List all device roles in NetBox',
-        'properties': {'name': {'type': 'string', 'description': 'Filter by name'}}
-    },
-    'dcim_get_device_role': {
-        'description': 'Get a specific device role by ID',
-        'properties': {'id': {'type': 'integer', 'description': 'Device role ID'}},
-        'required': ['id']
-    },
-    'dcim_create_device_role': {
-        'description': 'Create a new device role',
-        'properties': {
-            'name': {'type': 'string', 'description': 'Role name'},
-            'slug': {'type': 'string', 'description': 'URL-friendly slug'},
-            'color': {'type': 'string', 'description': 'Hex color code'},
-            'vm_role': {'type': 'boolean', 'description': 'Can be assigned to VMs'}
-        },
-        'required': ['name', 'slug']
-    },
-    'dcim_update_device_role': {
-        'description': 'Update an existing device role',
-        'properties': {
-            'id': {'type': 'integer', 'description': 'Device role ID'},
-            'name': {'type': 'string', 'description': 'New name'},
-            'slug': {'type': 'string', 'description': 'New slug'},
-            'color': {'type': 'string', 'description': 'Hex color code'},
-            'vm_role': {'type': 'boolean', 'description': 'Can be assigned to VMs'},
-            'description': {'type': 'string', 'description': 'Description'}
-        },
-        'required': ['id']
-    },
-    'dcim_delete_device_role': {
-        'description': 'Delete a device role',
-        'properties': {'id': {'type': 'integer', 'description': 'Device role ID'}},
-        'required': ['id']
-    },
-    'dcim_list_platforms': {
-        'description': 'List all platforms in NetBox',
-        'properties': {
-            'name': {'type': 'string', 'description': 'Filter by name'},
-            'manufacturer_id': {'type': 'integer', 'description': 'Filter by manufacturer ID'}
-        }
-    },
-    'dcim_get_platform': {
-        'description': 'Get a specific platform by ID',
-        'properties': {'id': {'type': 'integer', 'description': 'Platform ID'}},
-        'required': ['id']
-    },
-    'dcim_create_platform': {
-        'description': 'Create a new platform',
-        'properties': {
-            'name': {'type': 'string', 'description': 'Platform name'},
-            'slug': {'type': 'string', 'description': 'URL-friendly slug'},
-            'manufacturer': {'type': 'integer', 'description': 'Manufacturer ID'}
-        },
-        'required': ['name', 'slug']
-    },
-    'dcim_update_platform': {
-        'description': 'Update an existing platform',
-        'properties': {
-            'id': {'type': 'integer', 'description': 'Platform ID'},
-            'name': {'type': 'string', 'description': 'New name'},
-            'slug': {'type': 'string', 'description': 'New slug'},
-            'manufacturer': {'type': 'integer', 'description': 'Manufacturer ID'},
-            'description': {'type': 'string', 'description': 'Description'}
-        },
-        'required': ['id']
-    },
-    'dcim_delete_platform': {
-        'description': 'Delete a platform',
-        'properties': {'id': {'type': 'integer', 'description': 'Platform ID'}},
         'required': ['id']
     },
     'dcim_list_devices': {
-        'description': 'List all devices in NetBox',
+        'description': 'List all devices (servers/VPS) in NetBox',
         'properties': {
             'name': {'type': 'string', 'description': 'Filter by name'},
-            'site_id': {'type': 'integer', 'description': 'Filter by site ID'},
-            'rack_id': {'type': 'integer', 'description': 'Filter by rack ID'},
+            'site_id': {'type': 'integer', 'description': 'Filter by site'},
             'status': {'type': 'string', 'description': 'Filter by status'},
-            'role_id': {'type': 'integer', 'description': 'Filter by role ID'},
-            'device_type_id': {'type': 'integer', 'description': 'Filter by device type ID'},
-            'manufacturer_id': {'type': 'integer', 'description': 'Filter by manufacturer ID'},
-            'serial': {'type': 'string', 'description': 'Filter by serial number'}
+            'role_id': {'type': 'integer', 'description': 'Filter by role'},
         }
     },
     'dcim_get_device': {
@@ -381,16 +80,7 @@ TOOL_DEFINITIONS = {
             'device_type': {'type': 'integer', 'description': 'Device type ID'},
             'role': {'type': 'integer', 'description': 'Device role ID'},
             'site': {'type': 'integer', 'description': 'Site ID'},
-            'status': {'type': 'string', 'description': 'Device status'},
-            'rack': {'type': 'integer', 'description': 'Rack ID'},
-            'position': {'type': 'number', 'description': 'Position in rack'},
-            'serial': {'type': 'string', 'description': 'Serial number'},
-            'platform': {'type': 'integer', 'description': 'Platform ID'},
-            'primary_ip4': {'type': 'integer', 'description': 'Primary IPv4 address ID'},
-            'primary_ip6': {'type': 'integer', 'description': 'Primary IPv6 address ID'},
-            'asset_tag': {'type': 'string', 'description': 'Asset tag'},
-            'description': {'type': 'string', 'description': 'Description'},
-            'comments': {'type': 'string', 'description': 'Comments'}
+            'status': {'type': 'string', 'description': 'Status'},
         },
         'required': ['name', 'device_type', 'role', 'site']
     },
@@ -400,30 +90,15 @@ TOOL_DEFINITIONS = {
             'id': {'type': 'integer', 'description': 'Device ID'},
             'name': {'type': 'string', 'description': 'New name'},
             'status': {'type': 'string', 'description': 'New status'},
-            'platform': {'type': 'integer', 'description': 'Platform ID'},
-            'primary_ip4': {'type': 'integer', 'description': 'Primary IPv4 address ID'},
-            'primary_ip6': {'type': 'integer', 'description': 'Primary IPv6 address ID'},
-            'serial': {'type': 'string', 'description': 'Serial number'},
-            'asset_tag': {'type': 'string', 'description': 'Asset tag'},
-            'site': {'type': 'integer', 'description': 'Site ID'},
-            'rack': {'type': 'integer', 'description': 'Rack ID'},
-            'position': {'type': 'number', 'description': 'Position in rack'},
-            'description': {'type': 'string', 'description': 'Description'},
-            'comments': {'type': 'string', 'description': 'Comments'}
         },
         'required': ['id']
     },
-    'dcim_delete_device': {
-        'description': 'Delete a device',
-        'properties': {'id': {'type': 'integer', 'description': 'Device ID'}},
-        'required': ['id']
-    },
     'dcim_list_interfaces': {
-        'description': 'List all device interfaces in NetBox',
+        'description': 'List device interfaces',
         'properties': {
-            'device_id': {'type': 'integer', 'description': 'Filter by device ID'},
+            'device_id': {'type': 'integer', 'description': 'Filter by device'},
             'name': {'type': 'string', 'description': 'Filter by name'},
-            'type': {'type': 'string', 'description': 'Filter by interface type'}
+            'type': {'type': 'string', 'description': 'Filter by type'},
         }
     },
     'dcim_get_interface': {
@@ -432,248 +107,22 @@ TOOL_DEFINITIONS = {
         'required': ['id']
     },
     'dcim_create_interface': {
-        'description': 'Create a new device interface',
+        'description': 'Create a new interface on a device',
         'properties': {
             'device': {'type': 'integer', 'description': 'Device ID'},
             'name': {'type': 'string', 'description': 'Interface name'},
-            'type': {'type': 'string', 'description': 'Interface type (e.g., 1000base-t, 10gbase-x-sfpp)'},
-            'enabled': {'type': 'boolean', 'description': 'Interface enabled'},
-            'mac_address': {'type': 'string', 'description': 'MAC address'}
+            'type': {'type': 'string', 'description': 'Interface type'},
         },
         'required': ['device', 'name', 'type']
     },
-    'dcim_update_interface': {
-        'description': 'Update an existing interface',
-        'properties': {
-            'id': {'type': 'integer', 'description': 'Interface ID'},
-            'name': {'type': 'string', 'description': 'New name'},
-            'type': {'type': 'string', 'description': 'Interface type'},
-            'enabled': {'type': 'boolean', 'description': 'Interface enabled'},
-            'mtu': {'type': 'integer', 'description': 'MTU'},
-            'mac_address': {'type': 'string', 'description': 'MAC address'},
-            'description': {'type': 'string', 'description': 'Description'},
-            'mode': {'type': 'string', 'description': 'VLAN mode'},
-            'untagged_vlan': {'type': 'integer', 'description': 'Untagged VLAN ID'},
-            'tagged_vlans': {'type': 'array', 'description': 'Tagged VLAN IDs'}
-        },
-        'required': ['id']
-    },
-    'dcim_delete_interface': {
-        'description': 'Delete an interface',
-        'properties': {'id': {'type': 'integer', 'description': 'Interface ID'}},
-        'required': ['id']
-    },
-    'dcim_list_cables': {
-        'description': 'List all cables in NetBox',
-        'properties': {
-            'site_id': {'type': 'integer', 'description': 'Filter by site ID'},
-            'device_id': {'type': 'integer', 'description': 'Filter by device ID'},
-            'status': {'type': 'string', 'description': 'Filter by status'}
-        }
-    },
-    'dcim_get_cable': {
-        'description': 'Get a specific cable by ID',
-        'properties': {'id': {'type': 'integer', 'description': 'Cable ID'}},
-        'required': ['id']
-    },
-    'dcim_create_cable': {
-        'description': 'Create a new cable connection',
-        'properties': {
-            'a_terminations': {'type': 'array', 'description': 'A-side terminations [{object_type, object_id}]'},
-            'b_terminations': {'type': 'array', 'description': 'B-side terminations [{object_type, object_id}]'},
-            'type': {'type': 'string', 'description': 'Cable type'},
-            'status': {'type': 'string', 'description': 'Cable status'},
-            'label': {'type': 'string', 'description': 'Cable label'}
-        },
-        'required': ['a_terminations', 'b_terminations']
-    },
-    'dcim_update_cable': {
-        'description': 'Update an existing cable',
-        'properties': {
-            'id': {'type': 'integer', 'description': 'Cable ID'},
-            'type': {'type': 'string', 'description': 'Cable type'},
-            'status': {'type': 'string', 'description': 'Cable status'},
-            'label': {'type': 'string', 'description': 'Cable label'},
-            'color': {'type': 'string', 'description': 'Cable color'},
-            'length': {'type': 'number', 'description': 'Cable length'},
-            'length_unit': {'type': 'string', 'description': 'Length unit'}
-        },
-        'required': ['id']
-    },
-    'dcim_delete_cable': {
-        'description': 'Delete a cable',
-        'properties': {'id': {'type': 'integer', 'description': 'Cable ID'}},
-        'required': ['id']
-    },
-    'dcim_list_power_panels': {
-        'description': 'List all power panels in NetBox',
-        'properties': {'site_id': {'type': 'integer', 'description': 'Filter by site ID'}}
-    },
-    'dcim_get_power_panel': {
-        'description': 'Get a specific power panel by ID',
-        'properties': {'id': {'type': 'integer', 'description': 'Power panel ID'}},
-        'required': ['id']
-    },
-    'dcim_create_power_panel': {
-        'description': 'Create a new power panel',
-        'properties': {
-            'site': {'type': 'integer', 'description': 'Site ID'},
-            'name': {'type': 'string', 'description': 'Panel name'},
-            'location': {'type': 'integer', 'description': 'Location ID'}
-        },
-        'required': ['site', 'name']
-    },
-    'dcim_list_power_feeds': {
-        'description': 'List all power feeds in NetBox',
-        'properties': {'power_panel_id': {'type': 'integer', 'description': 'Filter by power panel ID'}}
-    },
-    'dcim_get_power_feed': {
-        'description': 'Get a specific power feed by ID',
-        'properties': {'id': {'type': 'integer', 'description': 'Power feed ID'}},
-        'required': ['id']
-    },
-    'dcim_create_power_feed': {
-        'description': 'Create a new power feed',
-        'properties': {
-            'power_panel': {'type': 'integer', 'description': 'Power panel ID'},
-            'name': {'type': 'string', 'description': 'Feed name'},
-            'voltage': {'type': 'integer', 'description': 'Voltage'},
-            'amperage': {'type': 'integer', 'description': 'Amperage'}
-        },
-        'required': ['power_panel', 'name']
-    },
-    'dcim_list_virtual_chassis': {
-        'description': 'List all virtual chassis in NetBox',
-        'properties': {}
-    },
-    'dcim_get_virtual_chassis': {
-        'description': 'Get a specific virtual chassis by ID',
-        'properties': {'id': {'type': 'integer', 'description': 'Virtual chassis ID'}},
-        'required': ['id']
-    },
-    'dcim_list_inventory_items': {
-        'description': 'List all inventory items in NetBox',
-        'properties': {'device_id': {'type': 'integer', 'description': 'Filter by device ID'}}
-    },
-    'dcim_get_inventory_item': {
-        'description': 'Get a specific inventory item by ID',
-        'properties': {'id': {'type': 'integer', 'description': 'Inventory item ID'}},
-        'required': ['id']
-    },
 
-    # ==================== IPAM Tools ====================
-    'ipam_list_vrfs': {
-        'description': 'List all VRFs in NetBox',
-        'properties': {
-            'name': {'type': 'string', 'description': 'Filter by name'},
-            'rd': {'type': 'string', 'description': 'Filter by route distinguisher'}
-        }
-    },
-    'ipam_get_vrf': {
-        'description': 'Get a specific VRF by ID',
-        'properties': {'id': {'type': 'integer', 'description': 'VRF ID'}},
-        'required': ['id']
-    },
-    'ipam_create_vrf': {
-        'description': 'Create a new VRF',
-        'properties': {
-            'name': {'type': 'string', 'description': 'VRF name'},
-            'rd': {'type': 'string', 'description': 'Route distinguisher'},
-            'tenant': {'type': 'integer', 'description': 'Tenant ID'}
-        },
-        'required': ['name']
-    },
-    'ipam_update_vrf': {
-        'description': 'Update an existing VRF',
-        'properties': {
-            'id': {'type': 'integer', 'description': 'VRF ID'},
-            'name': {'type': 'string', 'description': 'New name'},
-            'rd': {'type': 'string', 'description': 'Route distinguisher'},
-            'tenant': {'type': 'integer', 'description': 'Tenant ID'},
-            'enforce_unique': {'type': 'boolean', 'description': 'Enforce unique IPs'},
-            'description': {'type': 'string', 'description': 'Description'},
-            'comments': {'type': 'string', 'description': 'Comments'}
-        },
-        'required': ['id']
-    },
-    'ipam_delete_vrf': {
-        'description': 'Delete a VRF',
-        'properties': {'id': {'type': 'integer', 'description': 'VRF ID'}},
-        'required': ['id']
-    },
-    'ipam_list_prefixes': {
-        'description': 'List all IP prefixes in NetBox',
-        'properties': {
-            'prefix': {'type': 'string', 'description': 'Filter by prefix (CIDR)'},
-            'site_id': {'type': 'integer', 'description': 'Filter by site ID'},
-            'vrf_id': {'type': 'integer', 'description': 'Filter by VRF ID'},
-            'vlan_id': {'type': 'integer', 'description': 'Filter by VLAN ID'},
-            'status': {'type': 'string', 'description': 'Filter by status'},
-            'within': {'type': 'string', 'description': 'Find prefixes within this prefix'}
-        }
-    },
-    'ipam_get_prefix': {
-        'description': 'Get a specific prefix by ID',
-        'properties': {'id': {'type': 'integer', 'description': 'Prefix ID'}},
-        'required': ['id']
-    },
-    'ipam_create_prefix': {
-        'description': 'Create a new IP prefix',
-        'properties': {
-            'prefix': {'type': 'string', 'description': 'Prefix in CIDR notation'},
-            'status': {'type': 'string', 'description': 'Status (active, container, reserved, deprecated)'},
-            'site': {'type': 'integer', 'description': 'Site ID'},
-            'vrf': {'type': 'integer', 'description': 'VRF ID'},
-            'vlan': {'type': 'integer', 'description': 'VLAN ID'},
-            'role': {'type': 'integer', 'description': 'Role ID'},
-            'is_pool': {'type': 'boolean', 'description': 'Is a pool'}
-        },
-        'required': ['prefix']
-    },
-    'ipam_update_prefix': {
-        'description': 'Update an existing prefix',
-        'properties': {
-            'id': {'type': 'integer', 'description': 'Prefix ID'},
-            'prefix': {'type': 'string', 'description': 'Prefix in CIDR notation'},
-            'status': {'type': 'string', 'description': 'Status'},
-            'site': {'type': 'integer', 'description': 'Site ID'},
-            'vrf': {'type': 'integer', 'description': 'VRF ID'},
-            'vlan': {'type': 'integer', 'description': 'VLAN ID'},
-            'role': {'type': 'integer', 'description': 'Role ID'},
-            'tenant': {'type': 'integer', 'description': 'Tenant ID'},
-            'is_pool': {'type': 'boolean', 'description': 'Is a pool'},
-            'description': {'type': 'string', 'description': 'Description'},
-            'comments': {'type': 'string', 'description': 'Comments'}
-        },
-        'required': ['id']
-    },
-    'ipam_delete_prefix': {
-        'description': 'Delete a prefix',
-        'properties': {'id': {'type': 'integer', 'description': 'Prefix ID'}},
-        'required': ['id']
-    },
-    'ipam_list_available_prefixes': {
-        'description': 'List available child prefixes within a prefix',
-        'properties': {'id': {'type': 'integer', 'description': 'Parent prefix ID'}},
-        'required': ['id']
-    },
-    'ipam_create_available_prefix': {
-        'description': 'Create a new prefix from available space',
-        'properties': {
-            'id': {'type': 'integer', 'description': 'Parent prefix ID'},
-            'prefix_length': {'type': 'integer', 'description': 'Desired prefix length'}
-        },
-        'required': ['id', 'prefix_length']
-    },
+    # ==================== IPAM: IPs, Prefixes, Services ====================
     'ipam_list_ip_addresses': {
-        'description': 'List all IP addresses in NetBox',
+        'description': 'List IP addresses',
         'properties': {
             'address': {'type': 'string', 'description': 'Filter by address'},
-            'vrf_id': {'type': 'integer', 'description': 'Filter by VRF ID'},
-            'device_id': {'type': 'integer', 'description': 'Filter by device ID'},
-            'virtual_machine_id': {'type': 'integer', 'description': 'Filter by VM ID'},
+            'device_id': {'type': 'integer', 'description': 'Filter by device'},
             'status': {'type': 'string', 'description': 'Filter by status'},
-            'dns_name': {'type': 'string', 'description': 'Filter by DNS name'}
         }
     },
     'ipam_get_ip_address': {
@@ -682,169 +131,51 @@ TOOL_DEFINITIONS = {
         'required': ['id']
     },
     'ipam_create_ip_address': {
-        'description': 'Create a new IP address',
+        'description': 'Create an IP address',
         'properties': {
-            'address': {'type': 'string', 'description': 'IP address with prefix length'},
+            'address': {'type': 'string', 'description': 'IP address with prefix (e.g., 192.168.1.1/24)'},
             'status': {'type': 'string', 'description': 'Status'},
-            'vrf': {'type': 'integer', 'description': 'VRF ID'},
-            'dns_name': {'type': 'string', 'description': 'DNS name'},
-            'assigned_object_type': {'type': 'string', 'description': 'Object type to assign to'},
-            'assigned_object_id': {'type': 'integer', 'description': 'Object ID to assign to'}
+            'assigned_object_type': {'type': 'string', 'description': 'Object type (dcim.interface or virtualization.vminterface)'},
+            'assigned_object_id': {'type': 'integer', 'description': 'Object ID'},
         },
         'required': ['address']
     },
     'ipam_update_ip_address': {
-        'description': 'Update an existing IP address',
+        'description': 'Update an IP address',
         'properties': {
             'id': {'type': 'integer', 'description': 'IP address ID'},
-            'address': {'type': 'string', 'description': 'IP address with prefix length'},
-            'status': {'type': 'string', 'description': 'Status'},
-            'vrf': {'type': 'integer', 'description': 'VRF ID'},
-            'tenant': {'type': 'integer', 'description': 'Tenant ID'},
-            'dns_name': {'type': 'string', 'description': 'DNS name'},
-            'description': {'type': 'string', 'description': 'Description'},
-            'comments': {'type': 'string', 'description': 'Comments'},
-            'assigned_object_type': {'type': 'string', 'description': 'Object type to assign to'},
-            'assigned_object_id': {'type': 'integer', 'description': 'Object ID to assign to'}
+            'status': {'type': 'string', 'description': 'New status'},
         },
         'required': ['id']
     },
-    'ipam_delete_ip_address': {
-        'description': 'Delete an IP address',
-        'properties': {'id': {'type': 'integer', 'description': 'IP address ID'}},
-        'required': ['id']
-    },
-    'ipam_list_available_ips': {
-        'description': 'List available IP addresses within a prefix',
-        'properties': {'id': {'type': 'integer', 'description': 'Prefix ID'}},
-        'required': ['id']
-    },
-    'ipam_create_available_ip': {
-        'description': 'Create a new IP address from available space in prefix',
-        'properties': {'id': {'type': 'integer', 'description': 'Prefix ID'}},
-        'required': ['id']
-    },
-    'ipam_list_vlan_groups': {
-        'description': 'List all VLAN groups in NetBox',
-        'properties': {'name': {'type': 'string', 'description': 'Filter by name'}}
-    },
-    'ipam_get_vlan_group': {
-        'description': 'Get a specific VLAN group by ID',
-        'properties': {'id': {'type': 'integer', 'description': 'VLAN group ID'}},
-        'required': ['id']
-    },
-    'ipam_create_vlan_group': {
-        'description': 'Create a new VLAN group',
-        'properties': {
-            'name': {'type': 'string', 'description': 'Group name'},
-            'slug': {'type': 'string', 'description': 'URL-friendly slug'},
-            'min_vid': {'type': 'integer', 'description': 'Minimum VLAN ID'},
-            'max_vid': {'type': 'integer', 'description': 'Maximum VLAN ID'}
-        },
-        'required': ['name', 'slug']
-    },
-    'ipam_list_vlans': {
-        'description': 'List all VLANs in NetBox',
-        'properties': {
-            'vid': {'type': 'integer', 'description': 'Filter by VLAN ID'},
-            'name': {'type': 'string', 'description': 'Filter by name'},
-            'site_id': {'type': 'integer', 'description': 'Filter by site ID'},
-            'group_id': {'type': 'integer', 'description': 'Filter by VLAN group ID'},
-            'status': {'type': 'string', 'description': 'Filter by status'}
-        }
-    },
-    'ipam_get_vlan': {
-        'description': 'Get a specific VLAN by ID',
-        'properties': {'id': {'type': 'integer', 'description': 'VLAN ID'}},
-        'required': ['id']
-    },
-    'ipam_create_vlan': {
-        'description': 'Create a new VLAN',
-        'properties': {
-            'vid': {'type': 'integer', 'description': 'VLAN ID number'},
-            'name': {'type': 'string', 'description': 'VLAN name'},
-            'status': {'type': 'string', 'description': 'Status'},
-            'site': {'type': 'integer', 'description': 'Site ID'},
-            'group': {'type': 'integer', 'description': 'VLAN group ID'}
-        },
-        'required': ['vid', 'name']
-    },
-    'ipam_update_vlan': {
-        'description': 'Update an existing VLAN',
-        'properties': {
-            'id': {'type': 'integer', 'description': 'VLAN ID'},
-            'vid': {'type': 'integer', 'description': 'VLAN ID number'},
-            'name': {'type': 'string', 'description': 'VLAN name'},
-            'status': {'type': 'string', 'description': 'Status'},
-            'site': {'type': 'integer', 'description': 'Site ID'},
-            'group': {'type': 'integer', 'description': 'VLAN group ID'},
-            'tenant': {'type': 'integer', 'description': 'Tenant ID'},
-            'role': {'type': 'integer', 'description': 'Role ID'},
-            'description': {'type': 'string', 'description': 'Description'},
-            'comments': {'type': 'string', 'description': 'Comments'}
-        },
-        'required': ['id']
-    },
-    'ipam_delete_vlan': {
-        'description': 'Delete a VLAN',
-        'properties': {'id': {'type': 'integer', 'description': 'VLAN ID'}},
-        'required': ['id']
-    },
-    'ipam_list_asns': {
-        'description': 'List all ASNs in NetBox',
-        'properties': {
-            'asn': {'type': 'integer', 'description': 'Filter by ASN number'},
-            'rir_id': {'type': 'integer', 'description': 'Filter by RIR ID'}
-        }
-    },
-    'ipam_get_asn': {
-        'description': 'Get a specific ASN by ID',
-        'properties': {'id': {'type': 'integer', 'description': 'ASN ID'}},
-        'required': ['id']
-    },
-    'ipam_create_asn': {
-        'description': 'Create a new ASN',
-        'properties': {
-            'asn': {'type': 'integer', 'description': 'ASN number'},
-            'rir': {'type': 'integer', 'description': 'RIR ID'}
-        },
-        'required': ['asn', 'rir']
-    },
-    'ipam_list_rirs': {
-        'description': 'List all RIRs in NetBox',
-        'properties': {'name': {'type': 'string', 'description': 'Filter by name'}}
-    },
-    'ipam_get_rir': {
-        'description': 'Get a specific RIR by ID',
-        'properties': {'id': {'type': 'integer', 'description': 'RIR ID'}},
-        'required': ['id']
-    },
-    'ipam_list_aggregates': {
-        'description': 'List all aggregates in NetBox',
+    'ipam_list_prefixes': {
+        'description': 'List IP prefixes',
         'properties': {
             'prefix': {'type': 'string', 'description': 'Filter by prefix'},
-            'rir_id': {'type': 'integer', 'description': 'Filter by RIR ID'}
+            'site_id': {'type': 'integer', 'description': 'Filter by site'},
+            'status': {'type': 'string', 'description': 'Filter by status'},
         }
     },
-    'ipam_get_aggregate': {
-        'description': 'Get a specific aggregate by ID',
-        'properties': {'id': {'type': 'integer', 'description': 'Aggregate ID'}},
+    'ipam_get_prefix': {
+        'description': 'Get a specific prefix by ID',
+        'properties': {'id': {'type': 'integer', 'description': 'Prefix ID'}},
         'required': ['id']
     },
-    'ipam_create_aggregate': {
-        'description': 'Create a new aggregate',
+    'ipam_create_prefix': {
+        'description': 'Create an IP prefix',
         'properties': {
-            'prefix': {'type': 'string', 'description': 'Prefix in CIDR notation'},
-            'rir': {'type': 'integer', 'description': 'RIR ID'}
+            'prefix': {'type': 'string', 'description': 'IP prefix (e.g., 192.168.1.0/24)'},
+            'status': {'type': 'string', 'description': 'Status'},
+            'site': {'type': 'integer', 'description': 'Site ID'},
         },
-        'required': ['prefix', 'rir']
+        'required': ['prefix']
     },
     'ipam_list_services': {
-        'description': 'List all services in NetBox',
+        'description': 'List services (applications, databases, etc.)',
         'properties': {
-            'device_id': {'type': 'integer', 'description': 'Filter by device ID'},
-            'virtual_machine_id': {'type': 'integer', 'description': 'Filter by VM ID'},
-            'name': {'type': 'string', 'description': 'Filter by name'}
+            'device_id': {'type': 'integer', 'description': 'Filter by device'},
+            'virtual_machine_id': {'type': 'integer', 'description': 'Filter by VM'},
+            'name': {'type': 'string', 'description': 'Filter by name'},
         }
     },
     'ipam_get_service': {
@@ -853,165 +184,23 @@ TOOL_DEFINITIONS = {
         'required': ['id']
     },
     'ipam_create_service': {
-        'description': 'Create a new service',
+        'description': 'Create a service (app, database, etc.)',
         'properties': {
             'name': {'type': 'string', 'description': 'Service name'},
-            'ports': {'type': 'array', 'description': 'List of ports'},
+            'ports': {'type': 'array', 'description': 'Port numbers', 'items': {'type': 'integer'}},
             'protocol': {'type': 'string', 'description': 'Protocol (tcp/udp)'},
-            'device': {'type': 'integer', 'description': 'Device ID'},
-            'virtual_machine': {'type': 'integer', 'description': 'VM ID'}
+            'device': {'type': 'integer', 'description': 'Device ID (if on physical server)'},
+            'virtual_machine': {'type': 'integer', 'description': 'VM ID (if on VM)'},
         },
         'required': ['name', 'ports', 'protocol']
     },
 
-    # ==================== Circuits Tools ====================
-    'circuits_list_providers': {
-        'description': 'List all circuit providers in NetBox',
-        'properties': {'name': {'type': 'string', 'description': 'Filter by name'}}
-    },
-    'circuits_get_provider': {
-        'description': 'Get a specific provider by ID',
-        'properties': {'id': {'type': 'integer', 'description': 'Provider ID'}},
-        'required': ['id']
-    },
-    'circuits_create_provider': {
-        'description': 'Create a new circuit provider',
-        'properties': {
-            'name': {'type': 'string', 'description': 'Provider name'},
-            'slug': {'type': 'string', 'description': 'URL-friendly slug'}
-        },
-        'required': ['name', 'slug']
-    },
-    'circuits_update_provider': {
-        'description': 'Update an existing provider',
-        'properties': {'id': {'type': 'integer', 'description': 'Provider ID'}},
-        'required': ['id']
-    },
-    'circuits_delete_provider': {
-        'description': 'Delete a provider',
-        'properties': {'id': {'type': 'integer', 'description': 'Provider ID'}},
-        'required': ['id']
-    },
-    # NOTE: circuit_types tools shortened to meet 28-char limit
-    'circ_list_types': {
-        'description': 'List all circuit types in NetBox',
-        'properties': {'name': {'type': 'string', 'description': 'Filter by name'}}
-    },
-    'circ_get_type': {
-        'description': 'Get a specific circuit type by ID',
-        'properties': {'id': {'type': 'integer', 'description': 'Circuit type ID'}},
-        'required': ['id']
-    },
-    'circ_create_type': {
-        'description': 'Create a new circuit type',
-        'properties': {
-            'name': {'type': 'string', 'description': 'Type name'},
-            'slug': {'type': 'string', 'description': 'URL-friendly slug'}
-        },
-        'required': ['name', 'slug']
-    },
-    'circuits_list_circuits': {
-        'description': 'List all circuits in NetBox',
-        'properties': {
-            'cid': {'type': 'string', 'description': 'Filter by circuit ID'},
-            'provider_id': {'type': 'integer', 'description': 'Filter by provider ID'},
-            'type_id': {'type': 'integer', 'description': 'Filter by type ID'},
-            'status': {'type': 'string', 'description': 'Filter by status'}
-        }
-    },
-    'circuits_get_circuit': {
-        'description': 'Get a specific circuit by ID',
-        'properties': {'id': {'type': 'integer', 'description': 'Circuit ID'}},
-        'required': ['id']
-    },
-    'circuits_create_circuit': {
-        'description': 'Create a new circuit',
-        'properties': {
-            'cid': {'type': 'string', 'description': 'Circuit ID'},
-            'provider': {'type': 'integer', 'description': 'Provider ID'},
-            'type': {'type': 'integer', 'description': 'Circuit type ID'},
-            'status': {'type': 'string', 'description': 'Status'},
-            'tenant': {'type': 'integer', 'description': 'Tenant ID'}
-        },
-        'required': ['cid', 'provider', 'type']
-    },
-    'circuits_update_circuit': {
-        'description': 'Update an existing circuit',
-        'properties': {'id': {'type': 'integer', 'description': 'Circuit ID'}},
-        'required': ['id']
-    },
-    'circuits_delete_circuit': {
-        'description': 'Delete a circuit',
-        'properties': {'id': {'type': 'integer', 'description': 'Circuit ID'}},
-        'required': ['id']
-    },
-    # NOTE: circuit_terminations tools shortened to meet 28-char limit
-    'circ_list_terminations': {
-        'description': 'List all circuit terminations in NetBox',
-        'properties': {
-            'circuit_id': {'type': 'integer', 'description': 'Filter by circuit ID'},
-            'site_id': {'type': 'integer', 'description': 'Filter by site ID'}
-        }
-    },
-    'circ_get_termination': {
-        'description': 'Get a specific circuit termination by ID',
-        'properties': {'id': {'type': 'integer', 'description': 'Termination ID'}},
-        'required': ['id']
-    },
-    'circ_create_termination': {
-        'description': 'Create a new circuit termination',
-        'properties': {
-            'circuit': {'type': 'integer', 'description': 'Circuit ID'},
-            'term_side': {'type': 'string', 'description': 'Termination side (A/Z)'},
-            'site': {'type': 'integer', 'description': 'Site ID'}
-        },
-        'required': ['circuit', 'term_side']
-    },
-
-    # ==================== Virtualization Tools ====================
-    # NOTE: Tool names shortened from 'virtualization_' to 'virt_' to meet
-    # 28-char limit (Claude API 64-char limit minus 36-char prefix)
-    'virt_list_cluster_types': {
-        'description': 'List all cluster types in NetBox',
-        'properties': {'name': {'type': 'string', 'description': 'Filter by name'}}
-    },
-    'virt_get_cluster_type': {
-        'description': 'Get a specific cluster type by ID',
-        'properties': {'id': {'type': 'integer', 'description': 'Cluster type ID'}},
-        'required': ['id']
-    },
-    'virt_create_cluster_type': {
-        'description': 'Create a new cluster type',
-        'properties': {
-            'name': {'type': 'string', 'description': 'Type name'},
-            'slug': {'type': 'string', 'description': 'URL-friendly slug'}
-        },
-        'required': ['name', 'slug']
-    },
-    'virt_list_cluster_groups': {
-        'description': 'List all cluster groups in NetBox',
-        'properties': {'name': {'type': 'string', 'description': 'Filter by name'}}
-    },
-    'virt_get_cluster_group': {
-        'description': 'Get a specific cluster group by ID',
-        'properties': {'id': {'type': 'integer', 'description': 'Cluster group ID'}},
-        'required': ['id']
-    },
-    'virt_create_cluster_group': {
-        'description': 'Create a new cluster group',
-        'properties': {
-            'name': {'type': 'string', 'description': 'Group name'},
-            'slug': {'type': 'string', 'description': 'URL-friendly slug'}
-        },
-        'required': ['name', 'slug']
-    },
+    # ==================== Virtualization: VMs, Clusters ====================
     'virt_list_clusters': {
-        'description': 'List all clusters in NetBox',
+        'description': 'List virtualization clusters',
         'properties': {
             'name': {'type': 'string', 'description': 'Filter by name'},
-            'type_id': {'type': 'integer', 'description': 'Filter by type ID'},
-            'group_id': {'type': 'integer', 'description': 'Filter by group ID'},
-            'site_id': {'type': 'integer', 'description': 'Filter by site ID'}
+            'site_id': {'type': 'integer', 'description': 'Filter by site'},
         }
     },
     'virt_get_cluster': {
@@ -1020,300 +209,74 @@ TOOL_DEFINITIONS = {
         'required': ['id']
     },
     'virt_create_cluster': {
-        'description': 'Create a new cluster',
+        'description': 'Create a virtualization cluster',
         'properties': {
             'name': {'type': 'string', 'description': 'Cluster name'},
             'type': {'type': 'integer', 'description': 'Cluster type ID'},
-            'group': {'type': 'integer', 'description': 'Cluster group ID'},
             'site': {'type': 'integer', 'description': 'Site ID'},
-            'status': {'type': 'string', 'description': 'Status'}
         },
         'required': ['name', 'type']
     },
-    'virt_update_cluster': {
-        'description': 'Update an existing cluster',
-        'properties': {
-            'id': {'type': 'integer', 'description': 'Cluster ID'},
-            'name': {'type': 'string', 'description': 'New name'},
-            'type': {'type': 'integer', 'description': 'Cluster type ID'},
-            'group': {'type': 'integer', 'description': 'Cluster group ID'},
-            'site': {'type': 'integer', 'description': 'Site ID'},
-            'status': {'type': 'string', 'description': 'Status'},
-            'tenant': {'type': 'integer', 'description': 'Tenant ID'},
-            'description': {'type': 'string', 'description': 'Description'},
-            'comments': {'type': 'string', 'description': 'Comments'}
-        },
-        'required': ['id']
-    },
-    'virt_delete_cluster': {
-        'description': 'Delete a cluster',
-        'properties': {'id': {'type': 'integer', 'description': 'Cluster ID'}},
-        'required': ['id']
-    },
     'virt_list_vms': {
-        'description': 'List all virtual machines in NetBox',
+        'description': 'List virtual machines',
         'properties': {
             'name': {'type': 'string', 'description': 'Filter by name'},
-            'cluster_id': {'type': 'integer', 'description': 'Filter by cluster ID'},
-            'site_id': {'type': 'integer', 'description': 'Filter by site ID'},
-            'status': {'type': 'string', 'description': 'Filter by status'}
+            'cluster_id': {'type': 'integer', 'description': 'Filter by cluster'},
+            'site_id': {'type': 'integer', 'description': 'Filter by site'},
+            'status': {'type': 'string', 'description': 'Filter by status'},
         }
     },
     'virt_get_vm': {
-        'description': 'Get a specific virtual machine by ID',
+        'description': 'Get a specific VM by ID',
         'properties': {'id': {'type': 'integer', 'description': 'VM ID'}},
         'required': ['id']
     },
     'virt_create_vm': {
-        'description': 'Create a new virtual machine',
+        'description': 'Create a virtual machine',
         'properties': {
             'name': {'type': 'string', 'description': 'VM name'},
             'cluster': {'type': 'integer', 'description': 'Cluster ID'},
             'status': {'type': 'string', 'description': 'Status'},
-            'role': {'type': 'integer', 'description': 'Role ID'},
-            'vcpus': {'type': 'number', 'description': 'Number of vCPUs'},
+            'vcpus': {'type': 'number', 'description': 'vCPU count'},
             'memory': {'type': 'integer', 'description': 'Memory in MB'},
-            'disk': {'type': 'integer', 'description': 'Disk in GB'}
+            'disk': {'type': 'integer', 'description': 'Disk in GB'},
         },
-        'required': ['name']
+        'required': ['name', 'cluster']
     },
     'virt_update_vm': {
-        'description': 'Update an existing virtual machine',
+        'description': 'Update a virtual machine',
         'properties': {
             'id': {'type': 'integer', 'description': 'VM ID'},
             'name': {'type': 'string', 'description': 'New name'},
-            'status': {'type': 'string', 'description': 'Status'},
-            'cluster': {'type': 'integer', 'description': 'Cluster ID'},
-            'site': {'type': 'integer', 'description': 'Site ID'},
-            'role': {'type': 'integer', 'description': 'Role ID'},
-            'tenant': {'type': 'integer', 'description': 'Tenant ID'},
-            'platform': {'type': 'integer', 'description': 'Platform ID'},
-            'vcpus': {'type': 'number', 'description': 'Number of vCPUs'},
-            'memory': {'type': 'integer', 'description': 'Memory in MB'},
-            'disk': {'type': 'integer', 'description': 'Disk in GB'},
-            'primary_ip4': {'type': 'integer', 'description': 'Primary IPv4 address ID'},
-            'primary_ip6': {'type': 'integer', 'description': 'Primary IPv6 address ID'},
-            'description': {'type': 'string', 'description': 'Description'},
-            'comments': {'type': 'string', 'description': 'Comments'}
+            'status': {'type': 'string', 'description': 'New status'},
         },
         'required': ['id']
     },
-    'virt_delete_vm': {
-        'description': 'Delete a virtual machine',
-        'properties': {'id': {'type': 'integer', 'description': 'VM ID'}},
-        'required': ['id']
-    },
     'virt_list_vm_ifaces': {
-        'description': 'List all VM interfaces in NetBox',
+        'description': 'List VM interfaces',
         'properties': {
-            'virtual_machine_id': {'type': 'integer', 'description': 'Filter by VM ID'},
-            'name': {'type': 'string', 'description': 'Filter by name'}
+            'virtual_machine_id': {'type': 'integer', 'description': 'Filter by VM'},
         }
     },
     'virt_get_vm_iface': {
         'description': 'Get a specific VM interface by ID',
-        'properties': {'id': {'type': 'integer', 'description': 'Interface ID'}},
+        'properties': {'id': {'type': 'integer', 'description': 'VM interface ID'}},
         'required': ['id']
     },
     'virt_create_vm_iface': {
-        'description': 'Create a new VM interface',
+        'description': 'Create a VM interface',
         'properties': {
             'virtual_machine': {'type': 'integer', 'description': 'VM ID'},
             'name': {'type': 'string', 'description': 'Interface name'},
-            'enabled': {'type': 'boolean', 'description': 'Enabled'}
         },
         'required': ['virtual_machine', 'name']
     },
 
-    # ==================== Tenancy Tools ====================
-    'tenancy_list_tenant_groups': {
-        'description': 'List all tenant groups in NetBox',
-        'properties': {'name': {'type': 'string', 'description': 'Filter by name'}}
-    },
-    'tenancy_get_tenant_group': {
-        'description': 'Get a specific tenant group by ID',
-        'properties': {'id': {'type': 'integer', 'description': 'Tenant group ID'}},
-        'required': ['id']
-    },
-    'tenancy_create_tenant_group': {
-        'description': 'Create a new tenant group',
-        'properties': {
-            'name': {'type': 'string', 'description': 'Group name'},
-            'slug': {'type': 'string', 'description': 'URL-friendly slug'}
-        },
-        'required': ['name', 'slug']
-    },
-    'tenancy_list_tenants': {
-        'description': 'List all tenants in NetBox',
-        'properties': {
-            'name': {'type': 'string', 'description': 'Filter by name'},
-            'group_id': {'type': 'integer', 'description': 'Filter by group ID'}
-        }
-    },
-    'tenancy_get_tenant': {
-        'description': 'Get a specific tenant by ID',
-        'properties': {'id': {'type': 'integer', 'description': 'Tenant ID'}},
-        'required': ['id']
-    },
-    'tenancy_create_tenant': {
-        'description': 'Create a new tenant',
-        'properties': {
-            'name': {'type': 'string', 'description': 'Tenant name'},
-            'slug': {'type': 'string', 'description': 'URL-friendly slug'},
-            'group': {'type': 'integer', 'description': 'Tenant group ID'}
-        },
-        'required': ['name', 'slug']
-    },
-    'tenancy_update_tenant': {
-        'description': 'Update an existing tenant',
-        'properties': {'id': {'type': 'integer', 'description': 'Tenant ID'}},
-        'required': ['id']
-    },
-    'tenancy_delete_tenant': {
-        'description': 'Delete a tenant',
-        'properties': {'id': {'type': 'integer', 'description': 'Tenant ID'}},
-        'required': ['id']
-    },
-    'tenancy_list_contacts': {
-        'description': 'List all contacts in NetBox',
-        'properties': {
-            'name': {'type': 'string', 'description': 'Filter by name'},
-            'email': {'type': 'string', 'description': 'Filter by email'}
-        }
-    },
-    'tenancy_get_contact': {
-        'description': 'Get a specific contact by ID',
-        'properties': {'id': {'type': 'integer', 'description': 'Contact ID'}},
-        'required': ['id']
-    },
-    'tenancy_create_contact': {
-        'description': 'Create a new contact',
-        'properties': {
-            'name': {'type': 'string', 'description': 'Contact name'},
-            'email': {'type': 'string', 'description': 'Email address'},
-            'phone': {'type': 'string', 'description': 'Phone number'}
-        },
-        'required': ['name']
-    },
-
-    # ==================== VPN Tools ====================
-    'vpn_list_tunnels': {
-        'description': 'List all VPN tunnels in NetBox',
-        'properties': {
-            'name': {'type': 'string', 'description': 'Filter by name'},
-            'status': {'type': 'string', 'description': 'Filter by status'}
-        }
-    },
-    'vpn_get_tunnel': {
-        'description': 'Get a specific tunnel by ID',
-        'properties': {'id': {'type': 'integer', 'description': 'Tunnel ID'}},
-        'required': ['id']
-    },
-    'vpn_create_tunnel': {
-        'description': 'Create a new VPN tunnel',
-        'properties': {
-            'name': {'type': 'string', 'description': 'Tunnel name'},
-            'status': {'type': 'string', 'description': 'Status'},
-            'encapsulation': {'type': 'string', 'description': 'Encapsulation type'}
-        },
-        'required': ['name']
-    },
-    'vpn_list_l2vpns': {
-        'description': 'List all L2VPNs in NetBox',
-        'properties': {
-            'name': {'type': 'string', 'description': 'Filter by name'},
-            'type': {'type': 'string', 'description': 'Filter by type'}
-        }
-    },
-    'vpn_get_l2vpn': {
-        'description': 'Get a specific L2VPN by ID',
-        'properties': {'id': {'type': 'integer', 'description': 'L2VPN ID'}},
-        'required': ['id']
-    },
-    'vpn_create_l2vpn': {
-        'description': 'Create a new L2VPN',
-        'properties': {
-            'name': {'type': 'string', 'description': 'L2VPN name'},
-            'slug': {'type': 'string', 'description': 'URL-friendly slug'},
-            'type': {'type': 'string', 'description': 'Type'}
-        },
-        'required': ['name', 'slug', 'type']
-    },
-    'vpn_list_ike_policies': {
-        'description': 'List all IKE policies in NetBox',
-        'properties': {'name': {'type': 'string', 'description': 'Filter by name'}}
-    },
-    'vpn_list_ipsec_policies': {
-        'description': 'List all IPSec policies in NetBox',
-        'properties': {'name': {'type': 'string', 'description': 'Filter by name'}}
-    },
-    'vpn_list_ipsec_profiles': {
-        'description': 'List all IPSec profiles in NetBox',
-        'properties': {'name': {'type': 'string', 'description': 'Filter by name'}}
-    },
-
-    # ==================== Wireless Tools ====================
-    # NOTE: Tool names shortened from 'wireless_' to 'wlan_' to meet
-    # 28-char limit (Claude API 64-char limit minus 36-char prefix)
-    'wlan_list_groups': {
-        'description': 'List all wireless LAN groups in NetBox',
-        'properties': {'name': {'type': 'string', 'description': 'Filter by name'}}
-    },
-    'wlan_get_group': {
-        'description': 'Get a specific wireless LAN group by ID',
-        'properties': {'id': {'type': 'integer', 'description': 'WLAN group ID'}},
-        'required': ['id']
-    },
-    'wlan_create_group': {
-        'description': 'Create a new wireless LAN group',
-        'properties': {
-            'name': {'type': 'string', 'description': 'Group name'},
-            'slug': {'type': 'string', 'description': 'URL-friendly slug'}
-        },
-        'required': ['name', 'slug']
-    },
-    'wlan_list_lans': {
-        'description': 'List all wireless LANs in NetBox',
-        'properties': {
-            'ssid': {'type': 'string', 'description': 'Filter by SSID'},
-            'group_id': {'type': 'integer', 'description': 'Filter by group ID'},
-            'status': {'type': 'string', 'description': 'Filter by status'}
-        }
-    },
-    'wlan_get_lan': {
-        'description': 'Get a specific wireless LAN by ID',
-        'properties': {'id': {'type': 'integer', 'description': 'WLAN ID'}},
-        'required': ['id']
-    },
-    'wlan_create_lan': {
-        'description': 'Create a new wireless LAN',
-        'properties': {
-            'ssid': {'type': 'string', 'description': 'SSID'},
-            'status': {'type': 'string', 'description': 'Status'},
-            'group': {'type': 'integer', 'description': 'Group ID'},
-            'vlan': {'type': 'integer', 'description': 'VLAN ID'}
-        },
-        'required': ['ssid']
-    },
-    'wlan_list_links': {
-        'description': 'List all wireless links in NetBox',
-        'properties': {
-            'ssid': {'type': 'string', 'description': 'Filter by SSID'},
-            'status': {'type': 'string', 'description': 'Filter by status'}
-        }
-    },
-    'wlan_get_link': {
-        'description': 'Get a specific wireless link by ID',
-        'properties': {'id': {'type': 'integer', 'description': 'Link ID'}},
-        'required': ['id']
-    },
-
-    # ==================== Extras Tools ====================
+    # ==================== Extras: Tags, Journal Entries ====================
     'extras_list_tags': {
         'description': 'List all tags in NetBox',
         'properties': {
             'name': {'type': 'string', 'description': 'Filter by name'},
-            'slug': {'type': 'string', 'description': 'Filter by slug'}
         }
     },
     'extras_get_tag': {
@@ -1326,175 +289,49 @@ TOOL_DEFINITIONS = {
         'properties': {
             'name': {'type': 'string', 'description': 'Tag name'},
             'slug': {'type': 'string', 'description': 'URL-friendly slug'},
-            'color': {'type': 'string', 'description': 'Hex color code'}
+            'color': {'type': 'string', 'description': 'Hex color code'},
         },
         'required': ['name', 'slug']
     },
-    'extras_update_tag': {
-        'description': 'Update an existing tag',
-        'properties': {'id': {'type': 'integer', 'description': 'Tag ID'}},
-        'required': ['id']
-    },
-    'extras_delete_tag': {
-        'description': 'Delete a tag',
-        'properties': {'id': {'type': 'integer', 'description': 'Tag ID'}},
-        'required': ['id']
-    },
-    'extras_list_custom_fields': {
-        'description': 'List all custom fields in NetBox',
-        'properties': {
-            'name': {'type': 'string', 'description': 'Filter by name'},
-            'type': {'type': 'string', 'description': 'Filter by type'}
-        }
-    },
-    'extras_get_custom_field': {
-        'description': 'Get a specific custom field by ID',
-        'properties': {'id': {'type': 'integer', 'description': 'Custom field ID'}},
-        'required': ['id']
-    },
-    'extras_list_webhooks': {
-        'description': 'List all webhooks in NetBox',
-        'properties': {'name': {'type': 'string', 'description': 'Filter by name'}}
-    },
-    'extras_get_webhook': {
-        'description': 'Get a specific webhook by ID',
-        'properties': {'id': {'type': 'integer', 'description': 'Webhook ID'}},
-        'required': ['id']
-    },
     'extras_list_journal_entries': {
-        'description': 'List all journal entries in NetBox',
+        'description': 'List journal entries (audit/notes)',
         'properties': {
-            'assigned_object_type': {'type': 'string', 'description': 'Filter by object type'},
-            'assigned_object_id': {'type': 'integer', 'description': 'Filter by object ID'}
+            'assigned_object_type': {'type': 'string', 'description': 'Object type'},
+            'assigned_object_id': {'type': 'integer', 'description': 'Object ID'},
         }
     },
     'extras_get_journal_entry': {
         'description': 'Get a specific journal entry by ID',
-        'properties': {'id': {'type': 'integer', 'description': 'Journal entry ID'}},
+        'properties': {'id': {'type': 'integer', 'description': 'Entry ID'}},
         'required': ['id']
     },
     'extras_create_journal_entry': {
-        'description': 'Create a new journal entry',
+        'description': 'Create a journal entry',
         'properties': {
-            'assigned_object_type': {'type': 'string', 'description': 'Object type'},
+            'assigned_object_type': {'type': 'string', 'description': 'Object type (e.g., dcim.device)'},
             'assigned_object_id': {'type': 'integer', 'description': 'Object ID'},
-            'comments': {'type': 'string', 'description': 'Comments'},
-            'kind': {'type': 'string', 'description': 'Kind (info, success, warning, danger)'}
+            'comments': {'type': 'string', 'description': 'Journal entry text'},
+            'kind': {'type': 'string', 'description': 'Kind (info, success, warning, danger)'},
         },
         'required': ['assigned_object_type', 'assigned_object_id', 'comments']
-    },
-    'extras_list_config_contexts': {
-        'description': 'List all config contexts in NetBox',
-        'properties': {'name': {'type': 'string', 'description': 'Filter by name'}}
-    },
-    'extras_get_config_context': {
-        'description': 'Get a specific config context by ID',
-        'properties': {'id': {'type': 'integer', 'description': 'Config context ID'}},
-        'required': ['id']
-    },
-    'extras_list_object_changes': {
-        'description': 'List all object changes (audit log) in NetBox',
-        'properties': {
-            'user_id': {'type': 'integer', 'description': 'Filter by user ID'},
-            'changed_object_type': {'type': 'string', 'description': 'Filter by object type'},
-            'action': {'type': 'string', 'description': 'Filter by action (create, update, delete)'}
-        }
-    },
-    'extras_get_object_change': {
-        'description': 'Get a specific object change by ID',
-        'properties': {'id': {'type': 'integer', 'description': 'Object change ID'}},
-        'required': ['id']
     },
 }
 
 
-# Map shortened tool names to (category, method_name) for routing.
-# This is necessary because tool names were shortened to meet the 28-character
-# limit imposed by Claude API's 64-character tool name limit minus the
-# 36-character prefix used by Claude Code for MCP tools.
+# Tool name mappings for shortened virtualization tools (virt_ prefix)
 TOOL_NAME_MAP = {
-    # Virtualization tools (virt_ -> virtualization category)
-    'virt_list_cluster_types': ('virtualization', 'list_cluster_types'),
-    'virt_get_cluster_type': ('virtualization', 'get_cluster_type'),
-    'virt_create_cluster_type': ('virtualization', 'create_cluster_type'),
-    'virt_list_cluster_groups': ('virtualization', 'list_cluster_groups'),
-    'virt_get_cluster_group': ('virtualization', 'get_cluster_group'),
-    'virt_create_cluster_group': ('virtualization', 'create_cluster_group'),
+    # Virtualization tools (virt_ prefix -> virtualization category)
     'virt_list_clusters': ('virtualization', 'list_clusters'),
     'virt_get_cluster': ('virtualization', 'get_cluster'),
     'virt_create_cluster': ('virtualization', 'create_cluster'),
-    'virt_update_cluster': ('virtualization', 'update_cluster'),
-    'virt_delete_cluster': ('virtualization', 'delete_cluster'),
     'virt_list_vms': ('virtualization', 'list_virtual_machines'),
     'virt_get_vm': ('virtualization', 'get_virtual_machine'),
     'virt_create_vm': ('virtualization', 'create_virtual_machine'),
     'virt_update_vm': ('virtualization', 'update_virtual_machine'),
-    'virt_delete_vm': ('virtualization', 'delete_virtual_machine'),
     'virt_list_vm_ifaces': ('virtualization', 'list_vm_interfaces'),
     'virt_get_vm_iface': ('virtualization', 'get_vm_interface'),
     'virt_create_vm_iface': ('virtualization', 'create_vm_interface'),
-
-    # Circuits tools (circ_ -> circuits category, for shortened names only)
-    'circ_list_types': ('circuits', 'list_circuit_types'),
-    'circ_get_type': ('circuits', 'get_circuit_type'),
-    'circ_create_type': ('circuits', 'create_circuit_type'),
-    'circ_list_terminations': ('circuits', 'list_circuit_terminations'),
-    'circ_get_termination': ('circuits', 'get_circuit_termination'),
-    'circ_create_termination': ('circuits', 'create_circuit_termination'),
-
-    # Wireless tools (wlan_ -> wireless category)
-    'wlan_list_groups': ('wireless', 'list_wireless_lan_groups'),
-    'wlan_get_group': ('wireless', 'get_wireless_lan_group'),
-    'wlan_create_group': ('wireless', 'create_wireless_lan_group'),
-    'wlan_list_lans': ('wireless', 'list_wireless_lans'),
-    'wlan_get_lan': ('wireless', 'get_wireless_lan'),
-    'wlan_create_lan': ('wireless', 'create_wireless_lan'),
-    'wlan_list_links': ('wireless', 'list_wireless_links'),
-    'wlan_get_link': ('wireless', 'get_wireless_link'),
 }
-
-
-# Map tool name prefixes to module names.
-# This handles both full prefixes and shortened prefixes used in TOOL_NAME_MAP.
-PREFIX_TO_MODULE = {
-    'dcim': 'dcim',
-    'ipam': 'ipam',
-    'circuits': 'circuits',
-    'circ': 'circuits',           # Shortened prefix
-    'virtualization': 'virtualization',
-    'virt': 'virtualization',     # Shortened prefix
-    'tenancy': 'tenancy',
-    'vpn': 'vpn',
-    'wireless': 'wireless',
-    'wlan': 'wireless',           # Shortened prefix
-    'extras': 'extras',
-}
-
-
-def _get_tool_module(tool_name: str) -> Optional[str]:
-    """
-    Determine which module a tool belongs to.
-
-    Checks TOOL_NAME_MAP first for shortened names, then falls back to prefix extraction.
-
-    Args:
-        tool_name: The tool name (e.g., 'dcim_list_devices', 'virt_list_vms')
-
-    Returns:
-        Module name (e.g., 'dcim', 'virtualization') or None if unknown
-    """
-    # Check mapped short names first
-    if tool_name in TOOL_NAME_MAP:
-        category, _ = TOOL_NAME_MAP[tool_name]
-        return category
-
-    # Fall back to prefix extraction
-    parts = tool_name.split('_', 1)
-    if len(parts) < 2:
-        return None
-
-    prefix = parts[0]
-    return PREFIX_TO_MODULE.get(prefix)
 
 
 class NetBoxMCPServer:
@@ -1504,15 +341,10 @@ class NetBoxMCPServer:
         self.server = Server("netbox-mcp")
         self.config = None
         self.client = None
-        self.enabled_modules: Set[str] = set(ALL_MODULES)
-        # Tool instances - only instantiated for enabled modules
+        # Tool instances - always instantiate all 4 modules
         self.dcim_tools = None
         self.ipam_tools = None
-        self.circuits_tools = None
         self.virtualization_tools = None
-        self.tenancy_tools = None
-        self.vpn_tools = None
-        self.wireless_tools = None
         self.extras_tools = None
 
     async def initialize(self):
@@ -1520,38 +352,19 @@ class NetBoxMCPServer:
         try:
             config_loader = NetBoxConfig()
             self.config = config_loader.load()
-            self.enabled_modules = self.config['enabled_modules']
 
             self.client = NetBoxClient()
 
-            # Conditionally instantiate tool classes for enabled modules only
-            if 'dcim' in self.enabled_modules:
-                self.dcim_tools = DCIMTools(self.client)
-            if 'ipam' in self.enabled_modules:
-                self.ipam_tools = IPAMTools(self.client)
-            if 'circuits' in self.enabled_modules:
-                self.circuits_tools = CircuitsTools(self.client)
-            if 'virtualization' in self.enabled_modules:
-                self.virtualization_tools = VirtualizationTools(self.client)
-            if 'tenancy' in self.enabled_modules:
-                self.tenancy_tools = TenancyTools(self.client)
-            if 'vpn' in self.enabled_modules:
-                self.vpn_tools = VPNTools(self.client)
-            if 'wireless' in self.enabled_modules:
-                self.wireless_tools = WirelessTools(self.client)
-            if 'extras' in self.enabled_modules:
-                self.extras_tools = ExtrasTools(self.client)
+            # Always instantiate all 4 modules
+            self.dcim_tools = DCIMTools(self.client)
+            self.ipam_tools = IPAMTools(self.client)
+            self.virtualization_tools = VirtualizationTools(self.client)
+            self.extras_tools = ExtrasTools(self.client)
 
-            # Count tools that will be registered
-            tool_count = sum(
-                1 for name in TOOL_DEFINITIONS
-                if _get_tool_module(name) in self.enabled_modules
-            )
-
-            modules_str = ', '.join(sorted(self.enabled_modules))
+            tool_count = len(TOOL_DEFINITIONS)
             logger.info(
                 f"NetBox MCP Server initialized: {tool_count} tools registered "
-                f"(modules: {modules_str})"
+                f"(modules: dcim, ipam, virtualization, extras)"
             )
         except Exception as e:
             logger.error(f"Failed to initialize: {e}")
@@ -1562,14 +375,9 @@ class NetBoxMCPServer:
 
         @self.server.list_tools()
         async def list_tools() -> list[Tool]:
-            """Return list of available tools, filtered by enabled modules"""
+            """Return list of available tools"""
             tools = []
             for name, definition in TOOL_DEFINITIONS.items():
-                # Filter tools by enabled modules
-                module = _get_tool_module(name)
-                if module not in self.enabled_modules:
-                    continue
-
                 tools.append(Tool(
                     name=name,
                     description=definition['description'],
@@ -1604,14 +412,6 @@ class NetBoxMCPServer:
         'virtualization_list_virtual_machines') to meet the 28-character
         limit. TOOL_NAME_MAP handles the translation to actual method names.
         """
-        # Check module is enabled (routing guard)
-        module = _get_tool_module(name)
-        if module and module not in self.enabled_modules:
-            raise ValueError(
-                f"Tool '{name}' is not available (module '{module}' not enabled). "
-                f"Enabled modules: {', '.join(sorted(self.enabled_modules))}"
-            )
-
         # Check if this is a mapped short name
         if name in TOOL_NAME_MAP:
             category, method_name = TOOL_NAME_MAP[name]
@@ -1626,11 +426,7 @@ class NetBoxMCPServer:
         tool_map = {
             'dcim': self.dcim_tools,
             'ipam': self.ipam_tools,
-            'circuits': self.circuits_tools,
             'virtualization': self.virtualization_tools,
-            'tenancy': self.tenancy_tools,
-            'vpn': self.vpn_tools,
-            'wireless': self.wireless_tools,
             'extras': self.extras_tools
         }
 

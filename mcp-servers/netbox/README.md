@@ -1,19 +1,17 @@
 # NetBox MCP Server
 
-MCP (Model Context Protocol) server for comprehensive NetBox API integration with Claude Code.
+MCP (Model Context Protocol) server for essential NetBox API integration with Claude Code.
 
 ## Overview
 
-This MCP server provides Claude Code with full access to the NetBox REST API, enabling infrastructure management, documentation, and automation workflows. It covers all major NetBox application areas:
+This MCP server provides Claude Code with focused access to the NetBox REST API for tracking **servers, services, IP addresses, and databases**. It has been optimized to include only essential tools:
 
-- **DCIM** - Sites, Locations, Racks, Devices, Interfaces, Cables, Power
-- **IPAM** - IP Addresses, Prefixes, VLANs, VRFs, ASNs, Services
-- **Circuits** - Providers, Circuits, Terminations
+- **DCIM** - Sites, Devices (servers/VPS), Interfaces
+- **IPAM** - IP Addresses, Prefixes, Services (applications/databases)
 - **Virtualization** - Clusters, Virtual Machines, VM Interfaces
-- **Tenancy** - Tenants, Contacts, Contact Assignments
-- **VPN** - Tunnels, IKE/IPSec Policies, L2VPN
-- **Wireless** - Wireless LANs, Links, Groups
-- **Extras** - Tags, Custom Fields, Webhooks, Config Contexts, Audit Log
+- **Extras** - Tags, Journal Entries (audit/notes)
+
+**Total:** 37 tools (~3,700 tokens) — down from 182 tools (~19,810 tokens).
 
 ## Installation
 
@@ -49,312 +47,227 @@ EOF
 
 ### 3. Register with Claude Code
 
-Add to your Claude Code MCP configuration (`~/.config/claude/mcp.json` or project `.mcp.json`):
+Add to your Claude Code MCP configuration (`.claude/mcp.json` or project-level `.mcp.json`):
 
 ```json
 {
   "mcpServers": {
     "netbox": {
       "command": "/path/to/mcp-servers/netbox/.venv/bin/python",
-      "args": ["-m", "mcp_server.server"],
+      "args": ["-m", "mcp_server"],
       "cwd": "/path/to/mcp-servers/netbox"
     }
   }
 }
 ```
 
+**Windows:**
+```json
+{
+  "mcpServers": {
+    "netbox": {
+      "command": "C:\\path\\to\\mcp-servers\\netbox\\.venv\\Scripts\\python.exe",
+      "args": ["-m", "mcp_server"],
+      "cwd": "C:\\path\\to\\mcp-servers\\netbox"
+    }
+  }
+}
+```
+
+## Available Tools (37 Total)
+
+### DCIM: Sites, Devices, Interfaces (11 tools)
+
+**Sites (4):**
+| Tool | Description | Parameters |
+|------|-------------|-----------|
+| `dcim_list_sites` | List sites | `name`, `status` |
+| `dcim_get_site` | Get site by ID | `id` (required) |
+| `dcim_create_site` | Create site | `name`, `slug` (required), `status` |
+| `dcim_update_site` | Update site | `id` (required), fields to update |
+
+**Devices (4):**
+| Tool | Description | Parameters |
+|------|-------------|-----------|
+| `dcim_list_devices` | List devices (servers/VPS) | `name`, `site_id`, `status`, `role_id` |
+| `dcim_get_device` | Get device by ID | `id` (required) |
+| `dcim_create_device` | Create device | `name`, `device_type`, `role`, `site` (required) |
+| `dcim_update_device` | Update device | `id` (required), fields to update |
+
+**Interfaces (3):**
+| Tool | Description | Parameters |
+|------|-------------|-----------|
+| `dcim_list_interfaces` | List device interfaces | `device_id`, `name`, `type` |
+| `dcim_get_interface` | Get interface by ID | `id` (required) |
+| `dcim_create_interface` | Create interface | `device`, `name`, `type` (required) |
+
+### IPAM: IPs, Prefixes, Services (10 tools)
+
+**IP Addresses (4):**
+| Tool | Description | Parameters |
+|------|-------------|-----------|
+| `ipam_list_ip_addresses` | List IP addresses | `address`, `device_id`, `status` |
+| `ipam_get_ip_address` | Get IP by ID | `id` (required) |
+| `ipam_create_ip_address` | Create IP address | `address` (required), `status`, `assigned_object_type` |
+| `ipam_update_ip_address` | Update IP address | `id` (required), fields to update |
+
+**Prefixes (3):**
+| Tool | Description | Parameters |
+|------|-------------|-----------|
+| `ipam_list_prefixes` | List prefixes | `prefix`, `site_id`, `status` |
+| `ipam_get_prefix` | Get prefix by ID | `id` (required) |
+| `ipam_create_prefix` | Create prefix | `prefix` (required), `status`, `site` |
+
+**Services (3):**
+| Tool | Description | Parameters |
+|------|-------------|-----------|
+| `ipam_list_services` | List services (apps/databases) | `device_id`, `virtual_machine_id`, `name` |
+| `ipam_get_service` | Get service by ID | `id` (required) |
+| `ipam_create_service` | Create service | `name`, `ports`, `protocol` (required), `device`, `virtual_machine` |
+
+### Virtualization: Clusters, VMs, VM Interfaces (10 tools)
+
+**Clusters (3):**
+| Tool | Description | Parameters |
+|------|-------------|-----------|
+| `virt_list_clusters` | List virtualization clusters | `name`, `site_id` |
+| `virt_get_cluster` | Get cluster by ID | `id` (required) |
+| `virt_create_cluster` | Create cluster | `name`, `type` (required), `site` |
+
+**Virtual Machines (4):**
+| Tool | Description | Parameters |
+|------|-------------|-----------|
+| `virt_list_vms` | List VMs | `name`, `cluster_id`, `site_id`, `status` |
+| `virt_get_vm` | Get VM by ID | `id` (required) |
+| `virt_create_vm` | Create VM | `name`, `cluster` (required), `vcpus`, `memory`, `disk` |
+| `virt_update_vm` | Update VM | `id` (required), fields to update |
+
+**VM Interfaces (3):**
+| Tool | Description | Parameters |
+|------|-------------|-----------|
+| `virt_list_vm_ifaces` | List VM interfaces | `virtual_machine_id` |
+| `virt_get_vm_iface` | Get VM interface by ID | `id` (required) |
+| `virt_create_vm_iface` | Create VM interface | `virtual_machine`, `name` (required) |
+
+### Extras: Tags, Journal Entries (6 tools)
+
+**Tags (3):**
+| Tool | Description | Parameters |
+|------|-------------|-----------|
+| `extras_list_tags` | List tags | `name` |
+| `extras_get_tag` | Get tag by ID | `id` (required) |
+| `extras_create_tag` | Create tag | `name`, `slug` (required), `color` |
+
+**Journal Entries (3):**
+| Tool | Description | Parameters |
+|------|-------------|-----------|
+| `extras_list_journal_entries` | List journal entries | `assigned_object_type`, `assigned_object_id` |
+| `extras_get_journal_entry` | Get journal entry by ID | `id` (required) |
+| `extras_create_journal_entry` | Create journal entry | `assigned_object_type`, `assigned_object_id`, `comments` (required), `kind` |
+
 ## Configuration
 
-### Environment Variables
+All configuration is done via environment variables in `~/.config/claude/netbox.env`:
 
 | Variable | Required | Default | Description |
 |----------|----------|---------|-------------|
-| `NETBOX_API_URL` | Yes | - | Full URL to NetBox API (e.g., `https://netbox.example.com/api`) |
-| `NETBOX_API_TOKEN` | Yes | - | API authentication token |
-| `NETBOX_VERIFY_SSL` | No | `true` | Verify SSL certificates |
-| `NETBOX_TIMEOUT` | No | `30` | Request timeout in seconds |
-
-### Configuration Hierarchy
-
-1. **System-level** (`~/.config/claude/netbox.env`): Credentials and defaults
-2. **Project-level** (`.env` in current directory): Optional overrides
-
-## Module Filtering (Token Optimization)
-
-By default, the NetBox MCP server registers all 182 tools across 8 modules, consuming ~19,810 tokens of context. For most workflows, you only need a subset of modules.
-
-### Configuration
-
-Add `NETBOX_ENABLED_MODULES` to your `~/.config/claude/netbox.env`:
-
-```bash
-# Enable only specific modules (comma-separated)
-NETBOX_ENABLED_MODULES=dcim,ipam,virtualization,extras
-```
-
-If unset, all modules are enabled (backward compatible).
-
-### Available Modules
-
-| Module | Tool Count | Description | cmdb-assistant Commands |
-|--------|------------|-------------|------------------------|
-| `dcim` | ~60 | Sites, devices, racks, interfaces, cables | `/cmdb device`, `/cmdb site`, `/cmdb search`, `/cmdb topology` |
-| `ipam` | ~40 | IP addresses, prefixes, VLANs, VRFs | `/cmdb ip`, `/cmdb ip-conflicts`, `/cmdb search` |
-| `virtualization` | ~20 | Clusters, VMs, VM interfaces | `/cmdb search`, `/cmdb audit`, `/cmdb register` |
-| `extras` | ~12 | Tags, journal entries, audit log | `/cmdb change-audit`, `/cmdb register` |
-| `circuits` | ~15 | Providers, circuits, terminations | — |
-| `tenancy` | ~12 | Tenants, contacts | — |
-| `vpn` | ~15 | Tunnels, IKE/IPSec policies, L2VPN | — |
-| `wireless` | ~8 | Wireless LANs, links, groups | — |
-
-### Recommended Configurations
-
-**For cmdb-assistant users** (~43 tools, ~4,500 tokens):
-```bash
-NETBOX_ENABLED_MODULES=dcim,ipam,virtualization,extras
-```
-
-**Basic infrastructure** (~100 tools):
-```bash
-NETBOX_ENABLED_MODULES=dcim,ipam
-```
-
-**Full CMDB** (all modules, ~182 tools):
-```bash
-# Omit NETBOX_ENABLED_MODULES or set to all modules
-NETBOX_ENABLED_MODULES=dcim,ipam,circuits,virtualization,tenancy,vpn,wireless,extras
-```
-
-### Startup Logging
-
-On startup, the server logs enabled modules and tool count:
-
-```
-NetBox MCP Server initialized: 43 tools registered (modules: dcim, extras, ipam, virtualization)
-```
-
-### Disabled Tool Behavior
-
-Calling a tool from a disabled module returns a clear error:
-
-```
-Tool 'circuits_list_circuits' is not available (module 'circuits' not enabled).
-Enabled modules: dcim, extras, ipam, virtualization
-```
-
-## Available Tools
-
-### DCIM (Data Center Infrastructure Management)
-
-| Tool | Description |
-|------|-------------|
-| `dcim_list_sites` | List all sites |
-| `dcim_get_site` | Get site details |
-| `dcim_create_site` | Create a new site |
-| `dcim_update_site` | Update a site |
-| `dcim_delete_site` | Delete a site |
-| `dcim_list_devices` | List all devices |
-| `dcim_get_device` | Get device details |
-| `dcim_create_device` | Create a new device |
-| `dcim_update_device` | Update a device |
-| `dcim_delete_device` | Delete a device |
-| `dcim_list_interfaces` | List device interfaces |
-| `dcim_create_interface` | Create an interface |
-| `dcim_list_racks` | List all racks |
-| `dcim_create_rack` | Create a new rack |
-| `dcim_list_cables` | List all cables |
-| `dcim_create_cable` | Create a cable connection |
-| ... and many more |
-
-### IPAM (IP Address Management)
-
-| Tool | Description |
-|------|-------------|
-| `ipam_list_prefixes` | List IP prefixes |
-| `ipam_create_prefix` | Create a prefix |
-| `ipam_list_available_prefixes` | List available child prefixes |
-| `ipam_create_available_prefix` | Auto-allocate a prefix |
-| `ipam_list_ip_addresses` | List IP addresses |
-| `ipam_create_ip_address` | Create an IP address |
-| `ipam_list_available_ips` | List available IPs in prefix |
-| `ipam_create_available_ip` | Auto-allocate an IP |
-| `ipam_list_vlans` | List VLANs |
-| `ipam_create_vlan` | Create a VLAN |
-| `ipam_list_vrfs` | List VRFs |
-| ... and many more |
-
-### Circuits
-
-| Tool | Description |
-|------|-------------|
-| `circuits_list_providers` | List circuit providers |
-| `circuits_create_provider` | Create a provider |
-| `circuits_list_circuits` | List circuits |
-| `circuits_create_circuit` | Create a circuit |
-| `circ_list_terminations` | List terminations |
-| ... and more |
-
-### Virtualization
-
-| Tool | Description |
-|------|-------------|
-| `virt_list_clusters` | List clusters |
-| `virt_create_cluster` | Create a cluster |
-| `virt_list_vms` | List VMs |
-| `virt_create_vm` | Create a VM |
-| `virt_list_vm_ifaces` | List VM interfaces |
-| ... and more |
-
-### Tenancy
-
-| Tool | Description |
-|------|-------------|
-| `tenancy_list_tenants` | List tenants |
-| `tenancy_create_tenant` | Create a tenant |
-| `tenancy_list_contacts` | List contacts |
-| `tenancy_create_contact` | Create a contact |
-| ... and more |
-
-### VPN
-
-| Tool | Description |
-|------|-------------|
-| `vpn_list_tunnels` | List VPN tunnels |
-| `vpn_create_tunnel` | Create a tunnel |
-| `vpn_list_l2vpns` | List L2VPNs |
-| `vpn_list_ike_policies` | List IKE policies |
-| `vpn_list_ipsec_policies` | List IPSec policies |
-| ... and more |
-
-### Wireless
-
-| Tool | Description |
-|------|-------------|
-| `wlan_list_lans` | List wireless LANs |
-| `wlan_create_lan` | Create a WLAN |
-| `wlan_list_links` | List wireless links |
-| ... and more |
-
-### Extras
-
-| Tool | Description |
-|------|-------------|
-| `extras_list_tags` | List all tags |
-| `extras_create_tag` | Create a tag |
-| `extras_list_custom_fields` | List custom fields |
-| `extras_list_webhooks` | List webhooks |
-| `extras_list_journal_entries` | List journal entries |
-| `extras_create_journal_entry` | Create journal entry |
-| `extras_list_object_changes` | View audit log |
-| `extras_list_config_contexts` | List config contexts |
-| ... and more |
-
-## Usage Examples
-
-### List all devices at a site
-
-```
-Use the dcim_list_devices tool with site_id filter to see all devices at site 5
-```
-
-### Create a new prefix and allocate IPs
-
-```
-1. Use ipam_create_prefix to create 10.0.1.0/24
-2. Use ipam_list_available_ips with the prefix ID to see available addresses
-3. Use ipam_create_available_ip to auto-allocate the next IP
-```
-
-### Document a new server
-
-```
-1. Use dcim_create_device to create the device
-2. Use dcim_create_interface to add network interfaces
-3. Use ipam_create_ip_address to assign IPs to interfaces
-4. Use extras_create_journal_entry to add notes
-```
-
-### Audit recent changes
-
-```
-Use extras_list_object_changes to see recent modifications in NetBox
-```
+| `NETBOX_API_URL` | Yes | — | NetBox API URL (e.g., https://netbox.example.com/api) |
+| `NETBOX_API_TOKEN` | Yes | — | NetBox API token |
+| `NETBOX_VERIFY_SSL` | No | true | Verify SSL certificates |
+| `NETBOX_TIMEOUT` | No | 30 | Request timeout in seconds |
 
 ## Architecture
 
+### Hybrid Configuration
+
+- **System-level:** `~/.config/claude/netbox.env` (credentials)
+- **Project-level:** `.env` (optional overrides)
+
+### Tool Routing
+
+Tool names follow the pattern `{module}_{action}_{resource}`:
+- `dcim_list_sites` → DCIMTools.list_sites()
+- `ipam_create_service` → IPAMTools.create_service()
+- `virt_list_vms` → VirtualizationTools.list_virtual_machines()
+
+Shortened names (virt_*) are mapped via TOOL_NAME_MAP to meet the 28-character MCP limit.
+
+### Error Handling
+
+All tools return JSON responses. Errors are caught and returned as:
+```json
+{
+  "error": "Error message",
+  "status_code": 404
+}
 ```
-mcp-servers/netbox/
+
+## Development
+
+### Testing
+
+```bash
+# Test import
+python -c "from mcp_server.server import NetBoxMCPServer; print('OK')"
+
+# Test tool count
+python -c "from mcp_server.server import TOOL_DEFINITIONS; print(f'{len(TOOL_DEFINITIONS)} tools')"
+```
+
+### File Structure
+
+```
+netbox/
 ├── mcp_server/
 │   ├── __init__.py
+│   ├── server.py          # Main MCP server (37 TOOL_DEFINITIONS)
 │   ├── config.py          # Configuration loader
-│   ├── netbox_client.py   # Generic HTTP client
-│   ├── server.py          # MCP server entry point
+│   ├── netbox_client.py   # HTTP client wrapper
 │   └── tools/
 │       ├── __init__.py
-│       ├── dcim.py        # DCIM operations
-│       ├── ipam.py        # IPAM operations
-│       ├── circuits.py    # Circuits operations
-│       ├── virtualization.py
-│       ├── tenancy.py
-│       ├── vpn.py
-│       ├── wireless.py
-│       └── extras.py
-├── tests/
-│   └── __init__.py
+│       ├── dcim.py        # Sites, Devices, Interfaces
+│       ├── ipam.py        # IPs, Prefixes, Services
+│       ├── virtualization.py  # Clusters, VMs, VM Interfaces
+│       └── extras.py      # Tags, Journal Entries
+├── .venv/                 # Python virtual environment
 ├── requirements.txt
 └── README.md
 ```
 
-## API Coverage
-
-This MCP server provides comprehensive coverage of the NetBox REST API v4.x:
-
-- Full CRUD operations for all major models
-- Filtering and search capabilities
-- Special endpoints (available prefixes, available IPs)
-- Pagination handling (automatic)
-- Error handling with detailed messages
-
-## Error Handling
-
-The server returns detailed error messages from the NetBox API, including:
-- Validation errors
-- Authentication failures
-- Not found errors
-- Permission errors
-
-## Security Notes
-
-- API tokens should be kept secure and not committed to version control
-- Use environment variables or the system config file for credentials
-- SSL verification is enabled by default
-- Consider using read-only tokens for query-only workflows
-
 ## Troubleshooting
 
-### Common Issues
+### MCP Server Won't Start
 
-1. **Connection refused**: Check `NETBOX_API_URL` is correct and accessible
-2. **401 Unauthorized**: Verify your API token is valid
-3. **SSL errors**: Set `NETBOX_VERIFY_SSL=false` for self-signed certs (not recommended for production)
-4. **Timeout errors**: Increase `NETBOX_TIMEOUT` for slow connections
-
-### Debug Mode
-
-Enable debug logging:
-
-```python
-import logging
-logging.basicConfig(level=logging.DEBUG)
+**Check configuration:**
+```bash
+cat ~/.config/claude/netbox.env
 ```
 
-## Contributing
+**Test credentials:**
+```bash
+curl -H "Authorization: Token YOUR_TOKEN" https://netbox.example.com/api/
+```
 
-1. Follow the existing code patterns
-2. Add tests for new functionality
-3. Update documentation for new tools
-4. Ensure compatibility with NetBox 4.x API
+### Tools Not Appearing in Claude
+
+**Verify MCP registration:**
+```bash
+cat ~/.claude/mcp.json  # or project-level .mcp.json
+```
+
+**Check MCP server logs:**
+Claude Code will show MCP server stderr in the UI.
+
+### Connection Errors
+
+- Verify `NETBOX_API_URL` ends with `/api`
+- Check firewall/network connectivity to NetBox instance
+- Ensure API token has required permissions
 
 ## License
 
-MIT License - Part of the Leo Claude Marketplace.
+MIT License - See LICENSE file for details.
+
+## Contributing
+
+This MCP server is part of the leo-claude-mktplace project. For issues or contributions, refer to the main repository.

@@ -1,7 +1,7 @@
 """
 Virtualization tools for NetBox MCP Server.
 
-Covers: Clusters, Virtual Machines, VM Interfaces, and related models.
+Covers: Clusters, Virtual Machines, and VM Interfaces only.
 """
 import logging
 from typing import List, Dict, Optional, Any
@@ -16,80 +16,6 @@ class VirtualizationTools:
     def __init__(self, client: NetBoxClient):
         self.client = client
         self.base_endpoint = 'virtualization'
-
-    # ==================== Cluster Types ====================
-
-    async def list_cluster_types(
-        self,
-        name: Optional[str] = None,
-        slug: Optional[str] = None,
-        **kwargs
-    ) -> List[Dict]:
-        """List all cluster types."""
-        params = {k: v for k, v in {'name': name, 'slug': slug, **kwargs}.items() if v is not None}
-        return self.client.list(f'{self.base_endpoint}/cluster-types', params=params)
-
-    async def get_cluster_type(self, id: int) -> Dict:
-        """Get a specific cluster type by ID."""
-        return self.client.get(f'{self.base_endpoint}/cluster-types', id)
-
-    async def create_cluster_type(
-        self,
-        name: str,
-        slug: str,
-        description: Optional[str] = None,
-        **kwargs
-    ) -> Dict:
-        """Create a new cluster type."""
-        data = {'name': name, 'slug': slug, **kwargs}
-        if description:
-            data['description'] = description
-        return self.client.create(f'{self.base_endpoint}/cluster-types', data)
-
-    async def update_cluster_type(self, id: int, **kwargs) -> Dict:
-        """Update a cluster type."""
-        return self.client.patch(f'{self.base_endpoint}/cluster-types', id, kwargs)
-
-    async def delete_cluster_type(self, id: int) -> None:
-        """Delete a cluster type."""
-        self.client.delete(f'{self.base_endpoint}/cluster-types', id)
-
-    # ==================== Cluster Groups ====================
-
-    async def list_cluster_groups(
-        self,
-        name: Optional[str] = None,
-        slug: Optional[str] = None,
-        **kwargs
-    ) -> List[Dict]:
-        """List all cluster groups."""
-        params = {k: v for k, v in {'name': name, 'slug': slug, **kwargs}.items() if v is not None}
-        return self.client.list(f'{self.base_endpoint}/cluster-groups', params=params)
-
-    async def get_cluster_group(self, id: int) -> Dict:
-        """Get a specific cluster group by ID."""
-        return self.client.get(f'{self.base_endpoint}/cluster-groups', id)
-
-    async def create_cluster_group(
-        self,
-        name: str,
-        slug: str,
-        description: Optional[str] = None,
-        **kwargs
-    ) -> Dict:
-        """Create a new cluster group."""
-        data = {'name': name, 'slug': slug, **kwargs}
-        if description:
-            data['description'] = description
-        return self.client.create(f'{self.base_endpoint}/cluster-groups', data)
-
-    async def update_cluster_group(self, id: int, **kwargs) -> Dict:
-        """Update a cluster group."""
-        return self.client.patch(f'{self.base_endpoint}/cluster-groups', id, kwargs)
-
-    async def delete_cluster_group(self, id: int) -> None:
-        """Delete a cluster group."""
-        self.client.delete(f'{self.base_endpoint}/cluster-groups', id)
 
     # ==================== Clusters ====================
 
@@ -133,14 +59,6 @@ class VirtualizationTools:
             if val is not None:
                 data[key] = val
         return self.client.create(f'{self.base_endpoint}/clusters', data)
-
-    async def update_cluster(self, id: int, **kwargs) -> Dict:
-        """Update a cluster."""
-        return self.client.patch(f'{self.base_endpoint}/clusters', id, kwargs)
-
-    async def delete_cluster(self, id: int) -> None:
-        """Delete a cluster."""
-        self.client.delete(f'{self.base_endpoint}/clusters', id)
 
     # ==================== Virtual Machines ====================
 
@@ -201,10 +119,6 @@ class VirtualizationTools:
         """Update a virtual machine."""
         return self.client.patch(f'{self.base_endpoint}/virtual-machines', id, kwargs)
 
-    async def delete_virtual_machine(self, id: int) -> None:
-        """Delete a virtual machine."""
-        self.client.delete(f'{self.base_endpoint}/virtual-machines', id)
-
     # ==================== VM Interfaces ====================
 
     async def list_vm_interfaces(
@@ -246,51 +160,3 @@ class VirtualizationTools:
             if val is not None:
                 data[key] = val
         return self.client.create(f'{self.base_endpoint}/interfaces', data)
-
-    async def update_vm_interface(self, id: int, **kwargs) -> Dict:
-        """Update a VM interface."""
-        return self.client.patch(f'{self.base_endpoint}/interfaces', id, kwargs)
-
-    async def delete_vm_interface(self, id: int) -> None:
-        """Delete a VM interface."""
-        self.client.delete(f'{self.base_endpoint}/interfaces', id)
-
-    # ==================== Virtual Disks ====================
-
-    async def list_virtual_disks(
-        self,
-        virtual_machine_id: Optional[int] = None,
-        name: Optional[str] = None,
-        **kwargs
-    ) -> List[Dict]:
-        """List all virtual disks."""
-        params = {k: v for k, v in {
-            'virtual_machine_id': virtual_machine_id, 'name': name, **kwargs
-        }.items() if v is not None}
-        return self.client.list(f'{self.base_endpoint}/virtual-disks', params=params)
-
-    async def get_virtual_disk(self, id: int) -> Dict:
-        """Get a specific virtual disk by ID."""
-        return self.client.get(f'{self.base_endpoint}/virtual-disks', id)
-
-    async def create_virtual_disk(
-        self,
-        virtual_machine: int,
-        name: str,
-        size: int,
-        description: Optional[str] = None,
-        **kwargs
-    ) -> Dict:
-        """Create a new virtual disk."""
-        data = {'virtual_machine': virtual_machine, 'name': name, 'size': size, **kwargs}
-        if description:
-            data['description'] = description
-        return self.client.create(f'{self.base_endpoint}/virtual-disks', data)
-
-    async def update_virtual_disk(self, id: int, **kwargs) -> Dict:
-        """Update a virtual disk."""
-        return self.client.patch(f'{self.base_endpoint}/virtual-disks', id, kwargs)
-
-    async def delete_virtual_disk(self, id: int) -> None:
-        """Delete a virtual disk."""
-        self.client.delete(f'{self.base_endpoint}/virtual-disks', id)
