@@ -53,6 +53,9 @@ Execute `skills/visual-header.md` with context "Server Inspection".
 - Args: ["-m", "mcp_server.server"]
 - CWD: /path/to/mcp-servers/gitea
 - Env file: ~/.config/claude/gitea.env
+
+**Note:** The gitea server uses `gitea_mcp.server` (installed from package).
+Other servers use `mcp_server.server` (local source).
 ```
 
 ### Phase 2: Dependencies (--deps)

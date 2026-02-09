@@ -108,6 +108,9 @@ python-dotenv>=1.0.0
      "cwd": "mcp-servers/<server_name>"
    }
    ```
+
+   **Note:** Use `mcp_server.server` for new servers being scaffolded.
+   Exception: gitea uses `gitea_mcp.server` (pip-installed package).
 3. Show the change and ask user to confirm before writing
 
 ### Phase 5: Completion
