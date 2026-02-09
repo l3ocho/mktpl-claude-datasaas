@@ -1,5 +1,5 @@
 ---
-name: sprint start
+name: projman sprint start
 description: Begin sprint execution with relevant lessons learned from previous sprints
 agent: orchestrator
 ---

@@ -1,5 +1,5 @@
 ---
-name: sprint test
+name: projman sprint test
 description: Run tests with coverage or generate tests for specified code
 ---
 

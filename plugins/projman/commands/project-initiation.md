@@ -1,4 +1,5 @@
 ---
+name: projman project initiation
 description: Discover, analyze, and charter a new project
 agent: planner
 ---
