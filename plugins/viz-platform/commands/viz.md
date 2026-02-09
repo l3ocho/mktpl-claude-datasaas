@@ -1,14 +1,16 @@
 ---
-description: Visualization tools with DMC validation, charts, and theming
+name: viz
+description: Visualization tools — type /viz <action> for commands
 ---
 
 # /viz
 
 Visualization tools with Dash Mantine Components validation, Plotly charts, and theming.
+When invoked without a sub-command, display available actions and ask which to run.
 
-## Sub-commands
+## Available Commands
 
-| Sub-command | Description |
+| Command | Description |
 |-------------|-------------|
 | `/viz theme` | Apply existing theme to visualizations |
 | `/viz theme-new` | Create new custom theme with design tokens |
@@ -22,3 +24,9 @@ Visualization tools with Dash Mantine Components validation, Plotly charts, and 
 | `/viz design-review` | Detailed design system audits |
 | `/viz design-gate` | Binary pass/fail design system validation |
 | `/viz setup` | Setup wizard for viz-platform MCP server |
+
+## Workflow
+
+1. Display the table above
+2. Ask: "Which command would you like to run?"
+3. Route to the selected sub-command
