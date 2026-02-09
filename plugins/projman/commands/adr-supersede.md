@@ -1,4 +1,5 @@
 ---
+name: projman adr supersede
 description: Mark an ADR as superseded by a newer ADR
 agent: planner
 ---

@@ -1,6 +1,6 @@
 ---
-name: project
-description: Project lifecycle management — type /project <action> for commands
+name: projman project
+description: Project lifecycle management — type /projman project <action> for commands
 ---
 
 # /project

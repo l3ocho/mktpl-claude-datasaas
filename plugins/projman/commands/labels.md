@@ -1,6 +1,6 @@
 ---
-name: labels
-description: Label management — type /labels <action> for commands
+name: projman labels
+description: Label management — type /projman labels <action> for commands
 ---
 
 # /labels
