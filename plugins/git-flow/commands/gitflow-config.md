@@ -42,6 +42,7 @@ Configure git-flow settings interactively or display current configuration.
 5. Protected branches
 6. View all settings
 7. Reset to defaults
+8. Re-run setup wizard (redirects to `/gitflow setup`)
 
 ## Output
 

@@ -1,4 +1,5 @@
 ---
+name: rfc
 description: RFC lifecycle management - create, list, review, approve, reject
 agent: planner
 ---
@@ -15,21 +16,29 @@ agent: planner
 
 Manage the full RFC lifecycle through sub-commands. RFCs provide a structured way to document, discuss, and approve changes before implementation.
 
+When invoked without a sub-command, display available actions and ask which to run.
+
 ## Invocation
 
 ```
 /rfc <sub-command> [arguments]
 ```
 
-### Sub-Commands
+## Available Commands
 
-| Sub-Command | Usage | Description |
-|-------------|-------|-------------|
+| Command | Usage | Description |
+|---------|-------|-------------|
 | `create` | `/rfc create` | Create new RFC from conversation or clarified spec |
 | `list` | `/rfc list [filter]` | List all RFCs grouped by status |
 | `review` | `/rfc review <number>` | Submit Draft RFC for review |
 | `approve` | `/rfc approve <number>` | Approve RFC in Review status |
 | `reject` | `/rfc reject <number>` | Reject RFC with documented reason |
+
+## Workflow
+
+1. Display the table above
+2. Ask: "Which command would you like to run?"
+3. Route to the selected sub-command
 
 ---
 

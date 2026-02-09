@@ -1,13 +1,18 @@
 ---
-description: Architecture Decision Records management
+name: adr
+description: Architecture Decision Records management — type /adr <action> for commands
 ---
 
 # /adr
 
-## Sub-commands
+Architecture Decision Records management for projman.
 
-| Sub-command | Description |
-|-------------|-------------|
+When invoked without a sub-command, display available actions and ask which to run.
+
+## Available Commands
+
+| Command | Description |
+|---------|-------------|
 | `/adr create` | Create a new ADR wiki page |
 | `/adr list` | List all ADRs by status |
 | `/adr update` | Update an existing ADR |
@@ -21,3 +26,9 @@ description: Architecture Decision Records management
 /adr update <ADR-NNNN> [--status accepted|deprecated]
 /adr supersede <ADR-NNNN> --by <ADR-MMMM>
 ```
+
+## Workflow
+
+1. Display the table above
+2. Ask: "Which command would you like to run?"
+3. Route to the selected sub-command

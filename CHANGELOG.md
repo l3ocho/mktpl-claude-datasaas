@@ -6,6 +6,24 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Added
+
+- **All plugins:** Dispatch files now active command handlers — bare `/noun` shows available sub-commands and prompts for selection instead of doing nothing
+- **git-flow:** New `/gitflow setup` command — auto-detects Gitea system config, configures workflow settings, injects CLAUDE.md git-flow section automatically
+- **git-flow:** `claude-md-integration.md` moved to `skills/` for programmatic use by setup command
+- **project-hygiene:** New `hygiene.md` dispatch file for bare `/hygiene` invocation
+
+### Changed
+
+- **gitea MCP:** Switched from local source (`mcp_server/`) to published `gitea-mcp>=1.0.0` package from Gitea PyPI registry
+- **gitea MCP:** Module namespace changed: `mcp_server.server` → `gitea_mcp.server`
+- **mcp-servers/gitea/:** Thinned to venv wrapper — source code removed, package installed from registry
+- **All dispatch files:** Renamed `## Sub-commands` to `## Available Commands`, added `## Workflow` section
+
+### Fixed
+
+- **All plugins:** Bare `/noun` commands no longer dead-end — they display sub-command menus and prompt for selection
+
 ## [9.1.2] - 2026-02-07
 
 ### Fixed

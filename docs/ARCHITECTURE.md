@@ -21,7 +21,7 @@ Plugin marketplace for Claude Code. 20 plugins across 5 domains, 5 shared MCP se
 
 | Server | Plugins Using It | External System |
 |--------|-------------------|-----------------|
-| gitea | projman, pr-review | Gitea (issues, PRs, wiki) |
+| gitea | projman, pr-review | Gitea (issues, PRs, wiki) — uses published `gitea-mcp` package |
 | netbox | cmdb-assistant | NetBox (DCIM, IPAM) |
 | data-platform | data-platform | PostgreSQL, dbt |
 | viz-platform | viz-platform | DMC registry |
