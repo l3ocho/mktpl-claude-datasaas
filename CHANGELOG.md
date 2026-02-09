@@ -6,6 +6,37 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Changed — BREAKING
+
+#### NetBox MCP Server: Gutted to 37 Tools (from 182)
+
+Removed all tools not needed for tracking applications, services, databases, and VPS/servers.
+
+**Deleted modules (entire files removed):**
+- `circuits.py` — providers, circuits, terminations
+- `tenancy.py` — tenants, contacts
+- `vpn.py` — tunnels, IKE/IPSec, L2VPN
+- `wireless.py` — WLANs, links, groups
+
+**Deleted tool categories within remaining modules:**
+- DCIM: regions, locations, racks, rack roles, manufacturers, device types, platforms, cables, console ports, front/rear ports, module bays, power panels, power feeds, virtual chassis, inventory items
+- IPAM: VLANs, VLAN groups, VRFs, ASNs, RIRs, aggregates, available IPs, available prefixes
+- Virtualization: cluster types, cluster groups, all delete operations
+- Extras: custom fields, webhooks, config contexts, update/delete for tags
+
+**Deleted infrastructure:**
+- `NETBOX_ENABLED_MODULES` env var and all module filtering code
+- `ALL_MODULES` constant, `PREFIX_TO_MODULE` dict, `_get_tool_module()` function
+- Conditional module instantiation in server.py
+
+**Token impact:** ~19,810 → ~3,700 tokens (~81% reduction)
+
+**Remaining tools (37):**
+- DCIM: sites (4), devices (4), interfaces (3) = 11
+- IPAM: IPs (4), prefixes (3), services (3) = 10
+- Virtualization: clusters (3), VMs (4), VM interfaces (3) = 10
+- Extras: tags (3), journal entries (3) = 6
+
 ### Added
 
 - **All plugins:** Dispatch files now active command handlers — bare `/noun` shows available sub-commands and prompts for selection instead of doing nothing
