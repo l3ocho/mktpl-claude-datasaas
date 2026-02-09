@@ -261,8 +261,10 @@ MCP servers are **shared at repository root** and configured in `.mcp.json`.
 |---------|---------|---------|
 | MCP configuration | `.mcp.json` | `.mcp.json` (at repo root) |
 | Shared MCP server | `mcp-servers/{server}/` | `mcp-servers/gitea/` |
-| MCP server code | `mcp-servers/{server}/mcp_server/` | `mcp-servers/gitea/mcp_server/` |
+| MCP server code | `mcp-servers/{server}/mcp_server/` | `mcp-servers/netbox/mcp_server/` |
 | MCP venv (local) | `mcp-servers/{server}/.venv/` | `mcp-servers/gitea/.venv/` |
+
+**Note:** `mcp-servers/gitea/` is a thin wrapper — source code is in the published `gitea-mcp` package (Gitea PyPI). Other MCP servers still have local source code.
 
 **Note:** Plugins do NOT have their own `mcp-servers/` directories. All MCP servers are shared at root and configured via `.mcp.json`.
 

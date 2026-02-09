@@ -75,6 +75,13 @@ Standard header format for consistent visual output across all git-flow commands
 +----------------------------------------------------------------------+
 ```
 
+### /gitflow setup
+```
++----------------------------------------------------------------------+
+|  GIT-FLOW Setup                                                       |
++----------------------------------------------------------------------+
+```
+
 ## Usage
 
 Display header immediately after command invocation, before any workflow steps.

@@ -1,11 +1,11 @@
 ---
-name: labels
-description: Label management — type /labels <action> for commands
+name: hygiene
+description: Project hygiene checks — type /hygiene <action> for commands
 ---
 
-# /labels
+# /hygiene
 
-Label management for projman.
+Manual project hygiene checks for file organization and cleanup.
 
 When invoked without a sub-command, display available actions and ask which to run.
 
@@ -13,7 +13,7 @@ When invoked without a sub-command, display available actions and ask which to r
 
 | Command | Description |
 |---------|-------------|
-| `/labels sync` | Sync label taxonomy to Gitea repository |
+| `/hygiene check` | Run project hygiene checks (temp files, misplaced files, empty dirs) |
 
 ## Workflow
 
