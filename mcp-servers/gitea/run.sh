@@ -17,5 +17,4 @@ else
 fi
 
 cd "$SCRIPT_DIR"
-export PYTHONPATH="$SCRIPT_DIR"
-exec "$PYTHON" -m mcp_server.server "$@"
+exec "$PYTHON" -m gitea_mcp.server "$@"
