@@ -248,7 +248,7 @@ EOF
         echo "" >> "$target_claude_md"
         echo "$section_header" >> "$target_claude_md"
         echo "" >> "$target_claude_md"
-        echo "The following plugins are installed from the leo-claude-mktplace:" >> "$target_claude_md"
+        echo "The following plugins are installed from the mktpl-claude-datasaas:" >> "$target_claude_md"
         echo "" >> "$target_claude_md"
     fi
 

@@ -13,14 +13,14 @@ Claude Code loads plugins from different locations depending on context:
 | Location | Path | When Used |
 |----------|------|-----------|
 | **Source** | `~/claude-plugins-work/` | When developing in this directory |
-| **Installed** | `~/.claude/plugins/marketplaces/leo-claude-mktplace/` | After marketplace install |
+| **Installed** | `~/.claude/plugins/marketplaces/mktpl-claude-datasaas/` | After marketplace install |
 | **Cache** | `~/.claude/` | Plugin metadata, settings |
 
 **Determine which path Claude is using:**
 
 ```bash
 # Check if installed marketplace exists
-ls -la ~/.claude/plugins/marketplaces/leo-claude-mktplace/
+ls -la ~/.claude/plugins/marketplaces/mktpl-claude-datasaas/
 
 # Check Claude's current plugin loading
 cat ~/.claude/settings.local.json | grep -A5 "mcpServers"
@@ -36,7 +36,7 @@ Check the files Claude will actually load:
 
 ```bash
 # For installed marketplace
-RUNTIME=~/.claude/plugins/marketplaces/leo-claude-mktplace
+RUNTIME=~/.claude/plugins/marketplaces/mktpl-claude-datasaas
 
 # Check MCP server exists
 ls -la $RUNTIME/mcp-servers/gitea/
@@ -59,7 +59,7 @@ cat $RUNTIME/plugins/projman/.mcp.json
 MCP servers require Python venvs to exist at the INSTALLED location:
 
 ```bash
-RUNTIME=~/.claude/plugins/marketplaces/leo-claude-mktplace
+RUNTIME=~/.claude/plugins/marketplaces/mktpl-claude-datasaas
 
 # Check venvs exist
 ls -la $RUNTIME/mcp-servers/gitea/.venv/bin/python
@@ -78,7 +78,7 @@ cd $RUNTIME && ./scripts/setup.sh
 Check `.mcp.json` at marketplace root is correctly configured:
 
 ```bash
-RUNTIME=~/.claude/plugins/marketplaces/leo-claude-mktplace
+RUNTIME=~/.claude/plugins/marketplaces/mktpl-claude-datasaas
 
 # Check .mcp.json exists and has valid content
 cat $RUNTIME/.mcp.json | jq '.mcpServers | keys'
@@ -93,7 +93,7 @@ cat $RUNTIME/.mcp.json | jq '.mcpServers | keys'
 Manually test if the MCP server can start:
 
 ```bash
-RUNTIME=~/.claude/plugins/marketplaces/leo-claude-mktplace
+RUNTIME=~/.claude/plugins/marketplaces/mktpl-claude-datasaas
 
 # Test Gitea MCP (uses gitea-mcp package from registry)
 cd $RUNTIME/mcp-servers/gitea
@@ -132,7 +132,7 @@ cat /path/to/project/.env
 Check hooks are valid:
 
 ```bash
-RUNTIME=~/.claude/plugins/marketplaces/leo-claude-mktplace
+RUNTIME=~/.claude/plugins/marketplaces/mktpl-claude-datasaas
 
 # List all hooks.json files
 find $RUNTIME/plugins -name "hooks.json" -exec echo "=== {} ===" \; -exec cat {} \;
@@ -150,7 +150,7 @@ find $RUNTIME/plugins -name "hooks.json" -exec echo "=== {} ===" \; -exec cat {}
 Run these to quickly identify issues:
 
 ```bash
-RUNTIME=~/.claude/plugins/marketplaces/leo-claude-mktplace
+RUNTIME=~/.claude/plugins/marketplaces/mktpl-claude-datasaas
 
 echo "=== Installation Status ==="
 [ -d "$RUNTIME" ] && echo "Installed: YES" || echo "Installed: NO"
@@ -173,7 +173,7 @@ echo -e "\n=== Config Files ==="
 
 | Issue | Symptom | Fix |
 |-------|---------|-----|
-| Missing venvs | "X MCP servers failed" | `cd ~/.claude/plugins/marketplaces/leo-claude-mktplace && ./scripts/setup.sh` |
+| Missing venvs | "X MCP servers failed" | `cd ~/.claude/plugins/marketplaces/mktpl-claude-datasaas && ./scripts/setup.sh` |
 | Missing .mcp.json | MCP tools not available | Check `.mcp.json` exists at marketplace root |
 | Wrong path edits | Changes don't take effect | Edit installed path or reinstall after source changes |
 | Missing credentials | MCP connection errors | Create `~/.config/claude/gitea.env` with API credentials |

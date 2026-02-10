@@ -26,7 +26,7 @@ set -euo pipefail
 # ============================================================================
 
 # Persistent venv location (outside marketplace)
-VENV_CACHE_DIR="${HOME}/.cache/claude-mcp-venvs/leo-claude-mktplace"
+VENV_CACHE_DIR="${HOME}/.cache/claude-mcp-venvs/mktpl-claude-datasaas"
 
 # Script and repo paths
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"

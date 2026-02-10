@@ -35,7 +35,7 @@ If Python < 3.10, stop and ask user to install.
 
 1. **Locate Marketplace Installation**
    ```bash
-   MKTPLACE_DIR=$(find ~/.claude/plugins/marketplaces -maxdepth 1 -name "leo-claude-mktplace" -type d 2>/dev/null)
+   MKTPLACE_DIR=$(find ~/.claude/plugins/marketplaces -maxdepth 1 -name "mktpl-claude-datasaas" -type d 2>/dev/null)
    echo "Marketplace at: $MKTPLACE_DIR"
    ```
    If not found, stop — marketplace not installed.
@@ -45,7 +45,7 @@ If Python < 3.10, stop and ask user to install.
    cd "$MKTPLACE_DIR" && ./scripts/setup-venvs.sh
    ```
    This handles all 5 MCP servers (gitea, netbox, data-platform, viz-platform, contract-validator):
-   - Creates venvs in `~/.cache/claude-mcp-venvs/leo-claude-mktplace/{server}/.venv/`
+   - Creates venvs in `~/.cache/claude-mcp-venvs/mktpl-claude-datasaas/{server}/.venv/`
    - Installs requirements and editable packages
    - Creates symlinks back to `mcp-servers/{server}/.venv`
    - Uses hash-based change detection for incremental updates

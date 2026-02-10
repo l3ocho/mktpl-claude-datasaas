@@ -6,8 +6,8 @@
     "name": "Leo Miranda",
     "email": "leobmiranda@gmail.com"
   },
-  "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/doc-guardian/README.md",
-  "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
+  "homepage": "https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas/src/branch/main/plugins/doc-guardian/README.md",
+  "repository": "https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas.git",
   "license": "MIT",
   "keywords": [
     "documentation",

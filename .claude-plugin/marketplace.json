@@ -1,5 +1,5 @@
 {
-  "name": "leo-claude-mktplace",
+  "name": "mktpl-claude-datasaas",
   "owner": {
     "name": "Leo Miranda",
     "email": "leobmiranda@gmail.com"
@@ -18,8 +18,8 @@
         "name": "Leo Miranda",
         "email": "leobmiranda@gmail.com"
       },
-      "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/projman/README.md",
-      "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
+      "homepage": "https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas/src/branch/main/plugins/projman/README.md",
+      "repository": "https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas.git",
       "category": "development",
       "tags": [
         "sprint",
@@ -38,8 +38,8 @@
         "name": "Leo Miranda",
         "email": "leobmiranda@gmail.com"
       },
-      "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/doc-guardian/README.md",
-      "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
+      "homepage": "https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas/src/branch/main/plugins/doc-guardian/README.md",
+      "repository": "https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas.git",
       "category": "productivity",
       "tags": [
         "documentation",
@@ -57,8 +57,8 @@
         "name": "Leo Miranda",
         "email": "leobmiranda@gmail.com"
       },
-      "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/code-sentinel/README.md",
-      "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
+      "homepage": "https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas/src/branch/main/plugins/code-sentinel/README.md",
+      "repository": "https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas.git",
       "hooks": [
         "./hooks/hooks.json"
       ],
@@ -79,8 +79,8 @@
         "name": "Leo Miranda",
         "email": "leobmiranda@gmail.com"
       },
-      "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/project-hygiene/README.md",
-      "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
+      "homepage": "https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas/src/branch/main/plugins/project-hygiene/README.md",
+      "repository": "https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas.git",
       "category": "productivity",
       "tags": [
         "cleanup",
@@ -99,8 +99,8 @@
         "name": "Leo Miranda",
         "email": "leobmiranda@gmail.com"
       },
-      "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/cmdb-assistant/README.md",
-      "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
+      "homepage": "https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas/src/branch/main/plugins/cmdb-assistant/README.md",
+      "repository": "https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas.git",
       "hooks": [
         "./hooks/hooks.json"
       ],
@@ -124,8 +124,8 @@
         "name": "Leo Miranda",
         "email": "leobmiranda@gmail.com"
       },
-      "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/claude-config-maintainer/README.md",
-      "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
+      "homepage": "https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas/src/branch/main/plugins/claude-config-maintainer/README.md",
+      "repository": "https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas.git",
       "category": "development",
       "tags": [
         "claude-md",
@@ -143,8 +143,8 @@
         "name": "Leo Miranda",
         "email": "leobmiranda@gmail.com"
       },
-      "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/clarity-assist/README.md",
-      "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
+      "homepage": "https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas/src/branch/main/plugins/clarity-assist/README.md",
+      "repository": "https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas.git",
       "hooks": [
         "./hooks/hooks.json"
       ],
@@ -166,8 +166,8 @@
         "name": "Leo Miranda",
         "email": "leobmiranda@gmail.com"
       },
-      "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/git-flow/README.md",
-      "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
+      "homepage": "https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas/src/branch/main/plugins/git-flow/README.md",
+      "repository": "https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas.git",
       "hooks": [
         "./hooks/hooks.json"
       ],
@@ -189,8 +189,8 @@
         "name": "Leo Miranda",
         "email": "leobmiranda@gmail.com"
       },
-      "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/pr-review/README.md",
-      "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
+      "homepage": "https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas/src/branch/main/plugins/pr-review/README.md",
+      "repository": "https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas.git",
       "category": "development",
       "tags": [
         "code-review",
@@ -209,8 +209,8 @@
         "name": "Leo Miranda",
         "email": "leobmiranda@gmail.com"
       },
-      "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/data-platform/README.md",
-      "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
+      "homepage": "https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas/src/branch/main/plugins/data-platform/README.md",
+      "repository": "https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas.git",
       "category": "data",
       "tags": [
         "pandas",
@@ -231,8 +231,8 @@
         "name": "Leo Miranda",
         "email": "leobmiranda@gmail.com"
       },
-      "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/viz-platform/README.md",
-      "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
+      "homepage": "https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas/src/branch/main/plugins/viz-platform/README.md",
+      "repository": "https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas.git",
       "category": "visualization",
       "tags": [
         "dash",
@@ -254,8 +254,8 @@
         "name": "Leo Miranda",
         "email": "leobmiranda@gmail.com"
       },
-      "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/contract-validator/README.md",
-      "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
+      "homepage": "https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas/src/branch/main/plugins/contract-validator/README.md",
+      "repository": "https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas.git",
       "category": "development",
       "tags": [
         "validation",
@@ -276,8 +276,8 @@
         "name": "Leo Miranda",
         "email": "leobmiranda@gmail.com"
       },
-      "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/saas-api-platform/README.md",
-      "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
+      "homepage": "https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas/src/branch/main/plugins/saas-api-platform/README.md",
+      "repository": "https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas.git",
       "category": "development",
       "tags": [
         "api",
@@ -298,8 +298,8 @@
         "name": "Leo Miranda",
         "email": "leobmiranda@gmail.com"
       },
-      "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/saas-db-migrate/README.md",
-      "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
+      "homepage": "https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas/src/branch/main/plugins/saas-db-migrate/README.md",
+      "repository": "https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas.git",
       "category": "development",
       "tags": [
         "database",
@@ -320,8 +320,8 @@
         "name": "Leo Miranda",
         "email": "leobmiranda@gmail.com"
       },
-      "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/saas-react-platform/README.md",
-      "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
+      "homepage": "https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas/src/branch/main/plugins/saas-react-platform/README.md",
+      "repository": "https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas.git",
       "category": "development",
       "tags": [
         "react",
@@ -342,8 +342,8 @@
         "name": "Leo Miranda",
         "email": "leobmiranda@gmail.com"
       },
-      "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/saas-test-pilot/README.md",
-      "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
+      "homepage": "https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas/src/branch/main/plugins/saas-test-pilot/README.md",
+      "repository": "https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas.git",
       "category": "development",
       "tags": [
         "testing",
@@ -364,8 +364,8 @@
         "name": "Leo Miranda",
         "email": "leobmiranda@gmail.com"
       },
-      "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/data-seed/README.md",
-      "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
+      "homepage": "https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas/src/branch/main/plugins/data-seed/README.md",
+      "repository": "https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas.git",
       "category": "data",
       "tags": [
         "seed-data",
@@ -385,8 +385,8 @@
         "name": "Leo Miranda",
         "email": "leobmiranda@gmail.com"
       },
-      "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/ops-release-manager/README.md",
-      "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
+      "homepage": "https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas/src/branch/main/plugins/ops-release-manager/README.md",
+      "repository": "https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas.git",
       "category": "development",
       "tags": [
         "release",
@@ -406,8 +406,8 @@
         "name": "Leo Miranda",
         "email": "leobmiranda@gmail.com"
       },
-      "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/ops-deploy-pipeline/README.md",
-      "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
+      "homepage": "https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas/src/branch/main/plugins/ops-deploy-pipeline/README.md",
+      "repository": "https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas.git",
       "category": "infrastructure",
       "tags": [
         "deploy",
@@ -427,8 +427,8 @@
         "name": "Leo Miranda",
         "email": "leobmiranda@gmail.com"
       },
-      "homepage": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/src/branch/main/plugins/debug-mcp/README.md",
-      "repository": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git",
+      "homepage": "https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas/src/branch/main/plugins/debug-mcp/README.md",
+      "repository": "https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas.git",
       "category": "development",
       "tags": [
         "mcp",

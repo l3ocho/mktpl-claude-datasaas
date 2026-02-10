@@ -124,7 +124,7 @@ File: .env (project level)
 | Variable | Value | Status |
 |----------|-------|--------|
 | GITEA_ORG | personal-projects | OK |
-| GITEA_REPO | leo-claude-mktplace | OK |
+| GITEA_REPO | mktpl-claude-datasaas | OK |
 ```
 
 ## User Request
