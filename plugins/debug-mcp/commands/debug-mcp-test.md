@@ -73,7 +73,7 @@ Invoke the MCP tool using the available MCP tool functions:
 ### Request
 - Server: gitea
 - Tool: list_issues
-- Params: {"state": "open", "repo": "leo-claude-mktplace"}
+- Params: {"state": "open", "repo": "mktpl-claude-datasaas"}
 
 ### Response
 - Status: Success

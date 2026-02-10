@@ -14,7 +14,7 @@
 
 set -euo pipefail
 
-CLAUDE_PLUGIN_CACHE="$HOME/.claude/plugins/cache/leo-claude-mktplace"
+CLAUDE_PLUGIN_CACHE="$HOME/.claude/plugins/cache/mktpl-claude-datasaas"
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(dirname "$SCRIPT_DIR")"

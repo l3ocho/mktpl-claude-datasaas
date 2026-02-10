@@ -320,7 +320,7 @@ export CLARITY_ASSIST_VAGUENESS_THRESHOLD=0.8
 
 If you have suggestions for improving neurodivergent support in clarity-assist, please open an issue at:
 
-https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/issues
+https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas/issues
 
 Include the label `clarity-assist` and describe:
 - What challenge you faced

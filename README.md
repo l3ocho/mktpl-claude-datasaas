@@ -1,4 +1,4 @@
-# Leo Claude Marketplace — v9.1.2
+# Claude Data & SaaS Marketplace — v9.1.2
 
 A plugin marketplace for Claude Code providing sprint management, code review, security scanning, infrastructure automation, and development workflow tools. 20 plugins across 5 domains, backed by 5 shared MCP servers.
 
@@ -86,7 +86,7 @@ A plugin marketplace for Claude Code providing sprint management, code review, s
 ## Repository Structure
 
 ```
-leo-claude-mktplace/
+mktpl-claude-datasaas/
 ├── .claude-plugin/                # Marketplace manifest
 │   ├── marketplace.json
 │   ├── marketplace-lean.json      # Lean profile (6 core plugins)
@@ -167,7 +167,7 @@ All MCP servers are shared at repository root and configured in `.mcp.json`.
 ### Add marketplace to Claude Code
 
 ```bash
-/plugin marketplace add https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git
+/plugin marketplace add https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas.git
 ```
 
 Or add to `.claude/settings.json`:
@@ -175,10 +175,10 @@ Or add to `.claude/settings.json`:
 ```json
 {
   "extraKnownMarketplaces": {
-    "leo-claude-mktplace": {
+    "mktpl-claude-datasaas": {
       "source": {
         "source": "git",
-        "url": "https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git"
+        "url": "https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas.git"
       }
     }
   }
@@ -190,7 +190,7 @@ Or add to `.claude/settings.json`:
 After installing, create Python venvs for MCP servers:
 
 ```bash
-cd ~/.claude/plugins/marketplaces/leo-claude-mktplace && ./scripts/setup.sh
+cd ~/.claude/plugins/marketplaces/mktpl-claude-datasaas && ./scripts/setup.sh
 ```
 
 Then restart Claude Code and run the interactive setup:
@@ -236,4 +236,4 @@ MIT License
 
 ## Support
 
-- **Repository**: https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace.git
+- **Repository**: https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas.git

@@ -22,7 +22,7 @@ description: Interactive setup wizard for contract-validator plugin
    Requires 3.10+. Stop if below.
 
 3. **Locate MCP server**:
-   - Installed: `~/.claude/plugins/marketplaces/leo-claude-mktplace/mcp-servers/contract-validator/`
+   - Installed: `~/.claude/plugins/marketplaces/mktpl-claude-datasaas/mcp-servers/contract-validator/`
    - Source: `~/claude-plugins-work/mcp-servers/contract-validator/`
 
 4. **Check/create venv**:

@@ -270,4 +270,4 @@ MIT License - See LICENSE file for details.
 
 ## Contributing
 
-This MCP server is part of the leo-claude-mktplace project. For issues or contributions, refer to the main repository.
+This MCP server is part of the mktpl-claude-datasaas project. For issues or contributions, refer to the main repository.

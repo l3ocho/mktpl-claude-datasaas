@@ -88,7 +88,7 @@ Clear plugin cache to force fresh configuration reload.
 **WARNING:** Only run between sessions, never mid-session. Clearing cache mid-session destroys MCP tool venv paths and breaks all MCP operations.
 
 Steps:
-1. Execute: `rm -rf ~/.claude/plugins/cache/leo-claude-mktplace/`
+1. Execute: `rm -rf ~/.claude/plugins/cache/mktpl-claude-datasaas/`
 2. Inform user: "Cache cleared. Restart Claude Code for changes to take effect."
 
 When to use:

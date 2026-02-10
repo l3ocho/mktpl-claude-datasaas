@@ -228,7 +228,7 @@ If you prefer to set up manually or need to troubleshoot:
 
 ```bash
 # Navigate to marketplace directory
-cd /path/to/leo-claude-mktplace
+cd /path/to/mktpl-claude-datasaas
 
 # Set up Gitea MCP server
 cd mcp-servers/gitea
@@ -275,7 +275,7 @@ Add `.env` to `.gitignore` if not already there.
 For automated setups or CI environments:
 
 ```bash
-cd /path/to/leo-claude-mktplace
+cd /path/to/mktpl-claude-datasaas
 ./scripts/setup.sh
 ```
 
@@ -422,7 +422,7 @@ The marketplace provides scripts to install plugins into consumer projects. This
 ### Install a Plugin
 
 ```bash
-cd /path/to/leo-claude-mktplace
+cd /path/to/mktpl-claude-datasaas
 ./scripts/install-plugin.sh <plugin-name> <target-project-path>
 ```
 

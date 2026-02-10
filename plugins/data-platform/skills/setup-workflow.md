@@ -20,7 +20,7 @@ Requires Python 3.10+. If below, stop and inform user.
 Check both paths:
 ```bash
 # Installed marketplace
-ls -la ~/.claude/plugins/marketplaces/leo-claude-mktplace/mcp-servers/data-platform/
+ls -la ~/.claude/plugins/marketplaces/mktpl-claude-datasaas/mcp-servers/data-platform/
 
 # Source
 ls -la ~/claude-plugins-work/mcp-servers/data-platform/

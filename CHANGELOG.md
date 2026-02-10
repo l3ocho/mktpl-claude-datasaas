@@ -760,10 +760,10 @@ Consistent visual headers and progress tracking across all plugins.
 | claude-config-maintainer | ⚙️ |
 
 **Wiki Branding Specification (4 pages):**
-- [branding/visual-spec](https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/wiki/branding%2Fvisual-spec) - Central specification
-- [branding/plugin-registry](https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/wiki/branding%2Fplugin-registry) - Icons and styles
-- [branding/header-templates](https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/wiki/branding%2Fheader-templates) - Copy-paste templates
-- [branding/progress-templates](https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/wiki/branding%2Fprogress-templates) - Sprint progress blocks
+- [branding/visual-spec](https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas/wiki/branding%2Fvisual-spec) - Central specification
+- [branding/plugin-registry](https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas/wiki/branding%2Fplugin-registry) - Icons and styles
+- [branding/header-templates](https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas/wiki/branding%2Fheader-templates) - Copy-paste templates
+- [branding/progress-templates](https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas/wiki/branding%2Fprogress-templates) - Sprint progress blocks
 
 ### Fixed
 - **Docs:** Version sync - CLAUDE.md, marketplace.json, README.md now consistent
@@ -774,7 +774,7 @@ Consistent visual headers and progress tracking across all plugins.
 - Milestone: Sprint 6 - Visual Branding Overhaul (closed 2026-01-28)
 - Issues: #272, #273, #274, #275, #276, #277, #278
 - PRs: #284, #285
-- Wiki: [Sprint 6 Lessons](https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/wiki/lessons/sprints/sprint-6---visual-branding-and-documentation-maintenance)
+- Wiki: [Sprint 6 Lessons](https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas/wiki/lessons/sprints/sprint-6---visual-branding-and-documentation-maintenance)
 
 ---
 
@@ -797,7 +797,7 @@ Documentation and guides for the plugin enhancements initiative.
 **Sprint Completed:**
 - Milestone: Sprint 5 - Documentation (closed 2026-01-28)
 - Issues: #266, #267, #268, #269
-- Wiki: [Change V5.2.0: Plugin Enhancements (Sprint 5 Documentation)](https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/wiki/Change-V5.2.0%3A-Plugin-Enhancements-%28Sprint-5-Documentation%29)
+- Wiki: [Change V5.2.0: Plugin Enhancements (Sprint 5 Documentation)](https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas/wiki/Change-V5.2.0%3A-Plugin-Enhancements-%28Sprint-5-Documentation%29)
 
 ---
 
@@ -843,8 +843,8 @@ Implementation of 18 new user-facing commands across 8 plugins.
 **Sprint Completed:**
 - Milestone: Sprint 4 - Commands (closed 2026-01-28)
 - Issues: #241-#258 (18/18 closed)
-- Wiki: [Change V5.2.0: Plugin Enhancements (Sprint 4 Commands)](https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/wiki/Change-V5.2.0%3A-Plugin-Enhancements-%28Sprint-4-Commands%29)
-- Lessons: [Sprint 4 - Plugin Commands Implementation](https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/wiki/lessons/sprints/sprint-4---plugin-commands-implementation)
+- Wiki: [Change V5.2.0: Plugin Enhancements (Sprint 4 Commands)](https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas/wiki/Change-V5.2.0%3A-Plugin-Enhancements-%28Sprint-4-Commands%29)
+- Lessons: [Sprint 4 - Plugin Commands Implementation](https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas/wiki/lessons/sprints/sprint-4---plugin-commands-implementation)
 
 ### Fixed
 - **MCP:** Project directory detection - all run.sh scripts now capture `CLAUDE_PROJECT_DIR` from PWD before changing directories
@@ -872,7 +872,7 @@ Implementation of 6 foundational hooks across 4 plugins.
 **Sprint Completed:**
 - Milestone: Sprint 3 - Hooks (closed 2026-01-28)
 - Issues: #225, #226, #227, #228, #229, #230
-- Wiki: [Change V5.2.0: Plugin Enhancements Proposal](https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/wiki/Change-V5.2.0:-Plugin-Enhancements-Proposal)
+- Wiki: [Change V5.2.0: Plugin Enhancements Proposal](https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas/wiki/Change-V5.2.0:-Plugin-Enhancements-Proposal)
 - Lessons: Background agent permissions, agent runaway detection, MCP branch detection bug
 
 ### Known Issues
@@ -952,8 +952,8 @@ Implementation of 6 foundational hooks across 4 plugins.
 **Sprint Completed:**
 - Milestone: Sprint 1 - viz-platform Plugin (closed 2026-01-26)
 - Issues: #170-#182 (13/13 closed)
-- Wiki: [Sprint-1-viz-platform-Implementation-Plan](https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/wiki/Sprint-1-viz-platform-Implementation-Plan)
-- Lessons: [sprint-1---viz-platform-plugin-implementation](https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/wiki/lessons/sprints/sprint-1---viz-platform-plugin-implementation)
+- Wiki: [Sprint-1-viz-platform-Implementation-Plan](https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas/wiki/Sprint-1-viz-platform-Implementation-Plan)
+- Lessons: [sprint-1---viz-platform-plugin-implementation](https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas/wiki/lessons/sprints/sprint-1---viz-platform-plugin-implementation)
 - Reference: `docs/changes/CHANGE_V04_0_0_PROPOSAL_ORIGINAL.md` (Phases 4-5)
 
 ---

@@ -153,7 +153,7 @@ When user says "fix the sprint plan command", edit the SOURCE code.
 
 ## Project Overview
 
-**Repository:** leo-claude-mktplace
+**Repository:** mktpl-claude-datasaas
 **Version:** 9.1.2
 **Status:** Production Ready
 
@@ -230,7 +230,7 @@ These commands are being developed but don't apply to this project's workflow:
 ## Repository Structure
 
 ```
-leo-claude-mktplace/
+mktpl-claude-datasaas/
 ├── .claude-plugin/                # Marketplace manifest
 │   ├── marketplace.json
 │   ├── marketplace-lean.json      # Lean profile (6 core plugins)
@@ -491,7 +491,7 @@ Understanding where files live is critical for debugging:
 | Context | Path | Purpose |
 |---------|------|---------|
 | **Source** | `~/claude-plugins-work/` | Development - edit here |
-| **Installed** | `~/.claude/plugins/marketplaces/leo-claude-mktplace/` | Runtime - Claude uses this |
+| **Installed** | `~/.claude/plugins/marketplaces/mktpl-claude-datasaas/` | Runtime - Claude uses this |
 | **Cache** | `~/.claude/` | Plugin metadata and settings |
 
 **Key insight:** Edits to source require reinstall/update to take effect at runtime.
@@ -503,7 +503,7 @@ See `docs/DEBUGGING-CHECKLIST.md` for systematic troubleshooting.
 **Common Issues:**
 | Symptom | Likely Cause | Fix |
 |---------|--------------|-----|
-| "X MCP servers failed" | Missing venv in installed path | `cd ~/.claude/plugins/marketplaces/leo-claude-mktplace && ./scripts/setup.sh` |
+| "X MCP servers failed" | Missing venv in installed path | `cd ~/.claude/plugins/marketplaces/mktpl-claude-datasaas && ./scripts/setup.sh` |
 | MCP tools not available | Venv missing or .mcp.json misconfigured | Run `/cv status` to diagnose |
 | Changes not taking effect | Editing source, not installed | Reinstall plugin or edit installed path |
 
