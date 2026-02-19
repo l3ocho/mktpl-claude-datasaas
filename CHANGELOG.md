@@ -6,6 +6,26 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Added
+
+#### Profile-Based Plugin Installation
+
+`install-plugin.sh` now supports `--profile <name>` flag for context-aware plugin installation. Plugins can define multiple integration profiles in their `claude-md-integration.md` using HTML comment markers (`<!-- BEGIN plugin:profile -->` / `<!-- END plugin:profile -->`). The install script extracts only the matching profile's content.
+
+- **data-platform**: Added `default` (full read/write + dbt) and `readonly` (schema exploration + query only) profiles
+- **metadata.json**: Added optional `profiles` field to declare available profiles
+- **list-installed.sh**: Now shows which profile is installed per plugin in the PROFILE column
+- **Backward compatible**: Plugins without profiles inject the full integration file as before
+
+**Usage:**
+```bash
+# Full access (default)
+./scripts/install-plugin.sh data-platform ~/projects/dataflow
+
+# Read-only for webapp consumers
+./scripts/install-plugin.sh data-platform ~/projects/webapp --profile readonly
+```
+
 ### Changed — BREAKING
 
 #### NetBox MCP Server: Gutted to 37 Tools (from 182)
