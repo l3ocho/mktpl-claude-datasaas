@@ -146,6 +146,33 @@ check_claude_md_installed() {
     return 1
 }
 
+# --- Get Installed Profile ---
+# Returns the profile name stored inside the plugin's marker block, or "default" if not found
+get_installed_profile() {
+    local plugin_name="$1"
+    local target_path="$2"
+    local target_claude_md="$target_path/CLAUDE.md"
+
+    if [[ ! -f "$target_claude_md" ]]; then
+        echo "default"
+        return
+    fi
+
+    local begin_marker="<!-- BEGIN marketplace-plugin: $plugin_name -->"
+
+    # Extract <!-- profile: name --> line inside the plugin's marker block
+    local profile
+    profile=$(awk -v begin="$begin_marker" \
+        '$0 == begin { found=1; next }
+         found && /<!-- profile:/ {
+             sub(/.*<!-- profile: /, ""); sub(/ -->.*/, ""); print; exit
+         }
+         found && /<!-- END marketplace-plugin:/ { exit }
+        ' "$target_claude_md" 2>/dev/null)
+
+    echo "${profile:-default}"
+}
+
 # --- Get Plugin Version ---
 get_plugin_version() {
     local plugin_name="$1"
@@ -201,6 +228,7 @@ echo ""
 # Collect results
 declare -A INSTALLED_MCP
 declare -A INSTALLED_CLAUDE_MD
+declare -A INSTALLED_PROFILE
 INSTALLED_PLUGINS=()
 PARTIAL_PLUGINS=()
 NOT_INSTALLED=()
@@ -226,6 +254,7 @@ for plugin in $(get_available_plugins); do
     if check_claude_md_installed "$plugin" "$TARGET_PATH"; then
         claude_installed=true
         INSTALLED_CLAUDE_MD[$plugin]=true
+        INSTALLED_PROFILE[$plugin]=$(get_installed_profile "$plugin" "$TARGET_PATH")
     fi
 
     # Categorize
@@ -252,12 +281,13 @@ done
 if [[ ${#INSTALLED_PLUGINS[@]} -gt 0 ]]; then
     echo -e "${GREEN}✓ Fully Installed:${NC}"
     echo ""
-    printf "  %-24s %-10s %s\n" "PLUGIN" "VERSION" "DESCRIPTION"
-    printf "  %-24s %-10s %s\n" "------" "-------" "-----------"
+    printf "  %-24s %-10s %-10s %s\n" "PLUGIN" "VERSION" "PROFILE" "DESCRIPTION"
+    printf "  %-24s %-10s %-10s %s\n" "------" "-------" "-------" "-----------"
     for plugin in "${INSTALLED_PLUGINS[@]}"; do
         version=$(get_plugin_version "$plugin")
+        profile="${INSTALLED_PROFILE[$plugin]:-default}"
         desc=$(get_plugin_description "$plugin")
-        printf "  %-24s %-10s %s\n" "$plugin" "$version" "$desc"
+        printf "  %-24s %-10s %-10s %s\n" "$plugin" "$version" "$profile" "$desc"
     done
     echo ""
 fi

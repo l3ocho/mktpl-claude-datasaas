@@ -3,7 +3,7 @@
 # install-plugin.sh - Install marketplace plugin to a consumer project
 # =============================================================================
 #
-# Usage: ./scripts/install-plugin.sh <plugin-name> <target-project-path>
+# Usage: ./scripts/install-plugin.sh <plugin-name> <target-project-path> [--profile <profile-name>]
 #
 # This script:
 # 1. Validates plugin exists in the marketplace
@@ -13,6 +13,7 @@
 #
 # Examples:
 #   ./scripts/install-plugin.sh data-platform ~/projects/personal-portfolio
+#   ./scripts/install-plugin.sh data-platform ~/projects/webapp --profile readonly
 #   ./scripts/install-plugin.sh projman /home/user/my-project
 #
 # =============================================================================
@@ -43,13 +44,18 @@ MCP_SERVERS_INSTALLED=()
 
 # --- Usage ---
 usage() {
-    echo "Usage: $0 <plugin-name> <target-project-path>"
+    echo "Usage: $0 <plugin-name> <target-project-path> [--profile <profile-name>]"
     echo ""
     echo "Install a marketplace plugin to a consumer project."
     echo ""
     echo "Arguments:"
     echo "  plugin-name         Name of the plugin (e.g., data-platform, viz-platform, projman)"
     echo "  target-project-path Path to the target project (absolute or relative)"
+    echo ""
+    echo "Options:"
+    echo "  --profile <name>    Integration profile to install (default: \"default\")"
+    echo "                      Use \"readonly\" for read-only consumer projects (e.g., webapps)"
+    echo "                      Available profiles depend on the plugin."
     echo ""
     echo "Available plugins:"
     for dir in "$REPO_ROOT"/plugins/*/; do
@@ -59,8 +65,9 @@ usage() {
     done
     echo ""
     echo "Examples:"
-    echo "  $0 data-platform ~/projects/personal-portfolio"
-    echo "  $0 projman /home/user/my-project"
+    echo "  $0 data-platform ~/projects/dataflow"
+    echo "  $0 data-platform ~/projects/webapp --profile readonly"
+    echo "  $0 viz-platform ~/projects/webapp"
     exit 1
 }
 
@@ -137,6 +144,23 @@ has_mcp_servers() {
     local servers
     servers=$(get_mcp_servers "$plugin_name")
     [[ -n "$servers" ]]
+}
+
+# --- Get Available Profiles for Plugin ---
+# Returns space-separated list of profile names, or empty if plugin has no profiles
+get_available_profiles() {
+    local plugin_name="$1"
+    local integration_file="$REPO_ROOT/plugins/$plugin_name/claude-md-integration.md"
+
+    if [[ ! -f "$integration_file" ]]; then
+        return
+    fi
+
+    # Extract profile names from <!-- BEGIN plugin_name:profile_name --> markers
+    grep "<!-- BEGIN ${plugin_name}:" "$integration_file" 2>/dev/null \
+        | sed "s|<!-- BEGIN ${plugin_name}:||;s| -->||" \
+        | tr '\n' ' ' \
+        | sed 's/ *$//'
 }
 
 # --- Update .mcp.json ---
@@ -236,9 +260,43 @@ EOF
         return 0
     fi
 
-    # Read integration content
+    # Determine integration content based on profile
+    local profile_begin_marker="<!-- BEGIN ${plugin_name}:${PROFILE} -->"
+    local profile_end_marker="<!-- END ${plugin_name}:${PROFILE} -->"
     local integration_content
-    integration_content=$(cat "$integration_file")
+
+    if grep -qF "$profile_begin_marker" "$integration_file" 2>/dev/null; then
+        # Profile markers exist - extract content between them
+        log_info "Extracting profile '${PROFILE}' from integration file"
+        integration_content=$(awk -v begin="$profile_begin_marker" -v end="$profile_end_marker" \
+            '{ if (found) {
+                 if ($0 == end) exit
+                 print
+               } else if ($0 == begin) {
+                 found = 1
+               }
+             }' "$integration_file")
+
+        if [[ -z "$integration_content" ]]; then
+            log_error "Profile '${PROFILE}' marker found but content is empty"
+            exit 1
+        fi
+    elif [[ "$PROFILE" == "default" ]]; then
+        # No profile markers and using default - inject entire file (backward compat)
+        log_info "No profile markers found - injecting full integration file"
+        integration_content=$(cat "$integration_file")
+    else
+        # Non-default profile requested but not found
+        local available_profiles
+        available_profiles=$(get_available_profiles "$plugin_name")
+        log_error "Profile '${PROFILE}' not found in ${plugin_name}'s claude-md-integration.md."
+        if [[ -n "$available_profiles" ]]; then
+            echo "  Available profiles: $available_profiles"
+        else
+            echo "  This plugin has no profiles defined. Omit --profile to install the full integration."
+        fi
+        exit 1
+    fi
 
     # Check for or create Marketplace Plugin Integration section
     local section_header="## Marketplace Plugin Integration"
@@ -253,20 +311,21 @@ EOF
     fi
 
     # Append integration content with HTML comment markers
-    log_info "Adding '$plugin_name' integration to CLAUDE.md"
+    log_info "Adding '$plugin_name' integration to CLAUDE.md (profile: ${PROFILE})"
     local end_marker="<!-- END marketplace-plugin: $plugin_name -->"
 
     echo "" >> "$target_claude_md"
     echo "---" >> "$target_claude_md"
     echo "" >> "$target_claude_md"
     echo "$begin_marker" >> "$target_claude_md"
+    echo "<!-- profile: ${PROFILE} -->" >> "$target_claude_md"
     echo "" >> "$target_claude_md"
     echo "$integration_content" >> "$target_claude_md"
     echo "" >> "$target_claude_md"
     echo "$end_marker" >> "$target_claude_md"
 
-    CHANGES_MADE+=("Added $plugin_name integration to CLAUDE.md")
-    log_success "Added CLAUDE.md integration for '$plugin_name'"
+    CHANGES_MADE+=("Added $plugin_name integration to CLAUDE.md (profile: ${PROFILE})")
+    log_success "Added CLAUDE.md integration for '$plugin_name' (profile: ${PROFILE})"
 }
 
 # --- Get Commands for Plugin ---
@@ -299,6 +358,13 @@ print_summary() {
     echo ""
     echo -e "${CYAN}Plugin:${NC} $plugin_name"
     echo -e "${CYAN}Target:${NC} $target_path"
+
+    # Show profile if non-default or if plugin has profiles defined
+    local available_profiles
+    available_profiles=$(get_available_profiles "$plugin_name")
+    if [[ "$PROFILE" != "default" ]] || [[ -n "$available_profiles" ]]; then
+        echo -e "${CYAN}Profile:${NC} $PROFILE"
+    fi
     echo ""
 
     if [[ ${#CHANGES_MADE[@]} -gt 0 ]]; then
@@ -359,6 +425,26 @@ fi
 
 PLUGIN_NAME="$1"
 TARGET_PATH="$2"
+PROFILE="default"
+
+# Parse optional flags
+shift 2
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        --profile)
+            if [[ $# -lt 2 ]]; then
+                log_error "--profile requires a value"
+                usage
+            fi
+            PROFILE="$2"
+            shift 2
+            ;;
+        *)
+            log_error "Unknown option: $1"
+            usage
+            ;;
+    esac
+done
 
 # Resolve target path to absolute
 TARGET_PATH=$(cd "$TARGET_PATH" 2>/dev/null && pwd || echo "$TARGET_PATH")
