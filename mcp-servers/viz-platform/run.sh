@@ -4,7 +4,7 @@
 export CLAUDE_PROJECT_DIR="${CLAUDE_PROJECT_DIR:-$PWD}"
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-CACHE_VENV="$HOME/.cache/claude-mcp-venvs/leo-claude-mktplace/viz-platform/.venv"
+CACHE_VENV="$HOME/.cache/claude-mcp-venvs/mktpl-claude-datasaas/viz-platform/.venv"
 LOCAL_VENV="$SCRIPT_DIR/.venv"
 
 if [[ -f "$CACHE_VENV/bin/python" ]]; then

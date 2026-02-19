@@ -2,5 +2,6 @@
   "mcp_servers": [
     "data-platform"
   ],
-  "domain": "data"
+  "domain": "data",
+  "profiles": ["default", "readonly"]
 }

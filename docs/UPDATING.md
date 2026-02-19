@@ -11,7 +11,7 @@ When Claude Code installs a marketplace, it copies files to `~/.claude/plugins/m
 **After installing or updating the marketplace:**
 
 ```bash
-cd ~/.claude/plugins/marketplaces/leo-claude-mktplace && ./scripts/setup.sh
+cd ~/.claude/plugins/marketplaces/mktpl-claude-datasaas && ./scripts/setup.sh
 ```
 
 This creates the required `.venv` directories for MCP servers. Without this step, **all MCP servers will fail to start**.
@@ -22,14 +22,14 @@ This creates the required `.venv` directories for MCP servers. Without this step
 
 ```bash
 # 1. Pull latest changes to source
-cd /path/to/leo-claude-mktplace
+cd /path/to/mktpl-claude-datasaas
 git pull origin main
 
 # 2. Run post-update script (updates source repo venvs)
 ./scripts/post-update.sh
 
 # 3. CRITICAL: Run setup in installed marketplace location
-cd ~/.claude/plugins/marketplaces/leo-claude-mktplace && ./scripts/setup.sh
+cd ~/.claude/plugins/marketplaces/mktpl-claude-datasaas && ./scripts/setup.sh
 ```
 
 **Then restart your Claude Code session** to load any changes.
@@ -151,7 +151,7 @@ deactivate
 
 ```bash
 # Fix: Run setup in installed location
-cd ~/.claude/plugins/marketplaces/leo-claude-mktplace && ./scripts/setup.sh
+cd ~/.claude/plugins/marketplaces/mktpl-claude-datasaas && ./scripts/setup.sh
 ```
 
 If that doesn't work:
@@ -160,7 +160,7 @@ If that doesn't work:
 2. Verify venvs exist in INSTALLED location:
    ```bash
    for server in gitea netbox data-platform viz-platform contract-validator; do
-     ls ~/.claude/plugins/marketplaces/leo-claude-mktplace/mcp-servers/$server/.venv && echo "$server: OK" || echo "$server: MISSING"
+     ls ~/.claude/plugins/marketplaces/mktpl-claude-datasaas/mcp-servers/$server/.venv && echo "$server: OK" || echo "$server: MISSING"
    done
    ```
 3. If missing, run setup.sh as shown above.
@@ -172,7 +172,7 @@ If that doesn't work:
 This almost always means the venvs don't exist in the installed marketplace:
 
 ```bash
-cd ~/.claude/plugins/marketplaces/leo-claude-mktplace && ./scripts/setup.sh
+cd ~/.claude/plugins/marketplaces/mktpl-claude-datasaas && ./scripts/setup.sh
 ```
 
 Then restart Claude Code.

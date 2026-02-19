@@ -228,7 +228,7 @@ If you prefer to set up manually or need to troubleshoot:
 
 ```bash
 # Navigate to marketplace directory
-cd /path/to/leo-claude-mktplace
+cd /path/to/mktpl-claude-datasaas
 
 # Set up Gitea MCP server
 cd mcp-servers/gitea
@@ -275,7 +275,7 @@ Add `.env` to `.gitignore` if not already there.
 For automated setups or CI environments:
 
 ```bash
-cd /path/to/leo-claude-mktplace
+cd /path/to/mktpl-claude-datasaas
 ./scripts/setup.sh
 ```
 
@@ -422,7 +422,7 @@ The marketplace provides scripts to install plugins into consumer projects. This
 ### Install a Plugin
 
 ```bash
-cd /path/to/leo-claude-mktplace
+cd /path/to/mktpl-claude-datasaas
 ./scripts/install-plugin.sh <plugin-name> <target-project-path>
 ```
 
@@ -463,14 +463,42 @@ Shows which marketplace plugins are installed, partially installed, or available
 **Output example:**
 ```
 ✓ Fully Installed:
-  PLUGIN                   VERSION    DESCRIPTION
-  ------                   -------    -----------
-  data-platform            1.3.0      pandas, PostgreSQL, and dbt integration...
-  viz-platform             1.1.0      DMC validation, Plotly charts, and theming...
+  PLUGIN                   VERSION    PROFILE    DESCRIPTION
+  ------                   -------    -------    -----------
+  data-platform            1.3.0      readonly   pandas, PostgreSQL, and dbt integration...
+  viz-platform             1.1.0      default    DMC validation, Plotly charts, and theming...
 
 ○ Available (not installed):
   projman                  3.4.0      Sprint planning and project management...
 ```
+
+### Profile-Based Installation
+
+Some plugins support multiple installation profiles for different deployment contexts. For example, `data-platform` has a `readonly` profile for projects that only consume data (no write access, no dbt).
+
+**Install with a profile:**
+```bash
+./scripts/install-plugin.sh data-platform ~/projects/webapp --profile readonly
+```
+
+**Check which profile is installed:**
+```bash
+./scripts/list-installed.sh ~/projects/webapp
+```
+
+**Switch profiles** (uninstall first, then reinstall with new profile):
+```bash
+./scripts/uninstall-plugin.sh data-platform ~/projects/webapp
+./scripts/install-plugin.sh data-platform ~/projects/webapp --profile readonly
+```
+
+**Plugins with profiles:**
+
+| Plugin | Profiles | Description |
+|--------|----------|-------------|
+| data-platform | `default`, `readonly` | `default`: full read/write + dbt. `readonly`: schema exploration + query only. |
+
+Plugins without profiles install the full integration snippet regardless.
 
 ### Plugins with MCP Servers
 

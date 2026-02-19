@@ -9,7 +9,7 @@ Last Updated: 2026-02-07 (v9.1.0)
 ## Repository Root Structure
 
 ```
-leo-claude-mktplace/
+mktpl-claude-datasaas/
 ├── .claude/                    # Claude Code local settings
 ├── .claude-plugin/             # Marketplace manifest
 │   ├── marketplace.json
@@ -276,7 +276,7 @@ When checking for venvs, ALWAYS check in this order:
 
 | Priority | Path | Survives Updates? |
 |----------|------|-------------------|
-| 1 (CHECK FIRST) | `~/.cache/claude-mcp-venvs/leo-claude-mktplace/{server}/.venv/` | YES |
+| 1 (CHECK FIRST) | `~/.cache/claude-mcp-venvs/mktpl-claude-datasaas/{server}/.venv/` | YES |
 | 2 (fallback) | `{marketplace}/mcp-servers/{server}/.venv/` | NO |
 
 **Why cache first?**
@@ -286,7 +286,7 @@ When checking for venvs, ALWAYS check in this order:
 
 **Pattern for hooks checking venvs:**
 ```bash
-CACHE_VENV="$HOME/.cache/claude-mcp-venvs/leo-claude-mktplace/{server}/.venv/bin/python"
+CACHE_VENV="$HOME/.cache/claude-mcp-venvs/mktpl-claude-datasaas/{server}/.venv/bin/python"
 LOCAL_VENV="$MARKETPLACE_ROOT/mcp-servers/{server}/.venv/bin/python"
 
 if [[ -f "$CACHE_VENV" ]]; then
@@ -298,7 +298,7 @@ else
 fi
 ```
 
-**See lesson learned:** [Startup Hooks Must Check Venv Cache Path First](https://gitea.hotserv.cloud/personal-projects/leo-claude-mktplace/wiki/lessons/patterns/startup-hooks-must-check-venv-cache-path-first)
+**See lesson learned:** [Startup Hooks Must Check Venv Cache Path First](https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas/wiki/lessons/patterns/startup-hooks-must-check-venv-cache-path-first)
 
 ### Documentation Paths
 
@@ -442,7 +442,7 @@ done | sort | uniq -c | sort -rn
 | 2026-01-20 | v3.0.0: MCP servers moved to root with symlinks | Claude Code |
 | 2026-01-20 | v3.0.0: Added clarity-assist, git-flow, pr-review plugins | Claude Code |
 | 2026-01-20 | v3.0.0: Added docs/CONFIGURATION.md | Claude Code |
-| 2026-01-20 | v3.0.0: Renamed marketplace to leo-claude-mktplace | Claude Code |
+| 2026-01-20 | v3.0.0: Renamed marketplace to mktpl-claude-datasaas | Claude Code |
 | 2026-01-20 | Removed docs/references/ (obsolete planning docs) | Claude Code |
 | 2026-01-19 | Added claude-md-integration.md path pattern | Claude Code |
 | 2025-12-15 | Restructured: MCP servers bundled in plugins | Claude Code |

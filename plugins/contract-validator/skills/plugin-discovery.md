@@ -20,7 +20,7 @@ Discover plugins in a marketplace by scanning for `.claude-plugin/` markers.
 
 | Context | Path |
 |---------|------|
-| Installed | `~/.claude/plugins/marketplaces/leo-claude-mktplace/plugins/` |
+| Installed | `~/.claude/plugins/marketplaces/mktpl-claude-datasaas/plugins/` |
 | Source | `~/claude-plugins-work/plugins/` |
 
 ## Expected Structure
