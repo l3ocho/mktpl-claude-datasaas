@@ -67,9 +67,9 @@ dist/
 build/
 
 # Environment variables - NOT ignored (private repo)
-# .env
-# .env.local
-# .env.*.local
+.env
+.env.local
+.env.*.local
 
 # OS
 .DS_Store
