@@ -133,6 +133,16 @@ mktpl-claude-datasaas/
 │   │   ├── .claude-plugin/
 │   │   ├── commands/
 │   │   ├── agents/
+│   │   ├── skills/
+│   │   │   ├── data-integrity-audit.md
+│   │   │   ├── data-profiling.md
+│   │   │   ├── dbt-workflow.md
+│   │   │   ├── lineage-analysis.md
+│   │   │   ├── mcp-tools-reference.md
+│   │   │   ├── setup-workflow.md
+│   │   │   ├── visual-header.md
+│   │   │   ├── data-exploration-workflow.md
+│   │   │   └── notebook-authoring.md
 │   │   └── claude-md-integration.md
 │   ├── contract-validator/
 │   │   ├── .claude-plugin/
@@ -143,6 +153,17 @@ mktpl-claude-datasaas/
 │   │   ├── .claude-plugin/
 │   │   ├── commands/
 │   │   ├── agents/
+│   │   ├── skills/
+│   │   │   ├── accessibility-rules.md
+│   │   │   ├── chart-types.md
+│   │   │   ├── design-system-audit.md
+│   │   │   ├── dmc-components.md
+│   │   │   ├── layout-templates.md
+│   │   │   ├── mcp-tools-reference.md
+│   │   │   ├── responsive-design.md
+│   │   │   ├── theming-system.md
+│   │   │   ├── analytical-chart-selection.md
+│   │   │   └── notebook-design-system.md
 │   │   └── claude-md-integration.md
 │   ├── saas-api-platform/       # REST/GraphQL API scaffolding (scaffold)
 │   │   ├── .claude-plugin/

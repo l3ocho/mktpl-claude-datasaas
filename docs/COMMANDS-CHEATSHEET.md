@@ -264,6 +264,40 @@ Working with data pipelines:
 6. /data explain "SELECT ..."   # Analyze query execution plan
 ```
 
+### Example 6c: Exploratory Data Analysis Workflow (NEW in v9.1.0)
+
+Using the **data-analysis agent** for autonomous hypothesis testing and insight discovery in Jupyter notebooks:
+
+```
+1. Describe what you want to explore
+   "Analyze the income distribution across neighbourhoods and find
+    non-obvious patterns. Generate a Jupyter notebook with statistical
+    hypothesis testing."
+
+2. data-analysis agent then:
+   • Phase 1 — Discovers schema (tables, columns, joins)
+   • Phase 2 — Profiles distributions (skewness, kurtosis, correlations)
+   • Phase 3 — Generates 10+ hypotheses from observations
+   • Phase 4 — Tests top hypotheses with statistical tests (scipy)
+   • Phase 5 — Synthesizes findings into readable narrative
+
+3. Output: Jupyter notebook with:
+   - Analytical chart selection (uses viz-platform's analytical-chart-selection skill)
+   - Dark-theme notebook design (uses viz-platform's notebook-design-system skill)
+   - Documented cell cycles (context → code → interpretation → visualization)
+   - Statistical test results with effect sizes
+   - Ranking of non-obvious insights
+
+# To invoke: Just ask Claude Code to "explore this data" or "analyze this dataset"
+# The data-analysis agent will be automatically selected
+```
+
+**When to use:**
+- **data-analysis**: Open-ended exploration, hypothesis discovery, Jupyter generation
+- **/data profile**: Quick quality checks and summary statistics
+- **/data schema**: Understanding tables and relationships
+- **/data lineage**: Understanding dbt transformations
+
 ### Example 7: First-Time Setup (New Machine)
 
 Setting up the marketplace for the first time:
@@ -312,12 +346,24 @@ Some plugins require MCP server connectivity:
 | projman | Gitea | Issues, PRs, wiki, labels, milestones |
 | pr-review | Gitea | PR operations and reviews |
 | cmdb-assistant | NetBox | Infrastructure CMDB |
-| data-platform | pandas, PostgreSQL, dbt | DataFrames, database queries, dbt builds |
-| viz-platform | viz-platform | DMC validation, charts, layouts, themes, pages |
+| data-platform | pandas, PostgreSQL, dbt | DataFrames, database queries, dbt builds, exploratory analysis via data-analysis agent (v9.1.0+) |
+| viz-platform | viz-platform | DMC validation, charts, layouts, themes, pages, and Jupyter notebook analytical visualizations (v9.1.0+) |
 | contract-validator | contract-validator | Plugin interface parsing, compatibility validation |
 
 Ensure credentials are configured in `~/.config/claude/gitea.env`, `~/.config/claude/netbox.env`, or `~/.config/claude/postgres.env`.
 
+### New in v9.1.0: Exploratory Analytics Skills
+
+**data-platform** now includes skills for autonomous data exploration:
+- `data-exploration-workflow` — Five-phase analytical methodology with hypothesis generation and testing
+- `notebook-authoring` — Jupyter notebook cell structure and documentation patterns
+
+**viz-platform** now includes skills for analytical visualization in notebooks:
+- `analytical-chart-selection` — Maps analytical questions to Plotly `graph_objects` trace types
+- `notebook-design-system` — Dark-theme design system for consistent, professional Jupyter notebooks
+
+These skills are loaded automatically when using the **data-analysis agent** for exploratory workflows.
+
 ---
 
-*Last Updated: 2026-02-06*
+*Last Updated: 2026-02-27 — v9.1.0 exploratory analytics skills added*

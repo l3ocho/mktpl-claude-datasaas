@@ -570,6 +570,23 @@ Agents specify their configuration in frontmatter using Claude Code's supported 
 | claude-config-maintainer | maintainer | sonnet | acceptEdits | — | frontmatter (2) |
 | cmdb-assistant | cmdb-assistant | sonnet | default | — | — |
 
+### Agent Purpose Guide
+
+**Key Agents for Data Analysis (v9.1.0+):**
+
+| Agent | Purpose | When to Use | Example |
+|-------|---------|------------|---------|
+| **data-advisor** | Query optimization and performance suggestions | Before running expensive queries; optimization of existing SQL | "Why is this query slow? Suggest optimization." |
+| **data-analysis** | Autonomous hypothesis testing, statistical discovery, Jupyter generation | Open-ended exploration; finding non-obvious patterns; generating analytical narratives | "Explore this dataset for interesting patterns and generate a notebook" |
+| **data-ingestion** | Data loading and validation from external sources | ETL workflows; data quality checks on import | "Load this CSV and validate it against the schema" |
+
+**Capabilities by Agent:**
+
+- **data-advisor:** Query planning, execution plans, optimization hints
+- **data-analysis (Exploration Mode):** Schema discovery → profiling → hypothesis generation → statistical testing → narrative synthesis
+- **data-analysis (Profiling Mode):** Data quality scoring, null rates, outlier detection, basic statistics
+- **data-ingestion:** File format detection, type inference, validation rules, error handling
+
 ### Design Principles
 
 - `bypassPermissions` is granted to exactly ONE agent (Executor) which has code-sentinel PreToolUse hook + Code Reviewer downstream as safety nets.
