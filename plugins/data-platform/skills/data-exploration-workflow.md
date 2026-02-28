@@ -104,6 +104,50 @@ A reference table showing:
 5. **Generate at least 10 hypotheses.** Rank them by: (a) testability with available data, (b) potential surprise value, (c) practical relevance.
 6. **Select top 5-7 for testing.** Document the rest as "future investigation" in a markdown cell.
 
+### Mandatory Coverage Requirements
+
+The selected hypotheses (the 5-7 that pass the Quality Gate and proceed to Phase 4) must collectively satisfy ALL of the following coverage requirements. If they don't, generate additional hypotheses until coverage is met.
+
+#### Requirement 1: Table Coverage
+Hypotheses must draw data from **at least 3 different mart tables** (not counting the geometry table which is just a join target). If all hypotheses can be answered from a single table, the analysis is too narrow.
+
+#### Requirement 2: Temporal Coverage
+If the schema contains multiple time periods (e.g., census years, yearly data), **at least 1 hypothesis must involve a temporal comparison** — how did something change between periods? Temporal shifts are where the most interesting findings live because they reveal dynamics, not just static snapshots.
+
+#### Requirement 3: Spatial Coverage
+If geometry data is available (PostGIS columns, lat/lon, boundary polygons), **at least 1 hypothesis must involve spatial analysis** — do patterns cluster geographically? Is there spatial autocorrelation? Do findings hold across all areas or only in specific regions? Spatial patterns are invisible in tabular analysis and frequently reveal non-obvious structure.
+
+#### Requirement 4: Depth Coverage
+**At least 2 hypotheses must involve joining across tables** — combining data from different domains (e.g., demographics + safety, housing + amenities, profile categories + income). Single-table analysis can only find relationships the table was designed to show. Cross-table analysis finds relationships nobody planned for.
+
+#### Coverage Check Format
+
+Before proceeding to the Hypothesis Quality Gate, verify coverage:
+
+```
+COVERAGE CHECK
+━━━━━━━━━━━━━━
+Tables used: foundation, safety, housing, amenities, profile (5/9) ✅ ≥3
+Temporal:    H4 compares 2016→2021 crime trends ✅
+Spatial:     H7 tests geographic clustering of income-crime residuals ✅
+Cross-table: H3 joins housing + demographics, H6 joins profile + foundation ✅ ≥2
+
+Coverage: PASS
+```
+
+If any requirement is not met:
+```
+COVERAGE CHECK
+━━━━━━━━━━━━━━
+Tables used: foundation, overview (2/9) ❌ Need ≥3
+Temporal:    None ❌ Need ≥1
+Spatial:     None ❌ Need ≥1
+Cross-table: None ❌ Need ≥2
+
+Coverage: FAIL — Generate additional hypotheses targeting missing requirements
+```
+```
+
 ### Hypothesis Format
 
 For each hypothesis, document:
@@ -149,6 +193,28 @@ If the answer is yes, the hypothesis has zero surprise value and should be repla
 - ✅ PASS: "Neighbourhoods where >30% of residents moved from another city in the last 5 years have LOWER income inequality than stable neighbourhoods" — non-obvious, requires data to verify
 - ❌ FAIL: "Wealthier neighbourhoods have higher education levels" — textbook knowledge since forever
 - ❌ FAIL: "Population density correlates with transit usage" — obvious by definition in urban planning
+
+**Automatic Novelty Failures — Structural Rule:**
+
+Any hypothesis that is a simple bivariate correlation between two standard socioeconomic indicators WITHOUT at least one of the following modifiers automatically fails the novelty screen:
+
+Standard socioeconomic indicators (the "obvious variables"): income, education, unemployment, crime rate, population density, age, housing cost, home ownership rate, immigration rate.
+
+A hypothesis using two of these variables fails UNLESS it includes at least one of:
+- **A moderating variable:** "Does X→Y hold when controlling for Z?"
+- **A subgroup condition:** "Does X→Y reverse for neighbourhoods in the top quintile of Z?"
+- **A temporal comparison:** "Did the X→Y relationship strengthen or weaken from 2016 to 2021?"
+- **An interaction effect:** "Does X→Y depend on the level of Z?"
+- **A spatial pattern:** "Does X→Y cluster geographically, or is it spatially random?"
+- **A threshold/nonlinearity:** "Is there a tipping point in X beyond which Y changes sharply?"
+
+Examples:
+- ❌ FAIL: "Education correlates with income" — two obvious variables, no modifier
+- ❌ FAIL: "Unemployment correlates with crime rate" — two obvious variables, no modifier
+- ❌ FAIL: "Population density relates to housing cost" — two obvious variables, no modifier
+- ✅ PASS: "The education→income relationship weakens in neighbourhoods with >40% immigrant population" — modifier: subgroup condition
+- ✅ PASS: "Unemployment→crime strengthened from 2016 to 2021 in high-density neighbourhoods but not low-density" — modifier: temporal + interaction
+- ✅ PASS: "There is a density threshold (~8,000/km²) above which crime rate drops rather than rises" — modifier: nonlinearity/threshold
 
 **Replacement strategy:** When a hypothesis fails the novelty screen, push it one level deeper. "Wealthy neighbourhoods have higher education" → "Does the income-education relationship break down in neighbourhoods with high immigration rates?" The deeper version tests a boundary condition, which is where non-obvious findings live.
 
@@ -262,6 +328,26 @@ This catches circularity that slipped past the Phase 3 gate (e.g., using a diffe
 For each "non-obvious" finding, search your training knowledge: "Is this already well-established in urban planning / data science / the relevant domain?"
 
 If yes, it is NOT non-obvious. Demote it to "confirmed existing knowledge" and do not present it as a discovery. A genuine non-obvious finding is one where the data contradicts or significantly refines common understanding.
+
+#### Gate Integrity Check (Meta-Gate)
+
+After running Checks 1-5, apply this meta-check on the gate results themselves:
+
+**If ALL findings passed all 5 checks (zero demoted, zero requiring more work), the gate itself has failed.**
+
+A 100% pass rate means the hypotheses were too safe, the checks were applied too leniently, or both. This is the analytical equivalent of a test suite where every test passes on the first run — it means the tests aren't testing hard enough.
+
+**When the meta-gate triggers:**
+1. Return to Phase 3
+2. Discard the weakest 2 findings (lowest effect size or most obvious)
+3. Generate 2 replacement hypotheses that are harder to confirm — specifically:
+   - Hypotheses that predict a REVERSAL, THRESHOLD, or INTERACTION (not a main effect)
+   - Hypotheses that use tables/columns not yet analyzed
+4. Test the replacements through Phase 4
+5. Re-run the Self-Critique Gate on the full set (original survivors + replacements)
+6. On the second pass, the meta-gate is satisfied if at least 1 finding was demoted or refuted
+
+**This rule exists because:** The second analysis run confirmed 6/6 hypotheses. Every finding was a known socioeconomic relationship. Zero surprises. The skill's anti-pattern table says "Confirming every hypothesis signals weak hypotheses, not strong analysis." The meta-gate enforces this structurally.
 
 #### Gate Output
 
