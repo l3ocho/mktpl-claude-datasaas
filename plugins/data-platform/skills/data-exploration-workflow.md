@@ -114,6 +114,70 @@ For each hypothesis, document:
 
 ---
 
+### Hypothesis Quality Gate (MANDATORY before Phase 4)
+
+Before testing ANY hypothesis, pass it through all three filters. If it fails any filter, discard it and generate a replacement. Do NOT proceed to Phase 4 with a hypothesis that fails these checks.
+
+#### Filter 1: Falsifiability
+
+Ask: "What specific data result would make me REJECT this hypothesis?"
+
+If you cannot name a concrete result that would refute it, the hypothesis is unfalsifiable and must be discarded.
+
+- ✅ PASS: "Neighbourhoods with >50% transit commuting have crime rates at least 20% lower than those with <20% transit commuting" — refutable if the difference is <20% or reversed
+- ❌ FAIL: "Income relates to education" — some relationship always exists; this can never be refuted
+- ❌ FAIL: "There is variation in housing affordability" — trivially true for any dataset with variance
+
+#### Filter 2: Circularity Check
+
+Ask: "Is my independent variable a component, input, or derivative of my dependent variable?"
+
+If variable A was used to compute variable B, correlating A with B is arithmetic, not analysis. Check how composite scores and indices were built before testing them against their own inputs.
+
+- ✅ PASS: "Transit commuting % predicts median household income" — income is not computed from transit data
+- ❌ FAIL: "Transit commuting % predicts livability_score" — if livability_score includes amenity_score which includes transit-adjacent metrics, this is circular
+- ❌ FAIL: "diversity_index correlates with pct_visible_minority" — if diversity_index is Shannon entropy computed over visible minority categories, this is definitional
+
+**How to check:** Before testing any hypothesis involving a composite score or index, query the database or documentation to understand exactly how that score is computed. List its components. If your independent variable appears in that list (directly or through a sub-score), the hypothesis is circular.
+
+#### Filter 3: Novelty Screen
+
+Ask: "Would a second-year undergraduate in this domain already know this?"
+
+If the answer is yes, the hypothesis has zero surprise value and should be replaced with something deeper.
+
+- ✅ PASS: "Neighbourhoods where >30% of residents moved from another city in the last 5 years have LOWER income inequality than stable neighbourhoods" — non-obvious, requires data to verify
+- ❌ FAIL: "Wealthier neighbourhoods have higher education levels" — textbook knowledge since forever
+- ❌ FAIL: "Population density correlates with transit usage" — obvious by definition in urban planning
+
+**Replacement strategy:** When a hypothesis fails the novelty screen, push it one level deeper. "Wealthy neighbourhoods have higher education" → "Does the income-education relationship break down in neighbourhoods with high immigration rates?" The deeper version tests a boundary condition, which is where non-obvious findings live.
+
+#### Gate Output
+
+After filtering, document which hypotheses were discarded and why. This transparency prevents self-deception. Format:
+
+```
+HYPOTHESIS QUALITY GATE
+━━━━━━━━━━━━━━━━━━━━━━
+Passed (5):
+  H1: [statement] — Falsifiable ✓ | Non-circular ✓ | Novel ✓
+  H3: [statement] — Falsifiable ✓ | Non-circular ✓ | Novel ✓
+  ...
+
+Discarded (5):
+  H2: [statement] — FAILED: Circularity (livability_score contains amenity inputs)
+  H4: [statement] — FAILED: Novelty (textbook urban planning)
+  H6: [statement] — FAILED: Falsifiability (unfalsifiable "X relates to Y")
+  ...
+
+Replacements generated (3):
+  H2b: [deeper version] — Falsifiable ✓ | Non-circular ✓ | Novel ✓
+  ...
+```
+```
+
+---
+
 ## Phase 4: Hypothesis Testing & Deep Dives
 
 **Goal:** For each selected hypothesis, run the analysis, interpret the results, and follow interesting threads.
@@ -135,10 +199,20 @@ For each hypothesis:
 | Does group membership predict a metric? | Kruskal-Wallis (3+ groups, non-normal) or ANOVA | `scipy.stats.kruskal`, `scipy.stats.f_oneway` |
 | Is there spatial clustering? | Moran's I (if spatial weights available) or visual clustering | Manual or `pysal` if available |
 
-4. **Interpret the result** — in a markdown cell, state:
-   - Whether the hypothesis is confirmed, refuted, or inconclusive
-   - The effect size (not just p-value — statistical significance ≠ practical significance)
-   - What follow-up question this raises
+4. **Interpret the result** — in a markdown cell, provide ALL of the following. Missing any item means the hypothesis is NOT confirmed.
+
+   **Required for every hypothesis test:**
+   - **Verdict:** Confirmed, Refuted, or Inconclusive — with the specific threshold that determined it
+   - **Exact statistics:** r = 0.XX, R² = 0.XX, p = X.XXe-XX (no "moderate-to-strong", no ranges like "0.2–0.4")
+   - **Effect size interpretation:** Use standard benchmarks:
+     - Correlation: |r| < 0.3 = weak, 0.3–0.5 = moderate, > 0.5 = strong
+     - R²: < 0.09 = trivial, 0.09–0.25 = small, 0.25–0.49 = moderate, > 0.49 = large
+     - Cohen's d: < 0.2 = trivial, 0.2–0.5 = small, 0.5–0.8 = moderate, > 0.8 = large
+   - **Practical significance:** Is this effect large enough to matter in the real world? A statistically significant r = 0.15 with p < 0.001 is still a trivial relationship.
+   - **At least one confounder checked:** For every confirmed correlation, test whether it survives when controlling for the most obvious third variable (e.g., does income-education correlation hold after controlling for immigration status?)
+   - **Null comparison:** What would you expect from random/shuffled data? If your r = 0.25 and shuffled data gives r = 0.15, the signal is marginal.
+   - **What follow-up question this raises**
+
 5. **Follow the thread** — if results suggest a deeper pattern, pursue it. Don't stop at the first chart.
 
 ### Depth Indicators
@@ -152,6 +226,62 @@ A hypothesis is NOT deep enough when:
 - You showed one chart and moved on
 - You reported a correlation without checking if it's driven by outliers or a third variable
 - You described what the chart shows without interpreting what it means
+
+---
+
+### Self-Critique Gate (MANDATORY before Phase 5)
+
+Before writing the synthesis, review ALL findings and apply these checks. Any finding that fails must be either deepened or demoted to "observation" (not presented as a key finding).
+
+#### Check 1: The "So What?" Test
+
+For each finding, complete this sentence: "A city planner / business analyst / domain expert should change their decision about ______ because of this finding."
+
+If you cannot complete the sentence with something specific, the finding has no practical value.
+
+#### Check 2: The Mechanism Test
+
+For each finding, answer: "WHY does this pattern exist?"
+
+If your answer is "unknown" or "requires further investigation" for every finding, you stopped too early. At least 2 of your top findings must include a tested (not speculated) mechanism — meaning you ran an additional analysis to investigate the why, not just reported the what.
+
+#### Check 3: The Confounder Test
+
+For each confirmed correlation, answer: "Did I check whether a third variable explains this?"
+
+If you confirmed a correlation without controlling for at least one obvious confounder, the finding is unverified. Run the partial correlation or stratified analysis before reporting it.
+
+#### Check 4: The Circular Reasoning Audit
+
+Review every finding that involves a composite score, index, or derived metric. Ask: "Am I reporting that a thing correlates with itself?"
+
+This catches circularity that slipped past the Phase 3 gate (e.g., using a different variable name that's actually derived from the same source).
+
+#### Check 5: The Domain Knowledge Check
+
+For each "non-obvious" finding, search your training knowledge: "Is this already well-established in urban planning / data science / the relevant domain?"
+
+If yes, it is NOT non-obvious. Demote it to "confirmed existing knowledge" and do not present it as a discovery. A genuine non-obvious finding is one where the data contradicts or significantly refines common understanding.
+
+#### Gate Output
+
+```
+SELF-CRITIQUE GATE
+━━━━━━━━━━━━━━━━━━
+Findings promoted to Key Findings (X):
+  F1: [finding] — So What ✓ | Mechanism ✓ | Confounders ✓ | Non-circular ✓ | Novel ✓
+  ...
+
+Findings demoted to Observations (X):
+  F3: [finding] — DEMOTED: Failed Domain Knowledge Check (known since Jacobs 1961)
+  F5: [finding] — DEMOTED: Failed Mechanism Test (no "why" investigated)
+  ...
+
+Findings requiring more work (X):
+  F4: [finding] — Needs confounder analysis (income not controlled for)
+  ...
+```
+```
 
 ---
 
@@ -191,3 +321,8 @@ For each finding, score on three dimensions:
 | Stopping at correlation | "Income and education are correlated" — so what? | "The correlation breaks down in the northwest cluster, suggesting a confounding geographic factor" |
 | Using exotic chart types for their own sake | Sankey diagram of obvious relationships wastes attention | Use the simplest chart that reveals the pattern; upgrade only if complexity adds insight |
 | Treating p < 0.05 as the finish line | Statistical significance without practical significance is meaningless | Always report effect size alongside p-value |
+| Correlating a score with its own components | Definitional relationship, not a finding | Check how composite scores are built; never use a component as the independent variable |
+| Reporting "moderate-to-strong" instead of numbers | Hides whether the effect actually matters | Always report exact r, R², p, and Cohen's d with standard benchmark interpretation |
+| Presenting domain common knowledge as discovery | Wastes reader's attention on things they already know | Push every "obvious" finding one level deeper to find the boundary condition |
+| Confirming every hypothesis | Signals weak hypotheses, not strong analysis | If nothing was refuted, your hypotheses were too soft — generate harder ones |
+| Speculating mechanisms without testing them | "Transit probably helps because of walkability" is not analysis | Run the sub-analysis: does the pattern hold when controlling for walkability? |

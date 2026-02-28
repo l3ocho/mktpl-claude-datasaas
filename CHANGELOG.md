@@ -41,6 +41,18 @@ Added four new skills and updated the data-analysis agent to support autonomous 
 
 **Why:** Closes the analytical methodology gap between data engineering (schema validation, dbt workflows) and autonomous data exploration (Jupyter notebooks with statistical discovery). Provides Claude Code with heuristics for when to use which chart type, how to structure analytical thinking, and how to design notebooks that are readable and reproducible.
 
+#### data-platform: Quality Gates for data-exploration-workflow
+
+Patched `data-exploration-workflow.md` with three mandatory quality gates:
+
+- **Hypothesis Quality Gate** (between Phase 3 and Phase 4): Three filters — falsifiability check (can data refute this?), circularity check (am I correlating a score with its own components?), and novelty screen (would an undergraduate already know this?). Hypotheses that fail any filter are discarded and replaced.
+- **Confirmation Standard** (within Phase 4): Replaces vague "moderate-to-strong" with mandatory exact statistics (r, R², p, Cohen's d), standard benchmark interpretation, practical significance assessment, at least one confounder controlled, and null comparison.
+- **Self-Critique Gate** (between Phase 4 and Phase 5): Five checks before synthesis — "so what?" test, mechanism test, confounder test, circular reasoning audit, and domain knowledge check. Findings that fail are demoted from key findings to observations.
+
+Also added 5 new anti-patterns to the anti-patterns table covering circular reasoning, vague effect sizes, fake novelty, universal confirmation, and untested mechanisms.
+
+**Why:** First run of the exploration workflow produced tautological findings (correlating composite scores with their own components), vague effect sizes ("moderate-to-strong"), zero refuted hypotheses, and domain common knowledge presented as novel discoveries. Quality gates prevent these failure modes structurally.
+
 ### Changed — BREAKING
 
 #### NetBox MCP Server: Gutted to 37 Tools (from 182)
