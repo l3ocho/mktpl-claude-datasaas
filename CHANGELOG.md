@@ -53,6 +53,16 @@ Also added 5 new anti-patterns to the anti-patterns table covering circular reas
 
 **Why:** First run of the exploration workflow produced tautological findings (correlating composite scores with their own components), vague effect sizes ("moderate-to-strong"), zero refuted hypotheses, and domain common knowledge presented as novel discoveries. Quality gates prevent these failure modes structurally.
 
+#### data-platform: Tighten Exploration Quality Gates (v2)
+
+Second patch to `data-exploration-workflow.md` based on real analysis failures:
+
+- **Novelty Filter — Structural Rule:** Any simple bivariate correlation between standard socioeconomic indicators (income, education, unemployment, crime, density, age, housing cost, ownership, immigration) without a moderator, subgroup condition, temporal comparison, interaction effect, spatial pattern, or threshold/nonlinearity automatically fails. Prevents textbook sociology from passing as novel analysis.
+- **Self-Critique Meta-Gate:** If 100% of findings pass all 5 checks, the gate itself fails. Forces return to Phase 3 to generate harder hypotheses. Prevents rubber-stamping.
+- **Mandatory Coverage Requirements:** Selected hypotheses must collectively use ≥3 tables, include ≥1 temporal comparison, include ≥1 spatial analysis (if geometry available), and include ≥2 cross-table joins. Prevents single-table shallow analysis.
+
+**Why:** Second analysis run confirmed 6/6 hypotheses using only the foundation table (15 columns). All findings were known socioeconomic relationships. No temporal, spatial, or cross-table analysis attempted despite 9 available tables with geometry, multiple years, and 108K profile rows.
+
 ### Changed — BREAKING
 
 #### NetBox MCP Server: Gutted to 37 Tools (from 182)
