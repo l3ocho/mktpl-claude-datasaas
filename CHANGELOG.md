@@ -63,6 +63,16 @@ Second patch to `data-exploration-workflow.md` based on real analysis failures:
 
 **Why:** Second analysis run confirmed 6/6 hypotheses using only the foundation table (15 columns). All findings were known socioeconomic relationships. No temporal, spatial, or cross-table analysis attempted despite 9 available tables with geometry, multiple years, and 108K profile rows.
 
+#### data-platform: Exploration Quality Gates v3
+
+Third patch to `data-exploration-workflow.md`:
+
+- **Meta-Gate Hardened:** Replaced judgment-based check with binary count rule. Count of (demoted + refuted + incomplete) must be ≥1. "Diverse effect sizes" no longer satisfies the gate. Added 2-attempt recovery protocol with explicit failure documentation.
+- **Completion Requirement:** Every Phase 4 hypothesis must be fully tested (stats + confounder + interpretation + viz) or explicitly DROPPED. Status values "PENDING", "PARTIAL", "TBD" are not permitted in final output.
+- **High-Cardinality Table Coverage:** New Requirement 5 mandates at least 1 hypothesis uses the highest-cardinality table in the schema. Prevents analysis from ignoring granular data (e.g., 108K profile rows) in favor of simpler aggregated tables.
+
+**Why:** Third analysis run produced genuine findings but meta-gate passed on "diverse effect sizes" (4/4 confirmed), 2 hypotheses appeared as "PENDING/PARTIAL" in the report, and the 108K-row profile table was ignored for the third consecutive run.
+
 ### Changed — BREAKING
 
 #### NetBox MCP Server: Gutted to 37 Tools (from 182)
