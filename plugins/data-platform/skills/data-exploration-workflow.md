@@ -158,6 +158,69 @@ For each hypothesis, document:
 
 ---
 
+### Mandatory Coverage Requirements
+
+To ensure the hypothesis set isn't accidentally biased toward shallow analysis, every selected set of 5-7 hypotheses must meet these four diversity rules. Check them BEFORE committing to Phase 4 testing.
+
+#### Requirement 1: Table Coverage
+Hypotheses must touch at least 3 different tables. This prevents analyzing one table in isolation and forces cross-table insight discovery.
+
+#### Requirement 2: Measure Type Coverage
+Hypotheses must include:
+- At least 1 testing an **additive measure** (e.g., population, total_income, count)
+- At least 1 testing a **non-additive measure** (e.g., median_income, diversity_index, rate)
+- At least 1 testing a **categorical dimension** (e.g., whether neighbourhoods cluster by type)
+
+#### Requirement 3: Dimension Type Coverage
+Hypotheses must include:
+- At least 1 using a **temporal dimension** (e.g., testing 2016→2021 change)
+- At least 1 using a **geographic dimension** (e.g., spatial clustering)
+- At least 1 using a **hierarchical categorical** (e.g., category → subcategory breakdown)
+
+#### Requirement 4: Depth Coverage
+Hypotheses must include:
+- At least 1 **univariate insight** (e.g., "Income distribution in Toronto is bimodal")
+- At least 1 **bivariate relationship** (e.g., "Transit commuting predicts median income")
+- At least 1 **multivariate or confounder-control hypothesis** (e.g., "Does the income-education relationship persist after controlling for immigration?")
+
+#### Requirement 5: High-Cardinality Table Coverage
+If the schema contains a table with **significantly more rows than others** (10x+ the base grain), at least 1 hypothesis must use that table. High-cardinality tables contain the most granular, most unique data in the schema — they exist because someone invested effort to model detailed breakdowns. Ignoring them means ignoring the richest analytical resource.
+
+Examples of high-cardinality tables:
+- A profile/survey table with categorical breakdowns (e.g., 108K rows across 22 categories vs. 158 base neighbourhoods)
+- A transaction-level table vs. aggregated summaries
+- A time-series at daily grain vs. annual summaries
+
+The hypothesis using this table should exploit its unique structure — hierarchical categories, subcategory distributions, cross-category patterns — not just aggregate it back to the base grain.
+
+#### Coverage Check Format
+
+After selecting your 5-7 hypotheses, fill in this coverage matrix:
+
+**PASS example:**
+```
+Tables:      H1 uses housing, H2 uses foundation, H3 uses housing + demographics ✅ ≥3
+Measures:    H1 uses population (additive), H4 uses diversity_index (non-additive), H5 uses neighbourhood_type (categorical) ✅
+Dimensions:  H2 tests 2016→2021 change (temporal), H3 tests geographic clustering, H6 uses category hierarchy ✅
+Depth:       H1 univariate, H3 bivariate (housing→income), H6 multivariate (income→education controlling for immigration) ✅
+High-card:   H8 uses profile table (108K rows, 22 categories) ✅
+
+Coverage: PASS
+```
+
+**FAIL example:**
+```
+Tables:      H1 uses housing, H2 uses housing, H3 uses housing ❌ Need ≥3
+Measures:    H1 uses population (additive), H2 uses population (additive), H3 uses population ❌ Need non-additive + categorical
+Dimensions:  H1 tests temporal change, H2 tests temporal change ❌ Need geographic + hierarchical
+Depth:       All bivariate, no univariate, no multivariate ❌ Need all three types
+High-card:   None ❌ Profile table (108K rows) not used
+
+Coverage: FAIL — Generate additional hypotheses targeting missing requirements
+```
+
+---
+
 ### Hypothesis Quality Gate (MANDATORY before Phase 4)
 
 Before testing ANY hypothesis, pass it through all three filters. If it fails any filter, discard it and generate a replacement. Do NOT proceed to Phase 4 with a hypothesis that fails these checks.
@@ -295,6 +358,28 @@ A hypothesis is NOT deep enough when:
 
 ---
 
+### Completion Requirement
+
+Every hypothesis selected for Phase 4 testing must be FULLY tested before proceeding to Phase 5. "Fully tested" means:
+
+- Statistical test executed with exact values (r, R², p, Cohen's d)
+- At least one confounder controlled
+- Interpretation written with verdict (confirmed/refuted/inconclusive)
+- Visualization produced
+
+**If a hypothesis cannot be fully tested** (data unavailable, query too complex, time constraints), it must be explicitly marked as **DROPPED** with a reason, and it must NOT appear in the Phase 5 synthesis or the final report findings table.
+
+Hypotheses with status "PENDING", "PARTIAL", "TBD", or "IN PROGRESS" are not permitted in the final output. Either finish it or drop it.
+
+**Drop format:**
+```
+DROPPED: H9 — Immigration >40% drives rent inflation
+Reason: Rental data granularity insufficient to isolate immigration effect from general market trends
+Status: Moved to "Questions for Further Investigation"
+```
+
+---
+
 ### Self-Critique Gate (MANDATORY before Phase 5)
 
 Before writing the synthesis, review ALL findings and apply these checks. Any finding that fails must be either deepened or demoted to "observation" (not presented as a key finding).
@@ -368,6 +453,38 @@ Findings requiring more work (X):
   ...
 ```
 ```
+
+#### Gate Integrity Check (Meta-Gate)
+
+After running Checks 1-5, count the results:
+
+- **Passed:** findings that cleared all 5 checks
+- **Demoted:** findings downgraded to observations
+- **Refuted:** hypotheses where data contradicted the prediction
+- **Incomplete:** hypotheses not fully tested (missing stats, no confounder check, partial data)
+
+**Meta-Gate Rule — zero ambiguity:**
+
+Count = Demoted + Refuted + Incomplete.
+
+- **Count ≥ 1 → Meta-Gate PASSES.** Proceed to Phase 5 synthesis.
+- **Count = 0 → Meta-Gate FAILS.** Every single finding passed. This means the hypotheses were too safe. Execute the recovery protocol below.
+
+Do NOT interpret "diverse effect sizes" or "varied results" as satisfying this gate. The ONLY thing that satisfies the meta-gate is at least 1 finding that was demoted, refuted, or incomplete. This is a binary check on a count, not a judgment call.
+
+**Recovery protocol when meta-gate fails:**
+1. Return to Phase 3
+2. Identify the 2 weakest findings (lowest effect size or highest domain-knowledge overlap)
+3. Discard them
+4. Generate 2 replacement hypotheses that are structurally harder:
+   - Must predict a REVERSAL ("X→Y flips sign when Z is high")
+   - Or a THRESHOLD ("X has no effect below value V, strong effect above")
+   - Or a TEMPORAL DIVERGENCE ("X→Y was positive in 2016 but negative in 2021")
+   - Must use at least 1 table not yet analyzed
+5. Test replacements through Phase 4 with full Confirmation Standard
+6. Re-run Self-Critique Gate on the combined set
+7. Second pass: meta-gate passes if Count ≥ 1 (same rule)
+8. If meta-gate fails a second time: proceed anyway but document "META-GATE: FAILED TWICE — hypotheses may be too conservative" as a limitation
 
 ---
 
