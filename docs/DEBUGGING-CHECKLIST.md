@@ -2,7 +2,7 @@
 
 **Purpose:** Systematic approach to diagnose and fix plugin loading issues.
 
-Last Updated: 2026-02-08
+Last Updated: 2026-02-27 — v9.1.0 exploratory analytics troubleshooting added
 
 ---
 
@@ -272,6 +272,115 @@ Error: Could not find a suitable TLS CA certificate bundle, invalid path:
 2. Run `./scripts/verify-hooks.sh` (verifies hook types)
 3. Tell user: "Please restart Claude Code for changes to take effect"
 4. **Do NOT clear cache** - session restart handles reloading
+
+---
+
+## Troubleshooting: Exploratory Analytics (v9.1.0+)
+
+### Issue: data-analysis Agent Not Found or Not Invoked
+
+**Symptom:** Asked Claude Code to explore data, but it doesn't invoke the data-analysis agent.
+
+**Diagnosis:**
+
+1. Check agent exists:
+```bash
+ls -la plugins/data-platform/agents/data-analysis.md
+grep "name: data-analysis" plugins/data-platform/agents/data-analysis.md
+```
+
+2. Verify agent is referenced in marketplace:
+```bash
+grep -r "data-analysis" .claude-plugin/marketplace.json
+```
+
+3. Check agent description (triggers agent selection):
+```bash
+grep "description:" plugins/data-platform/agents/data-analysis.md
+# Should mention: exploration, hypothesis testing, discovery
+```
+
+**Fix:**
+- The agent is only invoked for **exploratory/analytical queries** ("analyze this", "explore the data", "find patterns")
+- Use `/data profile` command for quick profiling instead
+- Use direct agent description: "I want to perform exploratory data analysis"
+
+### Issue: Analytical Skills Not Loading
+
+**Symptom:** data-analysis agent runs but doesn't use the new analytical skills (data-exploration-workflow, notebook-authoring, analytical-chart-selection, notebook-design-system).
+
+**Diagnosis:**
+
+1. Check skills exist in installed marketplace:
+```bash
+INSTALLED=~/.claude/plugins/marketplaces/mktpl-claude-datasaas
+ls -la $INSTALLED/plugins/data-platform/skills/data-exploration-workflow.md
+ls -la $INSTALLED/plugins/viz-platform/skills/analytical-chart-selection.md
+```
+
+2. Verify agent references the skills:
+```bash
+grep "data-exploration-workflow\|notebook-authoring\|analytical-chart-selection" \
+  $INSTALLED/plugins/data-platform/agents/data-analysis.md
+```
+
+**Fix:**
+- Skills are auto-loaded when agent runs in "Exploration Mode"
+- If skills don't exist in installed location, the marketplace needs to be **reinstalled or updated**
+- Run: `/projman setup --sync` to sync marketplace to current version
+- Restart Claude Code session after update
+
+### Issue: Jupyter Notebook Generation Fails
+
+**Symptom:** data-analysis agent starts exploration but doesn't generate Jupyter notebook.
+
+**Diagnosis:**
+
+1. Check if notebook-authoring skill is loaded:
+```bash
+grep "4-cell cycle\|context → code → interpretation → visualization" \
+  ~/.claude/plugins/marketplaces/mktpl-claude-datasaas/plugins/data-platform/skills/notebook-authoring.md
+```
+
+2. Check database connection works:
+```bash
+# From the project directory
+grep "DATABASE_URL\|POSTGRES" .env
+# Test: python3 -c "import sqlalchemy; print('OK')"
+```
+
+3. Check pandas and scipy installed:
+```bash
+python3 -c "import pandas, scipy; print('OK')"
+```
+
+**Fix:**
+- Ensure database credentials are in `.env` file
+- Verify pandas, scipy, plotly, jupyter installed: `pip install pandas scipy plotly jupyter`
+- If notebook still fails, provide detailed error message to data-analysis agent for debugging
+
+### Issue: Statistical Tests Return p-value = NaN or Unexpected Results
+
+**Symptom:** hypothesis testing produces NaN p-values, or test results don't match data.
+
+**Diagnosis:**
+
+1. Check distribution of data:
+```bash
+# In Jupyter:
+import pandas as pd
+pd.describe(your_data)  # Look for all zeros, all nulls, single value
+```
+
+2. Verify appropriate test is being used:
+- Shapiro-Wilk for normality assumes n < 5000
+- Pearson correlation assumes continuous variables
+- Mann-Whitney U for non-normal distributions
+
+**Fix:**
+- Filter for valid data before testing: `df = df.dropna()`
+- Check for constant columns: `df.nunique() > 1`
+- Mention specific issue to data-analysis agent for alternative test selection
 
 ---
 

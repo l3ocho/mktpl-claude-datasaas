@@ -134,17 +134,26 @@ Manual project file cleanup checks.
 
 ### Data Domain
 
-#### data-platform (v9.0.1)
-pandas, PostgreSQL, and dbt integration.
+#### data-platform (v9.1.0)
+pandas, PostgreSQL, and dbt integration with autonomous exploratory analytics.
 - **Commands:** /data (ingest|profile|schema|explain|lineage|lineage-viz|run|dbt-test|quality|review|gate|setup)
-- **Agents:** data-advisor, data-analysis, data-ingestion
+- **Agents:**
+  - **data-advisor** — Query planning and optimization suggestions
+  - **data-analysis** — Autonomous analyst for exploration, hypothesis testing, and statistical discovery. Supports two modes: (1) Exploration Mode—five-phase methodology from schema discovery through hypothesis testing to insight synthesis; (2) Profiling Mode—quality scoring and threshold checks. Generates Jupyter notebooks with analytical narratives.
+  - **data-ingestion** — Data loading and validation from external sources
 - **MCP:** data-platform
+- **New skills (v9.1.0):** data-exploration-workflow (5-phase analytical methodology), notebook-authoring (Jupyter cell patterns)
 
-#### viz-platform (v9.0.1)
-DMC validation, Plotly charts, and theming.
+#### viz-platform (v9.1.0)
+DMC validation, Plotly charts, theming, and analytical visualization for Jupyter notebooks.
 - **Commands:** /viz (setup|chart|chart-export|dashboard|theme|theme-new|theme-css|component|accessibility-check|breakpoints|design-review|design-gate)
-- **Agents:** design-reviewer, layout-builder, component-check, theme-setup
+- **Agents:**
+  - **design-reviewer** — Dash component and layout accessibility audits
+  - **layout-builder** — Dashboard grid construction and responsiveness
+  - **component-check** — DMC component validation and registry lookup
+  - **theme-setup** — Theme generation and customization
 - **MCP:** viz-platform
+- **New skills (v9.1.0):** analytical-chart-selection (graph_objects trace type selection guide), notebook-design-system (dark-theme design system for Plotly)
 
 #### data-seed (v0.1.0)
 Test data generation and database seeding. *Scaffold — not yet implemented.*

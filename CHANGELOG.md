@@ -26,6 +26,33 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ./scripts/install-plugin.sh data-platform ~/projects/webapp --profile readonly
 ```
 
+#### Exploratory Analytics Skills (data-platform, viz-platform)
+
+Added four new skills and updated the data-analysis agent to support autonomous exploratory analysis, hypothesis testing, and statistical discovery in Jupyter notebooks.
+
+**New skills:**
+- **data-platform: `data-exploration-workflow.md`** — Five-phase analytical methodology (discover → profile → hypothesize → test → synthesize). Encodes how to classify columns into measure/dimension taxonomy, profile distributions beyond basics, generate hypotheses from observations, run statistical tests (scipy), and rank findings by surprise/effect/actionability.
+- **data-platform: `notebook-authoring.md`** — Jupyter notebook cell patterns. Documents the 4-cell cycle (context → code → interpretation → visualization), notebook structure (setup, layout template, schema reference), and pre-delivery cleanup checklist.
+- **viz-platform: `analytical-chart-selection.md`** — Maps analytical questions to Plotly `graph_objects` trace types. Covers distribution analysis (Histogram, Violin, Box, Contour), relationships (Scatter, Heatmap), composition (Treemap, Sunburst, Sankey, Waterfall), temporal/range (Candlestick), spatial (Choroplethmapbox), and KPIs (Indicator).
+- **viz-platform: `notebook-design-system.md`** — Dark-theme design system for Plotly notebooks. Defines LAYOUT_TEMPLATE, COLORS dict, COLORSCALES, `apply_layout()` helper. Includes design rules (pure black backgrounds, gridlines off by default, analytical titles, no pies), hover template standard, and absolute prohibitions.
+
+**Updated agents:**
+- **data-platform: `data-analysis.md`** — Expanded from profiler to autonomous analyst. Now supports two workflow modes: Exploration Mode (loads data-exploration-workflow.md + notebook-authoring.md) and Profiling Mode (loads data-profiling.md). Added analytical capabilities: measure/dimension classification, hierarchy identification, correlation matrices, hypothesis generation/testing, Simpson's paradox detection, finding ranking.
+
+**Why:** Closes the analytical methodology gap between data engineering (schema validation, dbt workflows) and autonomous data exploration (Jupyter notebooks with statistical discovery). Provides Claude Code with heuristics for when to use which chart type, how to structure analytical thinking, and how to design notebooks that are readable and reproducible.
+
+#### data-platform: Quality Gates for data-exploration-workflow
+
+Patched `data-exploration-workflow.md` with three mandatory quality gates:
+
+- **Hypothesis Quality Gate** (between Phase 3 and Phase 4): Three filters — falsifiability check (can data refute this?), circularity check (am I correlating a score with its own components?), and novelty screen (would an undergraduate already know this?). Hypotheses that fail any filter are discarded and replaced.
+- **Confirmation Standard** (within Phase 4): Replaces vague "moderate-to-strong" with mandatory exact statistics (r, R², p, Cohen's d), standard benchmark interpretation, practical significance assessment, at least one confounder controlled, and null comparison.
+- **Self-Critique Gate** (between Phase 4 and Phase 5): Five checks before synthesis — "so what?" test, mechanism test, confounder test, circular reasoning audit, and domain knowledge check. Findings that fail are demoted from key findings to observations.
+
+Also added 5 new anti-patterns to the anti-patterns table covering circular reasoning, vague effect sizes, fake novelty, universal confirmation, and untested mechanisms.
+
+**Why:** First run of the exploration workflow produced tautological findings (correlating composite scores with their own components), vague effect sizes ("moderate-to-strong"), zero refuted hypotheses, and domain common knowledge presented as novel discoveries. Quality gates prevent these failure modes structurally.
+
 ### Changed — BREAKING
 
 #### NetBox MCP Server: Gutted to 37 Tools (from 182)
