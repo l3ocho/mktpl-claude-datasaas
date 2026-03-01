@@ -1,4 +1,4 @@
-# Architecture — Leo Claude Marketplace v9.1.0
+# Architecture — Leo Claude Marketplace v9.1.2
 
 ## Overview
 
@@ -153,7 +153,7 @@ DMC validation, Plotly charts, theming, and analytical visualization for Jupyter
   - **component-check** — DMC component validation and registry lookup
   - **theme-setup** — Theme generation and customization
 - **MCP:** viz-platform
-- **New skills (v9.1.0):** analytical-chart-selection (graph_objects trace type selection guide), notebook-design-system (dark-theme design system for Plotly)
+- **New skills (v9.1.0+):** analytical-chart-selection (graph_objects trace type selection guide), notebook-design-system (dark-theme design system for Plotly), choropleth-map-patterns (go.Choroplethmap tile-based map background control and valid styles)
 
 #### data-seed (v0.1.0)
 Test data generation and database seeding. *Scaffold — not yet implemented.*

@@ -316,6 +316,7 @@ grep "description:" plugins/data-platform/agents/data-analysis.md
 INSTALLED=~/.claude/plugins/marketplaces/mktpl-claude-datasaas
 ls -la $INSTALLED/plugins/data-platform/skills/data-exploration-workflow.md
 ls -la $INSTALLED/plugins/viz-platform/skills/analytical-chart-selection.md
+ls -la $INSTALLED/plugins/viz-platform/skills/choropleth-map-patterns.md
 ```
 
 2. Verify agent references the skills:

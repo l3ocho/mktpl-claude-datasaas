@@ -163,7 +163,8 @@ mktpl-claude-datasaas/
 │   │   │   ├── responsive-design.md
 │   │   │   ├── theming-system.md
 │   │   │   ├── analytical-chart-selection.md
-│   │   │   └── notebook-design-system.md
+│   │   │   ├── notebook-design-system.md
+│   │   │   └── choropleth-map-patterns.md
 │   │   └── claude-md-integration.md
 │   ├── saas-api-platform/       # REST/GraphQL API scaffolding (scaffold)
 │   │   ├── .claude-plugin/

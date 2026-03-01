@@ -224,7 +224,7 @@
     },
     {
       "name": "viz-platform",
-      "version": "9.0.1",
+      "version": "9.1.0",
       "description": "Visualization tools with Dash Mantine Components validation, Plotly charts, and theming",
       "source": "./plugins/viz-platform",
       "author": {
