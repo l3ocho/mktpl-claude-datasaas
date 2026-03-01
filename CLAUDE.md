@@ -169,8 +169,8 @@ A plugin marketplace for Claude Code containing:
 | `code-sentinel` | Security scanning and code refactoring tools | 9.0.1 |
 | `claude-config-maintainer` | CLAUDE.md optimization and maintenance | 9.0.1 |
 | `cmdb-assistant` | NetBox CMDB integration for infrastructure management | 9.0.1 |
-| `data-platform` | pandas, PostgreSQL, and dbt integration for data engineering | 9.0.1 |
-| `viz-platform` | DMC validation, Plotly charts, and theming for dashboards | 9.0.1 |
+| `data-platform` | pandas, PostgreSQL, and dbt integration for data engineering | 9.1.0 |
+| `viz-platform` | DMC validation, Plotly charts, and theming for dashboards | 9.1.0 |
 | `contract-validator` | Cross-plugin compatibility validation and agent verification | 9.0.1 |
 | `project-hygiene` | Manual project hygiene checks | 9.0.1 |
 | `saas-api-platform` | REST/GraphQL API scaffolding for FastAPI and Express | 0.1.0 |

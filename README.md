@@ -22,8 +22,8 @@ A plugin marketplace for Claude Code providing sprint management, code review, s
 
 | Plugin | Version | Description |
 |--------|---------|-------------|
-| `data-platform` | 9.0.1 | pandas, PostgreSQL/PostGIS, and dbt integration |
-| `viz-platform` | 9.0.1 | Dash Mantine Components validation, Plotly charts, and theming |
+| `data-platform` | 9.1.0 | pandas, PostgreSQL/PostGIS, and dbt integration |
+| `viz-platform` | 9.1.0 | Dash Mantine Components validation, Plotly charts, and theming |
 | `data-seed` | 0.1.0 — scaffold | Test data generation and database seeding |
 
 ### Ops (3 plugins)

@@ -361,9 +361,10 @@ Ensure credentials are configured in `~/.config/claude/gitea.env`, `~/.config/cl
 **viz-platform** now includes skills for analytical visualization in notebooks:
 - `analytical-chart-selection` — Maps analytical questions to Plotly `graph_objects` trace types
 - `notebook-design-system` — Dark-theme design system for consistent, professional Jupyter notebooks
+- `choropleth-map-patterns` — Canonical patterns for go.Choroplethmap tile-based maps: background control via fill layers, valid and dead tile styles, common failure modes
 
 These skills are loaded automatically when using the **data-analysis agent** for exploratory workflows.
 
 ---
 
-*Last Updated: 2026-02-27 — v9.1.0 exploratory analytics skills added*
+*Last Updated: 2026-03-01 — v9.1.0+ exploratory analytics skills and choropleth-map-patterns*
