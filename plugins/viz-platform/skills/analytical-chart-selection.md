@@ -122,6 +122,8 @@ fig.update_layout(mapbox=dict(style='carto-darkmatter',
     center=dict(lat=43.7, lon=-79.4), zoom=10))
 ```
 
+**Note:** For tile-based `go.Choroplethmap` background control and style patterns, see the `choropleth-map-patterns` skill.
+
 ### Summary & KPI — "What's the headline number?"
 
 | Scenario | Trace Type | Why This One |

@@ -136,6 +136,7 @@ def apply_layout(fig, title, subtitle=None, **overrides):
 ### Mapbox
 - Style: `carto-darkmatter` (matches black background).
 - No Mapbox token required for `carto-darkmatter`.
+- For tile-based `go.Choroplethmap` background control and valid style patterns, see the `choropleth-map-patterns` skill.
 
 ---
 

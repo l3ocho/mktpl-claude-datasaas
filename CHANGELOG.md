@@ -73,6 +73,20 @@ Third patch to `data-exploration-workflow.md`:
 
 **Why:** Third analysis run produced genuine findings but meta-gate passed on "diverse effect sizes" (4/4 confirmed), 2 hypotheses appeared as "PENDING/PARTIAL" in the report, and the 108K-row profile table was ignored for the third consecutive run.
 
+#### viz-platform: `choropleth-map-patterns` Skill
+
+Added canonical patterns for `go.Choroplethmap` tile-based maps to prevent destructive iteration on background styling.
+
+- **Pattern 1:** Solid dark background via `white-bg` + world-polygon fill layer
+- **Pattern 2:** Transparent background (reveals container background)
+- **Pattern 3:** Standard tile map with street/terrain base (`open-street-map`)
+- **Valid Styles Table:** 6 working styles (white-bg, open-street-map, carto-positron, carto-darkmatter, variants)
+- **Dead Styles Warning:** 4 broken styles (stamen-toner, stamen-terrain, carto-voyager) that render blank
+- **Failure Modes Table:** 7 common issues with diagnostic root causes and solutions
+- **Design Integration:** Cross-references to notebook-design-system (COLORS tokens, colorscales)
+
+**Why:** Users were guessing at tile styles and iterating destructively when simple background changes were requested. This skill documents that `paper_bgcolor` doesn't affect tile canvas, only the HTML container — the map background **is** the tile layer, controlled via map style or fill layers.
+
 ### Changed — BREAKING
 
 #### NetBox MCP Server: Gutted to 37 Tools (from 182)
