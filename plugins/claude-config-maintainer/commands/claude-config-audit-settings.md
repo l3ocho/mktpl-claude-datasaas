@@ -84,7 +84,36 @@ For each directory scope in `settings-optimization.md` Section 4:
 2. Determine if auto-allow is justified (≥2 layers required)
 3. Note any scopes that lack coverage
 
-### Step 6: Compare Against Recommended Profile
+### Step 6: Check Baseline Status
+
+Check for `.claude/settings.json`:
+
+1. **If baseline exists:**
+   - Report baseline age (last modified date)
+   - Count patterns in baseline vs. current local
+   - Flag if local has significantly more patterns than baseline (drift indicator)
+   - Include baseline health in the audit summary
+
+2. **If no baseline exists:**
+   - Flag as a Coverage issue (-5 points from Coverage category)
+   - Recommend establishing a baseline after optimization
+   - Note: "Without a baseline, optimizations will be overwritten by session approvals"
+
+Include in audit output:
+```
+Baseline Status: ✓ Present (last modified 2026-02-28, 35 patterns)
+                 ⚠️ Local has 52 patterns — 17 session additions detected
+                 Run `/claude-config drift-check` for detailed analysis
+```
+
+Or:
+```
+Baseline Status: ✗ No baseline in .claude/settings.json
+                 ⚠️ Optimizations vulnerable to session-approval overwrite
+                 Run `/claude-config baseline save` after optimization
+```
+
+### Step 7: Compare Against Recommended Profile
 
 Based on review layer count:
 - 0-1 layers: Recommend `conservative` profile
@@ -93,7 +122,7 @@ Based on review layer count:
 
 Calculate profile fit percentage.
 
-### Step 7: Generate Scored Report
+### Step 8: Generate Scored Report
 
 Calculate scores using `settings-optimization.md` Section 6.
 
@@ -102,12 +131,15 @@ Calculate scores using `settings-optimization.md` Section 6.
 ```
 Settings Efficiency Score: XX/100
   Redundancy:       XX/25
-  Coverage:         XX/25
+  Coverage:         XX/25 (includes -5 deduction if no baseline)
   Safety Alignment: XX/25
   Profile Fit:      XX/25
 
 Current Profile: [closest match or "custom"]
 Recommended Profile: [target based on review layers]
+
+Baseline Status: [✓ Present or ✗ No baseline detected]
+  [Details about baseline age, drift, or recommendation]
 
 Issues Found:
   🔴 CRITICAL: [description]

@@ -155,7 +155,15 @@ Before recommending auto-allow patterns, verify active review layers:
 3. Confirm plugins are listed in `.claude-plugin/marketplace.json`
 4. Only recommend auto-allow for scopes covered by ≥2 verified review layers
 
-#### C. Settings Efficiency Score (100 points)
+#### C. Baseline Status Check
+
+Before calculating the final score, check for `.claude/settings.json`:
+- If baseline exists, report age and pattern count
+- If baseline is older than last optimization, flag as stale
+- If local has significantly more patterns, suggest drift-check
+- If no baseline exists, deduct -5 points from Coverage category
+
+#### D. Settings Efficiency Score (100 points)
 
 | Category | Points |
 |----------|--------|
@@ -164,7 +172,34 @@ Before recommending auto-allow patterns, verify active review layers:
 | Safety Alignment | 25 |
 | Profile Fit | 25 |
 
-### 3. Optimize CLAUDE.md Structure
+### 3. Manage Permission Baseline
+
+When managing the permission baseline:
+
+#### A. Save Baseline
+
+1. Determine the optimized permission set (from recent optimize-settings run or fresh audit)
+2. Write to `.claude/settings.json` with proper formatting
+3. Offer to clean `settings.local.json` of redundant patterns
+4. Remind user to commit `settings.json` to version control
+
+#### B. Check for Drift
+
+1. Compare baseline (settings.json) vs. current local (settings.local.json)
+2. Classify additions: redundant, machine-specific, session drift, compound command gap
+3. Calculate drift score
+4. Recommend appropriate action based on drift severity
+
+#### C. Restore Baseline
+
+1. Read baseline from settings.json
+2. Identify machine-specific patterns in local to preserve
+3. Remove all other patterns from local
+4. Backup before any write
+
+**Key Principle:** The baseline in `settings.json` is the source of truth for team-wide permissions. `settings.local.json` is for machine-specific additions only. Session approvals are noise that accumulates in `settings.local.json` — the baseline approach makes this noise harmless.
+
+### 4. Optimize CLAUDE.md Structure
 
 **Recommended Structure:**
 
@@ -199,7 +234,7 @@ Common issues and solutions.
 - Use headers that scan easily
 - Include examples where they add clarity
 
-### 4. Apply Best Practices
+### 5. Apply Best Practices
 
 **DO:**
 - Use clear, direct language
@@ -216,7 +251,7 @@ Common issues and solutions.
 - Add generic advice that applies to all projects
 - Use emojis unless project requires them
 
-### 5. Generate Improvement Reports
+### 6. Generate Improvement Reports
 
 After analyzing a CLAUDE.md, provide:
 
@@ -252,7 +287,7 @@ Suggested Actions:
 Would you like me to implement these improvements?
 ```
 
-### 6. Insert Plugin Integrations
+### 7. Insert Plugin Integrations
 
 When adding plugin integration content to CLAUDE.md:
 
@@ -287,7 +322,7 @@ Add this integration to CLAUDE.md?
 - Allow users to skip specific plugins they don't want documented
 - Preserve existing CLAUDE.md structure and content
 
-### 7. Create New CLAUDE.md Files
+### 8. Create New CLAUDE.md Files
 
 When creating a new CLAUDE.md:
 
