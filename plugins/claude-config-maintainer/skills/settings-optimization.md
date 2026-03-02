@@ -225,6 +225,10 @@ This is the target profile for projects using the marketplace's multi-layer revi
       "Bash(pytest *)",
       "Bash(python -m *)",
       "Bash(./scripts/*)",
+      "Bash(cd * && *)",
+      "Bash(cd * ; *)",
+      "Bash(source * && *)",
+      "Bash(export * && *)",
       "WebFetch",
       "WebSearch"
     ],
@@ -380,3 +384,88 @@ Count verified review layers for each scope:
 | cmdb-assistant PreToolUse | hooks.json exists with PreToolUse on MCP create/update |
 
 **Recommendation threshold:** Only recommend auto-allow for scopes with ≥2 verified layers.
+
+---
+
+## Section 8: Dual-File Strategy (Permission Persistence)
+
+### The Overwrite Problem
+
+Claude Code writes session-approved operations to `settings.local.json` by replacing the entire `permissions.allow` array. This means any curated, optimized allowlist is lost whenever a user approves a new operation during a session. This is a known Claude Code platform limitation (GitHub #6900, #6850).
+
+### Solution: Baseline in settings.json
+
+Use `.claude/settings.json` (shared, version-controlled) as the **permission baseline**:
+
+- `.claude/settings.json` → Optimized baseline permissions. NOT modified by Claude Code session approvals. Committed to git. Shared across team members.
+- `.claude/settings.local.json` → Machine-specific additions + accumulated session approvals. Gitignored. May drift over time.
+
+Claude Code **merges** permissions from both files. Patterns in `settings.json` are always active regardless of what happens to `settings.local.json`.
+
+### Baseline Workflow
+
+1. Run `/claude-config optimize-settings` to generate optimized permissions
+2. Run `/claude-config baseline save` to write the optimized set to `settings.json`
+3. Optionally clean `settings.local.json` to remove patterns now covered by the baseline
+4. Session approvals accumulate in `settings.local.json` — baseline remains untouched
+5. Periodically run `/claude-config drift-check` to assess degradation
+6. Run `/claude-config baseline restore` to reset `settings.local.json` to baseline-only
+
+### File Precedence
+
+When both files exist, Claude Code evaluates permissions as:
+- `allow`: Union of both files' allow arrays (both apply)
+- `deny`: Union of both files' deny arrays (both apply)
+- `deny` always wins over `allow` regardless of source file
+
+This means the baseline's deny rules are always enforced even if `settings.local.json` attempts to override them.
+
+### What Goes Where
+
+| Content | File | Why |
+|---------|------|-----|
+| Optimized profile permissions (reviewed/conservative) | `settings.json` | Persistent, version-controlled |
+| Deny rules for secrets and destructive ops | `settings.json` | Must never be overwritten |
+| Machine-specific paths or tools | `settings.local.json` | Per-developer customization |
+| Session-accumulated approvals | `settings.local.json` | Claude Code writes here automatically |
+| MCP server permissions | `settings.json` | Consistent across team |
+
+---
+
+## Section 9: Compound Command Pattern Limitations
+
+### Known Claude Code Matching Behavior
+
+Claude Code evaluates permission patterns against the **entire command string**, not individual commands within compound expressions.
+
+| Command Type | Example | Pattern `Bash(grep *)` Matches? |
+|-------------|---------|-------------------------------|
+| Simple | `grep -r "foo" .` | ✅ Yes |
+| Piped | `grep -r "foo" . \| wc -l` | ✅ Yes (starts with grep) |
+| Piped (later) | `cat file.txt \| grep "foo"` | ❌ No (starts with cat) |
+| Chained (&&) | `cd /tmp && ls` | ❌ No (matched as full string) |
+| Chained (\|\|) | `test -f x \|\| echo "missing"` | ❌ No |
+| Redirect | `echo "x" > file.txt` | ✅ Yes (starts with echo) |
+| Semicolon | `cd /tmp; ls -la` | ❌ No (matched as full string) |
+
+### Impact on Optimization Recommendations
+
+When the audit detects a user has many individual scoped Bash patterns and still reports frequent approval prompts, the most likely cause is compound commands. The audit should:
+
+1. **Flag the limitation** — inform the user that piped/chained commands won't match individual patterns
+2. **Recommend broader patterns** where safe — e.g., `Bash(cd * && *)` for common directory-change-then-command patterns
+3. **Never recommend unscoped `Bash`** — even for compound commands, always use at least a prefix pattern
+4. **Document common compound patterns** that the reviewed profile should include
+
+### Recommended Compound Patterns for `reviewed` Profile
+
+Add these to the reviewed profile when the user reports persistent prompts:
+
+```json
+"Bash(cd * && *)",
+"Bash(cd * ; *)",
+"Bash(source * && *)",
+"Bash(export * && *)"
+```
+
+These cover the most common compound command patterns in development workflows without opening unscoped Bash access.

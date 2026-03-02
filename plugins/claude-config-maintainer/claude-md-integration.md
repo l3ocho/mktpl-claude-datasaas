@@ -13,6 +13,8 @@ This project uses the **claude-config-maintainer** plugin to analyze and optimiz
 | `/claude-config lint` | Lint CLAUDE.md for anti-patterns and best practices (31 rules) |
 | `/claude-config audit-settings` | Audit settings.local.json permissions with 100-point scoring |
 | `/claude-config optimize-settings` | Optimize permission patterns and apply named profiles |
+| `/claude-config baseline` | Save/restore permission baseline in settings.json |
+| `/claude-config drift-check` | Detect permission drift between baseline and current |
 | `/claude-config permissions-map` | Visual map of review layers and permission coverage |
 
 ### CLAUDE.md Scoring System
@@ -44,6 +46,17 @@ The settings audit uses a 100-point scoring system across four categories:
 | `conservative` | New users, minimal auto-allow, prompts for most writes |
 | `reviewed` | Projects with 2+ review layers (code-sentinel, doc-guardian, PR review) |
 | `autonomous` | Trusted CI/sandboxed environments only |
+
+### Permission Persistence (Dual-File Strategy)
+
+The plugin uses a dual-file strategy to prevent Claude Code's session approvals from overwriting optimized permissions:
+
+| File | Purpose | Modified By |
+|------|---------|-------------|
+| `.claude/settings.json` | Permission baseline (committed, persistent) | `/claude-config baseline save` only |
+| `.claude/settings.local.json` | Machine-specific + session drift (gitignored) | Claude Code session approvals + manual edits |
+
+**Workflow:** Optimize → Save baseline → Work normally → Drift-check periodically → Restore when needed.
 
 ### Usage Guidelines
 

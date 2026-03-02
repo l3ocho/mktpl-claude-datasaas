@@ -1,6 +1,6 @@
 {
   "name": "claude-config-maintainer",
-  "version": "9.0.1",
+  "version": "9.1.0",
   "description": "Maintains and optimizes CLAUDE.md and settings.local.json configuration files for Claude Code projects",
   "author": {
     "name": "Leo Miranda",
