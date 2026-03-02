@@ -149,6 +149,35 @@ Changes applied:
   - Added 1 safety deny rule
 ```
 
+### Step 8: Offer Baseline Save
+
+After successful optimization, if no baseline exists in `.claude/settings.json`:
+
+```
+Optimization complete!
+
+⚠️  No permission baseline detected in .claude/settings.json.
+    Without a baseline, these optimizations may be overwritten
+    by Claude Code's session approvals.
+
+    Run `/claude-config baseline save` to persist this optimized
+    configuration as your baseline.
+```
+
+If a baseline exists, compare the optimized result against it:
+
+```
+Baseline exists in .claude/settings.json.
+
+Changes vs. baseline:
+  + 2 new patterns recommended
+  - 1 stale pattern to remove
+
+Update the baseline?
+  [1] Yes, update baseline with optimized patterns
+  [2] No, keep current baseline
+```
+
 ## Profile Application
 
 When using `--profile=NAME`:
@@ -199,6 +228,8 @@ Confirm this is a sandboxed environment?
 3. **NEVER add unscoped `Bash` to allow** — always use scoped patterns
 4. **Preview is MANDATORY** before applying changes
 5. **Verify review layers** before recommending broad permissions
+6. **Recommend baseline save** after every successful optimization
+7. **Compare against existing baseline** before applying changes to catch regressions
 
 ## Output Format
 

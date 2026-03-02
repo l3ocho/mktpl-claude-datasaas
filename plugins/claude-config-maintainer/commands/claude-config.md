@@ -20,6 +20,8 @@ When invoked without a sub-command, display available actions and ask which to r
 | `lint` | `/claude-config-maintainer:claude-config-lint` | Lint CLAUDE.md for anti-patterns and best practices |
 | `audit-settings` | `/claude-config-maintainer:claude-config-audit-settings` | Audit settings.local.json permissions (100-point score) |
 | `optimize-settings` | `/claude-config-maintainer:claude-config-optimize-settings` | Optimize permissions (profiles, consolidation, dry-run) |
+| `baseline` | `/claude-config-maintainer:claude-config-baseline` | Save/restore permission baseline in settings.json |
+| `drift-check` | `/claude-config-maintainer:claude-config-drift-check` | Detect permission drift between baseline and current |
 | `permissions-map` | `/claude-config-maintainer:claude-config-permissions-map` | Visual review layer + permission coverage map |
 
 ## Routing

@@ -77,6 +77,8 @@ If dispatch routing fails, use the direct plugin-prefixed format: `/<plugin-name
 | **claude-config-maintainer** | `/claude-config lint` | | X | Lint CLAUDE.md for anti-patterns and best practices |
 | **claude-config-maintainer** | `/claude-config audit-settings` | | X | Audit settings.local.json permissions (100-point score) |
 | **claude-config-maintainer** | `/claude-config optimize-settings` | | X | Optimize permissions (profiles, consolidation, dry-run) |
+| **claude-config-maintainer** | `/claude-config baseline` | | X | Save/restore permission baseline in settings.json |
+| **claude-config-maintainer** | `/claude-config drift-check` | | X | Detect permission drift between baseline and current |
 | **claude-config-maintainer** | `/claude-config permissions-map` | | X | Visual review layer + permission coverage map |
 | **cmdb-assistant** | `/cmdb setup` | | X | Setup wizard for NetBox MCP server |
 | **cmdb-assistant** | `/cmdb search` | | X | Search NetBox for devices, IPs, sites |
