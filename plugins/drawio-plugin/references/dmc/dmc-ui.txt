@@ -1,0 +1,8 @@
+# TODO: populate
+# This file must contain Leo's curated DMC reference documentation for UI interaction components.
+# Components covered: NavLink, Anchor, Breadcrumbs, Burger, Tabs, Button, ActionIcon, Text, Title,
+# Paper, Card, Image, Avatar, Badge, TextInput, PasswordInput, NumberInput, Textarea, Select,
+# MultiSelect, Checkbox, Radio, Switch, Slider, Table, Tooltip, Popover, Menu, List, etc.
+#
+# Provide this file to populate: copy from your local DMC split files.
+# Do NOT generate DMC content from scratch — use Leo's curated files.

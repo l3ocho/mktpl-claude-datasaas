@@ -8,6 +8,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added
 
+#### `drawio-plugin` v1.0.0 — Wireframe Design Tools (data domain)
+
+- `/drawio parse` — parse `.drawio` XML into `WIREFRAME.md` spec with DMC domain file declarations
+- `/drawio generate` — generate `.drawio` XML from UI description following DMC layer conventions
+- `drawio-conventions.md` skill — XML structure, layer naming, attribute schema, worked example
+- `wireframe-schema.md` skill — WIREFRAME.md contract definition (producer: drawio-plugin, consumer: viz-platform)
+- `dmc-domain-files.md` skill — DMC file loading strategy by implementation layer
+- DMC domain reference files added to `references/dmc/` (layout, ui, charts, feedback, theme — placeholders pending Leo's curated files)
+- Resolves upstream input gap for viz-platform DMC scaffolding
+
 #### Profile-Based Plugin Installation
 
 `install-plugin.sh` now supports `--profile <name>` flag for context-aware plugin installation. Plugins can define multiple integration profiles in their `claude-md-integration.md` using HTML comment markers (`<!-- BEGIN plugin:profile -->` / `<!-- END plugin:profile -->`). The install script extracts only the matching profile's content.

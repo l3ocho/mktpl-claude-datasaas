@@ -1,0 +1,8 @@
+# TODO: populate
+# This file must contain Leo's curated DMC reference documentation for layout components.
+# Components covered: AppShell, AppShellNavbar, AppShellMain, AppShellHeader, AppShellFooter,
+# AppShellSection, AppShellAside, Grid, GridCol, Stack, Group, Center, Container, Flex,
+# SimpleGrid, Space, Divider, ScrollArea, AspectRatio
+#
+# Provide this file to populate: copy from your local DMC split files.
+# Do NOT generate DMC content from scratch — use Leo's curated files.
