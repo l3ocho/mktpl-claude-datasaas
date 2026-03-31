@@ -40,7 +40,7 @@ This file provides guidance to Claude Code when working with code in this reposi
 
 | Rule | Summary |
 |------|---------|
-| **Check everything** | Search cache (`~/.claude/plugins/cache/`), installed (`~/.claude/plugins/marketplaces/`), and source (`~/claude-plugins-work/`) |
+| **Check everything** | Search cache (`~/.claude/plugins/cache/`), installed (`~/.claude/plugins/marketplaces/`), and source (`~/Projects/personal/mktpl-claude-datasaas/`) |
 | **Believe the user** | User knows their system. Investigate before disagreeing. |
 | **Verify before "done"** | Run commands, show output, check all locations. "Done" = verified working. |
 | **Show what's asked** | Don't interpret or summarize unless asked. |
@@ -49,6 +49,17 @@ This file provides guidance to Claude Code when working with code in this reposi
 
 Run `./scripts/verify-hooks.sh`. If changes affect MCP servers or hooks, inform user to restart session.
 **DO NOT clear cache mid-session** - breaks loaded MCP tools.
+
+### NEVER MODIFY THE INSTALLED PLUGINS DIRECTORY
+
+This project is the **source** of the marketplace. The installed copy lives at `~/.claude/plugins/` and is used by all other projects on this machine.
+
+- **FORBIDDEN:** Editing, creating, or deleting any file under `~/.claude/plugins/` from within this project
+- **REASON:** The installed copy is replaced on every update/reinstall from this repo — any direct edits there are lost
+- **REQUIRED:** All changes must be made to the source in `~/Projects/personal/mktpl-claude-datasaas/`
+- After source changes, the user runs the install/update process to propagate them to `~/.claude/plugins/`
+
+**NO EXCEPTIONS.** If asked to "fix" something in the installed plugins from here, edit the source instead and remind the user to reinstall.
 
 ### NEVER USE CLI TOOLS FOR EXTERNAL SERVICES
 - **FORBIDDEN:** `gh`, `tea`, `curl` to APIs, any CLI that talks to Gitea/GitHub/external services
@@ -143,8 +154,8 @@ These plugins exist in source but are **NOT relevant** to this project's workflo
 
 | Context | Path | What To Do |
 |---------|------|------------|
-| **Editing plugin source** | `~/claude-plugins-work/plugins/` | Modify code, add features |
-| **Using installed plugins** | `~/.claude/plugins/marketplaces/` | Run commands like `/sprint plan` |
+| **Editing plugin source** | `~/Projects/personal/mktpl-claude-datasaas/plugins/` | Modify code, add features |
+| **Using installed plugins** | `~/.claude/plugins/marketplaces/` | Run commands like `/sprint plan` — **never edit here** |
 
 When user says "run /sprint plan", use the INSTALLED plugin.
 When user says "fix the sprint plan command", edit the SOURCE code.
@@ -490,11 +501,11 @@ Understanding where files live is critical for debugging:
 
 | Context | Path | Purpose |
 |---------|------|---------|
-| **Source** | `~/claude-plugins-work/` | Development - edit here |
-| **Installed** | `~/.claude/plugins/marketplaces/mktpl-claude-datasaas/` | Runtime - Claude uses this |
+| **Source** | `~/Projects/personal/mktpl-claude-datasaas/` | Development - edit here |
+| **Installed** | `~/.claude/plugins/marketplaces/mktpl-claude-datasaas/` | Runtime - Claude uses this — **never edit directly** |
 | **Cache** | `~/.claude/` | Plugin metadata and settings |
 
-**Key insight:** Edits to source require reinstall/update to take effect at runtime.
+**Key insight:** Edits to source require reinstall/update to take effect at runtime. Direct edits to the installed copy are wiped on the next update.
 
 ## Debugging & Troubleshooting
 
