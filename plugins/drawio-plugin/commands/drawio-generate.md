@@ -35,9 +35,10 @@ Load `skills/drawio-conventions.md` before proceeding.
 Analyze `{description}` to identify:
 
 - **Pages needed:** Explicit (`--pages`) or inferred from description (e.g., "a home page and an about page" → `home`, `about`)
-- **Layout type:** Default to AppShell. If description specifies a different layout, note it but still use AppShell as the outer wrapper.
+- **Layout type:** Default to AppShell. Determine which regions exist (navbar, header, footer, aside) from description.
 - **Navbar items:** Extract any navigation items mentioned (e.g., "with links to Home, Projects, About")
 - **Per-page components:** Group described components by page
+- **Callbacks:** Note any interaction descriptions that imply callback relationships
 
 If description is too vague to determine pages, default to a single page named `home`.
 
@@ -47,25 +48,32 @@ For each page, generate XML following the layer/group/attribute conventions exac
 
 #### XML Structure Per Page
 
-Every `<diagram>` must contain these layers in this order:
+Every `<diagram>` must contain these layers in this order. Only generate `content-{region}` layers
+that exist in this project's layout:
 
-**Root layer (`id="1"`):**
-- One `<object component="AppShell">` element with:
+**Root layer (`id="1"`, app-shell):**
+- `<object component-class="AppShell">` with:
   - `label=""`
-  - `instructions=""` (or any noted constraints)
   - `<mxGeometry x="0" y="0" width="1440" height="900"/>`
+- `<object component-class="AppShellNavbar">` (if navbar): `component-instructions="width=240"` (default)
+- `<object component-class="AppShellMain">` always present
+- `<object component-class="AppShellHeader">` (if header exists)
+- `<object component-class="AppShellFooter">` (if footer exists)
+- `<object component-class="AppShellAside">` (if aside exists)
+- All region containers parented to `id="1"` (root layer)
 
-**`layout` layer (`value="layout"`, `locked=1`):**
-- `<object component="AppShellNavbar">` with `instructions="width=240"` (default)
-- `<object component="AppShellMain">` with `instructions=""`
-- Both parented to the layout layer cell
-
-**`content-navbar` layer (`value="content-navbar"`, `locked=1`):**
+**`content-navbar` layer (`value="content-navbar"`, `locked=1`)** — if navbar exists:
 - Standard navbar structure:
   ```
-  Paper (padding=0, radius=0) → Stack (gap=0) → NavLink items (one per nav item)
+  Paper (component-instructions="padding=0, radius=0") → Stack (component-instructions="gap=0") → NavLink items
   ```
-- Each NavLink: `label="{nav item name}"`, `instructions=""`, no `id` unless user specified
+- Each NavLink: `label="{nav item name}"`, `component-id="nav-{slug}"`, no callbacks unless user specified
+
+**`content-header` layer** — if header exists (locked=1)
+
+**`content-footer` layer** — if footer exists (locked=1)
+
+**`content-aside` layer** — if aside exists (locked=1)
 
 **`content-page` layer (`value="content-page"`, `locked=0`):**
 - Components described for this page
@@ -75,15 +83,23 @@ Every `<diagram>` must contain these layers in this order:
   - User input → `TextInput`, `Select`, `Button`
   - Charts/graphs → `AreaChart`, `BarChart`, `LineChart` (or note: "use dcc.Graph with Plotly figure")
   - Layout grouping → `Stack`, `Group`, `Grid` / `GridCol`
+- Use groups within `content-page` for logical sections (forms, tables, charts) — not sub-layers
 
-#### Attribute Completeness
+#### Attribute Convention
 
 Every `<object>` element MUST have:
-- `component` — the DMC class name
+- `component-class` — the DMC class name
 - `label` — display text, or `""` for structural wrappers
-- `instructions` — implementation notes, or `""` — **never omit this attribute**
 
-Omit `id` and `css_id` unless the user explicitly specifies them in the description.
+Include when relevant:
+- `component-id` — when the component participates in callbacks or needs CSS targeting. Follow `{prefix}-{descriptor}` naming.
+- `component-instructions` — when there are meaningful implementation notes. Omit entirely if nothing to note.
+- `component-order` — when ordering within a parent matters
+- `callback-out` / `callback-out-details` — when the component triggers actions
+- `callback-in` / `callback-in-details` — when the component reacts to callbacks
+- `db-binding` — when the component is bound to a database column (`table_name.column_name`)
+
+**Do NOT generate:** `component`, `instructions`, `dash_id`, `css_id` — these are old attributes. Always use the new names.
 
 #### Geometry Guidelines
 
@@ -142,9 +158,10 @@ Run `/drawio parse {output_path}` to generate WIREFRAME.md when ready.
 1. **Completeness over brevity** — generate all mentioned components, even if structural
 2. **Follow conventions exactly** — no spatial inference, parent chain is the authority
 3. **Placeholder content** — use realistic placeholder labels (e.g., `"Home"`, `"Projects"`, `"Chart Title"`)
-4. **Instructions are guidance, not code** — keep `instructions` attribute values brief and human-readable
-5. **No custom attributes** — only `component`, `label`, `instructions`, `id`, `css_id` on `<object>` elements
+4. **Instructions are guidance, not code** — keep `component-instructions` values brief and human-readable
+5. **New attributes only** — only `component-class`, `label`, `component-id`, `component-parent-id`, `component-instructions`, `component-order`, `callback-in`, `callback-in-details`, `callback-out`, `callback-out-details`, `db-binding` on `<object>` elements
 6. **Valid XML** — output must be parseable by draw.io without modification
+7. **Omit optional attributes** — do not include empty optional attributes; omit entirely when not needed
 
 ---
 
@@ -157,6 +174,7 @@ Input:
 
 Output: A `.drawio` XML file with:
 - 2 pages: `home`, `about`
-- Shared navbar: Paper → Stack → NavLink ×3 (Home, Projects, About)
-- `home` page: Title + Grid → GridCol ×3 → Card ×3
-- `about` page: Title + Text (placeholder)
+- Root layer (app-shell): AppShell, AppShellNavbar, AppShellMain
+- Shared navbar (content-navbar): Paper → Stack → NavLink ×3 (nav-home, nav-projects, nav-about)
+- `home` page (content-page): Title [component-id=home-title] + Grid → GridCol ×3 → Card ×3
+- `about` page (content-page): Title [component-id=about-title] + Text (placeholder)

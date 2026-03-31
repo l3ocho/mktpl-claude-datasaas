@@ -15,7 +15,7 @@ Leo's DMC reference documentation has been split into domain-specific files.
 These files travel with `drawio-plugin` in `references/dmc/`.
 viz-platform loads only the files relevant to the current project — reducing context size.
 
-The `drawio parse` command detects which files are needed by scanning component names.
+The `drawio parse` command detects which files are needed by scanning `component-class` attribute values.
 This is declared in `WIREFRAME.md` under `## DMC Domain Files Required`.
 viz-platform reads that declaration to know which files to load at session start.
 
@@ -85,7 +85,7 @@ SegmentedControl, Rating, ColorInput, ColorPicker
 
 ### Conditional (dmc-charts.txt)
 
-Load when any of these appear as `component` values:
+Load when any of these appear as `component-class` values:
 ```
 AreaChart, BarChart, LineChart, DonutChart, PieChart,
 RadarChart, SparklineChart, BubbleChart, ScatterChart,
@@ -94,7 +94,7 @@ CompositeChart
 
 ### Conditional (dmc-feedback.txt)
 
-Load when any of these appear as `component` values:
+Load when any of these appear as `component-class` values:
 ```
 Alert, Modal, ModalHeader, ModalBody, ModalFooter,
 Drawer, DrawerHeader, DrawerBody, DrawerFooter,
@@ -106,8 +106,8 @@ Stepper, StepperStep
 
 ### Conditional (dmc-theme.txt)
 
-Load when any of these appear as `component` values, or when theme configuration is mentioned
-in `instructions` attributes:
+Load when any of these appear as `component-class` values, or when theme configuration is mentioned
+in `component-instructions` attributes:
 ```
 MantineProvider, ColorSchemeScript,
 theme, createTheme, mantineTheme
@@ -117,7 +117,7 @@ theme, createTheme, mantineTheme
 
 ## How the Parser Uses This Skill
 
-1. After extracting all `component` values from the `.drawio` XML
+1. After extracting all `component-class` values from the `.drawio` XML
 2. Run against each mapping above
 3. Build the `## DMC Domain Files Required` section in `WIREFRAME.md`
 4. Always include `dmc-layout.txt` and `dmc-ui.txt` — never omit them

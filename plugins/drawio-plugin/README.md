@@ -34,8 +34,8 @@ direction: generate a `.drawio` wireframe from a description when no design file
 
 It captures:
 - Which DMC domain reference files the session needs
-- The shared layout component tree (AppShell, navbar) — written once
-- Per-page component hierarchies with implementation notes from the `instructions` attributes
+- The shared layout component tree (AppShell, navbar and other regions) — written once
+- Per-page component hierarchies with `component-instructions`, callback wiring, and data bindings
 
 **Convention:** Wireframes live in `docs/design/{project-name}.drawio` and `WIREFRAME.md`
 lands in the same directory. This folder syncs via Nextcloud across all environments.
