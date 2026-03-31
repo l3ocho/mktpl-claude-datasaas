@@ -116,6 +116,8 @@ If dispatch routing fails, use the direct plugin-prefixed format: `/<plugin-name
 | **viz-platform** | `/viz breakpoints` | | X | Configure responsive layout breakpoints |
 | **viz-platform** | `/viz design-review` | | X | Detailed design system audits |
 | **viz-platform** | `/viz design-gate` | | X | Binary pass/fail design system validation gates |
+| **drawio-plugin** | `/drawio parse` | | X | Parse .drawio XML → WIREFRAME.md spec + DMC domain file declarations |
+| **drawio-plugin** | `/drawio generate` | | X | Generate .drawio XML from UI description following DMC layer conventions |
 | **contract-validator** | `/cv validate` | | X | Full marketplace compatibility validation |
 | **contract-validator** | `/cv check-agent` | | X | Validate single agent definition |
 | **contract-validator** | `/cv list-interfaces` | | X | Show all plugin interfaces |
