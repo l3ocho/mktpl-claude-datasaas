@@ -1,0 +1,14 @@
+{
+  "name": "drawio-plugin",
+  "version": "1.0.0",
+  "description": "Wireframe design tools for draw.io — parse .drawio XML into DMC component specs and generate .drawio wireframes from UI descriptions",
+  "author": {
+    "name": "Leo Miranda",
+    "email": "leobmiranda@gmail.com"
+  },
+  "homepage": "https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas/src/branch/main/plugins/drawio-plugin/README.md",
+  "repository": "https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas.git",
+  "license": "MIT",
+  "keywords": ["drawio", "wireframe", "dmc", "dash-mantine-components", "ui-design", "frontend"],
+  "commands": ["./commands/"]
+}

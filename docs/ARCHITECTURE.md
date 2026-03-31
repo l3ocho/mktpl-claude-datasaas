@@ -155,6 +155,14 @@ DMC validation, Plotly charts, theming, and analytical visualization for Jupyter
 - **MCP:** viz-platform
 - **New skills (v9.1.0+):** analytical-chart-selection (graph_objects trace type selection guide), notebook-design-system (dark-theme design system for Plotly), choropleth-map-patterns (go.Choroplethmap tile-based map background control and valid styles)
 
+#### drawio-plugin (v1.0.0)
+Wireframe design tools bridging draw.io files and DMC scaffolding via viz-platform.
+- **Commands:** /drawio (parse|generate)
+- **Skills:** drawio-conventions, wireframe-schema, dmc-domain-files
+- **References:** `references/dmc/` — curated DMC documentation split by domain (layout, ui, charts, feedback, theme)
+- **Output contract:** `/drawio parse` produces `WIREFRAME.md` — upstream input for viz-platform DMC scaffolding
+- **Wireframe convention:** App project wireframes are stored in `docs/design/{project-name}.drawio`. The generated `WIREFRAME.md` lands in the same directory (`docs/design/WIREFRAME.md`). This folder is synced via Nextcloud and shared across all development environments.
+
 #### data-seed (v0.1.0)
 Test data generation and database seeding. *Scaffold — not yet implemented.*
 
