@@ -31,7 +31,7 @@ WIREFRAME.md is the upstream input for viz-platform DMC scaffolding.
 When scaffolding components, always read WIREFRAME.md first for:
 - Component hierarchy and parent chain
 - DMC domain files to load
-- Implementation notes from the `instructions` attributes
+- Implementation notes from `component-instructions`, callback wiring, and data bindings
 ```
 
 ## Commands Reference
@@ -59,7 +59,7 @@ This folder is synced via Nextcloud and shared across all development environmen
 The file contains:
 - **DMC domain files required** — which reference files viz-platform should load
 - **Shared layout** — AppShell, navbar component tree (written once, applies to all pages)
-- **Per-page content** — component hierarchy for each route, with implementation notes
+- **Per-page content** — component hierarchy for each route, with `component-instructions`, callback wiring, and data bindings
 
 ## Related Plugins
 
