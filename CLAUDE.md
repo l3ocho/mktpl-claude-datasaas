@@ -165,7 +165,7 @@ When user says "fix the sprint plan command", edit the SOURCE code.
 ## Project Overview
 
 **Repository:** mktpl-claude-datasaas
-**Version:** 9.1.2
+**Version:** 9.2.0
 **Status:** Production Ready
 
 A plugin marketplace for Claude Code containing:
@@ -182,6 +182,7 @@ A plugin marketplace for Claude Code containing:
 | `cmdb-assistant` | NetBox CMDB integration for infrastructure management | 9.0.1 |
 | `data-platform` | pandas, PostgreSQL, and dbt integration for data engineering | 9.1.0 |
 | `viz-platform` | DMC validation, Plotly charts, and theming for dashboards | 9.1.0 |
+| `drawio-plugin` | Wireframe design tools — parse .drawio XML into DMC specs, generate wireframes | 1.0.0 |
 | `contract-validator` | Cross-plugin compatibility validation and agent verification | 9.0.1 |
 | `project-hygiene` | Manual project hygiene checks | 9.0.1 |
 | `saas-api-platform` | REST/GraphQL API scaffolding for FastAPI and Express | 0.1.0 |
@@ -253,12 +254,12 @@ mktpl-claude-datasaas/
 │   ├── data-platform/            # pandas, PostgreSQL, dbt
 │   ├── viz-platform/             # DMC, Plotly, theming
 │   └── contract-validator/       # Plugin compatibility validation
-├── plugins/                      # All plugins (20 total)
+├── plugins/                      # All plugins (21 total)
 │   ├── projman/                  # [core] Sprint management
 │   │   ├── .claude-plugin/plugin.json
-│   │   ├── commands/             # 19 commands
+│   │   ├── commands/             # 22 commands
 │   │   ├── agents/               # 4 agents
-│   │   └── skills/               # 23 reusable skill files
+│   │   └── skills/               # 31 reusable skill files
 │   ├── git-flow/                 # [core] Git workflow automation
 │   ├── pr-review/                # [core] PR review
 │   ├── clarity-assist/           # [core] Prompt optimization
@@ -270,6 +271,7 @@ mktpl-claude-datasaas/
 │   ├── cmdb-assistant/           # [ops] NetBox CMDB integration
 │   ├── data-platform/            # [data] Data engineering
 │   ├── viz-platform/             # [data] Visualization
+│   ├── drawio-plugin/            # [data] Wireframe design tools
 │   ├── data-seed/                # [data] Test data generation (scaffold)
 │   ├── saas-api-platform/        # [saas] API scaffolding (scaffold)
 │   ├── saas-db-migrate/          # [saas] DB migrations (scaffold)
@@ -457,7 +459,7 @@ Stored in Gitea Wiki under `lessons-learned/sprints/`.
 | Domain | Plugins |
 |--------|---------|
 | `core` | projman, git-flow, pr-review, code-sentinel, doc-guardian, clarity-assist, contract-validator, claude-config-maintainer, project-hygiene |
-| `data` | data-platform, viz-platform, data-seed |
+| `data` | data-platform, viz-platform, drawio-plugin, data-seed |
 | `saas` | saas-api-platform, saas-db-migrate, saas-react-platform, saas-test-pilot |
 | `ops` | cmdb-assistant, ops-release-manager, ops-deploy-pipeline |
 | `debug` | debug-mcp |

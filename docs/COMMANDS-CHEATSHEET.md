@@ -371,4 +371,4 @@ These skills are loaded automatically when using the **data-analysis agent** for
 
 ---
 
-*Last Updated: 2026-03-01 — v9.1.0+ exploratory analytics skills and choropleth-map-patterns*
+*Last Updated: 2026-03-31 — v9.2.0: drawio-plugin added (/drawio parse, /drawio generate); attribute convention updated (component-class, component-id, callback-in/out, db-binding)*
