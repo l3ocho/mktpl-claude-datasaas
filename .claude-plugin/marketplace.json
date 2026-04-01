@@ -450,7 +450,7 @@
       },
       "homepage": "https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas/src/branch/main/plugins/drawio-plugin/README.md",
       "repository": "https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas.git",
-      "category": "Design",
+      "category": "design",
       "tags": [
         "drawio",
         "wireframe",

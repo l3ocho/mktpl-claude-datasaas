@@ -1,6 +1,6 @@
-# Claude Data & SaaS Marketplace — v9.1.2
+# Claude Data & SaaS Marketplace — v9.2.0
 
-A plugin marketplace for Claude Code providing sprint management, code review, security scanning, infrastructure automation, and development workflow tools. 20 plugins across 5 domains, backed by 5 shared MCP servers.
+A plugin marketplace for Claude Code providing sprint management, code review, security scanning, infrastructure automation, and development workflow tools. 21 plugins across 5 domains, backed by 5 shared MCP servers.
 
 ## Plugins
 
@@ -18,12 +18,13 @@ A plugin marketplace for Claude Code providing sprint management, code review, s
 | `claude-config-maintainer` | CLAUDE.md and settings.local.json optimization |
 | `project-hygiene` | Manual project file cleanup checks |
 
-### Data (3 plugins)
+### Data (4 plugins)
 
 | Plugin | Version | Description |
 |--------|---------|-------------|
 | `data-platform` | 9.1.0 | pandas, PostgreSQL/PostGIS, and dbt integration |
 | `viz-platform` | 9.1.0 | Dash Mantine Components validation, Plotly charts, and theming |
+| `drawio-plugin` | 1.0.0 | Wireframe design tools — parse .drawio XML into DMC specs, generate wireframes from descriptions |
 | `data-seed` | 0.1.0 — scaffold | Test data generation and database seeding |
 
 ### Ops (3 plugins)
@@ -63,7 +64,7 @@ A plugin marketplace for Claude Code providing sprint management, code review, s
 | `review` | pr-review, code-sentinel | Lightweight code review |
 | `data` | data-platform, viz-platform | Data engineering and visualization |
 | `infra` | cmdb-assistant | Infrastructure/CMDB management |
-| `full` | All 20 plugins | When you need everything |
+| `full` | All 21 plugins | When you need everything |
 
 ```bash
 ./scripts/claude-launch.sh                    # Default sprint profile
@@ -97,7 +98,7 @@ mktpl-claude-datasaas/
 │   ├── data-platform/             # pandas, PostgreSQL, dbt
 │   ├── viz-platform/              # DMC, Plotly, theming
 │   └── contract-validator/        # Plugin compatibility validation
-├── plugins/                       # All plugins (20 total)
+├── plugins/                       # All plugins (21 total)
 │   ├── projman/                   # [core] Sprint management
 │   ├── git-flow/                  # [core] Git workflow automation
 │   ├── pr-review/                 # [core] PR review
@@ -110,6 +111,7 @@ mktpl-claude-datasaas/
 │   ├── cmdb-assistant/            # [ops] NetBox CMDB integration
 │   ├── data-platform/             # [data] Data engineering
 │   ├── viz-platform/              # [data] Visualization
+│   ├── drawio-plugin/             # [data] Wireframe design tools
 │   ├── data-seed/                 # [data] Test data generation (scaffold)
 │   ├── saas-api-platform/         # [saas] API scaffolding (scaffold)
 │   ├── saas-db-migrate/           # [saas] DB migrations (scaffold)

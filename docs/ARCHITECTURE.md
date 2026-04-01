@@ -1,8 +1,8 @@
-# Architecture — Leo Claude Marketplace v9.1.2
+# Architecture — Leo Claude Marketplace v9.2.0
 
 ## Overview
 
-Plugin marketplace for Claude Code. 20 plugins across 5 domains, 5 shared MCP servers,
+Plugin marketplace for Claude Code. 21 plugins across 5 domains, 5 shared MCP servers,
 4 PreToolUse safety hooks + 1 UserPromptSubmit quality hook.
 
 ## System Architecture
@@ -12,7 +12,7 @@ Plugin marketplace for Claude Code. 20 plugins across 5 domains, 5 shared MCP se
 | Domain | Purpose | Plugins |
 |--------|---------|---------|
 | core | Development workflow | projman, git-flow, pr-review, code-sentinel, doc-guardian, clarity-assist, contract-validator, claude-config-maintainer, project-hygiene |
-| data | Data engineering | data-platform, viz-platform, data-seed |
+| data | Data engineering | data-platform, viz-platform, drawio-plugin, data-seed |
 | saas | SaaS development | saas-api-platform, saas-db-migrate, saas-react-platform, saas-test-pilot |
 | ops | Operations | cmdb-assistant, ops-release-manager, ops-deploy-pipeline |
 | debug | Diagnostics | debug-mcp |
