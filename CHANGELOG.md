@@ -6,6 +6,55 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Fixed
+
+#### `claude-config-maintainer` v9.1.1: Autonomous-First Default for `optimize-settings`
+
+- `optimize-settings` now writes autonomous permissions (`bypassPermissions` + blanket allows) to `settings.json` by default
+- Eliminates all permission approval prompts except `.venv` deletion
+- Marketplace hooks (code-sentinel, git-flow) remain the actual safety layer
+- Previous behavior available via `--profile=reviewed` or `--profile=conservative` flags
+- Scoring engine demoted to legacy profile support only
+- `settings.json` is now the primary write target (not `settings.local.json`)
+- Existing custom `deny` rules are preserved on every write via merge logic
+- `--target=local` flag added with explicit warning about session-approval overwrites
+
+### Changed
+
+#### `drawio-plugin`: Attribute Convention & Layer Structure Update (PR #480)
+
+Breaking change to `.drawio` XML attribute schema and layer convention:
+
+**Attributes renamed/replaced:**
+- `component` → `component-class` (DMC class name)
+- `instructions` → `component-instructions` (implementation notes)
+- `dash_id` → `component-id` (Dash id prop + CSS selector)
+- `css_id` — **dropped** (Dash `component-id` serves as CSS selector)
+- `component-children` — **dropped** (derivable from `component-parent-id`)
+
+**New attributes added:**
+- `component-parent-id` — explicit Dash parent-child tree relationship
+- `component-order` — integer ordering within parent/group
+- `callback-in` / `callback-in-details` — callbacks this component reacts to (comma-separated)
+- `callback-out` / `callback-out-details` — callbacks this component triggers (comma-separated)
+- `db-binding` — database column binding (`table_name.column_name`)
+
+**Layer convention updated:**
+- Removed separate `layout` layer — AppShell + all `AppShell*` region containers now live on the root `app-shell` layer (`id="1"`)
+- Added `content-header`, `content-footer`, `content-aside` layers (project-dependent, locked=1)
+- Only `app-shell` (root) and `content-page` are mandatory
+
+**Style signal parsing added:**
+- `strokeColor=none` → `withBorder: false`
+- `opacity=N` → convert 0–100 to 0.0–1.0 float
+- `rounded=1/0` → boolean (arcSize ignored)
+
+**Component ID naming convention:**
+- Two-segment `{prefix}-{descriptor}` (max three for grouped sections)
+- Prefixes: `app-`, `nav-`, `hdr-`, `ftr-`, `aside-`, `{page-slug}-`
+
+**WIREFRAME.md output expanded** with callbacks block, db-binding block, style signals block, and component tree visualization.
+
 ### Added
 
 #### `drawio-plugin` v1.0.0 — Wireframe Design Tools (data domain)
@@ -223,10 +272,6 @@ Removed all tools not needed for tracking applications, services, databases, and
   - `ops-deploy-pipeline` (domain: ops) — CI/CD deployment pipeline for Docker Compose and systemd. 6 commands, 2 agents, 6 skills
   - `debug-mcp` (domain: debug) — MCP server debugging, inspection, and development toolkit. 5 commands, 1 agent, 5 skills
 - 8 design documents in `docs/designs/` for all new plugins
-
----
-
-## [9.0.0] - 2026-02-06
 
 ### BREAKING CHANGES
 

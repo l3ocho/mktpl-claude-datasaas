@@ -2,7 +2,7 @@
 
 **This file defines ALL valid paths in this repository. No exceptions. No inference. No assumptions.**
 
-Last Updated: 2026-02-07 (v9.1.0)
+Last Updated: 2026-03-31 (v9.2.0)
 
 ---
 
@@ -166,6 +166,27 @@ mktpl-claude-datasaas/
 │   │   │   ├── notebook-design-system.md
 │   │   │   └── choropleth-map-patterns.md
 │   │   └── claude-md-integration.md
+│   ├── drawio-plugin/              # Wireframe design tools (data domain)
+│   │   ├── .claude-plugin/
+│   │   │   ├── plugin.json
+│   │   │   └── metadata.json
+│   │   ├── commands/
+│   │   │   ├── drawio.md           # Router command
+│   │   │   ├── drawio-parse.md     # Parse .drawio → WIREFRAME.md
+│   │   │   └── drawio-generate.md  # Generate .drawio from description
+│   │   ├── skills/
+│   │   │   ├── drawio-conventions.md   # XML structure, layer/attribute schema
+│   │   │   ├── wireframe-schema.md     # WIREFRAME.md output contract
+│   │   │   └── dmc-domain-files.md     # DMC file loading strategy
+│   │   ├── references/             # Curated DMC reference documentation
+│   │   │   └── dmc/                # Split by domain to minimize context
+│   │   │       ├── dmc-layout.txt
+│   │   │       ├── dmc-ui.txt
+│   │   │       ├── dmc-charts.txt
+│   │   │       ├── dmc-feedback.txt
+│   │   │       └── dmc-theme.txt
+│   │   ├── README.md
+│   │   └── claude-md-integration.md
 │   ├── saas-api-platform/       # REST/GraphQL API scaffolding (scaffold)
 │   │   ├── .claude-plugin/
 │   │   ├── commands/
@@ -274,6 +295,7 @@ plugins/contract-validator/commands/cv-status.md
 | Plugin agents | `plugins/{plugin-name}/agents/` | `plugins/projman/agents/` |
 | Plugin skills | `plugins/{plugin-name}/skills/` | `plugins/projman/skills/` |
 | Plugin integration snippet | `plugins/{plugin-name}/claude-md-integration.md` | `plugins/projman/claude-md-integration.md` |
+| Plugin reference docs (optional) | `plugins/{plugin-name}/references/{domain}/` | `plugins/drawio-plugin/references/dmc/` |
 
 ### MCP Server Paths
 
@@ -421,7 +443,7 @@ Domain metadata is stored in `metadata.json` (v9.1.2+, moved from plugin.json/ma
 | Domain | Purpose | Existing Plugins |
 |--------|---------|-----------------|
 | `core` | Development workflow plugins | projman, git-flow, pr-review, code-sentinel, doc-guardian, clarity-assist, contract-validator, claude-config-maintainer, project-hygiene |
-| `data` | Data engineering and visualization | data-platform, viz-platform, data-seed |
+| `data` | Data engineering and visualization | data-platform, viz-platform, drawio-plugin, data-seed |
 | `ops` | Operations and infrastructure | cmdb-assistant, ops-release-manager, ops-deploy-pipeline |
 | `saas` | SaaS application development | saas-api-platform, saas-db-migrate, saas-react-platform, saas-test-pilot |
 | `debug` | Debugging and diagnostics | debug-mcp |
@@ -453,6 +475,7 @@ done | sort | uniq -c | sort -rn
 
 | Date | Change | By |
 |------|--------|-----|
+| 2026-03-31 | v9.2.0: Added drawio-plugin paths (commands, skills, references/dmc/); added references/ pattern to Plugin Paths table; updated data domain list | Claude Code |
 | 2026-02-07 | v9.1.2: Moved domain field from plugin.json/marketplace.json to metadata.json for Claude Code schema compliance | Claude Code |
 | 2026-02-07 | v9.1.0: Removed deleted dirs (architecture/, prompts/, project-lessons-learned/), added Phase 3 plugins, added ARCHITECTURE.md, MIGRATION-v9.md, updated Domain table, removed stale hooks/ dirs | Claude Code |
 | 2026-02-06 | v8.0.0: Added domain metadata section, Phase 1a paths, future plugin paths | Claude Code |

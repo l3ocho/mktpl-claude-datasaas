@@ -1,6 +1,69 @@
 # Settings Optimization Skill
 
-This skill provides comprehensive knowledge for auditing and optimizing Claude Code `settings.local.json` permission configurations.
+This skill provides comprehensive knowledge for auditing and optimizing Claude Code permission configurations.
+
+---
+
+## Section 0: Autonomous-First Approach (Default)
+
+### Philosophy
+
+The default optimization target is `bypassPermissions` + blanket allows written to `.claude/settings.json`. This eliminates all permission approval prompts except `.venv` deletion.
+
+**Rationale:** Marketplace hooks (code-sentinel PreToolUse, git-flow PreToolUse) are the actual safety layer — not Claude Code's permission prompts. Granular pattern-matching is unreliable due to compound command evaluation (pipes, chains, redirects — see Section 9) and known platform bugs. The scoring/profiling system in Sections 5–6 is retained for `--profile` flag usage only.
+
+**Evidence (Claude Code GitHub issues):**
+- #6900 — Session approvals silently overwrite `settings.local.json`
+- #18160 — Compound commands not matched by individual pattern rules
+- #29026 — Pattern matching inconsistencies with shell operators
+
+### Autonomous Config
+
+Write this to `.claude/settings.json` by default:
+
+```json
+{
+  "permissions": {
+    "defaultMode": "bypassPermissions",
+    "allow": [
+      "Bash(*)",
+      "Read(*)",
+      "Write(*)",
+      "Edit(*)",
+      "WebFetch(*)",
+      "WebSearch",
+      "mcp__*"
+    ],
+    "deny": [
+      "Bash(rm -rf .venv)",
+      "Bash(rm -r .venv)",
+      "Bash(rm -rf .venv/)",
+      "Bash(rm -r .venv/)"
+    ]
+  }
+}
+```
+
+**Why only `.venv` deletion is denied:** Rebuilding a virtual environment is expensive and disruptive. All other operations are safe because the marketplace's hook architecture intercepts dangerous patterns before Claude Code executes them.
+
+### Write Target
+
+- **Default:** `.claude/settings.json` — version-controlled, not overwritten by session approvals
+- **`--target=local`:** `.claude/settings.local.json` — only with explicit flag + warning, since Claude Code overwrites this file on session approvals
+
+### Merge Rule for Existing Deny Rules
+
+When an existing `.claude/settings.json` is present, preserve any custom `deny` rules by merging them into the deny array. Never silently remove user-added deny rules.
+
+### Backup Protocol
+
+Always backup to `.claude/backups/settings.json.{YYYYMMDD-HHMMSS}` before writing. Create the backups directory if it doesn't exist. Skip only with explicit `--no-backup`.
+
+---
+
+## Legacy Profiles (for `--profile` flag)
+
+Sections 5–6 document named profiles (`conservative`, `reviewed`) and the scoring engine. These are only relevant when the user explicitly passes `--profile=conservative` or `--profile=reviewed`. They are NOT the default behavior.
 
 ---
 
@@ -10,10 +73,10 @@ Claude Code uses two configuration formats for permissions:
 
 ### Newer Format (Recommended)
 
-**Primary target:** `.claude/settings.local.json` (project-local, gitignored)
+**Primary target:** `.claude/settings.json` (shared, version-controlled)
 
 **Secondary locations:**
-- `.claude/settings.json` (shared, committed)
+- `.claude/settings.local.json` (machine-specific, gitignored — accumulated session approvals)
 - `~/.claude.json` (legacy global config)
 
 ```json
@@ -46,8 +109,8 @@ Found in `~/.claude.json` with per-project entries:
 ```
 
 **Detection strategy:**
-1. Check `.claude/settings.local.json` first (primary)
-2. Check `.claude/settings.json` (shared)
+1. Check `.claude/settings.json` first (primary — write target)
+2. Check `.claude/settings.local.json` (secondary — session drift)
 3. Check `~/.claude.json` for project entry (legacy)
 4. Report which format is in use
 
@@ -142,7 +205,9 @@ Read the relevant `plugins/*/hooks/hooks.json` file:
 
 ---
 
-## Section 5: Permission Profiles
+## Section 5: Legacy Permission Profiles (for `--profile` flag)
+
+These profiles are used when `--profile=conservative` or `--profile=reviewed` is passed to `optimize-settings`. They are NOT the default behavior — see Section 0 for the autonomous-first default.
 
 Three named profiles for different project contexts:
 
@@ -244,40 +309,15 @@ This is the target profile for projects using the marketplace's multi-layer revi
 }
 ```
 
-### `autonomous` (Trusted CI/Sandboxed Environments Only)
+### `autonomous` (Default — Written by `optimize-settings` with no flags)
 
-Maximum permissions for automated environments:
-
-```json
-{
-  "permissions": {
-    "allow": [
-      "Read",
-      "Glob",
-      "Grep",
-      "LS",
-      "Edit",
-      "Write",
-      "MultiEdit",
-      "Bash",
-      "WebFetch",
-      "WebSearch"
-    ],
-    "deny": [
-      "Read(.env*)",
-      "Read(./secrets/**)",
-      "Bash(rm -rf /)",
-      "Bash(sudo *)"
-    ]
-  }
-}
-```
-
-**Warning:** The `autonomous` profile allows unscoped `Bash` — only use in fully sandboxed environments.
+This is the config written by default. See Section 0 for the full spec and rationale. The version in Section 0 uses `defaultMode: bypassPermissions` and blanket tool allows with `.venv` deletion deny rules, which is preferred over the older pattern here.
 
 ---
 
-## Section 6: Scoring Criteria (Settings Efficiency Score — 100 points)
+## Section 6: Legacy Scoring Criteria (for `--profile` workflows — Settings Efficiency Score — 100 points)
+
+> **Note:** Scoring is only used when `--profile` flag is passed. The default autonomous workflow does not use the scoring engine.
 
 | Category | Points | What It Measures |
 |----------|--------|------------------|
@@ -393,23 +433,24 @@ Count verified review layers for each scope:
 
 Claude Code writes session-approved operations to `settings.local.json` by replacing the entire `permissions.allow` array. This means any curated, optimized allowlist is lost whenever a user approves a new operation during a session. This is a known Claude Code platform limitation (GitHub #6900, #6850).
 
-### Solution: Baseline in settings.json
+### Solution: Autonomous Config in settings.json
 
-Use `.claude/settings.json` (shared, version-controlled) as the **permission baseline**:
+Write the autonomous config (Section 0) to `.claude/settings.json` — the file Claude Code does NOT overwrite during sessions:
 
-- `.claude/settings.json` → Optimized baseline permissions. NOT modified by Claude Code session approvals. Committed to git. Shared across team members.
+- `.claude/settings.json` → Autonomous permissions. NOT modified by Claude Code session approvals. Committed to git. Shared across team members.
 - `.claude/settings.local.json` → Machine-specific additions + accumulated session approvals. Gitignored. May drift over time.
 
 Claude Code **merges** permissions from both files. Patterns in `settings.json` are always active regardless of what happens to `settings.local.json`.
 
-### Baseline Workflow
+### Write Workflow
 
-1. Run `/claude-config optimize-settings` to generate optimized permissions
-2. Run `/claude-config baseline save` to write the optimized set to `settings.json`
-3. Optionally clean `settings.local.json` to remove patterns now covered by the baseline
-4. Session approvals accumulate in `settings.local.json` — baseline remains untouched
-5. Periodically run `/claude-config drift-check` to assess degradation
-6. Run `/claude-config baseline restore` to reset `settings.local.json` to baseline-only
+1. Run `/claude-config optimize-settings` — writes autonomous config to `settings.json` directly
+2. Optionally clean `settings.local.json` of redundant patterns (offered interactively after write)
+3. Session approvals accumulate in `settings.local.json` — the autonomous config in `settings.json` is unaffected
+4. Periodically run `/claude-config drift-check` to assess degradation in `settings.local.json`
+5. Run `/claude-config baseline restore` to reset `settings.local.json` to baseline-only
+
+**Note:** For `--profile` workflows, the legacy baseline workflow still applies — run `/claude-config baseline save` after applying a profile to persist it to `settings.json`.
 
 ### File Precedence
 
@@ -418,17 +459,17 @@ When both files exist, Claude Code evaluates permissions as:
 - `deny`: Union of both files' deny arrays (both apply)
 - `deny` always wins over `allow` regardless of source file
 
-This means the baseline's deny rules are always enforced even if `settings.local.json` attempts to override them.
+This means the autonomous config's deny rules are always enforced even if `settings.local.json` attempts to override them.
 
 ### What Goes Where
 
 | Content | File | Why |
 |---------|------|-----|
-| Optimized profile permissions (reviewed/conservative) | `settings.json` | Persistent, version-controlled |
-| Deny rules for secrets and destructive ops | `settings.json` | Must never be overwritten |
+| Autonomous config (`bypassPermissions` + blanket allows) | `settings.json` | Persistent, not overwritten by sessions |
+| Deny rules for .venv and custom user rules | `settings.json` | Must never be overwritten |
 | Machine-specific paths or tools | `settings.local.json` | Per-developer customization |
 | Session-accumulated approvals | `settings.local.json` | Claude Code writes here automatically |
-| MCP server permissions | `settings.json` | Consistent across team |
+| Legacy profile permissions (reviewed/conservative) | `settings.json` | When `--profile` flag is used |
 
 ---
 
