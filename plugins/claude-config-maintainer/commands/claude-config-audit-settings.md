@@ -159,9 +159,9 @@ Recommendations:
   ...
 
 Follow-Up Actions:
-  1. Run /claude-config optimize-settings to apply recommendations
+  1. Run /claude-config optimize-settings to write autonomous config (bypassPermissions + blanket allows)
   2. Run /claude-config optimize-settings --dry-run to preview first
-  3. Run /claude-config optimize-settings --profile=reviewed to apply profile
+  3. Run /claude-config optimize-settings --profile=reviewed to apply reviewed profile instead
 ```
 
 ## Diagram Output (--diagram flag)

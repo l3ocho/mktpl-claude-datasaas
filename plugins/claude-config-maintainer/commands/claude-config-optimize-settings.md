@@ -1,11 +1,11 @@
 ---
 name: claude-config optimize-settings
-description: Optimize settings.local.json permissions based on audit recommendations
+description: Write autonomous permissions to settings.json. Claude Code will not prompt for any approvals except .venv deletion.
 ---
 
 # /claude-config optimize-settings
 
-Optimize Claude Code `settings.local.json` permission patterns and apply named profiles.
+Write autonomous permissions to `.claude/settings.json`. Claude Code will not prompt for any approvals except `.venv` deletion. Marketplace hooks (code-sentinel, git-flow) are the actual safety layer.
 
 ## Skills to Load
 
@@ -25,56 +25,129 @@ Before executing, load:
 ## Usage
 
 ```
-/claude-config optimize-settings                    # Apply audit recommendations
-/claude-config optimize-settings --dry-run          # Preview only, no changes
-/claude-config optimize-settings --profile=reviewed # Apply named profile
-/claude-config optimize-settings --consolidate-only # Only merge/dedupe, no new rules
+/claude-config optimize-settings                         # Write autonomous config to settings.json (default)
+/claude-config optimize-settings --dry-run               # Preview the JSON that would be written
+/claude-config optimize-settings --profile=reviewed      # Legacy: write reviewed profile instead
+/claude-config optimize-settings --profile=conservative  # Legacy: write conservative profile
+/claude-config optimize-settings --target=local          # Write to settings.local.json (with warning)
+/claude-config optimize-settings --no-backup             # Skip backup
 ```
 
 ## Options
 
 | Option | Description |
 |--------|-------------|
-| `--dry-run` | Preview changes without applying |
-| `--profile=NAME` | Apply named profile (`conservative`, `reviewed`, `autonomous`) |
-| `--consolidate-only` | Only deduplicate and merge patterns, don't add new rules |
+| `--dry-run` | Preview the JSON that would be written, no changes applied |
+| `--profile=NAME` | Write a legacy named profile (`conservative`, `reviewed`) instead of autonomous config |
+| `--target=local` | Write to `settings.local.json` instead of `settings.json` — warns this file gets overwritten by session approvals |
 | `--no-backup` | Skip backup (not recommended) |
 
-## Workflow
+## Default Workflow (No Flags — Autonomous Config)
 
-### Step 1: Run Audit Analysis
+### Step 1: Read Existing Settings
 
-Execute the same analysis as `/claude-config audit-settings`:
-1. Locate settings file
-2. Parse permission arrays
-3. Detect issues (duplicates, subsets, merge candidates, etc.)
-4. Verify active review layers
-5. Calculate current score
+Read `.claude/settings.json` if it exists:
+- Note any custom `deny` rules the user has added — these will be preserved
+- Note the existing `allow` rules — these will be replaced by the autonomous config
 
-### Step 2: Generate Optimization Plan
+If `.claude/settings.json` does not exist, skip to Step 3.
 
-Based on audit results, create a change plan:
+### Step 2: Backup
 
-**For `--consolidate-only`:**
-- Remove exact duplicates
-- Remove subset patterns covered by broader patterns
-- Merge similar patterns (4+ threshold)
-- Remove stale patterns for non-existent paths
-- Remove conflicting allow entries that are already denied
+**Before any write operation:**
 
-**For `--profile=NAME`:**
-- Calculate diff between current permissions and target profile
-- Show additions and removals
-- Preserve any custom deny rules not in profile
+```bash
+# Backup location
+.claude/backups/settings.json.{YYYYMMDD-HHMMSS}
+```
 
-**For default (full optimization):**
-- Apply all consolidation changes
-- Add recommended patterns based on verified review layers
-- Suggest profile alignment if appropriate
+Create the `.claude/backups/` directory if it doesn't exist. Skip if `--no-backup`.
 
-### Step 3: Show Before/After Preview
+### Step 3: Write Autonomous Config
 
-**MANDATORY:** Always show preview before applying changes.
+Write the following to `.claude/settings.json`:
+
+```json
+{
+  "permissions": {
+    "defaultMode": "bypassPermissions",
+    "allow": [
+      "Bash(*)",
+      "Read(*)",
+      "Write(*)",
+      "Edit(*)",
+      "WebFetch(*)",
+      "WebSearch",
+      "mcp__*"
+    ],
+    "deny": [
+      "Bash(rm -rf .venv)",
+      "Bash(rm -r .venv)",
+      "Bash(rm -rf .venv/)",
+      "Bash(rm -r .venv/)"
+    ]
+  }
+}
+```
+
+**Merge deny rules:** If the user had custom `deny` rules in the existing file that are NOT already in the above deny list, append them to the deny array.
+
+### Step 4: Offer settings.local.json Cleanup (Optional)
+
+If `.claude/settings.local.json` exists:
+
+```
+settings.local.json detected.
+
+The autonomous config in settings.json now covers all operations.
+Patterns in settings.local.json that duplicate settings.json are redundant.
+
+Clean up redundant patterns from settings.local.json?
+  [1] Yes, remove patterns already covered by autonomous config
+  [2] No, leave settings.local.json as-is
+  [3] Skip this — I'll clean it manually later
+```
+
+**Note:** This cleanup is optional and does not affect the autonomous config that was just written.
+
+### Step 5: Confirm
+
+Display what was written:
+
+```
+Autonomous Config Written
+
+Target:  .claude/settings.json
+Backup:  .claude/backups/settings.json.20260331-143022
+
+Permissions written:
+  defaultMode: bypassPermissions
+  allow: Bash(*), Read(*), Write(*), Edit(*), WebFetch(*), WebSearch, mcp__*
+  deny:  .venv deletion guards (4 rules)
+  [+ N custom deny rules preserved]
+
+Claude Code will NOT prompt for approval on any operation except .venv deletion.
+Marketplace hooks (code-sentinel, git-flow) remain the active safety layer.
+```
+
+## Legacy Profile Workflow (`--profile=NAME`)
+
+When using `--profile=reviewed` or `--profile=conservative`, the command applies the named profile from the settings-optimization skill instead of the autonomous config. These profiles use granular pattern-matching and are documented in the skill's **Legacy Profiles** section.
+
+### Prerequisites Check (for `--profile=reviewed`)
+
+```
+Switching to reviewed profile...
+
+Prerequisites verified:
+  ✓ code-sentinel hook active (PreToolUse)
+  ✓ git-flow hook active (PreToolUse)
+  ✓ 2+ review layers detected
+```
+
+### Before/After Preview
+
+**MANDATORY for `--profile` workflows:** Show preview before applying.
 
 ```
 Current Settings:
@@ -85,12 +158,10 @@ Proposed Changes:
 
   REMOVE from allow (redundant):
     - Write(plugins/projman/*) [covered by Write(plugins/**)]
-    - Write(plugins/git-flow/*) [covered by Write(plugins/**)]
     - Bash(git status) [covered by Bash(git *)]
 
   ADD to allow (recommended):
     + Bash(npm *) [2 review layers active]
-    + Bash(pytest *) [2 review layers active]
 
   ADD to deny (security):
     + Bash(curl * | bash*) [missing safety rule]
@@ -98,94 +169,12 @@ Proposed Changes:
 After Optimization:
   allow: [10 patterns]
   deny: [5 patterns]
-
-Score Impact: 67/100 → 85/100 (+18 points)
 ```
 
-### Step 4: Request User Approval
+### Profile Application
 
-Ask for confirmation before proceeding:
-
+**`--profile=conservative`:**
 ```
-Apply these changes to .claude/settings.local.json?
-  [1] Yes, apply changes
-  [2] No, cancel
-  [3] Apply partial (select which changes)
-```
-
-### Step 5: Create Backup
-
-**Before any write operation:**
-
-```bash
-# Backup location
-.claude/backups/settings.local.json.{YYYYMMDD-HHMMSS}
-```
-
-Create the `.claude/backups/` directory if it doesn't exist.
-
-### Step 6: Apply Changes
-
-Write the optimized `settings.local.json` file.
-
-### Step 7: Verify
-
-Re-read the file and re-calculate the score to confirm improvement.
-
-```
-Optimization Complete!
-
-Backup saved: .claude/backups/settings.local.json.20260202-143022
-
-Settings Efficiency Score: 85/100 (+18 from 67)
-  Redundancy:       25/25 (+8)
-  Coverage:         22/25 (+5)
-  Safety Alignment: 23/25 (+3)
-  Profile Fit:      15/25 (+2)
-
-Changes applied:
-  - Removed 3 redundant patterns
-  - Added 2 recommended patterns
-  - Added 1 safety deny rule
-```
-
-### Step 8: Offer Baseline Save
-
-After successful optimization, if no baseline exists in `.claude/settings.json`:
-
-```
-Optimization complete!
-
-⚠️  No permission baseline detected in .claude/settings.json.
-    Without a baseline, these optimizations may be overwritten
-    by Claude Code's session approvals.
-
-    Run `/claude-config baseline save` to persist this optimized
-    configuration as your baseline.
-```
-
-If a baseline exists, compare the optimized result against it:
-
-```
-Baseline exists in .claude/settings.json.
-
-Changes vs. baseline:
-  + 2 new patterns recommended
-  - 1 stale pattern to remove
-
-Update the baseline?
-  [1] Yes, update baseline with optimized patterns
-  [2] No, keep current baseline
-```
-
-## Profile Application
-
-When using `--profile=NAME`:
-
-### `conservative`
-```
-Switching to conservative profile...
-
 This profile:
   - Allows: Read, Glob, Grep, LS, basic Bash commands
   - Allows: Write/Edit only for docs/
@@ -194,46 +183,15 @@ This profile:
 All other Write/Edit operations will prompt for approval.
 ```
 
-### `reviewed`
+**`--profile=reviewed`:**
 ```
-Switching to reviewed profile...
-
-Prerequisites verified:
-  ✓ code-sentinel hook active (PreToolUse)
-  ✓ git-flow hook active (PreToolUse)
-  ✓ 2+ review layers detected
-
 This profile:
   - Allows: All file operations (Edit, Write, MultiEdit)
   - Allows: Scoped Bash commands (git, npm, python, etc.)
   - Denies: .env*, secrets/, rm -rf, sudo, curl|bash
 ```
 
-### `autonomous`
-```
-⚠️  WARNING: Autonomous profile requested
-
-This profile allows unscoped Bash execution.
-Only use in fully sandboxed environments (CI, containers).
-
-Confirm this is a sandboxed environment?
-  [1] Yes, this is sandboxed - apply autonomous profile
-  [2] No, cancel
-```
-
-## Safety Rules
-
-1. **ALWAYS backup before writing** (unless `--no-backup`)
-2. **NEVER remove deny rules without explicit confirmation**
-3. **NEVER add unscoped `Bash` to allow** — always use scoped patterns
-4. **Preview is MANDATORY** before applying changes
-5. **Verify review layers** before recommending broad permissions
-6. **Recommend baseline save** after every successful optimization
-7. **Compare against existing baseline** before applying changes to catch regressions
-
-## Output Format
-
-### Dry Run Output
+## Dry Run Output
 
 ```
 +-----------------------------------------------------------------+
@@ -242,33 +200,47 @@ Confirm this is a sandboxed environment?
 
 DRY RUN - No changes will be made
 
-[... preview content ...]
+Would write to: .claude/settings.json
 
-To apply these changes, run:
+{
+  "permissions": {
+    "defaultMode": "bypassPermissions",
+    "allow": ["Bash(*)", "Read(*)", "Write(*)", "Edit(*)", "WebFetch(*)", "WebSearch", "mcp__*"],
+    "deny": ["Bash(rm -rf .venv)", "Bash(rm -r .venv)", "Bash(rm -rf .venv/)", "Bash(rm -r .venv/)"]
+  }
+}
+
+To apply, run:
   /claude-config optimize-settings
 ```
 
-### Applied Output
+## `--target=local` Warning
 
 ```
-+-----------------------------------------------------------------+
-|  CONFIG-MAINTAINER - Settings Optimization                       |
-+-----------------------------------------------------------------+
+⚠️  WARNING: --target=local specified
 
-Optimization Applied Successfully
+Writing to settings.local.json. This file is overwritten by Claude Code
+session approvals during interactive use. Your optimized config may be
+lost the next time Claude Code writes to this file.
 
-Backup: .claude/backups/settings.local.json.20260202-143022
+Recommended: Write to settings.json instead (default behavior).
 
-[... summary of changes ...]
-
-Score: 67/100 → 85/100
+Continue with settings.local.json?
+  [1] Yes, write to settings.local.json
+  [2] No, write to settings.json instead (recommended)
 ```
+
+## Safety Rules
+
+1. **ALWAYS backup before writing** (unless `--no-backup`)
+2. **NEVER remove user's existing deny rules** — always merge them into the deny array
+3. **Default target is settings.json** — not settings.local.json
+4. **Dry run shows exact JSON** that would be written
+5. **--target=local always warns** about session-approval overwrite risk
 
 ## DO NOT
 
-- Apply changes without showing preview
 - Remove deny rules silently
-- Add unscoped `Bash` permission
+- Write to settings.local.json without `--target=local` flag and warning
 - Skip backup without explicit `--no-backup` flag
-- Apply `autonomous` profile without sandbox confirmation
-- Recommend broad permissions without verifying review layers
+- Show scoring or profile analysis as part of the default (no-flag) workflow

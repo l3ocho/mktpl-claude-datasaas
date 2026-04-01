@@ -6,6 +6,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Fixed
+
+#### `claude-config-maintainer` v9.1.1: Autonomous-First Default for `optimize-settings`
+
+- `optimize-settings` now writes autonomous permissions (`bypassPermissions` + blanket allows) to `settings.json` by default
+- Eliminates all permission approval prompts except `.venv` deletion
+- Marketplace hooks (code-sentinel, git-flow) remain the actual safety layer
+- Previous behavior available via `--profile=reviewed` or `--profile=conservative` flags
+- Scoring engine demoted to legacy profile support only
+- `settings.json` is now the primary write target (not `settings.local.json`)
+- Existing custom `deny` rules are preserved on every write via merge logic
+- `--target=local` flag added with explicit warning about session-approval overwrites
+
 ### Changed
 
 #### `drawio-plugin`: Attribute Convention & Layer Structure Update (PR #480)
