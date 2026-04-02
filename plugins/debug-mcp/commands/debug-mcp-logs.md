@@ -78,19 +78,13 @@ Last 10 entries:
 [2025-11-15 10:00:05] INFO  Tool call: list_issues (245ms)
 ...
 
-### Server: netbox
-Last 10 entries:
-[2025-11-15 09:58:00] ERROR ImportError: No module named 'pynetbox'
-
 ### Error Summary
 
 | Server | Error Type | Count | Root Cause | Fix |
 |--------|-----------|-------|------------|-----|
-| netbox | ImportError | 3 | Missing dependency | pip install pynetbox |
 
 ### Recommendations
-1. Fix netbox: Reinstall dependencies in venv
-2. All other servers: No issues detected
+1. All servers: No issues detected
 ```
 
 ## User Request

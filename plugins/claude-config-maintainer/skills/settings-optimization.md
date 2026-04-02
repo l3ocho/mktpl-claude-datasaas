@@ -128,7 +128,7 @@ Found in `~/.claude.json` with per-project entries:
 | `Write(plugins/projman/*)` | Glob — direct children only |
 | `Read(.env*)` | Pattern matching `.env`, `.env.local`, etc. |
 | `mcp__gitea__*` | All tools from the gitea MCP server |
-| `mcp__netbox__list_*` | Specific MCP tool pattern |
+| `mcp__data-platform__list_*` | Specific MCP tool pattern |
 | `WebFetch(domain:github.com)` | Domain-restricted web fetch |
 
 ### Important Nuances
@@ -198,7 +198,6 @@ This is the key section. Map upstream review processes to directory scopes:
 Read the relevant `plugins/*/hooks/hooks.json` file:
 - If code-sentinel's hook is missing or disabled, do NOT recommend auto-allowing `mcp-servers/**` writes
 - If git-flow's hook is missing, do NOT recommend auto-allowing `Bash(git *)` operations
-- If cmdb-assistant's hook is missing, do NOT recommend auto-allowing MCP netbox create/update operations
 - Count the number of verified review layers before making recommendations
 
 **Minimum threshold:** Only recommend auto-allow for scopes with ≥2 verified review layers.
@@ -379,7 +378,6 @@ To verify which review layers are active, read these files:
 |------|-----------|--------------|---------|
 | `plugins/code-sentinel/hooks/hooks.json` | PreToolUse | Write\|Edit\|MultiEdit | Blocks hardcoded secrets |
 | `plugins/git-flow/hooks/hooks.json` | PreToolUse | Bash | Branch naming + commit format |
-| `plugins/cmdb-assistant/hooks/hooks.json` | PreToolUse | MCP create/update | NetBox input validation |
 | `plugins/clarity-assist/hooks/hooks.json` | UserPromptSubmit | (all prompts) | Vagueness detection |
 
 ### Verification Process
@@ -421,7 +419,6 @@ Count verified review layers for each scope:
 | PR review | Check if pr-review plugin is installed |
 | code-sentinel PreToolUse | hooks.json exists with PreToolUse on Write/Edit/MultiEdit |
 | git-flow PreToolUse | hooks.json exists with PreToolUse on Bash |
-| cmdb-assistant PreToolUse | hooks.json exists with PreToolUse on MCP create/update |
 
 **Recommendation threshold:** Only recommend auto-allow for scopes with ≥2 verified layers.
 

@@ -164,7 +164,6 @@ This marketplace uses a **hybrid configuration** approach:
 │                    ~/.config/claude/                            │
 ├─────────────────────────────────────────────────────────────────┤
 │  gitea.env     │  GITEA_API_URL, GITEA_API_TOKEN                       │
-│  netbox.env    │  NETBOX_API_URL, NETBOX_API_TOKEN                     │
 │  git-flow.env  │  GIT_WORKFLOW_STYLE, GIT_DEFAULT_BASE, etc.   │
 └─────────────────────────────────────────────────────────────────┘
                               │
@@ -237,12 +236,6 @@ source .venv/bin/activate
 pip install -r requirements.txt
 deactivate
 
-# (Optional) Set up NetBox MCP server
-cd ../netbox
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-deactivate
 ```
 
 #### Step 2: System Configuration
@@ -292,7 +285,6 @@ Located in `~/.config/claude/`:
 | File | Required By | Purpose |
 |------|-------------|---------|
 | `gitea.env` | projman, pr-review | Gitea API credentials |
-| `netbox.env` | cmdb-assistant | NetBox API credentials |
 | `git-flow.env` | git-flow | Default git workflow settings |
 
 ### Gitea Configuration
@@ -319,19 +311,6 @@ GITEA_API_TOKEN=your_gitea_token_here
    - `read:user`
    - `write:repo` (for wiki access)
 4. Copy token immediately (shown only once)
-
-### NetBox Configuration
-
-```bash
-# ~/.config/claude/netbox.env
-NETBOX_API_URL=https://netbox.example.com
-NETBOX_API_TOKEN=your_netbox_token_here
-```
-
-| Variable | Description | Example |
-|----------|-------------|---------|
-| `NETBOX_API_URL` | NetBox base URL | `https://netbox.example.com` |
-| `NETBOX_API_TOKEN` | API token | `abc123...` |
 
 ### Git-Flow Configuration
 
@@ -391,7 +370,6 @@ PR_REVIEW_AUTO_SUBMIT=false
 | **pr-review** | gitea.env | .env (GITEA_REPO=owner/repo) | `/pr setup` |
 | **git-flow** | git-flow.env (optional) | .env (optional) | None needed |
 | **clarity-assist** | None | None | None needed |
-| **cmdb-assistant** | netbox.env | None | `/cmdb setup` |
 | **data-platform** | postgres.env | .env (optional) | `/data setup` |
 | **viz-platform** | None | .env (optional DMC_VERSION) | `/viz setup` |
 | **doc-guardian** | None | None | None needed |
@@ -509,7 +487,6 @@ Not all plugins have MCP servers. The install script handles this automatically:
 | data-platform | ✓ | pandas, PostgreSQL, dbt tools |
 | viz-platform | ✓ | DMC validation, chart, theme tools |
 | contract-validator | ✓ | Plugin compatibility validation |
-| cmdb-assistant | ✓ (via netbox) | NetBox CMDB tools |
 | projman | ✓ (via gitea) | Issue, wiki, PR tools |
 | pr-review | ✓ (via gitea) | PR review tools |
 | git-flow | ✗ | Commands only |
@@ -568,7 +545,6 @@ Agents specify their configuration in frontmatter using Claude Code's supported 
 | clarity-assist | clarity-coach | sonnet | default | Write, Edit, MultiEdit | — |
 | git-flow | git-assistant | haiku | acceptEdits | — | — |
 | claude-config-maintainer | maintainer | sonnet | acceptEdits | — | frontmatter (2) |
-| cmdb-assistant | cmdb-assistant | sonnet | default | — | — |
 
 ### Agent Purpose Guide
 

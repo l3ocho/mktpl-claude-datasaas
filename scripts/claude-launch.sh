@@ -47,7 +47,7 @@ PROFILES[sprint]="projman git-flow pr-review code-sentinel doc-guardian clarity-
 PROFILES[infra]="DEPRECATED"
 PROFILES[data]="data-platform viz-platform data-seed"
 PROFILES[saas]="saas-api-platform saas-react-platform saas-db-migrate saas-test-pilot"
-PROFILES[ops]="cmdb-assistant ops-release-manager ops-deploy-pipeline"
+PROFILES[ops]="ops-release-manager ops-deploy-pipeline"
 PROFILES[review]="pr-review code-sentinel"
 PROFILES[debug]="debug-mcp"
 PROFILES[full]=""  # Empty = use marketplace.json
@@ -62,7 +62,7 @@ fi
 # Handle deprecated profiles
 if [[ "$PROFILE" == "infra" ]]; then
     echo -e "${YELLOW}Warning: 'infra' profile is deprecated. Use 'ops' instead.${NC}"
-    echo -e "${YELLOW}   The 'ops' profile includes cmdb-assistant plus future ops plugins.${NC}"
+    echo -e "${YELLOW}   The 'ops' profile includes ops-release-manager and ops-deploy-pipeline.${NC}"
     PROFILE="ops"
 fi
 

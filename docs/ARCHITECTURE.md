@@ -14,7 +14,7 @@ Plugin marketplace for Claude Code. 21 plugins across 5 domains, 5 shared MCP se
 | core | Development workflow | projman, git-flow, pr-review, code-sentinel, doc-guardian, clarity-assist, contract-validator, claude-config-maintainer, project-hygiene |
 | data | Data engineering | data-platform, viz-platform, drawio-plugin, data-seed |
 | saas | SaaS development | saas-api-platform, saas-db-migrate, saas-react-platform, saas-test-pilot |
-| ops | Operations | cmdb-assistant, ops-release-manager, ops-deploy-pipeline |
+| ops | Operations | ops-release-manager, ops-deploy-pipeline |
 | debug | Diagnostics | debug-mcp |
 
 ### MCP Servers (Shared at Root)
@@ -22,7 +22,6 @@ Plugin marketplace for Claude Code. 21 plugins across 5 domains, 5 shared MCP se
 | Server | Plugins Using It | External System |
 |--------|-------------------|-----------------|
 | gitea | projman, pr-review | Gitea (issues, PRs, wiki) — uses published `gitea-mcp` package |
-| netbox | cmdb-assistant | NetBox (DCIM, IPAM) |
 | data-platform | data-platform | PostgreSQL, dbt |
 | viz-platform | viz-platform | DMC registry |
 | contract-validator | contract-validator | (internal validation) |
@@ -34,7 +33,6 @@ Plugin marketplace for Claude Code. 21 plugins across 5 domains, 5 shared MCP se
 | code-sentinel | PreToolUse | Write\|Edit\|MultiEdit | security-check.sh |
 | git-flow | PreToolUse | Bash (branch naming) | branch-check.sh |
 | git-flow | PreToolUse | Bash (git commit) | commit-msg-check.sh |
-| cmdb-assistant | PreToolUse | MCP create/update | validate-input.sh |
 | clarity-assist | UserPromptSubmit | All prompts | vagueness-check.sh |
 
 No other hook types permitted. All workflow automation is via explicit commands.
@@ -70,7 +68,7 @@ No other hook types permitted. All workflow automation is via explicit commands.
 | sprint | projman, git-flow, pr-review, code-sentinel, doc-guardian, clarity-assist |
 | data | data-platform, viz-platform, data-seed |
 | saas | saas-api-platform, saas-react-platform, saas-db-migrate, saas-test-pilot |
-| ops | cmdb-assistant, ops-release-manager, ops-deploy-pipeline |
+| ops | ops-release-manager, ops-deploy-pipeline |
 | review | pr-review, code-sentinel |
 | debug | debug-mcp |
 | full | all plugins |
@@ -181,13 +179,6 @@ React frontend toolkit for Next.js and Vite. *Scaffold.*
 Test automation for pytest, Jest, Vitest, Playwright. *Scaffold.*
 
 ### Ops Domain
-
-#### cmdb-assistant (v9.0.1)
-NetBox CMDB integration for infrastructure management.
-- **Commands:** /cmdb (search|device|ip|site|audit|register|sync|topology|change-audit|ip-conflicts|setup)
-- **Agents:** cmdb-assistant
-- **MCP:** netbox
-- **Hooks:** PreToolUse (validate-input.sh)
 
 #### ops-release-manager (v0.1.0)
 Release management with SemVer and changelog automation. *Scaffold.*

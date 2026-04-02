@@ -84,8 +84,7 @@ Read `.claude/settings.local.json` and identify enabled MCP servers:
 ```json
 {
   "mcpServers": {
-    "gitea": { ... },      // → projman plugin
-    "netbox": { ... }      // → cmdb-assistant plugin
+    "gitea": { ... }      // → projman plugin
   }
 }
 ```
@@ -94,16 +93,15 @@ Use this mapping to identify active plugins:
 | MCP Server | Plugin |
 |------------|--------|
 | `gitea` | projman |
-| `netbox` | cmdb-assistant |
 
-Also check for hook-based plugins (code-sentinel, git-flow, cmdb-assistant use `PreToolUse` safety hooks; clarity-assist uses `UserPromptSubmit` quality hook).
+Also check for hook-based plugins (code-sentinel, git-flow use `PreToolUse` safety hooks; clarity-assist uses `UserPromptSubmit` quality hook).
 
 **Step 2: Check CLAUDE.md for Plugin References**
 
 For each detected plugin, search CLAUDE.md for:
-- Plugin name mention (e.g., "projman", "cmdb-assistant")
-- Command references (e.g., `/sprint plan`, `/cmdb search`)
-- MCP tool mentions (e.g., `list_issues`, `dcim_list_devices`)
+- Plugin name mention (e.g., "projman", "pr-review")
+- Command references (e.g., `/sprint plan`, `/pr review`)
+- MCP tool mentions (e.g., `list_issues`, `get_pull_request`)
 
 **Step 3: Load Integration Snippets**
 

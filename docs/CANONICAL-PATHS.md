@@ -41,10 +41,6 @@ mktpl-claude-datasaas/
 │   │   │       └── pull_requests.py  # NEW in v3.0.0
 │   │   ├── requirements.txt
 │   │   └── .venv/
-│   ├── netbox/                 # NetBox MCP server
-│   │   ├── mcp_server/
-│   │   ├── requirements.txt
-│   │   └── .venv/
 │   ├── data-platform/          # Data engineering MCP (NEW v4.0.0)
 │   │   ├── mcp_server/
 │   │   │   ├── server.py
@@ -96,11 +92,6 @@ mktpl-claude-datasaas/
 │   │   ├── commands/
 │   │   ├── agents/
 │   │   ├── skills/
-│   │   └── claude-md-integration.md
-│   ├── cmdb-assistant/         # NetBox CMDB integration
-│   │   ├── .claude-plugin/
-│   │   ├── commands/
-│   │   ├── agents/
 │   │   └── claude-md-integration.md
 │   ├── claude-config-maintainer/
 │   │   ├── .claude-plugin/
@@ -305,7 +296,7 @@ MCP servers are **shared at repository root** and configured in `.mcp.json`.
 |---------|---------|---------|
 | MCP configuration | `.mcp.json` | `.mcp.json` (at repo root) |
 | Shared MCP server | `mcp-servers/{server}/` | `mcp-servers/gitea/` |
-| MCP server code | `mcp-servers/{server}/mcp_server/` | `mcp-servers/netbox/mcp_server/` |
+| MCP server code | `mcp-servers/{server}/mcp_server/` | `mcp-servers/gitea/` |
 | MCP venv (local) | `mcp-servers/{server}/.venv/` | `mcp-servers/gitea/.venv/` |
 
 **Note:** `mcp-servers/gitea/` is a thin wrapper — source code is in the published `gitea-mcp` package (Gitea PyPI). Other MCP servers still have local source code.
@@ -418,7 +409,6 @@ All MCP servers are defined in `.mcp.json` at repository root:
 {
   "mcpServers": {
     "gitea": { "command": ".../mcp-servers/gitea/run.sh" },
-    "netbox": { "command": ".../mcp-servers/netbox/run.sh" },
     "data-platform": { "command": ".../mcp-servers/data-platform/run.sh" },
     "viz-platform": { "command": ".../mcp-servers/viz-platform/run.sh" },
     "contract-validator": { "command": ".../mcp-servers/contract-validator/run.sh" }
@@ -444,7 +434,7 @@ Domain metadata is stored in `metadata.json` (v9.1.2+, moved from plugin.json/ma
 |--------|---------|-----------------|
 | `core` | Development workflow plugins | projman, git-flow, pr-review, code-sentinel, doc-guardian, clarity-assist, contract-validator, claude-config-maintainer, project-hygiene |
 | `data` | Data engineering and visualization | data-platform, viz-platform, drawio-plugin, data-seed |
-| `ops` | Operations and infrastructure | cmdb-assistant, ops-release-manager, ops-deploy-pipeline |
+| `ops` | Operations and infrastructure | ops-release-manager, ops-deploy-pipeline |
 | `saas` | SaaS application development | saas-api-platform, saas-db-migrate, saas-react-platform, saas-test-pilot |
 | `debug` | Debugging and diagnostics | debug-mcp |
 

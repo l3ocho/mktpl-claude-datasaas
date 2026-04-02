@@ -5,7 +5,7 @@ Common MCP server error patterns, their root causes, and fixes.
 ## Error Pattern: ImportError
 
 ```
-ImportError: No module named 'pynetbox'
+ImportError: No module named 'some_package'
 ```
 
 **Root Cause:** Missing Python package in the virtual environment.
@@ -26,7 +26,7 @@ ConnectionRefusedError: [Errno 111] Connection refused
 **Root Cause:** The external service the MCP server connects to is not running or not reachable.
 
 **Checks:**
-1. Is the target service running? (e.g., Gitea, NetBox)
+1. Is the target service running? (e.g., Gitea)
 2. Is the URL correct in the env file?
 3. Is there a firewall or VPN issue?
 
@@ -43,7 +43,7 @@ json.decoder.JSONDecodeError: Expecting value: line 1 column 1
 - API returned empty response (auth failed silently)
 - Proxy intercepted the request
 
-**Fix:** Check the API URL ends with the correct path (e.g., `/api/v1` for Gitea, `/api` for NetBox).
+**Fix:** Check the API URL ends with the correct path (e.g., `/api/v1` for Gitea).
 
 ## Error Pattern: TimeoutError
 

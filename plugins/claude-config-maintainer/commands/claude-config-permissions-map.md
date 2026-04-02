@@ -39,7 +39,6 @@ Read all plugin hooks from the marketplace:
 ```
 plugins/code-sentinel/hooks/hooks.json
 plugins/git-flow/hooks/hooks.json
-plugins/cmdb-assistant/hooks/hooks.json
 plugins/clarity-assist/hooks/hooks.json
 ```
 
@@ -58,7 +57,6 @@ Create a mapping of which review layers cover which operations:
 | Edit | code-sentinel | PR review |
 | MultiEdit | code-sentinel | PR review |
 | Bash(git *) | git-flow | — |
-| MCP(netbox create/update) | cmdb-assistant | — |
 
 ### Step 3: Read Current Permissions
 
@@ -184,7 +182,6 @@ Review Layer Status
 PreToolUse Hooks (intercept before operation):
   ✓ code-sentinel — Write, Edit, MultiEdit
   ✓ git-flow — Bash(git checkout *), Bash(git commit *)
-  ✓ cmdb-assistant — MCP(netbox create/update)
 
 UserPromptSubmit Hooks (check prompt quality):
   ✓ clarity-assist — vagueness detection

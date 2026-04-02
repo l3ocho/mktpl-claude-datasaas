@@ -5,7 +5,7 @@
     "email": "leobmiranda@gmail.com"
   },
   "metadata": {
-    "description": "Project management plugins with Gitea and NetBox integrations",
+    "description": "Project management plugins with Gitea integration",
     "version": "7.1.0"
   },
   "plugins": [

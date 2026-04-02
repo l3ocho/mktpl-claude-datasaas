@@ -131,22 +131,6 @@ EOF
         log_todo "Edit ~/.config/claude/gitea.env with your Gitea credentials"
     fi
 
-    # NetBox config
-    if [[ -f "$config_dir/netbox.env" ]]; then
-        log_skip "netbox.env already exists"
-    else
-        cat > "$config_dir/netbox.env" << 'EOF'
-# NetBox API Configuration
-# Update these values with your NetBox instance details
-
-NETBOX_API_URL=https://netbox.example.com/api
-NETBOX_API_TOKEN=your_netbox_token_here
-EOF
-        chmod 600 "$config_dir/netbox.env"
-        log_success "netbox.env template created"
-        log_todo "Edit ~/.config/claude/netbox.env with your NetBox credentials"
-    fi
-
     # Git-flow config (optional)
     if [[ -f "$config_dir/git-flow.env" ]]; then
         log_skip "git-flow.env already exists"
@@ -199,15 +183,6 @@ validate_config() {
         fi
     fi
 
-    # Check NetBox config has real values
-    if [[ -f "$config_dir/netbox.env" ]]; then
-        source "$config_dir/netbox.env"
-        if [[ "${NETBOX_API_TOKEN:-}" == "your_netbox_token_here" ]] || [[ -z "${NETBOX_API_TOKEN:-}" ]]; then
-            log_todo "Update NETBOX_API_TOKEN in ~/.config/claude/netbox.env"
-        else
-            log_success "NetBox configuration appears valid"
-        fi
-    fi
 }
 
 # --- Section 5: Skill Aliases ---
@@ -303,7 +278,6 @@ main() {
 
     # Shared MCP servers at repository root
     setup_shared_mcp "gitea"
-    setup_shared_mcp "netbox"
     setup_shared_mcp "data-platform"
     setup_shared_mcp "viz-platform"
     setup_shared_mcp "contract-validator"

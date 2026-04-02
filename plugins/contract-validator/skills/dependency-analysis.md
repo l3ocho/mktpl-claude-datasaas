@@ -17,7 +17,6 @@ Check each plugin's `.mcp.json` for server definitions. Plugins with identical M
 
 **Common shared servers:**
 - `gitea` - Used by projman, pr-review
-- `netbox` - Used by cmdb-assistant
 - `data-platform` - Used by data-platform
 - `viz-platform` - Used by viz-platform
 

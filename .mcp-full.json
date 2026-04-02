@@ -4,10 +4,6 @@
       "command": "./mcp-servers/gitea/run.sh",
       "args": []
     },
-    "netbox": {
-      "command": "./mcp-servers/netbox/run.sh",
-      "args": []
-    },
     "viz-platform": {
       "command": "./mcp-servers/viz-platform/run.sh",
       "args": []
