@@ -68,7 +68,6 @@ Read `plugins/*/hooks/hooks.json` files (post-Decision #29 — only PreToolUse s
 # Check each plugin's hooks (exhaustive post-v8.1.0 inventory)
 plugins/code-sentinel/hooks/hooks.json     # PreToolUse: Write|Edit|MultiEdit → security-check.sh
 plugins/git-flow/hooks/hooks.json          # PreToolUse: Bash → branch-check.sh, commit-msg-check.sh
-plugins/cmdb-assistant/hooks/hooks.json    # PreToolUse: MCP create/update → validate-input.sh
 plugins/clarity-assist/hooks/hooks.json    # UserPromptSubmit → vagueness-check.sh
 ```
 
@@ -150,7 +149,6 @@ Issues Found:
 Active Review Layers Detected:
   ✓ code-sentinel (PreToolUse: Write|Edit|MultiEdit)
   ✓ git-flow (PreToolUse: Bash — branch naming + commit format)
-  ✓ cmdb-assistant (PreToolUse: MCP create/update)
   ✓ clarity-assist (UserPromptSubmit: vagueness detection)
 
 Recommendations:

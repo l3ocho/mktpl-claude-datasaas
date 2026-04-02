@@ -40,8 +40,6 @@ RUNTIME=~/.claude/plugins/marketplaces/mktpl-claude-datasaas
 
 # Check MCP server exists
 ls -la $RUNTIME/mcp-servers/gitea/
-ls -la $RUNTIME/mcp-servers/netbox/
-
 # Check plugin manifests
 ls -la $RUNTIME/plugins/projman/.claude-plugin/plugin.json
 ls -la $RUNTIME/plugins/pr-review/.claude-plugin/plugin.json
@@ -63,8 +61,6 @@ RUNTIME=~/.claude/plugins/marketplaces/mktpl-claude-datasaas
 
 # Check venvs exist
 ls -la $RUNTIME/mcp-servers/gitea/.venv/bin/python
-ls -la $RUNTIME/mcp-servers/netbox/.venv/bin/python
-
 # If missing, create them:
 cd $RUNTIME && ./scripts/setup.sh
 ```
@@ -83,7 +79,7 @@ RUNTIME=~/.claude/plugins/marketplaces/mktpl-claude-datasaas
 # Check .mcp.json exists and has valid content
 cat $RUNTIME/.mcp.json | jq '.mcpServers | keys'
 
-# Should list: gitea, netbox, data-platform, viz-platform, contract-validator
+# Should list: gitea, data-platform, viz-platform, contract-validator
 ```
 
 ---
@@ -99,9 +95,6 @@ RUNTIME=~/.claude/plugins/marketplaces/mktpl-claude-datasaas
 cd $RUNTIME/mcp-servers/gitea
 .venv/bin/python -c "from gitea_mcp.server import main; print('OK')"
 
-# Test NetBox MCP
-cd $RUNTIME/mcp-servers/netbox
-PYTHONPATH=. .venv/bin/python -c "from mcp_server.server import main; print('OK')"
 ```
 
 **If import fails:** Check requirements.txt installed, check Python version compatibility.
@@ -116,9 +109,6 @@ Check environment variables are set:
 # System-level credentials (should exist)
 cat ~/.config/claude/gitea.env
 # Should contain: GITEA_API_URL, GITEA_API_TOKEN
-
-cat ~/.config/claude/netbox.env
-# Should contain: NETBOX_API_URL, NETBOX_API_TOKEN
 
 # Project-level config (in target project)
 cat /path/to/project/.env
@@ -157,14 +147,11 @@ echo "=== Installation Status ==="
 
 echo -e "\n=== Virtual Environments ==="
 [ -f "$RUNTIME/mcp-servers/gitea/.venv/bin/python" ] && echo "Gitea venv: OK" || echo "Gitea venv: MISSING"
-[ -f "$RUNTIME/mcp-servers/netbox/.venv/bin/python" ] && echo "NetBox venv: OK" || echo "NetBox venv: MISSING"
-
 echo -e "\n=== MCP Configuration ==="
 [ -f "$RUNTIME/.mcp.json" ] && echo ".mcp.json: OK" || echo ".mcp.json: MISSING"
 
 echo -e "\n=== Config Files ==="
 [ -f ~/.config/claude/gitea.env ] && echo "gitea.env: OK" || echo "gitea.env: MISSING"
-[ -f ~/.config/claude/netbox.env ] && echo "netbox.env: OK" || echo "netbox.env: MISSING"
 ```
 
 ---

@@ -36,7 +36,6 @@ This skill defines the workflow for analyzing CLAUDE.md files.
 1. Read `.claude/settings.local.json` for enabled MCP servers
 2. Map MCP servers to plugins:
    - `gitea` -> projman
-   - `netbox` -> cmdb-assistant
 3. Check for hook-based plugins (project-hygiene)
 4. Scan CLAUDE.md for plugin references
 

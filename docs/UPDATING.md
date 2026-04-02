@@ -38,7 +38,7 @@ cd ~/.claude/plugins/marketplaces/mktpl-claude-datasaas && ./scripts/setup.sh
 
 ## What the Post-Update Script Does
 
-1. **Updates Python dependencies** for all 5 MCP servers (gitea, netbox, data-platform, viz-platform, contract-validator)
+1. **Updates Python dependencies** for all 4 MCP servers (gitea, data-platform, viz-platform, contract-validator)
 2. **Shows recent changelog entries** so you know what changed
 3. **Validates your configuration** is still compatible
 
@@ -48,7 +48,7 @@ cd ~/.claude/plugins/marketplaces/mktpl-claude-datasaas && ./scripts/setup.sh
 
 ### When to Re-run Setup
 
-You typically **don't need** to re-run setup after updates. However, re-run your plugin's setup command (e.g., `/projman setup`, `/pr setup`, `/cmdb setup`) if:
+You typically **don't need** to re-run setup after updates. However, re-run your plugin's setup command (e.g., `/projman setup`, `/pr setup`) if:
 
 - Changelog mentions **new required environment variables**
 - Changelog mentions **breaking changes** to configuration
@@ -76,7 +76,7 @@ If the changelog mentions new environment variables:
 
 1. Check the variable name and purpose in the changelog
 2. Add it to the appropriate config file:
-   - System variables → `~/.config/claude/gitea.env` or `netbox.env`
+   - System variables → `~/.config/claude/gitea.env`
    - Project variables → `.env` in your project root
 
 ### New MCP Server Features
@@ -159,7 +159,7 @@ If that doesn't work:
 1. Check Python version: `python3 --version` (requires 3.10+)
 2. Verify venvs exist in INSTALLED location:
    ```bash
-   for server in gitea netbox data-platform viz-platform contract-validator; do
+   for server in gitea data-platform viz-platform contract-validator; do
      ls ~/.claude/plugins/marketplaces/mktpl-claude-datasaas/mcp-servers/$server/.venv && echo "$server: OK" || echo "$server: MISSING"
    done
    ```

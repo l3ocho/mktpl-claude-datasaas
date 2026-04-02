@@ -138,7 +138,6 @@ These plugins exist in source but are **NOT relevant** to this project's workflo
 |--------|--------------|
 | **data-platform** | For data engineering projects (pandas, PostgreSQL, dbt) |
 | **viz-platform** | For dashboard projects (Dash, Plotly) |
-| **cmdb-assistant** | For infrastructure projects (NetBox) |
 | **saas-api-platform** | For REST/GraphQL API projects (FastAPI, Express) |
 | **saas-db-migrate** | For database migration projects (Alembic, Prisma) |
 | **saas-react-platform** | For React frontend projects (Next.js, Vite) |
@@ -148,7 +147,7 @@ These plugins exist in source but are **NOT relevant** to this project's workflo
 | **ops-deploy-pipeline** | For deployment pipeline management |
 | **debug-mcp** | For MCP server debugging and development |
 
-**Do NOT suggest** `/data ingest`, `/data profile`, `/viz chart`, `/cmdb *`, `/api *`, `/db-migrate *`, `/react *`, `/test *`, `/seed *`, `/release *`, `/deploy *`, `/debug-mcp *` commands - they don't apply here.
+**Do NOT suggest** `/data ingest`, `/data profile`, `/viz chart`, `/api *`, `/db-migrate *`, `/react *`, `/test *`, `/seed *`, `/release *`, `/deploy *`, `/debug-mcp *` commands - they don't apply here.
 
 ### Key Distinction
 
@@ -179,7 +178,6 @@ A plugin marketplace for Claude Code containing:
 | `doc-guardian` | Automatic documentation drift detection and synchronization | 9.0.1 |
 | `code-sentinel` | Security scanning and code refactoring tools | 9.0.1 |
 | `claude-config-maintainer` | CLAUDE.md optimization and maintenance | 9.0.1 |
-| `cmdb-assistant` | NetBox CMDB integration for infrastructure management | 9.0.1 |
 | `data-platform` | pandas, PostgreSQL, and dbt integration for data engineering | 9.1.0 |
 | `viz-platform` | DMC validation, Plotly charts, and theming for dashboards | 9.1.0 |
 | `drawio-plugin` | Wireframe design tools — parse .drawio XML into DMC specs, generate wireframes | 1.0.0 |
@@ -229,7 +227,6 @@ These commands are being developed but don't apply to this project's workflow:
 |----------|----------|-------------------|
 | **Data** | `/data ingest`, `/data profile`, `/data schema`, `/data lineage`, `/data dbt-test` | pandas, PostgreSQL, dbt |
 | **Visualization** | `/viz component`, `/viz chart`, `/viz dashboard`, `/viz theme` | Dash, Plotly dashboards |
-| **CMDB** | `/cmdb search`, `/cmdb device`, `/cmdb sync` | NetBox infrastructure |
 | **API** | `/api scaffold`, `/api validate`, `/api docs`, `/api middleware` | FastAPI, Express |
 | **DB Migrate** | `/db-migrate generate`, `/db-migrate validate`, `/db-migrate plan` | Alembic, Prisma |
 | **React** | `/react component`, `/react route`, `/react state`, `/react hook` | Next.js, Vite |
@@ -250,11 +247,10 @@ mktpl-claude-datasaas/
 ├── .mcp.json                     # MCP server configuration (all servers)
 ├── mcp-servers/                  # SHARED MCP servers
 │   ├── gitea/                    # Gitea (issues, PRs, wiki)
-│   ├── netbox/                   # NetBox (DCIM, IPAM)
 │   ├── data-platform/            # pandas, PostgreSQL, dbt
 │   ├── viz-platform/             # DMC, Plotly, theming
 │   └── contract-validator/       # Plugin compatibility validation
-├── plugins/                      # All plugins (21 total)
+├── plugins/                      # All plugins (20 total)
 │   ├── projman/                  # [core] Sprint management
 │   │   ├── .claude-plugin/plugin.json
 │   │   ├── commands/             # 22 commands
@@ -268,7 +264,6 @@ mktpl-claude-datasaas/
 │   ├── claude-config-maintainer/ # [core] CLAUDE.md optimization
 │   ├── contract-validator/       # [core] Cross-plugin validation
 │   ├── project-hygiene/          # [core] Manual cleanup checks
-│   ├── cmdb-assistant/           # [ops] NetBox CMDB integration
 │   ├── data-platform/            # [data] Data engineering
 │   ├── viz-platform/             # [data] Visualization
 │   ├── drawio-plugin/            # [data] Wireframe design tools
@@ -361,7 +356,6 @@ Agents specify their configuration in frontmatter using Claude Code's supported 
 | clarity-assist | clarity-coach | sonnet | default | Write, Edit, MultiEdit | — |
 | git-flow | git-assistant | haiku | acceptEdits | — | — |
 | claude-config-maintainer | maintainer | sonnet | acceptEdits | — | frontmatter (2) |
-| cmdb-assistant | cmdb-assistant | sonnet | default | — | — |
 
 **Design principles:**
 - `bypassPermissions` is granted to exactly ONE agent (Executor) which has code-sentinel PreToolUse hook + Code Reviewer downstream as safety nets.
@@ -461,7 +455,7 @@ Stored in Gitea Wiki under `lessons-learned/sprints/`.
 | `core` | projman, git-flow, pr-review, code-sentinel, doc-guardian, clarity-assist, contract-validator, claude-config-maintainer, project-hygiene |
 | `data` | data-platform, viz-platform, drawio-plugin, data-seed |
 | `saas` | saas-api-platform, saas-db-migrate, saas-react-platform, saas-test-pilot |
-| `ops` | cmdb-assistant, ops-release-manager, ops-deploy-pipeline |
+| `ops` | ops-release-manager, ops-deploy-pipeline |
 | `debug` | debug-mcp |
 
 ### Adding a Command to projman

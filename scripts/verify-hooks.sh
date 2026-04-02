@@ -6,14 +6,13 @@
 #   code-sentinel  : PreToolUse → security-check.sh (Write|Edit|MultiEdit)
 #   git-flow       : PreToolUse → branch-check.sh (Bash)
 #   git-flow       : PreToolUse → commit-msg-check.sh (Bash)
-#   cmdb-assistant : PreToolUse → validate-input.sh (MCP create/update)
 #   clarity-assist : UserPromptSubmit → vagueness-check.sh (prompt quality)
 #
 # FAIL conditions:
 #   - Any SessionStart hook
 #   - Any PostToolUse hook
 #   - Any hook of type "prompt"
-#   - Any hooks.json outside the 4 expected plugins
+#   - Any hooks.json outside the 3 expected plugins
 #   - Missing expected hooks
 
 set -euo pipefail
@@ -29,7 +28,7 @@ FAILED=0
 HOOK_COUNT=0
 
 # Allowed plugins with hooks
-ALLOWED_PLUGINS="code-sentinel git-flow cmdb-assistant clarity-assist"
+ALLOWED_PLUGINS="code-sentinel git-flow clarity-assist"
 
 # 1. Check for unexpected hooks.json files
 while IFS= read -r -d '' hooks_file; do
@@ -37,7 +36,7 @@ while IFS= read -r -d '' hooks_file; do
     if ! echo "$ALLOWED_PLUGINS" | grep -qw "$plugin_name"; then
         echo "FAIL: UNEXPECTED hooks.json in: $plugin_name"
         echo "   File: $hooks_file"
-        echo "   Only code-sentinel, git-flow, cmdb-assistant, and clarity-assist may have hooks"
+        echo "   Only code-sentinel, git-flow, and clarity-assist may have hooks"
         FAILED=1
     fi
 done < <(find "$PLUGINS_DIR" -path "*/hooks/hooks.json" -print0 2>/dev/null)
@@ -75,7 +74,7 @@ while IFS= read -r -d '' hooks_file; do
 done < <(find "$PLUGINS_DIR" -path "*/hooks/hooks.json" -print0 2>/dev/null)
 
 # 3. Verify expected hooks exist
-for expected in code-sentinel git-flow cmdb-assistant clarity-assist; do
+for expected in code-sentinel git-flow clarity-assist; do
     if [[ ! -f "$PLUGINS_DIR/$expected/hooks/hooks.json" ]]; then
         echo "FAIL: Missing expected hooks.json in $expected"
         FAILED=1
@@ -86,15 +85,15 @@ done
 
 # 4. Summary
 echo ""
-echo "Total hooks: $HOOK_COUNT (expected: 5 — 4 PreToolUse + 1 UserPromptSubmit)"
-if [[ "$HOOK_COUNT" -ne 5 ]]; then
+echo "Total hooks: $HOOK_COUNT (expected: 4 — 3 PreToolUse + 1 UserPromptSubmit)"
+if [[ "$HOOK_COUNT" -ne 4 ]]; then
     echo "FAIL: Hook count mismatch"
     FAILED=1
 fi
 
 echo ""
 if [[ $FAILED -eq 0 ]]; then
-    echo "✓ All hooks verified OK — 4 PreToolUse safety hooks + 1 UserPromptSubmit quality hook"
+    echo "✓ All hooks verified OK — 3 PreToolUse safety hooks + 1 UserPromptSubmit quality hook"
 else
     echo "FAIL: HOOK VERIFICATION FAILED"
     exit 1

@@ -27,11 +27,10 @@ A plugin marketplace for Claude Code providing sprint management, code review, s
 | `drawio-plugin` | 1.0.0 | Wireframe design tools — parse .drawio XML into DMC specs, generate wireframes from descriptions |
 | `data-seed` | 0.1.0 — scaffold | Test data generation and database seeding |
 
-### Ops (3 plugins)
+### Ops (2 plugins)
 
 | Plugin | Version | Description |
 |--------|---------|-------------|
-| `cmdb-assistant` | 9.0.1 | NetBox CMDB integration with data quality validation |
 | `ops-release-manager` | 0.1.0 — scaffold | Release management with SemVer and changelog automation |
 | `ops-deploy-pipeline` | 0.1.0 — scaffold | Deployment pipeline for Docker Compose and systemd |
 
@@ -63,8 +62,7 @@ A plugin marketplace for Claude Code providing sprint management, code review, s
 | `sprint` | projman, git-flow, pr-review, code-sentinel, doc-guardian, clarity-assist | Default. Sprint planning and development |
 | `review` | pr-review, code-sentinel | Lightweight code review |
 | `data` | data-platform, viz-platform | Data engineering and visualization |
-| `infra` | cmdb-assistant | Infrastructure/CMDB management |
-| `full` | All 21 plugins | When you need everything |
+| `full` | All 20 plugins | When you need everything |
 
 ```bash
 ./scripts/claude-launch.sh                    # Default sprint profile
@@ -94,11 +92,10 @@ mktpl-claude-datasaas/
 │   └── marketplace-full.json      # Full profile (all plugins)
 ├── mcp-servers/                   # Shared MCP servers
 │   ├── gitea/                     # Gitea (issues, PRs, wiki)
-│   ├── netbox/                    # NetBox (DCIM, IPAM)
 │   ├── data-platform/             # pandas, PostgreSQL, dbt
 │   ├── viz-platform/              # DMC, Plotly, theming
 │   └── contract-validator/        # Plugin compatibility validation
-├── plugins/                       # All plugins (21 total)
+├── plugins/                       # All plugins (20 total)
 │   ├── projman/                   # [core] Sprint management
 │   ├── git-flow/                  # [core] Git workflow automation
 │   ├── pr-review/                 # [core] PR review
@@ -108,7 +105,6 @@ mktpl-claude-datasaas/
 │   ├── claude-config-maintainer/  # [core] CLAUDE.md optimization
 │   ├── contract-validator/        # [core] Cross-plugin validation
 │   ├── project-hygiene/           # [core] Manual cleanup checks
-│   ├── cmdb-assistant/            # [ops] NetBox CMDB integration
 │   ├── data-platform/             # [data] Data engineering
 │   ├── viz-platform/              # [data] Visualization
 │   ├── drawio-plugin/             # [data] Wireframe design tools
@@ -153,7 +149,6 @@ All MCP servers are shared at repository root and configured in `.mcp.json`.
 | Server | Used By | External System |
 |--------|---------|-----------------|
 | gitea | projman, pr-review | Gitea (issues, PRs, wiki, milestones) |
-| netbox | cmdb-assistant | NetBox (DCIM, IPAM) |
 | data-platform | data-platform | PostgreSQL, dbt |
 | viz-platform | viz-platform | DMC component registry |
 | contract-validator | contract-validator | Internal validation |
@@ -164,7 +159,7 @@ All MCP servers are shared at repository root and configured in `.mcp.json`.
 
 - Claude Code installed
 - Python 3.10+
-- Access to target services (Gitea, NetBox as needed)
+- Access to target services (Gitea as needed)
 
 ### Add marketplace to Claude Code
 
