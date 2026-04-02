@@ -74,19 +74,13 @@ For each configured MCP server:
 | Server | Executable | Venv | Config | Import | Status |
 |--------|-----------|------|--------|--------|--------|
 | gitea | OK | OK | OK | OK | HEALTHY |
-| netbox | OK | MISSING | OK | FAIL | ERROR |
 | data-platform | OK | OK | OK | OK | HEALTHY |
 
 ### Errors
 
-#### netbox
-- Venv missing: /path/to/mcp-servers/netbox/.venv does not exist
-- Import failed: ModuleNotFoundError: No module named 'pynetbox'
-- Fix: cd /path/to/mcp-servers/netbox && python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
-
 ### Summary
-- Healthy: 4/5
-- Errors: 1/5
+- Healthy: 4/4
+- Errors: 0/4
 ```
 
 ### Phase 4: Verbose Mode

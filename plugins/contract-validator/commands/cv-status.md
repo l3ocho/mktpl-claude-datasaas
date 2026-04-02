@@ -36,9 +36,8 @@ For each plugin, verify:
 |--------------------------|--------|---------|-----------|-----|------------|
 | projman                  | core   | 3.4.0   | Y         | Y   | Y          |
 | git-flow                 | core   | 1.2.0   | Y         | -   | Y          |
-| cmdb-assistant           | ops    | 1.2.0   | Y         | N   | N          |
 
-Summary: 12/12 installed, 4/5 MCP connected, 11/12 configured
+Summary: 11/11 installed, 4/4 MCP connected, 11/11 configured
 ```
 
 ## Notes

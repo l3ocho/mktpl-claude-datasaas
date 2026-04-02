@@ -24,13 +24,11 @@ These are loaded once at session start. Update this table if MCP servers change.
 
 | MCP Server | Default Tools | Est. Tokens | With Module Filter |
 |------------|--------------|-------------|-------------------|
-| netbox | 182 | ~19,810 | ~4,500 (dcim,ipam,virt,extras) |
 | gitea | 36 | ~4,785 | — |
 | data-platform | 32 | ~3,458 | — |
 | viz-platform | 20 | ~3,055 | — |
 | contract-validator | 8 | ~1,048 | — |
-| **Total (default)** | **278** | **~32,156** | — |
-| **Total (filtered)** | **~139** | **~16,846** | — |
+| **Total (default)** | **96** | **~12,346** | — |
 
 ### Skill Loading (Per Phase)
 
@@ -63,12 +61,11 @@ To get actual numbers: count characters in each skill file loaded during the pha
 +----------------------------------------------------------------------+
 |                                                                      |
 |  MCP Overhead (session-wide):                                        |
-|    netbox ........... ~4,500 tk  (filtered: dcim,ipam,virt,extras)   |
 |    gitea ............ ~4,785 tk                                      |
 |    data-platform .... ~3,458 tk                                      |
 |    viz-platform ..... ~3,055 tk                                      |
 |    contract-valid ... ~1,048 tk                                      |
-|    Subtotal ......... ~16,846 tk                                     |
+|    Subtotal ......... ~12,346 tk                                     |
 |                                                                      |
 |  This Phase:                                                         |
 |    Skills loaded .... ~X,XXX tk  (N files)                           |
@@ -90,7 +87,7 @@ To get actual numbers: count characters in each skill file loaded during the pha
 
 When generating this report:
 
-1. **MCP Overhead**: List the MCP servers from `.mcp.json` and use the static token estimates from the table above. If `NETBOX_ENABLED_MODULES` is set in the environment, use the filtered estimate for netbox.
+1. **MCP Overhead**: List the MCP servers from `.mcp.json` and use the static token estimates from the table above.
 
 2. **Skills Loaded**: Count the skill files that were loaded (referenced in the command's "Skills Required" section). Estimate tokens by reading each file's character count and dividing by 4.
 

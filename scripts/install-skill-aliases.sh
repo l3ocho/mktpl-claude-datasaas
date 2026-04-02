@@ -10,7 +10,7 @@ echo "Installing skill aliases to $SKILLS_DIR..."
 mkdir -p "$SKILLS_DIR"
 
 # Create all skill aliases
-for skill in doc sprint pr sentinel cv data viz cmdb api db-migrate react test seed release deploy debug-mcp gitflow hygiene labels adr project projman claude-config clarity; do
+for skill in doc sprint pr sentinel cv data viz api db-migrate react test seed release deploy debug-mcp gitflow hygiene labels adr project projman claude-config clarity; do
     case $skill in
         doc) plugin="doc-guardian" ;;
         sprint|adr|project|labels|projman) plugin="projman" ;;
@@ -19,7 +19,6 @@ for skill in doc sprint pr sentinel cv data viz cmdb api db-migrate react test s
         cv) plugin="contract-validator" ;;
         data) plugin="data-platform" ;;
         viz) plugin="viz-platform" ;;
-        cmdb) plugin="cmdb-assistant" ;;
         api) plugin="saas-api-platform" ;;
         db-migrate) plugin="saas-db-migrate" ;;
         react) plugin="saas-react-platform" ;;

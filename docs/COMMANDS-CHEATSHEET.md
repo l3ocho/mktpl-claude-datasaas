@@ -80,17 +80,6 @@ If dispatch routing fails, use the direct plugin-prefixed format: `/<plugin-name
 | **claude-config-maintainer** | `/claude-config baseline` | | X | Save/restore permission baseline in settings.json |
 | **claude-config-maintainer** | `/claude-config drift-check` | | X | Detect permission drift between baseline and current |
 | **claude-config-maintainer** | `/claude-config permissions-map` | | X | Visual review layer + permission coverage map |
-| **cmdb-assistant** | `/cmdb setup` | | X | Setup wizard for NetBox MCP server |
-| **cmdb-assistant** | `/cmdb search` | | X | Search NetBox for devices, IPs, sites |
-| **cmdb-assistant** | `/cmdb device` | | X | Manage network devices (create, view, update, delete) |
-| **cmdb-assistant** | `/cmdb ip` | | X | Manage IP addresses and prefixes |
-| **cmdb-assistant** | `/cmdb site` | | X | Manage sites, locations, racks, and regions |
-| **cmdb-assistant** | `/cmdb audit` | | X | Data quality analysis (VMs, devices, naming, roles) |
-| **cmdb-assistant** | `/cmdb register` | | X | Register current machine into NetBox with running apps |
-| **cmdb-assistant** | `/cmdb sync` | | X | Sync machine state with NetBox (detect drift, update) |
-| **cmdb-assistant** | `/cmdb topology` | | X | Infrastructure topology diagrams (rack, network, site views) |
-| **cmdb-assistant** | `/cmdb change-audit` | | X | NetBox audit trail queries with filtering |
-| **cmdb-assistant** | `/cmdb ip-conflicts` | | X | Detect IP conflicts and overlapping prefixes |
 | **project-hygiene** | `/hygiene check` | | X | Project file organization and cleanup check |
 | **data-platform** | `/data ingest` | | X | Load data from CSV, Parquet, JSON into DataFrame |
 | **data-platform** | `/data profile` | | X | Generate data profiling report with statistics |
@@ -137,12 +126,11 @@ All commands were renamed in v9.0.0 to follow `/<noun> <action>` pattern. See [M
 
 | Category | Plugins | Primary Use |
 |----------|---------|-------------|
-| **Setup** | projman, pr-review, cmdb-assistant, data-platform, viz-platform, contract-validator | `/projman setup`, `/pr setup`, `/cmdb setup`, `/data setup`, `/viz setup`, `/cv setup` |
+| **Setup** | projman, pr-review, data-platform, viz-platform, contract-validator | `/projman setup`, `/pr setup`, `/data setup`, `/viz setup`, `/cv setup` |
 | **Task Planning** | projman, clarity-assist | Sprint management, requirement clarification |
 | **Code Quality** | code-sentinel, pr-review | Security scanning, PR reviews |
 | **Documentation** | doc-guardian, claude-config-maintainer | Doc sync, CLAUDE.md maintenance |
 | **Git Operations** | git-flow | Commits, branches, workflow automation |
-| **Infrastructure** | cmdb-assistant | NetBox CMDB management |
 | **Data Engineering** | data-platform | pandas, PostgreSQL, dbt operations |
 | **Visualization** | viz-platform | DMC validation, Plotly charts, theming |
 | **Validation** | contract-validator | Cross-plugin compatibility checks |
@@ -156,7 +144,6 @@ All commands were renamed in v9.0.0 to follow `/<noun> <action>` pattern. See [M
 |--------|------------|----------|
 | **code-sentinel** | PreToolUse (Write/Edit/MultiEdit) | Scans code before writing; blocks critical security issues |
 | **git-flow** | PreToolUse (Bash) | Validates branch naming and commit message conventions |
-| **cmdb-assistant** | PreToolUse (MCP create/update) | Validates input data before NetBox writes |
 | **clarity-assist** | UserPromptSubmit | Detects vague prompts and suggests clarification |
 
 ---
@@ -244,18 +231,7 @@ Safe refactoring with preview:
 5. /gitflow commit              # Commit with descriptive message
 ```
 
-### Example 6: Infrastructure Documentation
-
-Managing infrastructure with CMDB:
-
-```
-1. /cmdb search "server"        # Find existing devices
-2. /cmdb device view X          # Check device details
-3. /cmdb ip list                # List available IPs
-4. /cmdb site view Y            # Check site info
-```
-
-### Example 6b: Data Engineering Workflow
+### Example 6: Data Engineering Workflow
 
 Working with data pipelines:
 
@@ -349,12 +325,11 @@ Some plugins require MCP server connectivity:
 |--------|------------|---------|
 | projman | Gitea | Issues, PRs, wiki, labels, milestones |
 | pr-review | Gitea | PR operations and reviews |
-| cmdb-assistant | NetBox | Infrastructure CMDB |
 | data-platform | pandas, PostgreSQL, dbt | DataFrames, database queries, dbt builds, exploratory analysis via data-analysis agent (v9.1.0+) |
 | viz-platform | viz-platform | DMC validation, charts, layouts, themes, pages, and Jupyter notebook analytical visualizations (v9.1.0+) |
 | contract-validator | contract-validator | Plugin interface parsing, compatibility validation |
 
-Ensure credentials are configured in `~/.config/claude/gitea.env`, `~/.config/claude/netbox.env`, or `~/.config/claude/postgres.env`.
+Ensure credentials are configured in `~/.config/claude/gitea.env` or `~/.config/claude/postgres.env`.
 
 ### New in v9.1.0: Exploratory Analytics Skills
 

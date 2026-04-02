@@ -79,9 +79,8 @@ Apply `skills/venv-diagnostics.md`:
 |---------|----------|-----------|--------|
 | mcp | >=1.0.0 | 1.2.3 | OK |
 | httpx | >=0.24 | 0.25.0 | OK |
-| pynetbox | >=7.0 | — | MISSING |
 
-- Missing: 1 package
+- Missing: 0 packages
 - Mismatched: 0 packages
 ```
 

@@ -6,6 +6,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Removed
+
+- `cmdb-assistant` plugin (ops domain) — NetBox CMDB integration. Plugin and all associated
+  commands (`/cmdb setup|search|device|ip|site|audit|register|sync|topology|change-audit|ip-conflicts`),
+  PreToolUse hook (validate-input.sh, MCP create/update), and skills removed permanently.
+- `mcp-servers/netbox/` — shared NetBox MCP server. Was exclusively consumed by cmdb-assistant.
+- Hook inventory reduced from 5 to **4 hooks across 3 plugins** (removed: PreToolUse cmdb-assistant input validation).
+
 ### Fixed
 
 #### `claude-config-maintainer` v9.1.1: Autonomous-First Default for `optimize-settings`

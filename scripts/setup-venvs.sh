@@ -33,7 +33,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(dirname "$SCRIPT_DIR")"
 
 # MCP servers to manage
-MCP_SERVERS=(gitea netbox data-platform viz-platform contract-validator)
+MCP_SERVERS=(gitea data-platform viz-platform contract-validator)
 
 # Colors
 RED='\033[0;31m'
