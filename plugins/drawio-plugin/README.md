@@ -1,6 +1,6 @@
 # drawio-plugin
 
-**Version:** 1.0.0 | **Domain:** data | **License:** MIT
+**Version:** 1.2.0 | **Domain:** data | **License:** MIT
 
 Wireframe design tools for draw.io — bridges the design phase (`.drawio` wireframes) and the
 build phase (DMC component scaffolding via viz-platform). Parses draw.io XML into structured
@@ -26,14 +26,14 @@ direction: generate a `.drawio` wireframe from a description when no design file
 |---|---|
 | `drawio-conventions.md` | Core XML structure spec — layer naming, object attributes, parent chain rules, worked example |
 | `wireframe-schema.md` | WIREFRAME.md output format — the contract between this plugin and viz-platform |
-| `dmc-domain-files.md` | DMC file loading strategy — which reference files to declare per implementation layer |
+| `dmc-domain-files.md` | DMC file loading strategy — dynamic discovery of which reference files to declare |
 
 ## WIREFRAME.md Contract
 
 `WIREFRAME.md` is the file produced by `/drawio parse` and consumed by `viz-platform`.
 
 It captures:
-- Which DMC domain reference files the session needs
+- Which DMC domain reference files the session needs (discovered dynamically from `references/dmc/dmc-*.txt`)
 - The shared layout component tree (AppShell, navbar and other regions) — written once
 - Per-page component hierarchies with `component-instructions`, callback wiring, and data bindings
 
@@ -51,7 +51,12 @@ which reference files from `references/dmc/` to load before scaffolding DMC comp
 
 ## DMC Reference Files
 
-Domain-specific DMC documentation is stored in `references/dmc/`:
+Domain-specific DMC documentation is stored in `references/dmc/`.
+Files follow the naming convention `dmc-*.txt` and are **AUTO-GENERATED** by
+`scripts/generate-dmc-refs.py`. The set of files is not fixed — new domains
+can be added by updating `DOMAIN_CATEGORY_MAP` in that script.
+
+Current files (as of last generation):
 
 | File | Contents |
 |---|---|
@@ -63,3 +68,24 @@ Domain-specific DMC documentation is stored in `references/dmc/`:
 
 These files are Leo's curated DMC reference documentation, split by domain to minimize
 context size. viz-platform loads only the files relevant to the current project.
+
+## Changelog
+
+### v1.2.0
+- Dynamic DMC domain file discovery: parser now lists `references/dmc/dmc-*.txt` instead
+  of assuming a fixed file list. New domain files added by `generate-dmc-refs.py` are
+  automatically picked up without plugin code changes.
+- `skills/dmc-domain-files.md` — added "Domain Files Discovery" section with glob pattern
+  and updated "How the Parser Uses This Skill" to reflect dynamic listing step.
+- `skills/wireframe-schema.md` — "DMC Domain File Detection" section now documents the
+  dynamic discovery step before applying component-to-file mapping rules.
+- README updated to describe dynamic file set.
+
+### v1.1.0
+- `references/dmc/*.txt` files are now AUTO-GENERATED artifacts (was: hand-maintained stubs)
+- `skills/dmc-domain-files.md` — added "Reference File Generation" section at top
+- `references/dmc/README.md` — new file documenting generation process
+
+### v1.0.0
+- Initial release: `/drawio parse` and `/drawio generate` commands
+- Three skills: drawio-conventions, wireframe-schema, dmc-domain-files

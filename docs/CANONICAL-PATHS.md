@@ -467,6 +467,7 @@ done | sort | uniq -c | sort -rn
 
 | Date | Change | By |
 |------|--------|-----|
+| 2026-04-06 | Sprint 11: dynamic DMC loading — drawio-plugin v1.2.0, viz-platform v9.3.0; no path changes (dynamic discovery via glob, no new canonical paths) | Claude Code |
 | 2026-04-06 | Added generate-dmc-refs.py to scripts/; added references/dmc/README.md; marked references/dmc/ as AUTO-GENERATED | Claude Code |
 | 2026-03-31 | v9.2.0: Added drawio-plugin paths (commands, skills, references/dmc/); added references/ pattern to Plugin Paths table; updated data domain list | Claude Code |
 | 2026-02-07 | v9.1.2: Moved domain field from plugin.json/marketplace.json to metadata.json for Claude Code schema compliance | Claude Code |

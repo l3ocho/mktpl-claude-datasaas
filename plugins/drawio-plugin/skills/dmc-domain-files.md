@@ -35,7 +35,20 @@ viz-platform reads that declaration to know which files to load at session start
 
 ---
 
-## Domain Files Index
+## Domain Files Discovery
+
+Domain reference files live in `references/dmc/` and follow the naming convention `dmc-*.txt`.
+**The set of files is not fixed.** Discover what is available by listing that directory:
+
+```
+references/dmc/dmc-*.txt
+```
+
+The files present depend on which DMC version and component set was used when
+`scripts/generate-dmc-refs.py` last ran. Do not assume a fixed list — always read the
+directory to determine what exists before deciding which files to declare.
+
+### Current Known Files (as of last generation)
 
 | File | Domain | Load When |
 |---|---|---|
@@ -44,6 +57,9 @@ viz-platform reads that declaration to know which files to load at session start
 | `dmc-charts.txt` | Chart components | Only if chart components found in wireframe |
 | `dmc-feedback.txt` | Feedback & overlay components | Only if feedback components found in wireframe |
 | `dmc-theme.txt` | Theme configuration | Only if theme-related components found |
+
+New domain files may be added by running `generate-dmc-refs.py` with an updated
+`DOMAIN_CATEGORY_MAP`. Always discover dynamically rather than relying on this table.
 
 ---
 
@@ -67,6 +83,9 @@ covers only DMC-native chart components. When in doubt, check the `component` va
 ---
 
 ## Component → Domain File Mapping
+
+The mapping below reflects the current `DOMAIN_CATEGORY_MAP` in `scripts/generate-dmc-refs.py`.
+If new domain files are added, their corresponding component lists will appear in that script.
 
 ### Always Load (dmc-layout.txt)
 
@@ -132,9 +151,11 @@ theme, createTheme, mantineTheme
 ## How the Parser Uses This Skill
 
 1. After extracting all `component-class` values from the `.drawio` XML
-2. Run against each mapping above
-3. Build the `## DMC Domain Files Required` section in `WIREFRAME.md`
-4. Always include `dmc-layout.txt` and `dmc-ui.txt` — never omit them
+2. List all `dmc-*.txt` files in `references/dmc/` to know what is available
+3. Run component values against each mapping above
+4. Build the `## DMC Domain Files Required` section in `WIREFRAME.md`
+5. Always include `dmc-layout.txt` and `dmc-ui.txt` — never omit them
+6. Only declare files that actually exist in `references/dmc/`
 
 ## How viz-platform Uses This
 
