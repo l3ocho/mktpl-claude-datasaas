@@ -134,9 +134,10 @@ Main:
 3. Restart Claude Code session
 
 ### Component validation fails
-1. Check DMC version matches registry
+1. Check DMC version matches registry — the server auto-discovers `dmc_*.json` files in `registry/`
 2. Use `list_components()` to see available components
 3. Verify prop names are camelCase
+4. Regenerate registry if stale: `python scripts/generate-dmc-refs.py --project /path/to/project`
 
 ### Charts not rendering
 1. Verify data_ref exists with `list_data()`

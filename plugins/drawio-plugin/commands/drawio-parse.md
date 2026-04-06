@@ -98,9 +98,13 @@ Where `component-parent-id` is absent, use XML `parent` chain as fallback for tr
 
 ### Step 4 — Detect DMC Domain Files
 
+First, list all `dmc-*.txt` files in `references/dmc/` to discover what is currently available.
+Do not assume a fixed set — new domain files may have been added since the last time this
+command was documented. Only declare files that actually exist in that directory.
+
 Collect all unique `component-class` attribute values across ALL pages.
 Apply the component → domain file mapping from `skills/dmc-domain-files.md`.
-Always include `dmc-layout.txt` and `dmc-ui.txt`.
+Always include `dmc-layout.txt` and `dmc-ui.txt` (if they exist).
 
 ### Step 5 — Write WIREFRAME.md
 

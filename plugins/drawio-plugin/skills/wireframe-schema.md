@@ -142,7 +142,11 @@ home-content
 
 ### DMC Domain File Detection
 
-Scan all `component-class` attribute values across all pages. Apply these rules:
+Before building the `## DMC Domain Files Required` section:
+
+1. List all `dmc-*.txt` files in `references/dmc/` to discover what is available.
+2. Scan all `component-class` attribute values across all pages.
+3. Apply these rules, but only include files that actually exist in `references/dmc/`:
 
 | If any component matches... | Include this file |
 |---|---|
@@ -151,6 +155,9 @@ Scan all `component-class` attribute values across all pages. Apply these rules:
 | `Chart`, `AreaChart`, `BarChart`, `LineChart`, `DonutChart`, `PieChart`, `RadarChart`, `SparklineChart` | `dmc-charts.txt` |
 | `Alert`, `Modal`, `Drawer`, `Notification`, `LoadingOverlay`, `Skeleton`, `Progress` | `dmc-feedback.txt` |
 | `MantineProvider`, `ColorSchemeScript`, `theme` | `dmc-theme.txt` |
+
+Any `dmc-*.txt` file present in `references/dmc/` but not matched by the rules above
+should be omitted — only declare what the wireframe's components actually require.
 
 ### Shared Layout
 
