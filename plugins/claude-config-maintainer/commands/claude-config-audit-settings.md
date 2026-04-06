@@ -28,6 +28,22 @@ Before executing, load:
 /claude-config audit-settings --diagram    # Include Mermaid diagram of review layer coverage
 ```
 
+## Project Root Resolution (MANDATORY)
+
+Before any `.claude/` file operation, resolve the absolute project root:
+
+```bash
+PROJECT_ROOT=$(git rev-parse --show-toplevel 2>/dev/null)
+```
+
+If this fails (non-git directory), **STOP immediately** and output:
+```
+ERROR: Cannot resolve project root. This command requires a git repository.
+Run from within a git project directory.
+```
+
+Use `${PROJECT_ROOT}/.claude/` for ALL file paths. Never use bare `.claude/` relative paths.
+
 ## Workflow
 
 ### Step 1: Locate Settings Files

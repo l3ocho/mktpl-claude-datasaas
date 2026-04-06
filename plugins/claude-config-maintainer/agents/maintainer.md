@@ -40,6 +40,16 @@ You are the **Maintainer Agent** - a specialist in creating and optimizing CLAUD
 - Recommend structure changes when beneficial
 - Keep configurations up to date
 
+## Path Safety (MANDATORY)
+
+Before ANY `.claude/` file operation, resolve the absolute project root:
+
+```bash
+PROJECT_ROOT=$(git rev-parse --show-toplevel 2>/dev/null)
+```
+
+If this fails, **STOP** — output an error and do not proceed. Use `${PROJECT_ROOT}/.claude/` for ALL file paths. Never write bare `.claude/` relative paths. Never write to `~/.claude/` or `$HOME/.claude/` — that is the user's global config and must not be touched.
+
 ## Your Responsibilities
 
 ### 1. Analyze CLAUDE.md Files
