@@ -42,6 +42,22 @@ Before executing, load:
 | `--target=local` | Write to `settings.local.json` instead of `settings.json` — warns this file gets overwritten by session approvals |
 | `--no-backup` | Skip backup (not recommended) |
 
+## Project Root Resolution (MANDATORY)
+
+Before any `.claude/` file operation, resolve the absolute project root:
+
+```bash
+PROJECT_ROOT=$(git rev-parse --show-toplevel 2>/dev/null)
+```
+
+If this fails (non-git directory), **STOP immediately** and output:
+```
+ERROR: Cannot resolve project root. This command requires a git repository.
+Run from within a git project directory.
+```
+
+Use `${PROJECT_ROOT}/.claude/` for ALL file paths. Never use bare `.claude/` relative paths.
+
 ## Default Workflow (No Flags — Autonomous Config)
 
 ### Step 1: Read Existing Settings

@@ -32,6 +32,29 @@ Locate and create venv if missing:
 cd /path/to/mcp-servers/viz-platform && python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
 ```
 
+## Phase 2b: DMC Reference URL
+
+Ask the user for the `DMC_LLMS_JSON_URL` value. Pre-fill with the stable default:
+
+```
+https://www.dash-mantine-components.com/assets/llms.json
+```
+
+Explain: _"This URL should point to the llms.json for the DMC version installed in your
+project's .venv. Use the default unless you are pinning an older DMC version."_
+
+Write the value to the consumer project's `.env`:
+```bash
+# Append to <project-root>/.env (create if missing)
+echo "DMC_LLMS_JSON_URL=<user-provided-url>" >> .env
+```
+
+After writing, remind the user to run:
+```bash
+python scripts/generate-dmc-refs.py --project <project-root>
+```
+to regenerate DMC reference files for this project.
+
 ## Phase 3: Theme Preferences (Optional)
 
 Ask user about color scheme and primary color. Save to `~/.config/claude/viz-platform.env`.

@@ -2,6 +2,8 @@
 
 This skill provides comprehensive knowledge for auditing and optimizing Claude Code permission configurations.
 
+> **Path Safety:** All callers of this skill MUST resolve `PROJECT_ROOT=$(git rev-parse --show-toplevel)` before any file operation and use `${PROJECT_ROOT}/.claude/` as the base path. Never write to `~/.claude/` or `$HOME/.claude/` (global config). Never use bare `.claude/` relative paths.
+
 ---
 
 ## Section 0: Autonomous-First Approach (Default)
