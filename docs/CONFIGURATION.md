@@ -371,12 +371,84 @@ PR_REVIEW_AUTO_SUBMIT=false
 | **git-flow** | git-flow.env (optional) | .env (optional) | None needed |
 | **clarity-assist** | None | None | None needed |
 | **data-platform** | postgres.env | .env (optional) | `/data setup` |
-| **viz-platform** | None | .env (optional DMC_VERSION) | `/viz setup` |
+| **viz-platform** | None | .env (DMC_LLMS_JSON_URL) | `/viz setup` |
+| **drawio-plugin** | None | .env (DMC_LLMS_JSON_URL) + .claude/dmc-components.json | None needed |
 | **doc-guardian** | None | None | None needed |
 | **code-sentinel** | None | None | None needed |
 | **project-hygiene** | None | None | None needed |
 | **claude-config-maintainer** | None | None | None needed |
 | **contract-validator** | None | None | `/cv setup` |
+
+---
+
+## DMC Reference Generation
+
+`drawio-plugin` and `viz-platform` both consume DMC reference artifacts generated from
+a `llms.json` file published by the Dash Mantine Components project.
+
+### Consumer Project Setup
+
+**Step 1 — Declare the DMC URL in `.env`:**
+
+```bash
+# <project-root>/.env
+DMC_LLMS_JSON_URL=https://www.dash-mantine-components.com/assets/llms.json
+```
+
+Point this URL at the `llms.json` matching the DMC version installed in the project's
+`.venv`. If you pin an older DMC version, use a versioned snapshot or local copy.
+
+`/viz setup` will ask for this URL during onboarding and write it to `.env` automatically.
+
+**Step 2 — Declare component scope in `.claude/dmc-components.json`:**
+
+```json
+{
+  "components": ["AppShell", "Grid", "Button", "TextInput", "Select"],
+  "categories": ["layout", "inputs"]
+}
+```
+
+| Field | Type | Description |
+|---|---|---|
+| `components` | `list[str]` | Explicit component names to include |
+| `categories` | `list[str]` | Category names to include (all components in that category) |
+
+Both fields are optional and additive — the working set is the union of all matches.
+If both are absent or empty, all components are included (generates large files — use
+sparingly; always set at least one category filter).
+
+**Step 3 — Run the generator:**
+
+```bash
+python scripts/generate-dmc-refs.py --project /path/to/consumer-project
+
+# Preview without writing:
+python scripts/generate-dmc-refs.py --project /path/to/consumer-project --dry-run
+
+# Verbose output:
+python scripts/generate-dmc-refs.py --project /path/to/consumer-project --verbose
+```
+
+### Outputs
+
+| Artifact | Location | Consumed By |
+|---|---|---|
+| Domain txt files | `plugins/drawio-plugin/references/dmc/dmc-*.txt` | drawio-plugin (`/drawio parse`, `/drawio generate`) |
+| Component registry | `mcp-servers/viz-platform/registry/dmc_X_Y.json` | viz-platform MCP tools |
+
+Both outputs are auto-generated. Do not edit them manually.
+
+### When to Re-run
+
+- After upgrading DMC in the consumer project's `.venv`
+- After changing `.claude/dmc-components.json` to add/remove components
+- When the remote `llms.json` is updated for a new DMC patch release
+
+### Requirements
+
+The script requires `requests` and `python-dotenv`. Both are standard marketplace
+dependencies already present in the MCP server venvs.
 
 ---
 

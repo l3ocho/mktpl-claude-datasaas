@@ -1,5 +1,21 @@
 # Dash Mantine Components Reference
 
+## Registry Generation
+
+The component registry backing the viz-platform MCP tools (`validate_component`,
+`get_component_props`, `list_components`) is **AUTO-GENERATED**. Do not edit the
+registry JSON files manually.
+
+To regenerate for a consumer project:
+```bash
+python scripts/generate-dmc-refs.py --project /path/to/consumer-project
+```
+
+Consumer projects declare which components they use in `.claude/dmc-components.json`.
+See `docs/CONFIGURATION.md` under "DMC Reference Generation" for the schema.
+
+---
+
 ## Component Categories
 
 | Category | Components |

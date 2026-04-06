@@ -6,6 +6,44 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Added
+
+#### `scripts/generate-dmc-refs.py` — DMC Reference Generation Script
+
+New build script that generates DMC reference artifacts from `llms.json`:
+
+- Reads `DMC_LLMS_JSON_URL` from consumer project's `.env` via `python-dotenv`
+- Filters components by name and/or category using `.claude/dmc-components.json`
+- Outputs `plugins/drawio-plugin/references/dmc/dmc-{domain}.txt` (5 domain files)
+- Outputs `mcp-servers/viz-platform/registry/dmc_X_Y.json` (component registry)
+- Supports `--dry-run`, `--verbose` flags; exits 1 with clear messages on errors
+- Requires `requests` + `python-dotenv` (both existing marketplace dependencies)
+
+#### `plugins/drawio-plugin/references/dmc/README.md`
+
+Documentation explaining that domain reference files are auto-generated,
+how to regenerate them, and the consumer project config schema.
+
+### Changed
+
+#### `drawio-plugin` v1.0.0 → v1.1.0
+
+- `references/dmc/*.txt` files are now AUTO-GENERATED artifacts (was: hand-maintained stubs)
+- `skills/dmc-domain-files.md` — added "Reference File Generation" section at top explaining regeneration workflow
+- `references/dmc/README.md` — new file documenting generation process
+
+#### `viz-platform` v9.1.0 → v9.2.0
+
+- `mcp-servers/viz-platform/registry/dmc_*.json` files are now AUTO-GENERATED artifacts
+- `skills/dmc-components.md` — added "Registry Generation" section at top
+- `commands/viz-setup.md` — Phase 2b added: asks user for `DMC_LLMS_JSON_URL` and writes it to `.env`
+
+#### Documentation
+
+- `docs/CONFIGURATION.md` — added "DMC Reference Generation" section with full schema, examples, and when-to-re-run guidance; updated Plugin Configuration Summary table
+- `docs/ARCHITECTURE.md` — updated drawio-plugin (v1.1.0) and viz-platform (v9.2.0); noted references are auto-generated
+- `docs/CANONICAL-PATHS.md` — added `generate-dmc-refs.py` to scripts listing; added `references/dmc/README.md`
+
 ### Removed
 
 - `cmdb-assistant` plugin (ops domain) — NetBox CMDB integration. Plugin and all associated

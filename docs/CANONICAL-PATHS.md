@@ -169,8 +169,9 @@ mktpl-claude-datasaas/
 │   │   │   ├── drawio-conventions.md   # XML structure, layer/attribute schema
 │   │   │   ├── wireframe-schema.md     # WIREFRAME.md output contract
 │   │   │   └── dmc-domain-files.md     # DMC file loading strategy
-│   │   ├── references/             # Curated DMC reference documentation
+│   │   ├── references/             # AUTO-GENERATED DMC reference documentation
 │   │   │   └── dmc/                # Split by domain to minimize context
+│   │   │       ├── README.md       # Generation instructions
 │   │   │       ├── dmc-layout.txt
 │   │   │       ├── dmc-ui.txt
 │   │   │       ├── dmc-charts.txt
@@ -236,7 +237,8 @@ mktpl-claude-datasaas/
 │   ├── claude-launch.sh        # Task-specific launcher with profile selection
 │   ├── install-plugin.sh       # Install plugin to consumer project
 │   ├── list-installed.sh       # Show installed plugins in a project
-│   └── uninstall-plugin.sh     # Remove plugin from consumer project
+│   ├── uninstall-plugin.sh     # Remove plugin from consumer project
+│   └── generate-dmc-refs.py    # Generate DMC reference artifacts from llms.json
 ├── CLAUDE.md
 ├── README.md
 ├── LICENSE
@@ -465,6 +467,7 @@ done | sort | uniq -c | sort -rn
 
 | Date | Change | By |
 |------|--------|-----|
+| 2026-04-06 | Added generate-dmc-refs.py to scripts/; added references/dmc/README.md; marked references/dmc/ as AUTO-GENERATED | Claude Code |
 | 2026-03-31 | v9.2.0: Added drawio-plugin paths (commands, skills, references/dmc/); added references/ pattern to Plugin Paths table; updated data domain list | Claude Code |
 | 2026-02-07 | v9.1.2: Moved domain field from plugin.json/marketplace.json to metadata.json for Claude Code schema compliance | Claude Code |
 | 2026-02-07 | v9.1.0: Removed deleted dirs (architecture/, prompts/, project-lessons-learned/), added Phase 3 plugins, added ARCHITECTURE.md, MIGRATION-v9.md, updated Domain table, removed stale hooks/ dirs | Claude Code |
