@@ -7,10 +7,15 @@ filters components based on .claude/dmc-components.json, and outputs:
   - plugins/drawio-plugin/references/dmc/dmc-{domain}.txt
   - mcp-servers/viz-platform/registry/dmc_{major}_{minor}.json
 
+Output filenames are derived dynamically from DOMAIN_CATEGORY_MAP keys —
+no fixed filename list. Adding a new entry to DOMAIN_CATEGORY_MAP automatically
+creates a new dmc-{domain}.txt file on the next run.
+
 Usage:
   python scripts/generate-dmc-refs.py --project /path/to/consumer-project
   python scripts/generate-dmc-refs.py --project /path/to/consumer-project --dry-run
   python scripts/generate-dmc-refs.py --project /path/to/consumer-project --verbose
+  python scripts/generate-dmc-refs.py --baseline
 """
 import argparse
 import json
@@ -42,7 +47,10 @@ MARKETPLACE_ROOT = Path(__file__).parent.parent
 DMC_TXT_OUTPUT_DIR = MARKETPLACE_ROOT / "plugins" / "drawio-plugin" / "references" / "dmc"
 REGISTRY_OUTPUT_DIR = MARKETPLACE_ROOT / "mcp-servers" / "viz-platform" / "registry"
 
-# Map domain file name (without .txt) → list of llms.json category values to include
+# Map domain file name (without .txt) → list of llms.json category values to include.
+# IMPORTANT: Filenames are derived dynamically from these keys. To add a new domain file,
+# add a new entry here — no other code changes needed. The key becomes the filename stem
+# (e.g., "dmc-charts" → "dmc-charts.txt"). The order here is the order files are written.
 DOMAIN_CATEGORY_MAP: dict[str, list[str]] = {
     "dmc-layout":   ["Layout", "layout", "AppShell", "appshell"],
     "dmc-ui":       ["Buttons", "buttons", "Inputs", "inputs", "Navigation", "navigation",
@@ -243,7 +251,13 @@ def write_txt_files(
     dry_run: bool,
     verbose: bool,
 ) -> int:
-    """Write per-domain .txt files. Returns number of files written."""
+    """
+    Write per-domain .txt files. Returns number of files written.
+
+    File names are derived from DOMAIN_CATEGORY_MAP keys (e.g., "dmc-layout" → "dmc-layout.txt").
+    All domains defined in DOMAIN_CATEGORY_MAP get a file, even if no components matched —
+    empty (header-only) files ensure consistent structure and allow discovery by glob.
+    """
     domains: dict[str, list[str]] = {d: [] for d in DOMAIN_CATEGORY_MAP}
 
     for entry in matched:
@@ -302,6 +316,37 @@ def write_registry(
     return out_path
 
 
+def write_baseline_files(
+    output_dir: Path,
+    dry_run: bool,
+) -> int:
+    """
+    Write header-only (empty) .txt baseline files for all domains in DOMAIN_CATEGORY_MAP.
+
+    Use this to initialize the references/dmc/ directory before running with --project,
+    or to add placeholder files for newly added domains.
+
+    Returns the number of files written.
+    """
+    timestamp = datetime.now(timezone.utc).strftime("%Y-%m-%dT%H:%M:%SZ")
+    written = 0
+    for domain in DOMAIN_CATEGORY_MAP:
+        out_path = output_dir / f"{domain}.txt"
+        header = (
+            f"# AUTO-GENERATED — DO NOT EDIT MANUALLY\n"
+            f"# Baseline placeholder — run with --project to populate\n"
+            f"# Generated: {timestamp}\n"
+            f"# Regenerate: python scripts/generate-dmc-refs.py --project /path/to/project\n"
+        )
+        if dry_run:
+            status = "exists" if out_path.exists() else "new"
+            print(f"  [dry-run] Would write baseline {out_path} ({status})")
+        else:
+            out_path.write_text(header + "\n", encoding="utf-8")
+        written += 1
+    return written
+
+
 # ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
@@ -314,9 +359,17 @@ def main() -> None:
     )
     parser.add_argument(
         "--project",
-        required=True,
         metavar="PATH",
         help="Path to the consumer project (must contain .env with DMC_LLMS_JSON_URL)",
+    )
+    parser.add_argument(
+        "--baseline",
+        action="store_true",
+        help=(
+            "Write empty (header-only) placeholder files for all domains in DOMAIN_CATEGORY_MAP. "
+            "Use this to initialize references/dmc/ or add files for newly defined domains. "
+            "Does not require --project or network access."
+        ),
     )
     parser.add_argument(
         "--dry-run",
@@ -329,6 +382,20 @@ def main() -> None:
         help="Log each component matched and its domain mapping",
     )
     args = parser.parse_args()
+
+    # --baseline mode: no project required, no network call
+    if args.baseline:
+        print("Writing baseline (empty) domain files:")
+        print(f"  Output dir: {DMC_TXT_OUTPUT_DIR}")
+        print(f"  Domains: {', '.join(DOMAIN_CATEGORY_MAP.keys())}")
+        if args.dry_run:
+            print("[dry-run mode — no files will be written]")
+        written = write_baseline_files(DMC_TXT_OUTPUT_DIR, args.dry_run)
+        print(f"\nDone. {written} baseline file(s) {'would be ' if args.dry_run else ''}written.")
+        return
+
+    if not args.project:
+        parser.error("--project is required unless --baseline is specified")
 
     if args.verbose:
         logging.getLogger().setLevel(logging.INFO)

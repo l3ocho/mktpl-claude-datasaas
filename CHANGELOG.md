@@ -8,6 +8,43 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added
 
+### Sprint 11 — Dynamic DMC Reference Loading
+
+#### `drawio-plugin` v1.1.0 → v1.2.0
+
+- `skills/dmc-domain-files.md` — replaced fixed "Domain Files Index" table with a "Domain Files Discovery"
+  section. Parser now lists `references/dmc/dmc-*.txt` dynamically instead of assuming a fixed file set.
+  New domain files added to `DOMAIN_CATEGORY_MAP` are picked up automatically without plugin code changes.
+- `skills/wireframe-schema.md` — "DMC Domain File Detection" section updated to document the dynamic
+  discovery step (glob `references/dmc/dmc-*.txt`) before applying component-to-file mapping rules.
+- `README.md` — version bumped to 1.2.0; DMC reference files section updated to describe dynamic naming.
+- `.claude-plugin/plugin.json` — version bumped to 1.2.0.
+
+#### `viz-platform` v9.2.0 → v9.3.0
+
+- `skills/dmc-components.md` — added "Dynamic Registry Discovery" subsection documenting that
+  `component_registry.py` uses `glob("dmc_*.json")` — no fixed registry filename. New registry
+  files from `generate-dmc-refs.py` are picked up automatically.
+- `claude-md-integration.md` — updated troubleshooting note for component validation to reference
+  dynamic discovery and regeneration workflow.
+- `.claude-plugin/plugin.json` — version bumped to 9.3.0.
+
+#### `scripts/generate-dmc-refs.py`
+
+- Added `--baseline` flag: writes empty (header-only) placeholder `.txt` files for all domains
+  in `DOMAIN_CATEGORY_MAP` without requiring `--project` or network access. Useful for initialising
+  `references/dmc/` or adding placeholders for newly defined domains.
+- Made `--project` optional (required only when not using `--baseline`).
+- Clarified docstring and `write_txt_files` docstring: filenames are derived from `DOMAIN_CATEGORY_MAP`
+  keys — adding a new map entry automatically creates a new `dmc-{domain}.txt` file on the next run.
+
+#### Documentation
+
+- `docs/ARCHITECTURE.md` — drawio-plugin updated to v1.2.0; viz-platform updated to v9.3.0;
+  added dynamic file discovery notes for both plugins.
+- `docs/CANONICAL-PATHS.md` — added Sprint 11 changelog entry; no path structure changes
+  (dynamic discovery is by convention, not new canonical paths).
+
 #### `scripts/generate-dmc-refs.py` — DMC Reference Generation Script
 
 New build script that generates DMC reference artifacts from `llms.json`:
