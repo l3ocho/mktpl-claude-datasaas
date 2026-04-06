@@ -45,7 +45,17 @@ Display: `CONFIG-MAINTAINER - CLAUDE.md Optimization`
 
 **Priority:** Add Pre-Change Protocol if missing.
 
+## Project Root Resolution (MANDATORY)
+
+Resolve the absolute project root before writing any backup:
+
+```bash
+PROJECT_ROOT=$(git rev-parse --show-toplevel 2>/dev/null)
+```
+
+If this fails, **STOP** — non-git directories are not supported. Use `${PROJECT_ROOT}/.claude/backups/` for all backup paths.
+
 ## Safety
 
-- Auto backup to `.claude/backups/`
+- Auto backup to `${PROJECT_ROOT}/.claude/backups/` (absolute path, never relative)
 - Preview before applying

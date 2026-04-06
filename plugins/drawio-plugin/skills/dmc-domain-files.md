@@ -1,5 +1,19 @@
 # Skill: dmc-domain-files
 
+## Reference File Generation
+
+The files in `references/dmc/` are AUTO-GENERATED. Do not edit them manually.
+
+To regenerate for a consumer project:
+```bash
+python scripts/generate-dmc-refs.py --project /path/to/consumer-project
+```
+
+Consumer projects declare which components they use in `.claude/dmc-components.json`.
+See `docs/CONFIGURATION.md` under "DMC Reference Generation" for the schema.
+
+---
+
 ## When to Load
 
 Load this skill when:

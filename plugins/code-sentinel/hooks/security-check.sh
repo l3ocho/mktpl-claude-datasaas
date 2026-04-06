@@ -14,6 +14,12 @@ if [ -z "$FILE_PATH" ]; then
     exit 0
 fi
 
+# BLOCK writes to HOME .claude/ directory — project-level .claude/ is allowed, home is not
+if [[ "$FILE_PATH" == "${HOME}/.claude/"* ]]; then
+    echo "[code-sentinel] BLOCKED: Write to home .claude/ directory. Use project-level .claude/ instead."
+    exit 1
+fi
+
 # SKIP config/doc files entirely - exit silently
 case "$FILE_PATH" in
     *.md|*.json|*.yml|*.yaml|*.txt|*.toml|*.ini|*.cfg|*.conf)
