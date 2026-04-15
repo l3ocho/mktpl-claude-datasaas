@@ -32,6 +32,7 @@ Activate this agent when:
 ## Skills to Load
 
 - skills/design-system-audit.md
+- skills/color-scheme-validation.md *(conditional — loaded only when `scheme_mode = "dual"` is detected)*
 
 ## Available MCP Tools
 
@@ -69,6 +70,19 @@ Triggered by `/viz design-gate <path>` or projman orchestrator domain gate
 - Compact output for CI/CD pipelines
 
 ## Audit Workflow
+
+### 0. Pre-Audit: Scheme Detection
+
+Run **before** the DMC scan on every audit invocation.
+
+1. Locate the CSS entry point using the discovery chain in `skills/color-scheme-validation.md`
+2. Run the two-grep detection:
+   ```
+   dark_count  = grep -c 'data-mantine-color-scheme="dark"'  <entry_point>
+   light_count = grep -c 'data-mantine-color-scheme="light"' <entry_point>
+   ```
+3. If both counts > 0: `scheme_mode = "dual"` — load `skills/color-scheme-validation.md` and include Color Scheme Integrity checks in this audit
+4. Otherwise: `scheme_mode = "single"` — skip all color scheme integrity checks
 
 ### 1. Receive Target Path
 Accept file or directory path from command invocation.
@@ -112,6 +126,19 @@ Check accessibility compliance:
 3. Verify interactive components have accessible labels
 4. Flag missing aria-labels on buttons/links
 
+### 5b. Color Scheme Integrity Check *(dual-scheme only)*
+
+When `scheme_mode = "dual"`:
+
+1. Apply Rule 1 (Dual-Scope): count custom properties defined in only one scheme block
+2. Apply Rule 2 (No Unscoped Color Values): count raw color values outside any scheme selector
+3. Apply Rule 3 (Anti-Loop Detection): parse `git diff $(git merge-base HEAD development)` for repeated token names and flag advisories
+4. Apply Rule 5 (Token Pair Convention): scan for scheme-suffixed token names
+
+Report findings under a **"Color Scheme Integrity"** subsection, grouped with the existing FAIL/WARN/INFO severity levels.
+
+In **Gate Mode**: Rule 1 and Rule 2 violations are FAIL-level findings that block the gate.
+
 ### 6. Generate Report
 Output format depends on operating mode.
 
@@ -123,6 +150,7 @@ Output format depends on operating mode.
 ```
 DESIGN GATE: PASS
 No blocking design system violations found.
+Color Scheme Integrity: PASS (0 defects)
 ```
 
 **FAIL:**
@@ -135,6 +163,9 @@ Blocking Issues (2):
 
 2. app/components/nav.py:12 - Component 'dmc.Navbar' not found
    Fix: Use 'dmc.AppShell.Navbar' (DMC v0.14+)
+
+Color Scheme Integrity: FAIL (1 defect)
+  - --app-surface-bg defined only in [dark] scheme block (missing [light])
 
 Run /viz design-review for full audit report.
 ```

@@ -43,9 +43,33 @@ Activate this agent when:
 - `get_component_props` - Get detailed prop specifications
 - `validate_component` - Validate a component configuration
 
+## Conditional Skills
+
+Load `skills/color-scheme-validation.md` **only** when `scheme_mode = "dual"` is detected (see Pre-Validation step below). Do not load it for single-scheme projects.
+
 ## Workflow Guidelines
 
-1. **Before any DMC component usage**:
+### 0. Pre-Validation: Scheme Detection
+
+Run this step **before any validation begins** whenever the session involves CSS changes or color-related work.
+
+1. Locate the CSS entry point using the discovery chain in `skills/color-scheme-validation.md`
+2. Run the two-grep detection:
+   ```
+   dark_count  = grep -c 'data-mantine-color-scheme="dark"'  <entry_point>
+   light_count = grep -c 'data-mantine-color-scheme="light"' <entry_point>
+   ```
+3. If both counts > 0: set `scheme_mode = "dual"` — load `skills/color-scheme-validation.md`
+4. If single or neither: set `scheme_mode = "single"` — skip color scheme checks entirely
+
+**When `scheme_mode = "dual"`:**
+- Apply Rule 1 (Dual-Scope) and Rule 2 (No Unscoped Color Values) alongside component prop validation
+- Apply Rule 3 (Anti-Loop Detection) when color-related changes are detected in `git diff $(git merge-base HEAD development)`
+- After all validation completes, display the Rule 4 Two-Mode Verification Protocol instruction
+
+**When `scheme_mode = "single"`:** proceed with standard component validation only. No color scheme checks.
+
+### 1. **Before any DMC component usage**:
    - Call `get_component_props` to understand available props
    - Verify prop types match expected values
    - Check enum constraints
