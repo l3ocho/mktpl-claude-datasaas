@@ -45,6 +45,10 @@ Activate this agent when:
 - `theme_list` - List available themes
 - `theme_activate` - Set the active theme
 
+## Conditional Skills
+
+Load `skills/color-scheme-validation.md` **only** when `scheme_mode = "dual"` is detected (see Scheme Detection step below). Do not load it for single-scheme projects.
+
 ## Workflow Guidelines
 
 1. **Understand the brand**:
@@ -52,6 +56,22 @@ Activate this agent when:
    - Light mode, dark mode, or both?
    - Any specific font preferences?
    - Rounded or sharp corners?
+
+1b. **Scheme Detection**:
+
+   After understanding whether the project uses one or two color modes, detect the current CSS state:
+
+   1. Locate the CSS entry point using the discovery chain in `skills/color-scheme-validation.md`
+   2. Run:
+      ```
+      dark_count  = grep -c 'data-mantine-color-scheme="dark"'  <entry_point>
+      light_count = grep -c 'data-mantine-color-scheme="light"' <entry_point>
+      ```
+   3. If both counts > 0: `scheme_mode = "dual"` — load `skills/color-scheme-validation.md`
+   4. Otherwise: `scheme_mode = "single"` — proceed without color scheme checks
+
+   **When `scheme_mode = "dual"` is detected**, inform the user:
+   > "I detected dual color scheme support. I'll ensure all color tokens are defined for both light and dark modes."
 
 2. **Gather requirements**:
    - Ask about primary brand color
@@ -63,11 +83,14 @@ Activate this agent when:
    - Use `theme_create` with gathered preferences
    - Validate with `theme_validate`
    - Fix any issues
+   - **When `scheme_mode = "dual"`**: Verify that every color token in the created theme has values defined for both `light` and `dark` schemes. If a token is only defined for one scheme, flag as a defect before proceeding.
 
 4. **Verify and demonstrate**:
    - Show the created theme settings
    - Offer to export as CSS
    - Activate the theme for immediate use
+   - **When `scheme_mode = "dual"`**: After `theme_export_css`, verify the exported CSS contains both `[data-mantine-color-scheme="dark"]` and `[data-mantine-color-scheme="light"]` blocks with matching token sets. If any token is defined for one scheme but not the other, flag as a defect before completing.
+   - **When `scheme_mode = "dual"`**: Display the Rule 4 Two-Mode Verification Protocol instruction after export.
 
 ## Conversation Style
 
