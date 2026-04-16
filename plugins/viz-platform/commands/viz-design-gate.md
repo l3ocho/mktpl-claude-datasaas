@@ -28,15 +28,41 @@ Binary pass/fail validation for design system compliance. Used by projman orches
 
 1. **Activates** the `design-reviewer` agent in gate mode
 2. **Loads** the `skills/design-system-audit.md` skill
-3. **Scans** target path for DMC usage
-4. **Checks only for FAIL-level violations:**
+3. **Detects color scheme mode** (see below)
+4. **Scans** target path for DMC usage
+5. **Checks only for FAIL-level violations:**
    - Invalid component props
    - Non-existent components
    - Missing required props
    - Deprecated components
-5. **Returns binary result:**
+6. **Checks Color Scheme Integrity** *(dual-scheme only — see below)*
+7. **Returns binary result:**
    - `PASS` - No blocking violations found
    - `FAIL` - One or more blocking violations
+
+## Color Scheme Detection
+
+At the start of gate execution, before scanning for DMC usage:
+
+1. Locate the CSS entry point via the discovery chain in `skills/color-scheme-validation.md`
+2. Run:
+   ```
+   dark_count  = grep -c 'data-mantine-color-scheme="dark"'  <entry_point>
+   light_count = grep -c 'data-mantine-color-scheme="light"' <entry_point>
+   ```
+3. Both counts > 0 → `scheme_mode = "dual"` → load `skills/color-scheme-validation.md` and run Color Scheme Integrity check
+4. Otherwise → `scheme_mode = "single"` → Color Scheme Integrity check is **skipped entirely**
+
+## Color Scheme Integrity Check *(dual-scheme only)*
+
+When `scheme_mode = "dual"`, these two counts must both be **0** for the gate to pass:
+
+| Check | Counts | Pass Condition |
+|-------|--------|----------------|
+| Unscoped color custom properties (Rule 2) | N properties with raw color values outside any scheme selector | N = 0 |
+| Single-scheme-only color custom properties (Rule 1) | N properties defined in one scheme block but not the other | N = 0 |
+
+If either count > 0, the gate **FAILS** with an itemized defect list.
 
 ## Output
 
@@ -44,7 +70,10 @@ Binary pass/fail validation for design system compliance. Used by projman orches
 ```
 DESIGN GATE: PASS
 No blocking design system violations found.
+Color Scheme Integrity: PASS (0 defects)
 ```
+
+*(Color Scheme Integrity line omitted when `scheme_mode = "single"`)*
 
 ### On FAIL
 ```
@@ -56,6 +85,10 @@ Blocking Issues (2):
 
 2. app/components/nav.py:12 - Component 'dmc.Navbar' not found
    Fix: Use 'dmc.AppShell.Navbar' (DMC v0.14+)
+
+Color Scheme Integrity: FAIL (2 defects)
+  - --app-surface-bg: defined only in [dark] selector (missing [light])
+  - .hero-section background-color: unscoped raw color value #f5f5f5
 
 Run /viz design-review for full audit report.
 ```

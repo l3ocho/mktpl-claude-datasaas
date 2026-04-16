@@ -8,6 +8,21 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added
 
+#### `viz-platform` v9.3.0 → v9.4.0
+
+- `skills/color-scheme-validation.md` — new skill with five auditable rules for CSS color scheme integrity in dual-scheme Mantine applications: Dual-Scope Rule (FAIL), No Unscoped Color Values (FAIL), Anti-Loop Detection (WARN), Two-Mode Verification Protocol (required advisory), Token Pair Convention (WARN/FAIL). Loaded conditionally only when both `[data-mantine-color-scheme="dark"]` and `[data-mantine-color-scheme="light"]` selectors are detected. Single-scheme projects: zero behavioral change.
+- `README.md` — new file documenting commands, agents, skills, color scheme validation feature, and consumer project CSS entry point requirements.
+
+### Changed
+
+#### `viz-platform` v9.3.0 → v9.4.0
+
+- `agents/component-check.md` — adds Pre-Validation: Scheme Detection step (step 0) before existing validation workflow. When `scheme_mode = "dual"`, applies Rules 1, 2, 3, and 4 alongside component prop validation.
+- `agents/design-reviewer.md` — adds Pre-Audit: Scheme Detection step (step 0) before the DMC scan. Adds step 5b for Color Scheme Integrity checks (Rules 1–5) with findings grouped under "Color Scheme Integrity" subsection. Gate mode: Rule 1 and Rule 2 violations are FAIL-level blocking. Conditional skill load for `color-scheme-validation.md`.
+- `agents/theme-setup.md` — adds Scheme Detection step (step 1b) after brand discovery and before theme creation. When `scheme_mode = "dual"`: enforces token completeness during `theme_create`, verifies both scheme blocks during `theme_export_css`, and displays Rule 4 Two-Mode Verification Protocol. Conditional skill load for `color-scheme-validation.md`.
+- `commands/viz-design-gate.md` — adds Color Scheme Integrity as a blocking gate check when `scheme_mode = "dual"`. Counts of unscoped color properties and single-scheme-only properties must both be 0. Gate output includes `Color Scheme Integrity: PASS/FAIL (N defects)` line. Color Scheme Integrity check is skipped entirely for single-scheme projects.
+- `.claude-plugin/plugin.json` — version bumped to 9.4.0.
+
 ### Sprint 11 — Dynamic DMC Reference Loading
 
 #### `drawio-plugin` v1.1.0 → v1.2.0
