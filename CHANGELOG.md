@@ -8,12 +8,38 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added
 
+#### `claude-config-maintainer` — RFC-03: Path Safety & Autonomous Config Rewrite
+
+- `commands/claude-config-analyze.md` — Project Root Resolution preamble: resolves `PROJECT_ROOT` via `git rev-parse --show-toplevel`, hard-stops on failure, enforces `${PROJECT_ROOT}/.claude/` for all file paths.
+- `commands/claude-config-init.md` — same Project Root Resolution preamble applied.
+- `commands/claude-config-diff.md` — same Project Root Resolution preamble applied.
+- `commands/claude-config-lint.md` — same Project Root Resolution preamble applied.
+- `commands/claude-config-optimize-settings.md` — `--restrictive` flag: writes granular pattern-matched allowlists (old behavior, opt-in); `--profile=reviewed` is now documented as a legacy alias for `--restrictive`. `--target settings.local.json` space-syntax accepted alongside `--target=local`.
+
+### Fixed
+
+#### `code-sentinel` — RFC-03: Home Directory Write Guard
+
+- `hooks/security-check.sh` — expanded home `.claude/` write guard: now checks both `${HOME}/.claude/` (expanded) and `~/.claude/` (literal tilde) paths; updated blocked message to: "BLOCKED: Write to home .claude/ directory detected. This is a scope violation — use project-level .claude/ instead. Run 'git rev-parse --show-toplevel' to find your project root."
+
+### Added
+
 #### `viz-platform` v9.3.0 → v9.4.0
 
 - `skills/color-scheme-validation.md` — new skill with five auditable rules for CSS color scheme integrity in dual-scheme Mantine applications: Dual-Scope Rule (FAIL), No Unscoped Color Values (FAIL), Anti-Loop Detection (WARN), Two-Mode Verification Protocol (required advisory), Token Pair Convention (WARN/FAIL). Loaded conditionally only when both `[data-mantine-color-scheme="dark"]` and `[data-mantine-color-scheme="light"]` selectors are detected. Single-scheme projects: zero behavioral change.
 - `README.md` — new file documenting commands, agents, skills, color scheme validation feature, and consumer project CSS entry point requirements.
 
 ### Changed
+
+#### `git-flow` v9.0.1 → v9.1.0 (RFC-08: Enforcement Hardening)
+
+- **git-flow v9.1.0** — Enforcement hardening (RFC-08)
+  - `branch-cleanup` Step 7 is now a blocking user-confirmation gate (invokes `AskUserQuestion` with text-prompt fallback). Silent deletion is no longer possible.
+  - All git-flow commands now execute a mandatory Step 0 (load environment) before any git or API operation. Environment variables are resolved up-front, not reactively.
+  - `branch-cleanup` now distinguishes merged vs. stale branch deletion: merged branches use strict `-d` only (abort on failure); stale branches follow `-d` → ask → `-D` escalation with per-branch user confirmation showing the unmerged commit list.
+  - `git-safety.md` "Branch Deletion Safety" section elevated from reference table to enforced rule with five numbered hard rules.
+  - Remote branch deletion mechanism documented: `git push --delete` is used regardless of whether `GITEA_API_URL` is set, because no `delete_branch` tool exists in the Gitea MCP server.
+  - `environment-variables.md` now declares an explicit load-order rule applying to all six executable git-flow commands.
 
 #### `viz-platform` v9.3.0 → v9.4.0
 
