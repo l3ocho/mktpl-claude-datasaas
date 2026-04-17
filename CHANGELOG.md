@@ -15,6 +15,16 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Changed
 
+#### `git-flow` v9.0.1 → v9.1.0 (RFC-08: Enforcement Hardening)
+
+- **git-flow v9.1.0** — Enforcement hardening (RFC-08)
+  - `branch-cleanup` Step 7 is now a blocking user-confirmation gate (invokes `AskUserQuestion` with text-prompt fallback). Silent deletion is no longer possible.
+  - All git-flow commands now execute a mandatory Step 0 (load environment) before any git or API operation. Environment variables are resolved up-front, not reactively.
+  - `branch-cleanup` now distinguishes merged vs. stale branch deletion: merged branches use strict `-d` only (abort on failure); stale branches follow `-d` → ask → `-D` escalation with per-branch user confirmation showing the unmerged commit list.
+  - `git-safety.md` "Branch Deletion Safety" section elevated from reference table to enforced rule with five numbered hard rules.
+  - Remote branch deletion mechanism documented: `git push --delete` is used regardless of whether `GITEA_API_URL` is set, because no `delete_branch` tool exists in the Gitea MCP server.
+  - `environment-variables.md` now declares an explicit load-order rule applying to all six executable git-flow commands.
+
 #### `viz-platform` v9.3.0 → v9.4.0
 
 - `agents/component-check.md` — adds Pre-Validation: Scheme Detection step (step 0) before existing validation workflow. When `scheme_mode = "dual"`, applies Rules 1, 2, 3, and 4 alongside component prop validation.
