@@ -73,7 +73,7 @@
     {
       "name": "project-hygiene",
       "version": "9.0.1",
-      "description": "Manual project hygiene checks — temp files, misplaced files, empty dirs, debug artifacts",
+      "description": "Manual project hygiene checks \u2014 temp files, misplaced files, empty dirs, debug artifacts",
       "source": "./plugins/project-hygiene",
       "author": {
         "name": "Leo Miranda",
@@ -134,7 +134,7 @@
     },
     {
       "name": "git-flow",
-      "version": "9.0.1",
+      "version": "9.1.0",
       "description": "Git workflow automation with intelligent commit messages and branch management",
       "source": "./plugins/git-flow",
       "author": {
@@ -417,7 +417,7 @@
     {
       "name": "drawio-plugin",
       "version": "1.0.0",
-      "description": "Wireframe design tools for draw.io — parse .drawio XML into DMC component specs and generate .drawio wireframes from UI descriptions",
+      "description": "Wireframe design tools for draw.io \u2014 parse .drawio XML into DMC component specs and generate .drawio wireframes from UI descriptions",
       "source": "./plugins/drawio-plugin",
       "author": {
         "name": "Leo Miranda",

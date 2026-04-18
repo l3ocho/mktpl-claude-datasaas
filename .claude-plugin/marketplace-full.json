@@ -20,9 +20,16 @@
       },
       "homepage": "https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas/src/branch/main/plugins/projman/README.md",
       "repository": "https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas.git",
-      "hooks": ["./hooks/hooks.json"],
+      "hooks": [
+        "./hooks/hooks.json"
+      ],
       "category": "development",
-      "tags": ["sprint", "agile", "gitea", "project-management"],
+      "tags": [
+        "sprint",
+        "agile",
+        "gitea",
+        "project-management"
+      ],
       "license": "MIT"
     },
     {
@@ -36,9 +43,15 @@
       },
       "homepage": "https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas/src/branch/main/plugins/doc-guardian/README.md",
       "repository": "https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas.git",
-      "hooks": ["./hooks/hooks.json"],
+      "hooks": [
+        "./hooks/hooks.json"
+      ],
       "category": "productivity",
-      "tags": ["documentation", "drift-detection", "sync"],
+      "tags": [
+        "documentation",
+        "drift-detection",
+        "sync"
+      ],
       "license": "MIT"
     },
     {
@@ -52,9 +65,15 @@
       },
       "homepage": "https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas/src/branch/main/plugins/code-sentinel/README.md",
       "repository": "https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas.git",
-      "hooks": ["./hooks/hooks.json"],
+      "hooks": [
+        "./hooks/hooks.json"
+      ],
       "category": "security",
-      "tags": ["security-scan", "refactoring", "vulnerabilities"],
+      "tags": [
+        "security-scan",
+        "refactoring",
+        "vulnerabilities"
+      ],
       "license": "MIT"
     },
     {
@@ -68,9 +87,15 @@
       },
       "homepage": "https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas/src/branch/main/plugins/project-hygiene/README.md",
       "repository": "https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas.git",
-      "hooks": ["./hooks/hooks.json"],
+      "hooks": [
+        "./hooks/hooks.json"
+      ],
       "category": "productivity",
-      "tags": ["cleanup", "automation", "hygiene"],
+      "tags": [
+        "cleanup",
+        "automation",
+        "hygiene"
+      ],
       "license": "MIT"
     },
     {
@@ -84,9 +109,15 @@
       },
       "homepage": "https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas/src/branch/main/plugins/claude-config-maintainer/README.md",
       "repository": "https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas.git",
-      "hooks": ["./hooks/hooks.json"],
+      "hooks": [
+        "./hooks/hooks.json"
+      ],
       "category": "development",
-      "tags": ["claude-md", "configuration", "optimization"],
+      "tags": [
+        "claude-md",
+        "configuration",
+        "optimization"
+      ],
       "license": "MIT"
     },
     {
@@ -100,14 +131,21 @@
       },
       "homepage": "https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas/src/branch/main/plugins/clarity-assist/README.md",
       "repository": "https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas.git",
-      "hooks": ["./hooks/hooks.json"],
+      "hooks": [
+        "./hooks/hooks.json"
+      ],
       "category": "productivity",
-      "tags": ["prompts", "requirements", "clarification", "nd-friendly"],
+      "tags": [
+        "prompts",
+        "requirements",
+        "clarification",
+        "nd-friendly"
+      ],
       "license": "MIT"
     },
     {
       "name": "git-flow",
-      "version": "7.1.0",
+      "version": "9.1.0",
       "description": "Git workflow automation with intelligent commit messages and branch management",
       "source": "./plugins/git-flow",
       "author": {
@@ -116,9 +154,16 @@
       },
       "homepage": "https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas/src/branch/main/plugins/git-flow/README.md",
       "repository": "https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas.git",
-      "hooks": ["./hooks/hooks.json"],
+      "hooks": [
+        "./hooks/hooks.json"
+      ],
       "category": "development",
-      "tags": ["git", "workflow", "commits", "branching"],
+      "tags": [
+        "git",
+        "workflow",
+        "commits",
+        "branching"
+      ],
       "license": "MIT"
     },
     {
@@ -132,9 +177,16 @@
       },
       "homepage": "https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas/src/branch/main/plugins/pr-review/README.md",
       "repository": "https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas.git",
-      "hooks": ["./hooks/hooks.json"],
+      "hooks": [
+        "./hooks/hooks.json"
+      ],
       "category": "development",
-      "tags": ["code-review", "pull-requests", "security", "quality"],
+      "tags": [
+        "code-review",
+        "pull-requests",
+        "security",
+        "quality"
+      ],
       "license": "MIT"
     },
     {
@@ -148,9 +200,18 @@
       },
       "homepage": "https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas/src/branch/main/plugins/data-platform/README.md",
       "repository": "https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas.git",
-      "hooks": ["./hooks/hooks.json"],
+      "hooks": [
+        "./hooks/hooks.json"
+      ],
       "category": "data",
-      "tags": ["pandas", "postgresql", "postgis", "dbt", "data-engineering", "etl"],
+      "tags": [
+        "pandas",
+        "postgresql",
+        "postgis",
+        "dbt",
+        "data-engineering",
+        "etl"
+      ],
       "license": "MIT"
     },
     {
@@ -164,9 +225,19 @@
       },
       "homepage": "https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas/src/branch/main/plugins/viz-platform/README.md",
       "repository": "https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas.git",
-      "hooks": ["./hooks/hooks.json"],
+      "hooks": [
+        "./hooks/hooks.json"
+      ],
       "category": "visualization",
-      "tags": ["dash", "plotly", "mantine", "charts", "dashboards", "theming", "dmc"],
+      "tags": [
+        "dash",
+        "plotly",
+        "mantine",
+        "charts",
+        "dashboards",
+        "theming",
+        "dmc"
+      ],
       "license": "MIT"
     },
     {
@@ -180,9 +251,18 @@
       },
       "homepage": "https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas/src/branch/main/plugins/contract-validator/README.md",
       "repository": "https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas.git",
-      "hooks": ["./hooks/hooks.json"],
+      "hooks": [
+        "./hooks/hooks.json"
+      ],
       "category": "development",
-      "tags": ["validation", "contracts", "compatibility", "agents", "interfaces", "cross-plugin"],
+      "tags": [
+        "validation",
+        "contracts",
+        "compatibility",
+        "agents",
+        "interfaces",
+        "cross-plugin"
+      ],
       "license": "MIT"
     }
   ]
