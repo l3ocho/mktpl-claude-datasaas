@@ -22,6 +22,18 @@ and injects the git-flow section into the project's CLAUDE.md.
 
 ## Workflow
 
+### Step 0: Load Environment (MANDATORY — must run before any git or API operation)
+
+**Imperative:** Before executing any subsequent step, read environment variables per `skills/environment-variables.md`. This step is non-skippable.
+
+1. Read project `.env` if present. Parse all `GIT_*` and `GITEA_*` variables.
+2. Read user `~/.config/claude/git-flow.env` if present. Project values override user values.
+3. Apply defaults from `skills/environment-variables.md` for any unset variable.
+4. Expose resolved values. Variables used by this command: `GITEA_API_URL`, `GITEA_API_TOKEN`, `GITEA_REPO` (for detection); all `GIT_*` (for configuration).
+5. If any required variable has no value after resolution, halt and ask the user.
+
+**Do not proceed to Step 1 until all environment variables above have been resolved.**
+
 ### Step 1: Display Header
 
 ```

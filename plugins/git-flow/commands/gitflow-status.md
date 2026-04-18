@@ -24,6 +24,18 @@ Show comprehensive git status with recommendations and insights beyond standard 
 
 ## Workflow
 
+### Step 0: Load Environment (MANDATORY — must run before any git or API operation)
+
+**Imperative:** Before executing any subsequent step, read environment variables per `skills/environment-variables.md`. This step is non-skippable.
+
+1. Read project `.env` if present. Parse all `GIT_*` and `GITEA_*` variables.
+2. Read user `~/.config/claude/git-flow.env` if present. Project values override user values.
+3. Apply defaults from `skills/environment-variables.md` for any unset variable.
+4. Expose resolved values. Variables used by this command: `GIT_DEFAULT_BASE`, `GIT_PROTECTED_BRANCHES`, `GIT_AUTO_PRUNE`.
+5. If any required variable has no value after resolution, halt and ask the user.
+
+**Do not proceed to Step 1 until all environment variables above have been resolved.**
+
 1. **Display header** - Show GIT-FLOW Status header
 2. **Gather info** - Branch, base comparison, remote status
 3. **Categorize changes** - Staged, unstaged, untracked, deleted, renamed
