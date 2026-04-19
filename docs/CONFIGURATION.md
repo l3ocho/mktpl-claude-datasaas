@@ -679,7 +679,6 @@ Agents specify their configuration in frontmatter using Claude Code's supported 
 | viz-platform | layout-builder | sonnet | default | — | — |
 | contract-validator | full-validation | sonnet | default | — | — |
 | contract-validator | agent-check | haiku | plan | Write, Edit, MultiEdit | — |
-| code-sentinel | security-reviewer | sonnet | plan | Write, Edit, MultiEdit | — |
 | code-sentinel | refactor-advisor | sonnet | acceptEdits | — | — |
 | doc-guardian | doc-analyzer | sonnet | acceptEdits | — | — |
 | clarity-assist | clarity-coach | sonnet | default | Write, Edit, MultiEdit | — |

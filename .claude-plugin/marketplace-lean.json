@@ -80,7 +80,7 @@
     },
     {
       "name": "clarity-assist",
-      "version": "7.1.0",
+      "version": "10.0.0",
       "description": "Prompt optimization and requirement clarification with ND-friendly accommodations",
       "source": "./plugins/clarity-assist",
       "author": {
@@ -89,9 +89,6 @@
       },
       "homepage": "https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas/src/branch/main/plugins/clarity-assist/README.md",
       "repository": "https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas.git",
-      "hooks": [
-        "./hooks/hooks.json"
-      ],
       "category": "productivity",
       "tags": [
         "prompts",
@@ -103,8 +100,8 @@
     },
     {
       "name": "code-sentinel",
-      "version": "7.1.0",
-      "description": "Security scanning and code refactoring tools",
+      "version": "10.0.0",
+      "description": "Code refactoring and automatic secrets detection. Full security audits via built-in /security-review.",
       "source": "./plugins/code-sentinel",
       "author": {
         "name": "Leo Miranda",

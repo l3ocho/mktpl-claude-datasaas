@@ -55,11 +55,10 @@ Read all plugin hooks from the marketplace:
 ```
 plugins/code-sentinel/hooks/hooks.json
 plugins/git-flow/hooks/hooks.json
-plugins/clarity-assist/hooks/hooks.json
 ```
 
 For each hook, extract:
-- Event type (PreToolUse, UserPromptSubmit)
+- Event type (PreToolUse only — UserPromptSubmit removed in RFC-10)
 - Tool matchers (Write, Edit, MultiEdit, Bash patterns)
 - Hook command/script
 
@@ -198,9 +197,6 @@ Review Layer Status
 PreToolUse Hooks (intercept before operation):
   ✓ code-sentinel — Write, Edit, MultiEdit
   ✓ git-flow — Bash(git checkout *), Bash(git commit *)
-
-UserPromptSubmit Hooks (check prompt quality):
-  ✓ clarity-assist — vagueness detection
 
 Other Review Gates:
   ✓ Sprint Approval (projman milestone workflow)

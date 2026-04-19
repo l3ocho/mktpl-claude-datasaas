@@ -16,7 +16,7 @@ PreToolUse hooks scan all code changes for:
 Critical issues are blocked. Warnings are noted but allowed.
 
 ### Commands
-- `/sentinel scan` - Full project security audit
+- `/security-review` - Full project security audit (built-in Claude Code command: SQL injection, XSS, secrets, auth flaws, dependency vulnerabilities)
 - `/sentinel refactor <target>` - Apply refactoring pattern
 - `/sentinel refactor-dry <target>` - Preview refactoring opportunities
 

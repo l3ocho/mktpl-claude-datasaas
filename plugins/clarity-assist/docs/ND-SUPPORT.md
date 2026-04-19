@@ -66,22 +66,7 @@ Our design philosophy centers on three principles:
 - The plugin offers to break sessions into smaller parts
 - "Good enough for now" is explicitly validated as an acceptable outcome
 
-### 4. Vagueness Detection
-
-The `UserPromptSubmit` hook automatically detects prompts that might benefit from clarification and gently suggests using `/clarity clarify`.
-
-**Detection Signals**
-- Short prompts (< 10 words) without specific technical terms
-- Vague action phrases: "help me", "fix this", "make it better"
-- Ambiguous scope words: "somehow", "something", "stuff", "etc."
-- Open questions without context
-
-**Non-Blocking Approach**
-- The hook never prevents you from proceeding
-- It provides a suggestion with a vagueness score (percentage)
-- You can disable auto-suggestions entirely via environment variable
-
-### 5. Focus Aids
+### 4. Focus Aids
 
 **Task Prioritization**
 - Requirements are tagged as Must/Should/Could/Won't (MoSCoW)
@@ -94,44 +79,6 @@ The `UserPromptSubmit` hook automatically detects prompts that might benefit fro
 - Summarizes frequently to rebuild context after interruptions
 
 ## How It Works
-
-### The UserPromptSubmit Hook
-
-When you submit a prompt, the vagueness detection hook (`hooks/vagueness-check.sh`) runs automatically:
-
-```
-User submits prompt
-       |
-       v
-Hook reads prompt from stdin
-       |
-       v
-Skip if: empty, starts with /, or contains file paths
-       |
-       v
-Calculate vagueness score (0.0 - 1.0)
-  - Short prompts: +0.3
-  - Vague action phrases: +0.2
-  - Ambiguous scope words: +0.15
-  - Missing technical specifics: +0.2
-  - Short questions without context: +0.15
-       |
-       v
-If score >= threshold (default 0.6):
-  - Output gentle suggestion with [clarity-assist] prefix
-  - Show vagueness percentage
-       |
-       v
-Exit 0 (always non-blocking)
-```
-
-### Example Hook Output
-
-```
-[clarity-assist] Your prompt could benefit from more clarity.
-[clarity-assist] Consider running /clarity-assist to refine your request.
-[clarity-assist] (Vagueness score: 65% - this is a suggestion, not a block)
-```
 
 ### The 4-D Methodology
 
@@ -150,7 +97,7 @@ Exit 0 (always non-blocking)
 User: Make the app faster
 ```
 
-This triggers vagueness detection because:
+This benefits from clarification because:
 - Short (4 words)
 - Vague action ("make")
 - No specific technical context
@@ -251,35 +198,6 @@ Claude: I'll add a delete button to each row in the user list.
 User: 1
 
 Claude: Got it. I'll implement a delete button with confirmation dialog. Starting now.
-```
-
-## Configuration Options
-
-### Environment Variables
-
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `CLARITY_ASSIST_AUTO_SUGGEST` | `true` | Enable/disable automatic vagueness detection |
-| `CLARITY_ASSIST_VAGUENESS_THRESHOLD` | `0.6` | Score threshold to trigger suggestion (0.0-1.0) |
-
-### Disabling Auto-Suggestions
-
-If you find the vagueness detection unhelpful, disable it in your shell profile or `.env`:
-
-```bash
-export CLARITY_ASSIST_AUTO_SUGGEST=false
-```
-
-### Adjusting Sensitivity
-
-To make detection more or less sensitive:
-
-```bash
-# More sensitive (suggests more often)
-export CLARITY_ASSIST_VAGUENESS_THRESHOLD=0.4
-
-# Less sensitive (only very vague prompts)
-export CLARITY_ASSIST_VAGUENESS_THRESHOLD=0.8
 ```
 
 ## Tips for ND Users
