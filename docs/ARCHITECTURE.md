@@ -3,7 +3,7 @@
 ## Overview
 
 Plugin marketplace for Claude Code. 21 plugins across 5 domains, 5 shared MCP servers,
-4 PreToolUse safety hooks + 1 UserPromptSubmit quality hook.
+3 PreToolUse safety hooks across 2 plugins.
 
 ## System Architecture
 
@@ -33,9 +33,9 @@ Plugin marketplace for Claude Code. 21 plugins across 5 domains, 5 shared MCP se
 | code-sentinel | PreToolUse | Write\|Edit\|MultiEdit | security-check.sh |
 | git-flow | PreToolUse | Bash (branch naming) | branch-check.sh |
 | git-flow | PreToolUse | Bash (git commit) | commit-msg-check.sh |
-| clarity-assist | UserPromptSubmit | All prompts | vagueness-check.sh |
 
 No other hook types permitted. All workflow automation is via explicit commands.
+UserPromptSubmit hooks removed in RFC-10 — native Opus 4.7/Sonnet 4.6 handles vague-prompt detection.
 
 ### Agent Model (projman)
 
@@ -98,10 +98,10 @@ Multi-agent PR review with confidence scoring.
 - **Agents:** coordinator, security-reviewer, performance-analyst, maintainability-auditor, test-validator
 - **MCP:** gitea
 
-#### code-sentinel (v9.0.1)
-Security scanning and code refactoring.
-- **Commands:** /sentinel (scan|refactor|refactor-dry)
-- **Agents:** security-reviewer, refactor-advisor
+#### code-sentinel (v10.0.0)
+Code refactoring and automatic secrets detection. Full security audits use built-in `/security-review`.
+- **Commands:** /sentinel (refactor|refactor-dry)
+- **Agents:** refactor-advisor
 - **Hooks:** PreToolUse (security-check.sh)
 
 #### doc-guardian (v9.0.1)
@@ -109,11 +109,10 @@ Documentation drift detection and synchronization.
 - **Commands:** /doc (audit|sync|changelog-gen|coverage|stale-docs)
 - **Agents:** doc-analyzer
 
-#### clarity-assist (v9.0.1)
+#### clarity-assist (v10.0.0)
 Prompt optimization with ND-friendly accommodations.
 - **Commands:** /clarity (clarify|quick-clarify)
 - **Agents:** clarity-coach
-- **Hooks:** UserPromptSubmit (vagueness-check.sh)
 
 #### contract-validator (v9.0.1)
 Cross-plugin compatibility validation.

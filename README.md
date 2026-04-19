@@ -77,7 +77,7 @@ A plugin marketplace for Claude Code providing sprint management, code review, s
 /sprint start                 # Begin sprint execution
 /gitflow commit --push        # Commit with auto-generated message and push
 /pr review                    # Full multi-agent PR review
-/sentinel scan                # Security audit
+/security-review              # Security audit (built-in)
 /doc audit                    # Check for documentation drift
 /cv status                    # Marketplace health check
 ```
@@ -224,7 +224,7 @@ See [CONFIGURATION.md](./docs/CONFIGURATION.md) for manual setup and advanced op
 
 ```bash
 ./scripts/validate-marketplace.sh    # Marketplace compliance (manifests, domains, paths)
-./scripts/verify-hooks.sh            # Hook inventory (4 PreToolUse + 1 UserPromptSubmit)
+./scripts/verify-hooks.sh            # Hook inventory (3 PreToolUse across 2 plugins)
 ```
 
 ## License
