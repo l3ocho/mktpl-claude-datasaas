@@ -1,6 +1,6 @@
 {
   "name": "viz-platform",
-  "version": "9.4.0",
+  "version": "10.0.0",
   "description": "Visualization tools with Dash Mantine Components validation, Plotly charts, and theming",
   "author": {
     "name": "Leo Miranda",

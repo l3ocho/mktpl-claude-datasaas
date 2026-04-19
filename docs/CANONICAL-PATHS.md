@@ -69,8 +69,11 @@ mktpl-claude-datasaas/
 │       │   ├── theme_tools.py
 │       │   ├── theme_store.py
 │       │   └── page_tools.py
+│       ├── resolver.py         # Design contract resolver (NEW v10.0.0)
+│       ├── schemas/
+│       │   └── design-contract.schema.json  # JSON Schema draft-07 (NEW v10.0.0)
 │       ├── registry/           # DMC component JSON registries
-│       ├── tests/              # 94 tests
+│       ├── tests/              # unit tests
 │       ├── requirements.txt
 │       └── .venv/
 ├── plugins/                    # ALL plugins
@@ -146,16 +149,16 @@ mktpl-claude-datasaas/
 │   │   ├── agents/
 │   │   ├── skills/
 │   │   │   ├── accessibility-rules.md
+│   │   │   ├── analytical-chart-selection.md
 │   │   │   ├── chart-types.md
-│   │   │   ├── design-system-audit.md
+│   │   │   ├── choropleth-map-patterns.md
+│   │   │   ├── color-scheme-validation.md
 │   │   │   ├── dmc-components.md
 │   │   │   ├── layout-templates.md
 │   │   │   ├── mcp-tools-reference.md
-│   │   │   ├── responsive-design.md
-│   │   │   ├── theming-system.md
-│   │   │   ├── analytical-chart-selection.md
 │   │   │   ├── notebook-design-system.md
-│   │   │   └── choropleth-map-patterns.md
+│   │   │   ├── responsive-design.md
+│   │   │   └── theming-system.md   # Rewritten v10.0.0 — surface contract spec
 │   │   └── claude-md-integration.md
 │   ├── drawio-plugin/              # Wireframe design tools (data domain)
 │   │   ├── .claude-plugin/
@@ -336,6 +339,17 @@ fi
 ```
 
 **See lesson learned:** [Startup Hooks Must Check Venv Cache Path First](https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas/wiki/lessons/patterns/startup-hooks-must-check-venv-cache-path-first)
+
+### Consumer Project Paths (Written by viz-platform)
+
+These paths are written to consumer projects (not this repo) by viz-platform commands:
+
+| Path | Written By | Purpose |
+|------|-----------|---------|
+| `.claude/design-contract.json` | `/viz setup` Phase 3 | Per-project surface hierarchy contract |
+| `.claude/dmc-components.json` | `/viz setup` | DMC component selection for registry generation |
+
+---
 
 ### Documentation Paths
 

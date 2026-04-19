@@ -93,18 +93,14 @@ If dispatch routing fails, use the direct plugin-prefixed format: `/<plugin-name
 | **data-platform** | `/data review` | | X | Comprehensive data integrity audits |
 | **data-platform** | `/data gate` | | X | Binary pass/fail data integrity gates |
 | **data-platform** | `/data setup` | | X | Setup wizard for data-platform MCP servers |
-| **viz-platform** | `/viz setup` | | X | Setup wizard for viz-platform MCP server |
+| **viz-platform** | `/viz setup` | | X | Setup wizard — environment + design contract builder |
 | **viz-platform** | `/viz chart` | | X | Create Plotly charts with theme integration |
 | **viz-platform** | `/viz chart-export` | | X | Export charts to PNG, SVG, PDF via kaleido |
 | **viz-platform** | `/viz dashboard` | | X | Create dashboard layouts with filters and grids |
-| **viz-platform** | `/viz theme` | | X | Apply existing theme to visualizations |
-| **viz-platform** | `/viz theme-new` | | X | Create new custom theme with design tokens |
-| **viz-platform** | `/viz theme-css` | | X | Export theme as CSS custom properties |
-| **viz-platform** | `/viz component` | | X | Inspect DMC component props and validation |
-| **viz-platform** | `/viz accessibility-check` | | X | Color blind validation (WCAG contrast ratios) |
+| **viz-platform** | `/viz theme apply` | | X | Activate an existing theme |
+| **viz-platform** | `/viz theme create` | | X | Create new custom theme with design tokens |
+| **viz-platform** | `/viz theme export-css` | | X | Export theme as CSS custom properties |
 | **viz-platform** | `/viz breakpoints` | | X | Configure responsive layout breakpoints |
-| **viz-platform** | `/viz design-review` | | X | Detailed design system audits |
-| **viz-platform** | `/viz design-gate` | | X | Binary pass/fail design system validation gates |
 | **drawio-plugin** | `/drawio parse` | | X | Parse .drawio XML → WIREFRAME.md spec + DMC domain file declarations |
 | **drawio-plugin** | `/drawio generate` | | X | Generate .drawio XML from UI description following DMC layer conventions |
 | **contract-validator** | `/cv validate` | | X | Full marketplace compatibility validation |
