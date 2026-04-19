@@ -8,6 +8,45 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added
 
+#### `viz-platform` v9.4.0 → v10.0.0 (RFC-09: Consolidation + Design-Contract Resolver)
+
+- `mcp-servers/viz-platform/resolver.py` — `DesignContract` class with surface hierarchy resolution, component lock enforcement, and resolver merge rules (lock > surface > requested_props).
+- `mcp-servers/viz-platform/schemas/design-contract.schema.json` — JSON Schema draft-07 definition for per-project surface hierarchy contracts.
+- `mcp-servers/viz-platform/tests/test_resolver.py` — 11 unit tests covering no-contract passthrough, surface override, lock override, dark/light independence, unknown component defaults, explicit surface context.
+- 5 new MCP tools: `contract_load`, `contract_validate`, `contract_resolve_component`, `contract_lock_component`, `contract_get_surface`.
+- `plugins/viz-platform/commands/viz-theme.md` — consolidated action-routed theme command replacing 3 separate files. Actions: `apply`, `create`, `export-css`.
+
+### Changed
+
+#### `viz-platform` v10.0.0
+
+- `/viz setup` Phase 3 rewritten as contract builder: surfaces (4 levels), interaction tokens, density selection → generates `.claude/design-contract.json`.
+- `skills/theming-system.md` rewritten as surface contract specification: surface hierarchy model, resolver merge rules, component lock protocol, light/dark as separate contracts, density protocol, interaction tokens.
+- `skills/mcp-tools-reference.md` trimmed: removed verbose call examples, added contract tools table.
+- `validate_component` MCP tool now accepts optional `surface_context` and `scheme` params; auto-applies contract resolution when a contract is active.
+- `agents/layout-builder.md` — removed `permissionMode: default` override and Visual Output ASCII block.
+- All remaining commands (`viz-chart`, `viz-dashboard`, `viz-chart-export`, `viz-breakpoints`, `viz-setup`) — removed Visual Output ASCII blocks and `## Skills to Load` sections.
+- `commands/viz.md` routing table updated to reflect v10.0.0 command set (6 commands).
+
+### Removed
+
+#### `viz-platform` v10.0.0 — BREAKING CHANGES
+
+- `commands/viz-design-review.md` — `/viz design-review` command deleted.
+- `commands/viz-design-gate.md` — `/viz design-gate` command deleted.
+- `commands/viz-accessibility-check.md` — `/viz accessibility-check` command deleted (MCP tools retained).
+- `commands/viz-component.md` — `/viz component` command deleted (MCP tools retained).
+- `commands/viz-theme-new.md` — replaced by `/viz theme create`.
+- `commands/viz-theme-css.md` — replaced by `/viz theme export-css`.
+- `agents/design-reviewer.md` — design-reviewer agent deleted.
+- `agents/component-check.md` — component-check agent deleted.
+- `agents/theme-setup.md` — theme-setup agent deleted.
+- `skills/design-system-audit.md` — design-system-audit skill deleted.
+
+---
+
+### Added
+
 #### `claude-config-maintainer` — RFC-03: Path Safety & Autonomous Config Rewrite
 
 - `commands/claude-config-analyze.md` — Project Root Resolution preamble: resolves `PROJECT_ROOT` via `git rev-parse --show-toplevel`, hard-stops on failure, enforces `${PROJECT_ROOT}/.claude/` for all file paths.

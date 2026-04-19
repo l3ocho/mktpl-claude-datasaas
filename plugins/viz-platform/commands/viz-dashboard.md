@@ -5,18 +5,6 @@ description: Create a dashboard layout with the layout-builder agent
 
 # /viz dashboard
 
-## Skills to Load
-- skills/mcp-tools-reference.md
-- skills/layout-templates.md
-
-## Visual Output
-
-```
-+------------------------------------------------------------------+
-|  VIZ-PLATFORM - Dashboard Builder                                |
-+------------------------------------------------------------------+
-```
-
 Create a dashboard layout with filters, grids, and sections.
 
 ## Usage

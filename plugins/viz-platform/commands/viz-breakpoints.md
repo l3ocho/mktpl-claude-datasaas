@@ -5,18 +5,6 @@ description: Configure responsive breakpoints for dashboard layouts
 
 # /viz breakpoints
 
-## Skills to Load
-- skills/mcp-tools-reference.md
-- skills/responsive-design.md
-
-## Visual Output
-
-```
-+------------------------------------------------------------------+
-|  VIZ-PLATFORM - Breakpoints                                      |
-+------------------------------------------------------------------+
-```
-
 Configure responsive breakpoints for mobile-first design across screen sizes.
 
 ## Usage
@@ -41,4 +29,4 @@ Configure responsive breakpoints for mobile-first design across screen sizes.
 ## Related Commands
 
 - `/viz dashboard {template}` - Create layout with default breakpoints
-- `/viz theme {name}` - Theme includes default spacing values
+- `/viz theme apply {name}` - Theme includes default spacing values
