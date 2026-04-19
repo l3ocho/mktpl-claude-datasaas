@@ -6,6 +6,35 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Removed
+
+#### `code-sentinel` v9.0.1 → v10.0.0 — BREAKING CHANGES (RFC-10: Native-Overlap Cleanup)
+
+- `/sentinel scan` command (`commands/sentinel-scan.md`) — duplicated by built-in `/security-review` (SQL injection, XSS, auth flaws, secrets, dependency vulnerabilities). Users should use `/security-review` directly.
+- `skills/security-patterns/` skill directory — orphaned after `/sentinel scan` removal (only that command referenced it).
+- `agents/security-reviewer.md` — duplicate of `plugins/pr-review/agents/security-reviewer.md`; removed from `code-sentinel` only; the `pr-review` copy is canonical.
+
+#### `clarity-assist` v9.0.1 → v10.0.0 — BREAKING CHANGES (RFC-10: Native-Overlap Cleanup)
+
+- `hooks/vagueness-check.sh` — UserPromptSubmit hook obsolete under Opus 4.7/Sonnet 4.6 native vague-prompt handling in auto mode.
+- `hooks/hooks.json` — UserPromptSubmit registration removed.
+- `hooks/` directory — empty after above deletions; removed entirely.
+
+### Changed
+
+#### `code-sentinel` v10.0.0 (RFC-10)
+
+- `/sentinel` command routing: `scan` action removed; users directed to built-in `/security-review` for security audits.
+- `claude-md-integration.md`: replaced `/sentinel scan` bullet with `/security-review` note.
+- `docs/ARCHITECTURE.md`: hook inventory updated to 3 PreToolUse hooks across 2 plugins.
+- `scripts/verify-hooks.sh`: updated expected inventory (5 → 4 hooks, `clarity-assist` removed from ALLOWED_PLUGINS, UserPromptSubmit count now fails if non-zero).
+
+#### `clarity-assist` v10.0.0 (RFC-10)
+
+- `docs/ND-SUPPORT.md`: removed "Vagueness Detection" section, "The UserPromptSubmit Hook" subsection, hook output example, and environment variable configuration for `CLARITY_ASSIST_AUTO_SUGGEST` / `CLARITY_ASSIST_VAGUENESS_THRESHOLD`.
+
+---
+
 ### Added
 
 #### `viz-platform` v9.4.0 → v10.0.0 (RFC-09: Consolidation + Design-Contract Resolver)

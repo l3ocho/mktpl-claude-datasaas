@@ -214,7 +214,7 @@ A plugin marketplace for Claude Code containing:
 | **RFC** | `/rfc create`, `/rfc list`, `/rfc review`, `/rfc approve`, `/rfc reject` |
 | **PR Review** | `/pr review`, `/pr summary`, `/pr findings`, `/pr diff` |
 | **Docs** | `/doc audit`, `/doc sync`, `/doc changelog-gen`, `/doc coverage`, `/doc stale-docs` |
-| **Security** | `/sentinel scan`, `/sentinel refactor`, `/sentinel refactor-dry` |
+| **Security** | `/security-review` (built-in), `/sentinel refactor`, `/sentinel refactor-dry` |
 | **Config** | `/claude-config analyze`, `/claude-config optimize`, `/claude-config diff`, `/claude-config lint` |
 | **Validation** | `/cv validate`, `/cv check-agent`, `/cv list-interfaces`, `/cv dependency-graph`, `/cv status` |
 | **Maintenance** | `/hygiene check` |
@@ -350,7 +350,6 @@ Agents specify their configuration in frontmatter using Claude Code's supported 
 | viz-platform | theme-setup | haiku | acceptEdits | — | — |
 | contract-validator | full-validation | sonnet | default | — | — |
 | contract-validator | agent-check | haiku | plan | Write, Edit, MultiEdit | — |
-| code-sentinel | security-reviewer | sonnet | plan | Write, Edit, MultiEdit | — |
 | code-sentinel | refactor-advisor | sonnet | acceptEdits | — | — |
 | doc-guardian | doc-analyzer | sonnet | acceptEdits | — | — |
 | clarity-assist | clarity-coach | sonnet | default | Write, Edit, MultiEdit | — |

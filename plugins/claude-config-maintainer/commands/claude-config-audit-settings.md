@@ -81,10 +81,9 @@ Using `settings-optimization.md` Section 3, detect:
 Read `plugins/*/hooks/hooks.json` files (post-Decision #29 — only PreToolUse safety hooks and UserPromptSubmit quality hooks exist):
 
 ```bash
-# Check each plugin's hooks (exhaustive post-v8.1.0 inventory)
+# Check each plugin's hooks (post-RFC-10 inventory — UserPromptSubmit removed)
 plugins/code-sentinel/hooks/hooks.json     # PreToolUse: Write|Edit|MultiEdit → security-check.sh
 plugins/git-flow/hooks/hooks.json          # PreToolUse: Bash → branch-check.sh, commit-msg-check.sh
-plugins/clarity-assist/hooks/hooks.json    # UserPromptSubmit → vagueness-check.sh
 ```
 
 Parse each to identify:
@@ -163,9 +162,8 @@ Issues Found:
   🔵 LOW: [description]
 
 Active Review Layers Detected:
-  ✓ code-sentinel (PreToolUse: Write|Edit|MultiEdit)
+  ✓ code-sentinel (PreToolUse: Write|Edit|MultiEdit — secrets detection)
   ✓ git-flow (PreToolUse: Bash — branch naming + commit format)
-  ✓ clarity-assist (UserPromptSubmit: vagueness detection)
 
 Recommendations:
   1. [specific action with pattern]

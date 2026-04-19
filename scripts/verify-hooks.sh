@@ -1,18 +1,20 @@
 #!/bin/bash
 # verify-hooks.sh — Verify marketplace hook inventory
-# Post-Decision #29: Only PreToolUse safety hooks and UserPromptSubmit quality hooks may exist
+# Post-Decision #29: Only PreToolUse safety hooks may exist
 #
-# Expected inventory:
+# Expected inventory (4 hooks, 2 plugins):
 #   code-sentinel  : PreToolUse → security-check.sh (Write|Edit|MultiEdit)
 #   git-flow       : PreToolUse → branch-check.sh (Bash)
 #   git-flow       : PreToolUse → commit-msg-check.sh (Bash)
-#   clarity-assist : UserPromptSubmit → vagueness-check.sh (prompt quality)
+#
+# Removed (RFC-10, native-overlap cleanup):
+#   clarity-assist : UserPromptSubmit vagueness-check.sh — obsolete under Opus 4.7/Sonnet 4.6 auto mode
 #
 # FAIL conditions:
 #   - Any SessionStart hook
 #   - Any PostToolUse hook
 #   - Any hook of type "prompt"
-#   - Any hooks.json outside the 3 expected plugins
+#   - Any hooks.json outside the 2 expected plugins
 #   - Missing expected hooks
 
 set -euo pipefail
@@ -28,7 +30,7 @@ FAILED=0
 HOOK_COUNT=0
 
 # Allowed plugins with hooks
-ALLOWED_PLUGINS="code-sentinel git-flow clarity-assist"
+ALLOWED_PLUGINS="code-sentinel git-flow"
 
 # 1. Check for unexpected hooks.json files
 while IFS= read -r -d '' hooks_file; do
@@ -36,7 +38,7 @@ while IFS= read -r -d '' hooks_file; do
     if ! echo "$ALLOWED_PLUGINS" | grep -qw "$plugin_name"; then
         echo "FAIL: UNEXPECTED hooks.json in: $plugin_name"
         echo "   File: $hooks_file"
-        echo "   Only code-sentinel, git-flow, and clarity-assist may have hooks"
+        echo "   Only code-sentinel and git-flow may have hooks"
         FAILED=1
     fi
 done < <(find "$PLUGINS_DIR" -path "*/hooks/hooks.json" -print0 2>/dev/null)
@@ -67,14 +69,18 @@ while IFS= read -r -d '' hooks_file; do
     pre_count=$(jq '[.hooks.PreToolUse[]? | .hooks[]?] | length' "$hooks_file" 2>/dev/null || echo 0)
     HOOK_COUNT=$((HOOK_COUNT + pre_count))
 
-    # Count UserPromptSubmit hooks (allowed for quality checks)
+    # Count UserPromptSubmit hooks (should be zero after RFC-10)
     ups_count=$(jq '[.hooks.UserPromptSubmit[]? | .hooks[]?] | length' "$hooks_file" 2>/dev/null || echo 0)
-    HOOK_COUNT=$((HOOK_COUNT + ups_count))
+    if [[ "$ups_count" -gt 0 ]]; then
+        plugin_name=$(basename "$(dirname "$(dirname "$hooks_file")")")
+        echo "FAIL: Unexpected UserPromptSubmit hook in $plugin_name (removed in RFC-10)"
+        FAILED=1
+    fi
 
 done < <(find "$PLUGINS_DIR" -path "*/hooks/hooks.json" -print0 2>/dev/null)
 
 # 3. Verify expected hooks exist
-for expected in code-sentinel git-flow clarity-assist; do
+for expected in code-sentinel git-flow; do
     if [[ ! -f "$PLUGINS_DIR/$expected/hooks/hooks.json" ]]; then
         echo "FAIL: Missing expected hooks.json in $expected"
         FAILED=1
@@ -85,15 +91,15 @@ done
 
 # 4. Summary
 echo ""
-echo "Total hooks: $HOOK_COUNT (expected: 4 — 3 PreToolUse + 1 UserPromptSubmit)"
-if [[ "$HOOK_COUNT" -ne 4 ]]; then
+echo "Total hooks: $HOOK_COUNT (expected: 3 — 3 PreToolUse)"
+if [[ "$HOOK_COUNT" -ne 3 ]]; then
     echo "FAIL: Hook count mismatch"
     FAILED=1
 fi
 
 echo ""
 if [[ $FAILED -eq 0 ]]; then
-    echo "✓ All hooks verified OK — 3 PreToolUse safety hooks + 1 UserPromptSubmit quality hook"
+    echo "✓ All hooks verified OK — 3 PreToolUse safety hooks across 2 plugins"
 else
     echo "FAIL: HOOK VERIFICATION FAILED"
     exit 1

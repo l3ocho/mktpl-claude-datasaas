@@ -159,7 +159,7 @@ Evaluate using `skills/settings-optimization.md`:
 Before recommending auto-allow patterns, verify active review layers:
 
 1. Read `plugins/*/hooks/hooks.json` for each installed plugin
-2. Map hook types (PreToolUse, UserPromptSubmit) to tool matchers (Write, Edit, MultiEdit, Bash, MCP patterns)
+2. Map hook types (PreToolUse only — UserPromptSubmit removed in RFC-10) to tool matchers (Write, Edit, MultiEdit, Bash, MCP patterns)
 3. Confirm plugins are listed in `.claude-plugin/marketplace.json`
 4. Only recommend auto-allow for scopes covered by ≥2 verified review layers
 

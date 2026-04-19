@@ -66,7 +66,6 @@ If dispatch routing fails, use the direct plugin-prefixed format: `/<plugin-name
 | **doc-guardian** | `/doc changelog-gen` | | X | Generate changelog from conventional commits |
 | **doc-guardian** | `/doc coverage` | | X | Documentation coverage metrics by function/class |
 | **doc-guardian** | `/doc stale-docs` | | X | Flag documentation behind code changes |
-| **code-sentinel** | `/sentinel scan` | | X | Full security audit (SQL injection, XSS, secrets, etc.) |
 | **code-sentinel** | `/sentinel refactor` | | X | Apply refactoring patterns to improve code |
 | **code-sentinel** | `/sentinel refactor-dry` | | X | Preview refactoring without applying changes |
 | **code-sentinel** | *PreToolUse hook* | X | | Scans code before writing; blocks critical issues |
@@ -140,7 +139,6 @@ All commands were renamed in v9.0.0 to follow `/<noun> <action>` pattern. See [M
 |--------|------------|----------|
 | **code-sentinel** | PreToolUse (Write/Edit/MultiEdit) | Scans code before writing; blocks critical security issues |
 | **git-flow** | PreToolUse (Bash) | Validates branch naming and commit message conventions |
-| **clarity-assist** | UserPromptSubmit | Detects vague prompts and suggests clarification |
 
 ---
 
@@ -201,7 +199,7 @@ Reviewing a PR before merge:
 1. /pr summary                  # Quick overview of changes
 2. /pr review                   # Full multi-agent review
 3. /pr findings                 # Filter findings by severity
-4. /sentinel scan               # Deep security audit if needed
+4. /security-review             # Deep security audit if needed (built-in)
 ```
 
 ### Example 4: Documentation Maintenance
@@ -221,7 +219,7 @@ Safe refactoring with preview:
 
 ```
 1. /sentinel refactor-dry       # Preview opportunities
-2. /sentinel scan               # Baseline security check
+2. /security-review             # Baseline security check (built-in)
 3. /sentinel refactor           # Apply improvements
 4. /sprint test run             # Verify nothing broke
 5. /gitflow commit              # Commit with descriptive message

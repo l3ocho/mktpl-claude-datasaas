@@ -380,7 +380,6 @@ To verify which review layers are active, read these files:
 |------|-----------|--------------|---------|
 | `plugins/code-sentinel/hooks/hooks.json` | PreToolUse | Write\|Edit\|MultiEdit | Blocks hardcoded secrets |
 | `plugins/git-flow/hooks/hooks.json` | PreToolUse | Bash | Branch naming + commit format |
-| `plugins/clarity-assist/hooks/hooks.json` | UserPromptSubmit | (all prompts) | Vagueness detection |
 
 ### Verification Process
 
