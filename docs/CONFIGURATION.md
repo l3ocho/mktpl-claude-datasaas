@@ -381,6 +381,77 @@ PR_REVIEW_AUTO_SUBMIT=false
 
 ---
 
+## Design Contract (viz-platform v10.0.0)
+
+The design contract is a per-consumer-project JSON file that defines the surface hierarchy and component lock rules enforced by the viz-platform resolver.
+
+### File Location
+
+```
+<consumer-project-root>/.claude/design-contract.json
+```
+
+Generated automatically during `/viz setup` Phase 3. Edit directly or re-run setup to change.
+
+### Surface Hierarchy
+
+Four surface levels define where components are visually positioned:
+
+| Level | Components | Semantic meaning |
+|-------|-----------|-----------------|
+| `base` | AppShell, Container, Stack, Group | Page background |
+| `raised` | Card, Paper | Content elevated above base |
+| `overlay` | Modal, Drawer, Popover | Floating above page |
+| `nested_in_overlay` | Any component inside overlay | Nested inside Modal/Drawer |
+
+### Resolver Merge Rules
+
+Resolution priority (highest wins): `component_locks > surface tokens > requested_props`
+
+The resolver is called automatically by `validate_component` and all contract MCP tools.
+
+### Contract MCP Tools
+
+| Tool | Purpose |
+|------|---------|
+| `contract_load` | Load contract from consumer project |
+| `contract_validate` | Validate against JSON schema |
+| `contract_resolve_component` | Merge props with contract enforcement |
+| `contract_lock_component` | Freeze specific component props |
+| `contract_get_surface` | Get surface tokens for scheme+level |
+
+### Minimal Contract Example
+
+```json
+{
+  "schemes": {
+    "light": {
+      "surfaces": {
+        "base": { "bg": "white", "border": null, "variant": null },
+        "raised": { "bg": "white", "border": "gray.2", "variant": "outline" },
+        "overlay": { "bg": "gray.0", "border": null, "variant": null },
+        "nested_in_overlay": { "bg": "white", "border": null, "variant": null }
+      }
+    }
+  },
+  "component_locks": {},
+  "interaction": {
+    "hover_delta": -1,
+    "focus_ring": { "size": 2, "color_token": "primary.5" },
+    "disabled_opacity": 0.55,
+    "error_token": "red.6"
+  },
+  "density": "comfortable",
+  "meta": {
+    "version": "1.0.0",
+    "created_at": "2026-04-18T14:00:00Z",
+    "updated_at": "2026-04-18T14:00:00Z"
+  }
+}
+```
+
+---
+
 ## DMC Reference Generation
 
 `drawio-plugin` and `viz-platform` both consume DMC reference artifacts generated from
@@ -605,10 +676,7 @@ Agents specify their configuration in frontmatter using Claude Code's supported 
 | data-platform | data-advisor | sonnet | default | — | — |
 | data-platform | data-analysis | sonnet | plan | Write, Edit, MultiEdit | — |
 | data-platform | data-ingestion | haiku | acceptEdits | — | — |
-| viz-platform | design-reviewer | sonnet | plan | Write, Edit, MultiEdit | — |
 | viz-platform | layout-builder | sonnet | default | — | — |
-| viz-platform | component-check | haiku | plan | Write, Edit, MultiEdit | — |
-| viz-platform | theme-setup | haiku | acceptEdits | — | — |
 | contract-validator | full-validation | sonnet | default | — | — |
 | contract-validator | agent-check | haiku | plan | Write, Edit, MultiEdit | — |
 | code-sentinel | security-reviewer | sonnet | plan | Write, Edit, MultiEdit | — |

@@ -12,17 +12,11 @@ When invoked without a sub-command, display available actions and ask which to r
 
 | Action | Command to Invoke | Description |
 |--------|-------------------|-------------|
-| `theme` | `/viz-platform:viz-theme` | Apply existing theme to visualizations |
-| `theme-new` | `/viz-platform:viz-theme-new` | Create new custom theme with design tokens |
-| `theme-css` | `/viz-platform:viz-theme-css` | Export theme as CSS custom properties |
-| `component` | `/viz-platform:viz-component` | Inspect DMC component props and validation |
+| `theme` | `/viz-platform:viz-theme` | Apply, create, or export-css a theme |
 | `dashboard` | `/viz-platform:viz-dashboard` | Create dashboard layouts with filters and grids |
 | `chart` | `/viz-platform:viz-chart` | Create Plotly charts with theme integration |
 | `chart-export` | `/viz-platform:viz-chart-export` | Export charts to PNG, SVG, PDF via kaleido |
 | `breakpoints` | `/viz-platform:viz-breakpoints` | Configure responsive layout breakpoints |
-| `accessibility-check` | `/viz-platform:viz-accessibility-check` | Color blind validation (WCAG contrast ratios) |
-| `design-review` | `/viz-platform:viz-design-review` | Detailed design system audits |
-| `design-gate` | `/viz-platform:viz-design-gate` | Binary pass/fail design system validation |
 | `setup` | `/viz-platform:viz-setup` | Setup wizard for viz-platform MCP server |
 
 ## Routing

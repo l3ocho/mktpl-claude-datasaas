@@ -10,150 +10,46 @@
 | Themes | `theme_create`, `theme_extend`, `theme_validate`, `theme_export_css`, `theme_list`, `theme_activate` |
 | Pages | `page_create`, `page_add_navbar`, `page_set_auth` |
 | Accessibility | `accessibility_validate_colors`, `accessibility_validate_theme`, `accessibility_suggest_alternative` |
+| Design Contract | `contract_load`, `contract_validate`, `contract_resolve_component`, `contract_lock_component`, `contract_get_surface` |
 
-## DMC Validation Tools
+## Design Contract Tools
 
-### list_components
+| Tool | Purpose |
+|------|---------|
+| `contract_load` | Load `.claude/design-contract.json` from consumer project CWD |
+| `contract_validate` | Validate contract against JSON schema; returns errors list |
+| `contract_resolve_component` | Merge contract-enforced props with requested props; contract wins |
+| `contract_lock_component` | Write a component lock entry to the contract file |
+| `contract_get_surface` | Return surface spec (bg, border, variant) for a given scheme+level |
+
+## Quick Reference
+
 ```python
-list_components(category=None)  # All components
-list_components(category="inputs")  # Filter by category
-```
-
-### get_component_props
-```python
+# DMC
+list_components(category="inputs")
 get_component_props(component="Button")
-```
+validate_component(component="Button", props={"variant": "filled"})
 
-### validate_component
-```python
-validate_component(
-    component="Button",
-    props={"variant": "filled", "color": "blue"}
-)
-```
+# Charts
+chart_create(chart_type="line", data={}, options={})
+chart_export(figure={}, format="png", width=1200, height=800, scale=2)
 
-## Chart Tools
+# Layouts
+layout_create(name="my-dashboard", template="sidebar")
+layout_add_filter(layout_ref="my-dashboard", filter_type="dropdown", options={})
+layout_set_grid(layout_ref="my-dashboard", grid={"cols": 12, "spacing": "md"})
+layout_set_breakpoints(layout_ref="my-dashboard", breakpoints={})
 
-### chart_create
-```python
-chart_create(
-    chart_type="line",
-    data_ref="df_sales",
-    x="date",
-    y="revenue",
-    color=None,
-    title="Sales Over Time",
-    theme=None
-)
-```
-
-### chart_export
-```python
-chart_export(
-    figure=figure_json,
-    format="png",  # png, svg, pdf
-    width=1200,
-    height=800,
-    scale=2,
-    output_path=None
-)
-```
-
-## Layout Tools
-
-### layout_create
-```python
-layout_create(
-    name="my-dashboard",
-    template="sidebar"  # basic, sidebar, tabs, split
-)
-```
-
-### layout_add_filter
-```python
-layout_add_filter(
-    layout_ref="my-dashboard",
-    filter_type="dropdown",  # dropdown, date_range, slider, checkbox, search
-    options={}
-)
-```
-
-### layout_set_grid
-```python
-layout_set_grid(
-    layout_ref="my-dashboard",
-    cols=12,
-    spacing="md"
-)
-```
-
-### layout_set_breakpoints
-```python
-layout_set_breakpoints(
-    layout_ref="my-dashboard",
-    breakpoints={
-        "xs": {"cols": 1, "spacing": "xs"},
-        "sm": {"cols": 2, "spacing": "sm"},
-        "md": {"cols": 6, "spacing": "md"},
-        "lg": {"cols": 12, "spacing": "md"},
-        "xl": {"cols": 12, "spacing": "lg"}
-    },
-    mobile_first=True
-)
-```
-
-## Theme Tools
-
-### theme_create
-```python
-theme_create(
-    name="corporate",
-    primary_color="indigo",
-    color_scheme="light",
-    font_family="Inter, sans-serif",
-    heading_font_family=None,
-    border_radius="md",
-    spacing_scale=1.0,
-    colors=None
-)
-```
-
-### theme_extend
-```python
-theme_extend(
-    base_theme="dark",
-    name="dark-corporate",
-    overrides={"primary_color": "indigo"}
-)
-```
-
-### theme_validate
-```python
+# Themes
+theme_create(name="corporate", tokens={"primary_color": "indigo"})
+theme_extend(base_theme="dark", overrides={}, new_name="dark-corporate")
 theme_validate(theme_name="corporate")
-```
-
-### theme_export_css
-```python
 theme_export_css(theme_name="corporate")
-```
 
-### theme_activate
-```python
-theme_activate(theme_name="dark")
-```
-
-## Accessibility Tools
-
-### accessibility_validate_colors
-```python
-accessibility_validate_colors(
-    colors=["#228be6", "#40c057", "#fa5252"],
-    check_types=["deuteranopia", "protanopia", "tritanopia"],
-    min_contrast_ratio=4.5
-)
-```
-
-### accessibility_validate_theme
-```python
-accessibility_validate_theme(theme_name="corporate")
+# Design Contract
+contract_load(project_root="/path/to/project")
+contract_validate(contract_path="/path/to/.claude/design-contract.json")
+contract_resolve_component(component="Card", scheme="light", surface_context="raised", requested_props={})
+contract_lock_component(component="Modal", spec={"padding": "md"}, reference_file="app/pages/example.py", reference_line=42)
+contract_get_surface(scheme="light", level="raised")
 ```

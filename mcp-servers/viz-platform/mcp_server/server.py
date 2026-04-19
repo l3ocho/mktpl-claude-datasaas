@@ -1,12 +1,14 @@
 """
 MCP Server entry point for viz-platform integration.
 
-Provides Dash Mantine Components validation, charting, layout, theming, and page tools
-to Claude Code via JSON-RPC 2.0 over stdio.
+Provides Dash Mantine Components validation, charting, layout, theming, page tools,
+and design contract resolution to Claude Code via JSON-RPC 2.0 over stdio.
 """
 import asyncio
 import logging
 import json
+from datetime import datetime, timezone
+from pathlib import Path
 from mcp.server import Server
 from mcp.server.stdio import stdio_server
 from mcp.types import Tool, TextContent
@@ -18,6 +20,11 @@ from .layout_tools import LayoutTools
 from .theme_tools import ThemeTools
 from .page_tools import PageTools
 from .accessibility_tools import AccessibilityTools
+
+# Import resolver from parent package directory
+import sys as _sys
+_sys.path.insert(0, str(Path(__file__).parent.parent))
+from resolver import load_contract, DesignContract
 
 # Suppress noisy MCP validation warnings on stderr
 logging.basicConfig(level=logging.INFO)
@@ -120,7 +127,8 @@ class VizPlatformMCPServer:
                 description=(
                     "Validate component props before use. "
                     "Checks for invalid props, type mismatches, and common mistakes. "
-                    "Returns errors and warnings with suggestions for fixes."
+                    "Returns errors and warnings with suggestions for fixes. "
+                    "If a design contract is active, contract-enforced props are merged before validation."
                 ),
                 inputSchema={
                     "type": "object",
@@ -132,6 +140,16 @@ class VizPlatformMCPServer:
                         "props": {
                             "type": "object",
                             "description": "Props object to validate"
+                        },
+                        "surface_context": {
+                            "type": "string",
+                            "enum": ["base", "raised", "overlay", "nested_in_overlay"],
+                            "description": "Optional surface context for contract resolution"
+                        },
+                        "scheme": {
+                            "type": "string",
+                            "enum": ["light", "dark"],
+                            "description": "Active color scheme for contract resolution (default: light)"
                         }
                     },
                     "required": ["component", "props"]
@@ -594,6 +612,144 @@ class VizPlatformMCPServer:
                 }
             ))
 
+            # Design contract tools (RFC-09)
+            tools.append(Tool(
+                name="contract_load",
+                description=(
+                    "Load the design contract from the consumer project. "
+                    "Reads `.claude/design-contract.json` from the given project root. "
+                    "Returns the contract data or an empty object if no contract exists."
+                ),
+                inputSchema={
+                    "type": "object",
+                    "properties": {
+                        "project_root": {
+                            "type": "string",
+                            "description": "Absolute path to the consumer project root (defaults to CWD)"
+                        }
+                    },
+                    "required": []
+                }
+            ))
+
+            tools.append(Tool(
+                name="contract_validate",
+                description=(
+                    "Validate a design contract against the JSON schema. "
+                    "Returns a list of validation errors (empty list means valid)."
+                ),
+                inputSchema={
+                    "type": "object",
+                    "properties": {
+                        "project_root": {
+                            "type": "string",
+                            "description": "Absolute path to the consumer project root (defaults to CWD)"
+                        }
+                    },
+                    "required": []
+                }
+            ))
+
+            tools.append(Tool(
+                name="contract_resolve_component",
+                description=(
+                    "Resolve component props against the active design contract. "
+                    "Contract-enforced props override requested props. "
+                    "Returns the merged props object."
+                ),
+                inputSchema={
+                    "type": "object",
+                    "properties": {
+                        "component": {
+                            "type": "string",
+                            "description": "DMC component name (e.g., 'Card', 'Modal')"
+                        },
+                        "scheme": {
+                            "type": "string",
+                            "enum": ["light", "dark"],
+                            "description": "Active color scheme (default: light)"
+                        },
+                        "surface_context": {
+                            "type": "string",
+                            "enum": ["base", "raised", "overlay", "nested_in_overlay"],
+                            "description": "Override inferred surface level"
+                        },
+                        "requested_props": {
+                            "type": "object",
+                            "description": "Props the caller wants to set (may be overridden by contract)"
+                        },
+                        "project_root": {
+                            "type": "string",
+                            "description": "Absolute path to the consumer project root (defaults to CWD)"
+                        }
+                    },
+                    "required": ["component"]
+                }
+            ))
+
+            tools.append(Tool(
+                name="contract_lock_component",
+                description=(
+                    "Lock a component's props in the design contract. "
+                    "Lock entries override surface-derived props for the named component. "
+                    "Use to preserve intentional design decisions across code changes."
+                ),
+                inputSchema={
+                    "type": "object",
+                    "properties": {
+                        "component": {
+                            "type": "string",
+                            "description": "DMC component name to lock"
+                        },
+                        "spec": {
+                            "type": "object",
+                            "description": "Props to lock (these always win in resolution)"
+                        },
+                        "reference_file": {
+                            "type": "string",
+                            "description": "Source file where the canonical usage lives"
+                        },
+                        "reference_line": {
+                            "type": "integer",
+                            "description": "Line number of the canonical usage"
+                        },
+                        "project_root": {
+                            "type": "string",
+                            "description": "Absolute path to the consumer project root (defaults to CWD)"
+                        }
+                    },
+                    "required": ["component", "spec", "reference_file", "reference_line"]
+                }
+            ))
+
+            tools.append(Tool(
+                name="contract_get_surface",
+                description=(
+                    "Get the surface specification for a scheme and level. "
+                    "Returns bg, border, and variant tokens for the requested surface."
+                ),
+                inputSchema={
+                    "type": "object",
+                    "properties": {
+                        "scheme": {
+                            "type": "string",
+                            "enum": ["light", "dark"],
+                            "description": "Color scheme"
+                        },
+                        "level": {
+                            "type": "string",
+                            "enum": ["base", "raised", "overlay", "nested_in_overlay"],
+                            "description": "Surface level"
+                        },
+                        "project_root": {
+                            "type": "string",
+                            "description": "Absolute path to the consumer project root (defaults to CWD)"
+                        }
+                    },
+                    "required": ["scheme", "level"]
+                }
+            ))
+
             return tools
 
         @self.server.call_tool()
@@ -631,6 +787,20 @@ class VizPlatformMCPServer:
                             type="text",
                             text=json.dumps({"error": "component is required"}, indent=2)
                         )]
+                    # Apply contract resolution if contract is active
+                    surface_context = arguments.get('surface_context')
+                    scheme = arguments.get('scheme', 'light')
+                    try:
+                        contract = load_contract(Path.cwd())
+                        if contract.is_active():
+                            props = contract.resolve_component(
+                                component_name=component,
+                                scheme=scheme,
+                                surface_context=surface_context,
+                                requested_props=props
+                            )
+                    except Exception:
+                        pass  # Contract resolution failure is non-fatal
                     result = await self.dmc_tools.validate_component(component, props)
                     return [TextContent(
                         type="text",
@@ -894,6 +1064,120 @@ class VizPlatformMCPServer:
                     return [TextContent(
                         type="text",
                         text=json.dumps(result, indent=2)
+                    )]
+
+                # Design contract tools (RFC-09)
+                elif name == "contract_load":
+                    project_root = Path(arguments.get('project_root') or Path.cwd())
+                    contract = load_contract(Path(project_root))
+                    return [TextContent(
+                        type="text",
+                        text=json.dumps({
+                            "active": contract.is_active(),
+                            "contract": contract.data,
+                            "path": str(contract.path)
+                        }, indent=2)
+                    )]
+
+                elif name == "contract_validate":
+                    try:
+                        import jsonschema
+                    except ImportError:
+                        return [TextContent(
+                            type="text",
+                            text=json.dumps({"error": "jsonschema package not installed. Run: pip install jsonschema"}, indent=2)
+                        )]
+                    project_root = Path(arguments.get('project_root') or Path.cwd())
+                    contract = load_contract(project_root)
+                    if not contract.is_active():
+                        return [TextContent(
+                            type="text",
+                            text=json.dumps({"valid": False, "errors": ["No contract found at " + str(contract.path)]}, indent=2)
+                        )]
+                    schema_path = Path(__file__).parent.parent / "schemas" / "design-contract.schema.json"
+                    schema = json.loads(schema_path.read_text())
+                    errors = []
+                    try:
+                        jsonschema.validate(instance=contract.data, schema=schema)
+                    except jsonschema.ValidationError as e:
+                        errors.append(e.message)
+                    except jsonschema.SchemaError as e:
+                        errors.append(f"Schema error: {e.message}")
+                    return [TextContent(
+                        type="text",
+                        text=json.dumps({"valid": len(errors) == 0, "errors": errors}, indent=2)
+                    )]
+
+                elif name == "contract_resolve_component":
+                    component = arguments.get('component')
+                    if not component:
+                        return [TextContent(
+                            type="text",
+                            text=json.dumps({"error": "component is required"}, indent=2)
+                        )]
+                    project_root = Path(arguments.get('project_root') or Path.cwd())
+                    contract = load_contract(project_root)
+                    resolved = contract.resolve_component(
+                        component_name=component,
+                        scheme=arguments.get('scheme', 'light'),
+                        surface_context=arguments.get('surface_context'),
+                        requested_props=arguments.get('requested_props', {})
+                    )
+                    return [TextContent(
+                        type="text",
+                        text=json.dumps({
+                            "component": component,
+                            "resolved_props": resolved,
+                            "contract_active": contract.is_active()
+                        }, indent=2)
+                    )]
+
+                elif name == "contract_lock_component":
+                    component = arguments.get('component')
+                    spec = arguments.get('spec', {})
+                    reference_file = arguments.get('reference_file')
+                    reference_line = arguments.get('reference_line')
+                    if not component or not reference_file or reference_line is None:
+                        return [TextContent(
+                            type="text",
+                            text=json.dumps({"error": "component, reference_file, and reference_line are required"}, indent=2)
+                        )]
+                    project_root = Path(arguments.get('project_root') or Path.cwd())
+                    contract = load_contract(project_root)
+                    contract.lock_component(
+                        component_name=component,
+                        spec=spec,
+                        reference_file=reference_file,
+                        reference_line=reference_line
+                    )
+                    return [TextContent(
+                        type="text",
+                        text=json.dumps({
+                            "locked": True,
+                            "component": component,
+                            "spec": spec
+                        }, indent=2)
+                    )]
+
+                elif name == "contract_get_surface":
+                    scheme = arguments.get('scheme')
+                    level = arguments.get('level')
+                    if not scheme or not level:
+                        return [TextContent(
+                            type="text",
+                            text=json.dumps({"error": "scheme and level are required"}, indent=2)
+                        )]
+                    project_root = Path(arguments.get('project_root') or Path.cwd())
+                    contract = load_contract(project_root)
+                    surface = contract.resolve_surface(scheme, level)
+                    return [TextContent(
+                        type="text",
+                        text=json.dumps({
+                            "scheme": scheme,
+                            "level": level,
+                            "surface": surface,
+                            "contract_active": contract.is_active()
+                        }, indent=2)
                     )]
 
                 raise ValueError(f"Unknown tool: {name}")
