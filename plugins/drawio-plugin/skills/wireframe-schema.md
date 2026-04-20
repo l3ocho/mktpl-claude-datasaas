@@ -5,19 +5,19 @@
 Load this skill when:
 - Running `/drawio parse` — defines the output format to write
 - Reviewing a `WIREFRAME.md` file — defines what the fields mean
-- Passing wireframe context to viz-platform — defines the contract
+- Passing wireframe context to dmc-design — defines the contract
 
 ---
 
 ## Overview
 
-`WIREFRAME.md` is the contract between `drawio-plugin` (producer) and `viz-platform` (consumer).
+`WIREFRAME.md` is the contract between `drawio-plugin` (producer) and `dmc-design` (consumer).
 It is a human-readable, Claude-readable spec that captures the component hierarchy and
 implementation notes from a `.drawio` wireframe file.
 
 **Output location:** Same directory as the source `.drawio` file.
 **Conventional location for app projects:** `docs/design/WIREFRAME.md`
-**Consumer:** viz-platform uses this as the upstream input for DMC scaffolding.
+**Consumer:** dmc-design uses this as the upstream input for DMC scaffolding.
 
 ---
 

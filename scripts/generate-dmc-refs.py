@@ -5,7 +5,7 @@ Generate DMC reference artifacts from llms.json.
 Reads DMC_LLMS_JSON_URL from a consumer project's .env, fetches llms.json,
 filters components based on .claude/dmc-components.json, and outputs:
   - plugins/drawio-plugin/references/dmc/dmc-{domain}.txt
-  - mcp-servers/viz-platform/registry/dmc_{major}_{minor}.json
+  - mcp-servers/dmc-design/registry/dmc_{major}_{minor}.json
 
 Output filenames are derived dynamically from DOMAIN_CATEGORY_MAP keys —
 no fixed filename list. Adding a new entry to DOMAIN_CATEGORY_MAP automatically
@@ -45,7 +45,7 @@ except ImportError:
 MARKETPLACE_ROOT = Path(__file__).parent.parent
 
 DMC_TXT_OUTPUT_DIR = MARKETPLACE_ROOT / "plugins" / "drawio-plugin" / "references" / "dmc"
-REGISTRY_OUTPUT_DIR = MARKETPLACE_ROOT / "mcp-servers" / "viz-platform" / "registry"
+REGISTRY_OUTPUT_DIR = MARKETPLACE_ROOT / "mcp-servers" / "dmc-design" / "registry"
 
 # Map domain file name (without .txt) → list of llms.json category values to include.
 # IMPORTANT: Filenames are derived dynamically from these keys. To add a new domain file,
@@ -207,7 +207,7 @@ def build_registry(
     timestamp: str,
 ) -> dict[str, Any]:
     """
-    Build a component_registry JSON matching mcp-servers/viz-platform/registry format:
+    Build a component_registry JSON matching mcp-servers/dmc-design/registry format:
       {version, generated, categories: {cat: [names]}, components: {name: {description, props}}}
     """
     categories: dict[str, list[str]] = {}
@@ -452,7 +452,7 @@ def main() -> None:
     )
 
     print()
-    print("Writing viz-platform component registry:")
+    print("Writing dmc-design component registry:")
 
     # 6. Build and write registry JSON
     registry = build_registry(matched, version, url, timestamp)

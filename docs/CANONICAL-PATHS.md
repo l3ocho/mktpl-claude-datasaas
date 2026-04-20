@@ -58,20 +58,19 @@ mktpl-claude-datasaas/
 │   │   ├── tests/
 │   │   ├── requirements.txt
 │   │   └── .venv/
-│   └── viz-platform/           # Visualization MCP (NEW v4.1.0)
+│   └── dmc-design/             # DMC Design System MCP (NEW v11.0.0)
 │       ├── mcp_server/
 │       │   ├── server.py
 │       │   ├── config.py
 │       │   ├── component_registry.py
 │       │   ├── dmc_tools.py
-│       │   ├── chart_tools.py
-│       │   ├── layout_tools.py
 │       │   ├── theme_tools.py
 │       │   ├── theme_store.py
-│       │   └── page_tools.py
-│       ├── resolver.py         # Design contract resolver (NEW v10.0.0)
+│       │   └── accessibility_tools.py
+│       ├── resolver.py         # Design contract resolver
 │       ├── schemas/
-│       │   └── design-contract.schema.json  # JSON Schema draft-07 (NEW v10.0.0)
+│       │   ├── design-contract.schema.json  # JSON Schema draft-07
+│       │   └── design-patterns.schema.json  # NEW v11.0.0
 │       ├── registry/           # DMC component JSON registries
 │       ├── tests/              # unit tests
 │       ├── requirements.txt
@@ -136,29 +135,65 @@ mktpl-claude-datasaas/
 │   │   │   ├── setup-workflow.md
 │   │   │   ├── visual-header.md
 │   │   │   ├── data-exploration-workflow.md
-│   │   │   └── notebook-authoring.md
+│   │   │   ├── notebook-authoring.md
+│   │   │   ├── analytical-chart-selection.md   # Migrated from viz-platform v11.0.0
+│   │   │   ├── notebook-design-system.md       # Migrated from viz-platform v11.0.0
+│   │   │   └── choropleth-map-patterns.md      # Migrated from viz-platform v11.0.0
 │   │   └── claude-md-integration.md
 │   ├── contract-validator/
 │   │   ├── .claude-plugin/
 │   │   ├── commands/
 │   │   ├── agents/
 │   │   └── claude-md-integration.md
-│   ├── viz-platform/
+│   ├── dmc-design/             # DMC design system (v11.0.0)
 │   │   ├── .claude-plugin/
+│   │   │   ├── plugin.json
+│   │   │   └── metadata.json
 │   │   ├── commands/
+│   │   │   ├── design.md               # Router
+│   │   │   ├── design-setup.md
+│   │   │   ├── design-theme.md
+│   │   │   ├── design-pattern.md       # NEW v11.0.0
+│   │   │   ├── design-component.md
+│   │   │   └── design-accessibility.md
 │   │   ├── agents/
+│   │   │   └── design-reviewer.md
 │   │   ├── skills/
 │   │   │   ├── accessibility-rules.md
-│   │   │   ├── analytical-chart-selection.md
-│   │   │   ├── chart-types.md
-│   │   │   ├── choropleth-map-patterns.md
 │   │   │   ├── color-scheme-validation.md
 │   │   │   ├── dmc-components.md
-│   │   │   ├── layout-templates.md
 │   │   │   ├── mcp-tools-reference.md
-│   │   │   ├── notebook-design-system.md
-│   │   │   ├── responsive-design.md
-│   │   │   └── theming-system.md   # Rewritten v10.0.0 — surface contract spec
+│   │   │   ├── pattern-enforcement.md  # NEW v11.0.0
+│   │   │   └── theming-system.md
+│   │   ├── README.md
+│   │   └── claude-md-integration.md
+│   ├── dash-scaffold/          # Dash scaffolding (v11.0.0)
+│   │   ├── .claude-plugin/
+│   │   │   ├── plugin.json
+│   │   │   └── metadata.json
+│   │   ├── commands/
+│   │   │   ├── dash.md                 # Router
+│   │   │   ├── dash-dashboard.md
+│   │   │   ├── dash-page.md            # NEW v11.0.0
+│   │   │   └── dash-breakpoints.md
+│   │   ├── agents/
+│   │   │   └── layout-builder.md
+│   │   ├── skills/
+│   │   │   ├── layout-templates.md
+│   │   │   └── responsive-design.md
+│   │   ├── README.md
+│   │   └── claude-md-integration.md
+│   ├── plotly-charts/          # Plotly chart scaffolding (v11.0.0)
+│   │   ├── .claude-plugin/
+│   │   │   ├── plugin.json
+│   │   │   └── metadata.json
+│   │   ├── commands/
+│   │   │   ├── chart.md                # Router
+│   │   │   ├── chart-create.md
+│   │   │   └── chart-export.md
+│   │   ├── skills/
+│   │   │   └── chart-types.md
+│   │   ├── README.md
 │   │   └── claude-md-integration.md
 │   ├── drawio-plugin/              # Wireframe design tools (data domain)
 │   │   ├── .claude-plugin/
@@ -340,14 +375,15 @@ fi
 
 **See lesson learned:** [Startup Hooks Must Check Venv Cache Path First](https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas/wiki/lessons/patterns/startup-hooks-must-check-venv-cache-path-first)
 
-### Consumer Project Paths (Written by viz-platform)
+### Consumer Project Paths (Written by dmc-design)
 
-These paths are written to consumer projects (not this repo) by viz-platform commands:
+These paths are written to consumer projects (not this repo) by dmc-design commands:
 
 | Path | Written By | Purpose |
 |------|-----------|---------|
-| `.claude/design-contract.json` | `/viz setup` Phase 3 | Per-project surface hierarchy contract |
-| `.claude/dmc-components.json` | `/viz setup` | DMC component selection for registry generation |
+| `.claude/design-contract.json` | `/design setup` Phase 3 | Per-project surface hierarchy contract |
+| `.claude/dmc-components.json` | `/design setup` | DMC component selection for registry generation |
+| `.claude/design-patterns.json` | `/design pattern lock\|scan` | User-declared design patterns (NEW v11.0.0) |
 
 ---
 
@@ -426,7 +462,7 @@ All MCP servers are defined in `.mcp.json` at repository root:
   "mcpServers": {
     "gitea": { "command": ".../mcp-servers/gitea/run.sh" },
     "data-platform": { "command": ".../mcp-servers/data-platform/run.sh" },
-    "viz-platform": { "command": ".../mcp-servers/viz-platform/run.sh" },
+    "dmc-design": { "command": ".../mcp-servers/dmc-design/run.sh" },
     "contract-validator": { "command": ".../mcp-servers/contract-validator/run.sh" }
   }
 }
@@ -449,7 +485,7 @@ Domain metadata is stored in `metadata.json` (v9.1.2+, moved from plugin.json/ma
 | Domain | Purpose | Existing Plugins |
 |--------|---------|-----------------|
 | `core` | Development workflow plugins | projman, git-flow, pr-review, code-sentinel, doc-guardian, clarity-assist, contract-validator, claude-config-maintainer, project-hygiene |
-| `data` | Data engineering and visualization | data-platform, viz-platform, drawio-plugin, data-seed |
+| `data` | Data engineering and visualization | data-platform, dmc-design, dash-scaffold, plotly-charts, drawio-plugin, data-seed |
 | `ops` | Operations and infrastructure | ops-release-manager, ops-deploy-pipeline |
 | `saas` | SaaS application development | saas-api-platform, saas-db-migrate, saas-react-platform, saas-test-pilot |
 | `debug` | Debugging and diagnostics | debug-mcp |
@@ -481,7 +517,8 @@ done | sort | uniq -c | sort -rn
 
 | Date | Change | By |
 |------|--------|-----|
-| 2026-04-06 | Sprint 11: dynamic DMC loading — drawio-plugin v1.2.0, viz-platform v9.3.0; no path changes (dynamic discovery via glob, no new canonical paths) | Claude Code |
+| 2026-04-19 | v11.0.0: viz-platform split into dmc-design, dash-scaffold, plotly-charts; 3 skills migrated to data-platform; design-patterns.schema.json added | Claude Code |
+| 2026-04-06 | Sprint 11: dynamic DMC loading — drawio-plugin v1.2.0; no path changes (dynamic discovery via glob, no new canonical paths) | Claude Code |
 | 2026-04-06 | Added generate-dmc-refs.py to scripts/; added references/dmc/README.md; marked references/dmc/ as AUTO-GENERATED | Claude Code |
 | 2026-03-31 | v9.2.0: Added drawio-plugin paths (commands, skills, references/dmc/); added references/ pattern to Plugin Paths table; updated data domain list | Claude Code |
 | 2026-02-07 | v9.1.2: Moved domain field from plugin.json/marketplace.json to metadata.json for Claude Code schema compliance | Claude Code |
