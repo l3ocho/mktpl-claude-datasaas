@@ -44,7 +44,7 @@ If Python < 3.10, stop and ask user to install.
    ```bash
    cd "$MKTPLACE_DIR" && ./scripts/setup-venvs.sh
    ```
-   This handles all 4 MCP servers (gitea, data-platform, viz-platform, contract-validator):
+   This handles all 4 MCP servers (gitea, data-platform, dmc-design, contract-validator):
    - Creates venvs in `~/.cache/claude-mcp-venvs/mktpl-claude-datasaas/{server}/.venv/`
    - Installs requirements and editable packages
    - Creates symlinks back to `mcp-servers/{server}/.venv`

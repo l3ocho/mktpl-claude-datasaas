@@ -371,7 +371,7 @@ PR_REVIEW_AUTO_SUBMIT=false
 | **git-flow** | git-flow.env (optional) | .env (optional) | None needed |
 | **clarity-assist** | None | None | None needed |
 | **data-platform** | postgres.env | .env (optional) | `/data setup` |
-| **viz-platform** | None | .env (DMC_LLMS_JSON_URL) | `/viz setup` |
+| **dmc-design** | None | .env (DMC_LLMS_JSON_URL) | `/design setup` |
 | **drawio-plugin** | None | .env (DMC_LLMS_JSON_URL) + .claude/dmc-components.json | None needed |
 | **doc-guardian** | None | None | None needed |
 | **code-sentinel** | None | None | None needed |
@@ -381,9 +381,9 @@ PR_REVIEW_AUTO_SUBMIT=false
 
 ---
 
-## Design Contract (viz-platform v10.0.0)
+## Design Contract (dmc-design v1.0.0)
 
-The design contract is a per-consumer-project JSON file that defines the surface hierarchy and component lock rules enforced by the viz-platform resolver.
+The design contract is a per-consumer-project JSON file that defines the surface hierarchy and component lock rules enforced by the dmc-design resolver.
 
 ### File Location
 
@@ -391,7 +391,7 @@ The design contract is a per-consumer-project JSON file that defines the surface
 <consumer-project-root>/.claude/design-contract.json
 ```
 
-Generated automatically during `/viz setup` Phase 3. Edit directly or re-run setup to change.
+Generated automatically during `/design setup` Phase 3. Edit directly or re-run setup to change.
 
 ### Surface Hierarchy
 
@@ -454,7 +454,7 @@ The resolver is called automatically by `validate_component` and all contract MC
 
 ## DMC Reference Generation
 
-`drawio-plugin` and `viz-platform` both consume DMC reference artifacts generated from
+`drawio-plugin` and `dmc-design` both consume DMC reference artifacts generated from
 a `llms.json` file published by the Dash Mantine Components project.
 
 ### Consumer Project Setup
@@ -469,7 +469,7 @@ DMC_LLMS_JSON_URL=https://www.dash-mantine-components.com/assets/llms.json
 Point this URL at the `llms.json` matching the DMC version installed in the project's
 `.venv`. If you pin an older DMC version, use a versioned snapshot or local copy.
 
-`/viz setup` will ask for this URL during onboarding and write it to `.env` automatically.
+`/design setup` will ask for this URL during onboarding and write it to `.env` automatically.
 
 **Step 2 — Declare component scope in `.claude/dmc-components.json`:**
 
@@ -506,7 +506,7 @@ python scripts/generate-dmc-refs.py --project /path/to/consumer-project --verbos
 | Artifact | Location | Consumed By |
 |---|---|---|
 | Domain txt files | `plugins/drawio-plugin/references/dmc/dmc-*.txt` | drawio-plugin (`/drawio parse`, `/drawio generate`) |
-| Component registry | `mcp-servers/viz-platform/registry/dmc_X_Y.json` | viz-platform MCP tools |
+| Component registry | `mcp-servers/dmc-design/registry/dmc_X_Y.json` | dmc-design MCP tools |
 
 Both outputs are auto-generated. Do not edit them manually.
 
@@ -553,7 +553,7 @@ cd /path/to/mktpl-claude-datasaas
 ./scripts/install-plugin.sh data-platform ~/projects/personal-portfolio
 
 # Install multiple plugins
-./scripts/install-plugin.sh viz-platform ~/projects/personal-portfolio
+./scripts/install-plugin.sh dmc-design ~/projects/personal-portfolio
 ./scripts/install-plugin.sh projman ~/projects/personal-portfolio
 ```
 
@@ -587,7 +587,7 @@ Shows which marketplace plugins are installed, partially installed, or available
   PLUGIN                   VERSION    PROFILE    DESCRIPTION
   ------                   -------    -------    -----------
   data-platform            1.3.0      readonly   pandas, PostgreSQL, and dbt integration...
-  viz-platform             1.1.0      default    DMC validation, Plotly charts, and theming...
+  dmc-design               1.0.0      default    DMC design system, validation, themes, CSS patterns...
 
 ○ Available (not installed):
   projman                  3.4.0      Sprint planning and project management...
@@ -628,7 +628,7 @@ Not all plugins have MCP servers. The install script handles this automatically:
 | Plugin | Has MCP Server | Notes |
 |--------|---------------|-------|
 | data-platform | ✓ | pandas, PostgreSQL, dbt tools |
-| viz-platform | ✓ | DMC validation, chart, theme tools |
+| dmc-design | ✓ | DMC validation, design contract, theme tools |
 | contract-validator | ✓ | Plugin compatibility validation |
 | projman | ✓ (via gitea) | Issue, wiki, PR tools |
 | pr-review | ✓ (via gitea) | PR review tools |
@@ -676,7 +676,8 @@ Agents specify their configuration in frontmatter using Claude Code's supported 
 | data-platform | data-advisor | sonnet | default | — | — |
 | data-platform | data-analysis | sonnet | plan | Write, Edit, MultiEdit | — |
 | data-platform | data-ingestion | haiku | acceptEdits | — | — |
-| viz-platform | layout-builder | sonnet | default | — | — |
+| dmc-design | design-reviewer | sonnet | plan | Write, Edit, MultiEdit | frontmatter (5) |
+| dash-scaffold | layout-builder | sonnet | default | — | — |
 | contract-validator | full-validation | sonnet | default | — | — |
 | contract-validator | agent-check | haiku | plan | Write, Edit, MultiEdit | — |
 | code-sentinel | refactor-advisor | sonnet | acceptEdits | — | — |

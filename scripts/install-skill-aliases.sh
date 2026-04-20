@@ -18,7 +18,7 @@ for skill in doc sprint pr sentinel cv data viz api db-migrate react test seed r
         sentinel) plugin="code-sentinel" ;;
         cv) plugin="contract-validator" ;;
         data) plugin="data-platform" ;;
-        viz) plugin="viz-platform" ;;
+        viz|design) plugin="dmc-design" ;;
         api) plugin="saas-api-platform" ;;
         db-migrate) plugin="saas-db-migrate" ;;
         react) plugin="saas-react-platform" ;;

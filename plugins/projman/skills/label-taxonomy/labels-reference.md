@@ -108,7 +108,7 @@ Cross-plugin integration labels for domain-specific validation gates.
 
 | Label | Color | Description |
 |-------|-------|-------------|
-| `Domain/Viz` | `#7c4dff` | Issue involves visualization/frontend — triggers viz-platform design gates |
+| `Domain/Viz` | `#7c4dff` | Issue involves visualization/frontend — triggers dmc-design design gates |
 | `Domain/Data` | `#00bfa5` | Issue involves data engineering — triggers data-platform data gates |
 
 **Detection Rules:**

@@ -6,6 +6,70 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+## [11.0.0] - 2026-04-19
+
+### BREAKING CHANGES
+
+#### viz-platform Split into Three Focused Plugins
+
+viz-platform (v10.0.0) replaced with:
+- dmc-design v1.0.0 — DMC validation, themes, CSS patterns, design contract, pattern enforcement
+- dash-scaffold v1.0.0 — Dash application scaffolding
+- plotly-charts v1.0.0 — Plotly chart scaffolding
+
+All `/viz *` commands removed. See `docs/MIGRATION-v11.md`.
+
+### Added
+
+#### dmc-design — /design pattern Command Group
+
+- `/design pattern scan` — extract current patterns from CSS + Python
+- `/design pattern lock "<rule>"` — declare pattern
+- `/design pattern check` — verify locked patterns
+- `/design pattern list` — show patterns
+- `/design pattern unlock <id>` — remove pattern
+
+Patterns persist in `.claude/design-patterns.json`. Closes the gap from RFC-0006
+where `color-scheme-validation.md` became orphaned in v10.0.0.
+
+#### dmc-design — design-reviewer Agent Resurrected
+
+Resurrected from viz-platform v9.4.0. Audits Python + CSS against locked patterns
+and design contract.
+
+#### docs/MIGRATION-v11.md
+
+Migration guide for v10.x → v11.0.0 including command mapping and consumer project steps.
+
+### Changed
+
+#### data-platform — Three Notebook Skills Migrated In
+
+Skills used by `data-analysis` agent, previously in viz-platform/skills/, moved to
+data-platform/skills/:
+- `analytical-chart-selection.md`
+- `notebook-design-system.md`
+- `choropleth-map-patterns.md`
+
+`data-analysis.md` agent updated to reference skills from new location.
+
+#### drawio-plugin — v1.2.0 → v1.3.0
+
+String-level updates for viz-platform → dmc-design references.
+
+#### scripts/generate-dmc-refs.py
+
+Registry output path: `mcp-servers/viz-platform/registry/` → `mcp-servers/dmc-design/registry/`.
+
+### Removed
+
+#### viz-platform v10.0.0
+
+Plugin and MCP server deleted entirely. All content migrated to dmc-design, dash-scaffold,
+plotly-charts, and data-platform.
+
+---
+
 ### Removed
 
 #### `code-sentinel` v9.0.1 → v10.0.0 — BREAKING CHANGES (RFC-10: Native-Overlap Cleanup)

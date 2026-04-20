@@ -38,7 +38,7 @@ cd ~/.claude/plugins/marketplaces/mktpl-claude-datasaas && ./scripts/setup.sh
 
 ## What the Post-Update Script Does
 
-1. **Updates Python dependencies** for all 4 MCP servers (gitea, data-platform, viz-platform, contract-validator)
+1. **Updates Python dependencies** for all 4 MCP servers (gitea, data-platform, dmc-design, contract-validator)
 2. **Shows recent changelog entries** so you know what changed
 3. **Validates your configuration** is still compatible
 
@@ -159,7 +159,7 @@ If that doesn't work:
 1. Check Python version: `python3 --version` (requires 3.10+)
 2. Verify venvs exist in INSTALLED location:
    ```bash
-   for server in gitea data-platform viz-platform contract-validator; do
+   for server in gitea data-platform dmc-design contract-validator; do
      ls ~/.claude/plugins/marketplaces/mktpl-claude-datasaas/mcp-servers/$server/.venv && echo "$server: OK" || echo "$server: MISSING"
    done
    ```

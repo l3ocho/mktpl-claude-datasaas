@@ -92,14 +92,22 @@ If dispatch routing fails, use the direct plugin-prefixed format: `/<plugin-name
 | **data-platform** | `/data review` | | X | Comprehensive data integrity audits |
 | **data-platform** | `/data gate` | | X | Binary pass/fail data integrity gates |
 | **data-platform** | `/data setup` | | X | Setup wizard for data-platform MCP servers |
-| **viz-platform** | `/viz setup` | | X | Setup wizard — environment + design contract builder |
-| **viz-platform** | `/viz chart` | | X | Create Plotly charts with theme integration |
-| **viz-platform** | `/viz chart-export` | | X | Export charts to PNG, SVG, PDF via kaleido |
-| **viz-platform** | `/viz dashboard` | | X | Create dashboard layouts with filters and grids |
-| **viz-platform** | `/viz theme apply` | | X | Activate an existing theme |
-| **viz-platform** | `/viz theme create` | | X | Create new custom theme with design tokens |
-| **viz-platform** | `/viz theme export-css` | | X | Export theme as CSS custom properties |
-| **viz-platform** | `/viz breakpoints` | | X | Configure responsive layout breakpoints |
+| **dmc-design** | `/design setup` | | X | Setup wizard — environment + design contract builder |
+| **dmc-design** | `/design theme apply` | | X | Activate an existing theme |
+| **dmc-design** | `/design theme create` | | X | Create new custom theme with design tokens |
+| **dmc-design** | `/design theme export-css` | | X | Export theme as CSS custom properties |
+| **dmc-design** | `/design pattern scan` | | X | Extract current patterns from CSS + Python |
+| **dmc-design** | `/design pattern lock` | | X | Declare a new design rule |
+| **dmc-design** | `/design pattern check` | | X | Verify all locked patterns hold |
+| **dmc-design** | `/design pattern list` | | X | Show all declared patterns |
+| **dmc-design** | `/design pattern unlock` | | X | Remove a declared pattern |
+| **dmc-design** | `/design component <n>` | | X | Validate DMC component usage |
+| **dmc-design** | `/design accessibility` | | X | WCAG contrast audit |
+| **dash-scaffold** | `/dash dashboard` | | X | Create dashboard layouts with filters and grids |
+| **dash-scaffold** | `/dash page <n>` | | X | Create a new Dash page |
+| **dash-scaffold** | `/dash breakpoints` | | X | Configure responsive layout breakpoints |
+| **plotly-charts** | `/chart create <type>` | | X | Create Plotly charts with theme integration |
+| **plotly-charts** | `/chart export <format>` | | X | Export charts to PNG, SVG, PDF via kaleido |
 | **drawio-plugin** | `/drawio parse` | | X | Parse .drawio XML → WIREFRAME.md spec + DMC domain file declarations |
 | **drawio-plugin** | `/drawio generate` | | X | Generate .drawio XML from UI description following DMC layer conventions |
 | **contract-validator** | `/cv validate` | | X | Full marketplace compatibility validation |
@@ -121,13 +129,13 @@ All commands were renamed in v9.0.0 to follow `/<noun> <action>` pattern. See [M
 
 | Category | Plugins | Primary Use |
 |----------|---------|-------------|
-| **Setup** | projman, pr-review, data-platform, viz-platform, contract-validator | `/projman setup`, `/pr setup`, `/data setup`, `/viz setup`, `/cv setup` |
+| **Setup** | projman, pr-review, data-platform, dmc-design, contract-validator | `/projman setup`, `/pr setup`, `/data setup`, `/design setup`, `/cv setup` |
 | **Task Planning** | projman, clarity-assist | Sprint management, requirement clarification |
 | **Code Quality** | code-sentinel, pr-review | Security scanning, PR reviews |
 | **Documentation** | doc-guardian, claude-config-maintainer | Doc sync, CLAUDE.md maintenance |
 | **Git Operations** | git-flow | Commits, branches, workflow automation |
 | **Data Engineering** | data-platform | pandas, PostgreSQL, dbt operations |
-| **Visualization** | viz-platform | DMC validation, Plotly charts, theming |
+| **Visualization** | dmc-design, dash-scaffold, plotly-charts | DMC validation, theming, Dash layouts, Plotly charts |
 | **Validation** | contract-validator | Cross-plugin compatibility checks |
 | **Maintenance** | project-hygiene | Manual cleanup via `/hygiene check` |
 
@@ -256,8 +264,8 @@ Using the **data-analysis agent** for autonomous hypothesis testing and insight 
    • Phase 5 — Synthesizes findings into readable narrative
 
 3. Output: Jupyter notebook with:
-   - Analytical chart selection (uses viz-platform's analytical-chart-selection skill)
-   - Dark-theme notebook design (uses viz-platform's notebook-design-system skill)
+   - Analytical chart selection (uses data-platform's analytical-chart-selection skill)
+   - Dark-theme notebook design (uses data-platform's notebook-design-system skill)
    - Documented cell cycles (context → code → interpretation → visualization)
    - Statistical test results with effect sizes
    - Ranking of non-obvious insights
@@ -320,24 +328,32 @@ Some plugins require MCP server connectivity:
 | projman | Gitea | Issues, PRs, wiki, labels, milestones |
 | pr-review | Gitea | PR operations and reviews |
 | data-platform | pandas, PostgreSQL, dbt | DataFrames, database queries, dbt builds, exploratory analysis via data-analysis agent (v9.1.0+) |
-| viz-platform | viz-platform | DMC validation, charts, layouts, themes, pages, and Jupyter notebook analytical visualizations (v9.1.0+) |
+| dmc-design | dmc-design | DMC validation, themes, CSS patterns, design contract, pattern enforcement |
 | contract-validator | contract-validator | Plugin interface parsing, compatibility validation |
 
 Ensure credentials are configured in `~/.config/claude/gitea.env` or `~/.config/claude/postgres.env`.
 
-### New in v9.1.0: Exploratory Analytics Skills
+### v11.0.0: viz-platform Split + Pattern Enforcement
 
-**data-platform** now includes skills for autonomous data exploration:
-- `data-exploration-workflow` — Five-phase analytical methodology with hypothesis generation and testing
-- `notebook-authoring` — Jupyter notebook cell structure and documentation patterns
+**viz-platform removed** and replaced by three focused plugins:
+- **dmc-design** — DMC validation, themes, CSS patterns, design contract, `/design pattern` command group
+- **dash-scaffold** — Dash layouts, pages, AppShell, responsive breakpoints
+- **plotly-charts** — Plotly chart scaffolding
 
-**viz-platform** now includes skills for analytical visualization in notebooks:
+**data-platform** now includes analytical visualization skills (migrated from viz-platform):
 - `analytical-chart-selection` — Maps analytical questions to Plotly `graph_objects` trace types
-- `notebook-design-system` — Dark-theme design system for consistent, professional Jupyter notebooks
-- `choropleth-map-patterns` — Canonical patterns for go.Choroplethmap tile-based maps: background control via fill layers, valid and dead tile styles, common failure modes
+- `notebook-design-system` — Dark-theme design system for Jupyter notebooks
+- `choropleth-map-patterns` — Tile-based choropleth patterns
 
-These skills are loaded automatically when using the **data-analysis agent** for exploratory workflows.
+**New `/design pattern` command group** (dmc-design):
+- `scan` — Extract patterns from CSS + Python
+- `lock` — Declare a rule persisted to `.claude/design-patterns.json`
+- `check` — Verify all locked rules hold
+- `list` — Show all declared patterns
+- `unlock` — Remove a pattern
+
+See `docs/MIGRATION-v11.md` for command mapping.
 
 ---
 
-*Last Updated: 2026-03-31 — v9.2.0: drawio-plugin added (/drawio parse, /drawio generate); attribute convention updated (component-class, component-id, callback-in/out, db-binding)*
+*Last Updated: 2026-04-19 — v11.0.0: viz-platform split into dmc-design, dash-scaffold, plotly-charts*

@@ -79,7 +79,7 @@ RUNTIME=~/.claude/plugins/marketplaces/mktpl-claude-datasaas
 # Check .mcp.json exists and has valid content
 cat $RUNTIME/.mcp.json | jq '.mcpServers | keys'
 
-# Should list: gitea, data-platform, viz-platform, contract-validator
+# Should list: gitea, data-platform, dmc-design, contract-validator
 ```
 
 ---
@@ -302,8 +302,8 @@ grep "description:" plugins/data-platform/agents/data-analysis.md
 ```bash
 INSTALLED=~/.claude/plugins/marketplaces/mktpl-claude-datasaas
 ls -la $INSTALLED/plugins/data-platform/skills/data-exploration-workflow.md
-ls -la $INSTALLED/plugins/viz-platform/skills/analytical-chart-selection.md
-ls -la $INSTALLED/plugins/viz-platform/skills/choropleth-map-patterns.md
+ls -la $INSTALLED/plugins/data-platform/skills/analytical-chart-selection.md
+ls -la $INSTALLED/plugins/data-platform/skills/choropleth-map-patterns.md
 ```
 
 2. Verify agent references the skills:

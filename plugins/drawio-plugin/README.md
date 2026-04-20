@@ -3,14 +3,14 @@
 **Version:** 1.2.0 | **Domain:** data | **License:** MIT
 
 Wireframe design tools for draw.io — bridges the design phase (`.drawio` wireframes) and the
-build phase (DMC component scaffolding via viz-platform). Parses draw.io XML into structured
+build phase (DMC component scaffolding via dmc-design). Parses draw.io XML into structured
 `WIREFRAME.md` specs and generates draw.io XML from natural language UI descriptions.
 
 ## Purpose
 
-viz-platform's DMC scaffolding commands have always needed an upstream input: a structured
+dmc-design's DMC scaffolding commands have always needed an upstream input: a structured
 description of what to build. `drawio-plugin` fills that gap. Design in draw.io → parse to
-`WIREFRAME.md` → hand to viz-platform for scaffolding. The plugin also supports the reverse
+`WIREFRAME.md` → hand to dmc-design for scaffolding. The plugin also supports the reverse
 direction: generate a `.drawio` wireframe from a description when no design file exists yet.
 
 ## Commands
@@ -25,12 +25,12 @@ direction: generate a `.drawio` wireframe from a description when no design file
 | Skill | Purpose |
 |---|---|
 | `drawio-conventions.md` | Core XML structure spec — layer naming, object attributes, parent chain rules, worked example |
-| `wireframe-schema.md` | WIREFRAME.md output format — the contract between this plugin and viz-platform |
+| `wireframe-schema.md` | WIREFRAME.md output format — the contract between this plugin and dmc-design |
 | `dmc-domain-files.md` | DMC file loading strategy — dynamic discovery of which reference files to declare |
 
 ## WIREFRAME.md Contract
 
-`WIREFRAME.md` is the file produced by `/drawio parse` and consumed by `viz-platform`.
+`WIREFRAME.md` is the file produced by `/drawio parse` and consumed by `dmc-design`.
 
 It captures:
 - Which DMC domain reference files the session needs (discovered dynamically from `references/dmc/dmc-*.txt`)
@@ -40,14 +40,14 @@ It captures:
 **Convention:** Wireframes live in `docs/design/{project-name}.drawio` and `WIREFRAME.md`
 lands in the same directory. This folder syncs via Nextcloud across all environments.
 
-**Consumer:** viz-platform reads `## DMC Domain Files Required` from `WIREFRAME.md` to decide
+**Consumer:** dmc-design reads `## DMC Domain Files Required` from `WIREFRAME.md` to decide
 which reference files from `references/dmc/` to load before scaffolding DMC components.
 
 ## Related Plugins
 
 | Plugin | Relationship |
 |---|---|
-| `viz-platform` | Downstream consumer — uses WIREFRAME.md as upstream input for DMC scaffolding |
+| `dmc-design` | Downstream consumer — uses WIREFRAME.md as upstream input for DMC scaffolding |
 
 ## DMC Reference Files
 
@@ -67,7 +67,7 @@ Current files (as of last generation):
 | `dmc-theme.txt` | MantineProvider, theme configuration, createTheme |
 
 These files are Leo's curated DMC reference documentation, split by domain to minimize
-context size. viz-platform loads only the files relevant to the current project.
+context size. dmc-design loads only the files relevant to the current project.
 
 ## Changelog
 

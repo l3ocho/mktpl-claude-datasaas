@@ -26,9 +26,9 @@ These are loaded once at session start. Update this table if MCP servers change.
 |------------|--------------|-------------|-------------------|
 | gitea | 36 | ~4,785 | — |
 | data-platform | 32 | ~3,458 | — |
-| viz-platform | 20 | ~3,055 | — |
+| dmc-design | 12 | ~1,800 | — |
 | contract-validator | 8 | ~1,048 | — |
-| **Total (default)** | **96** | **~12,346** | — |
+| **Total (default)** | **88** | **~11,091** | — |
 
 ### Skill Loading (Per Phase)
 
@@ -63,9 +63,9 @@ To get actual numbers: count characters in each skill file loaded during the pha
 |  MCP Overhead (session-wide):                                        |
 |    gitea ............ ~4,785 tk                                      |
 |    data-platform .... ~3,458 tk                                      |
-|    viz-platform ..... ~3,055 tk                                      |
+|    dmc-design ....... ~1,800 tk                                      |
 |    contract-valid ... ~1,048 tk                                      |
-|    Subtotal ......... ~12,346 tk                                     |
+|    Subtotal ......... ~11,091 tk                                     |
 |                                                                      |
 |  This Phase:                                                         |
 |    Skills loaded .... ~X,XXX tk  (N files)                           |

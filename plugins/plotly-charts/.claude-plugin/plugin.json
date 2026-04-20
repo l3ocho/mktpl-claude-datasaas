@@ -1,0 +1,5 @@
+{
+  "name": "plotly-charts",
+  "version": "1.0.0",
+  "description": "Plotly chart scaffolding for Dash applications, theme-aware via dmc-design contract"
+}

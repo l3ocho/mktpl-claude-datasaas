@@ -1,6 +1,6 @@
-# Claude Data & SaaS Marketplace — v9.2.0
+# Claude Data & SaaS Marketplace — v11.0.0
 
-A plugin marketplace for Claude Code providing sprint management, code review, security scanning, infrastructure automation, and development workflow tools. 21 plugins across 5 domains, backed by 5 shared MCP servers.
+A plugin marketplace for Claude Code providing sprint management, code review, security scanning, infrastructure automation, and development workflow tools. 23 plugins across 5 domains, backed by 4 shared MCP servers.
 
 ## Plugins
 
@@ -18,13 +18,15 @@ A plugin marketplace for Claude Code providing sprint management, code review, s
 | `claude-config-maintainer` | CLAUDE.md and settings.local.json optimization |
 | `project-hygiene` | Manual project file cleanup checks |
 
-### Data (4 plugins)
+### Data (6 plugins)
 
 | Plugin | Version | Description |
 |--------|---------|-------------|
 | `data-platform` | 9.1.0 | pandas, PostgreSQL/PostGIS, and dbt integration |
-| `viz-platform` | 9.1.0 | Dash Mantine Components validation, Plotly charts, and theming |
-| `drawio-plugin` | 1.0.0 | Wireframe design tools — parse .drawio XML into DMC specs, generate wireframes from descriptions |
+| `dmc-design` | 1.0.0 | Dash Mantine Components design system: validation, themes, CSS patterns, and user-declared pattern enforcement |
+| `dash-scaffold` | 1.0.0 | Dash application scaffolding: layouts, pages, AppShell, navbar, responsive breakpoints |
+| `plotly-charts` | 1.0.0 | Plotly chart scaffolding for Dash applications, theme-aware via dmc-design contract |
+| `drawio-plugin` | 1.3.0 | Wireframe design tools — parse .drawio XML into DMC specs, generate wireframes from descriptions |
 | `data-seed` | 0.1.0 — scaffold | Test data generation and database seeding |
 
 ### Ops (2 plugins)
@@ -61,8 +63,8 @@ A plugin marketplace for Claude Code providing sprint management, code review, s
 |---------|----------------|----------|
 | `sprint` | projman, git-flow, pr-review, code-sentinel, doc-guardian, clarity-assist | Default. Sprint planning and development |
 | `review` | pr-review, code-sentinel | Lightweight code review |
-| `data` | data-platform, viz-platform | Data engineering and visualization |
-| `full` | All 20 plugins | When you need everything |
+| `data` | data-platform, dmc-design, dash-scaffold, plotly-charts | Data engineering and visualization |
+| `full` | All 23 plugins | When you need everything |
 
 ```bash
 ./scripts/claude-launch.sh                    # Default sprint profile
@@ -93,9 +95,9 @@ mktpl-claude-datasaas/
 ├── mcp-servers/                   # Shared MCP servers
 │   ├── gitea/                     # Gitea (issues, PRs, wiki)
 │   ├── data-platform/             # pandas, PostgreSQL, dbt
-│   ├── viz-platform/              # DMC, Plotly, theming
+│   ├── dmc-design/                # DMC validation, themes, design contract
 │   └── contract-validator/        # Plugin compatibility validation
-├── plugins/                       # All plugins (20 total)
+├── plugins/                       # All plugins (23 total)
 │   ├── projman/                   # [core] Sprint management
 │   ├── git-flow/                  # [core] Git workflow automation
 │   ├── pr-review/                 # [core] PR review
@@ -106,7 +108,9 @@ mktpl-claude-datasaas/
 │   ├── contract-validator/        # [core] Cross-plugin validation
 │   ├── project-hygiene/           # [core] Manual cleanup checks
 │   ├── data-platform/             # [data] Data engineering
-│   ├── viz-platform/              # [data] Visualization
+│   ├── dmc-design/                # [data] DMC design system, pattern enforcement
+│   ├── dash-scaffold/             # [data] Dash layouts and scaffolding
+│   ├── plotly-charts/             # [data] Plotly chart scaffolding
 │   ├── drawio-plugin/             # [data] Wireframe design tools
 │   ├── data-seed/                 # [data] Test data generation (scaffold)
 │   ├── saas-api-platform/         # [saas] API scaffolding (scaffold)
@@ -150,7 +154,7 @@ All MCP servers are shared at repository root and configured in `.mcp.json`.
 |--------|---------|-----------------|
 | gitea | projman, pr-review | Gitea (issues, PRs, wiki, milestones) |
 | data-platform | data-platform | PostgreSQL, dbt |
-| viz-platform | viz-platform | DMC component registry |
+| dmc-design | dmc-design | DMC component registry, design contract |
 | contract-validator | contract-validator | Internal validation |
 
 ## Installation

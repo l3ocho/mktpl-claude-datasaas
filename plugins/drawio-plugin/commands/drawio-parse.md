@@ -6,7 +6,7 @@ description: Parse a .drawio XML file into a WIREFRAME.md spec with DMC domain f
 # /drawio parse
 
 Parse a `.drawio` wireframe file into a `WIREFRAME.md` specification.
-Outputs a structured component spec and declares which DMC domain files viz-platform
+Outputs a structured component spec and declares which DMC domain files dmc-design
 should load for the session.
 
 ## Usage
