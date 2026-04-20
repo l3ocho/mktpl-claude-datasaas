@@ -12,8 +12,8 @@ Display comprehensive project status including charter state, epic progress, ris
 
 ## Skills Required
 
-- skills/project-charter.md — charter structure
-- skills/visual-output.md — output formatting
+- skills/project-charter/SKILL.md — charter structure
+- skills/visual-output/SKILL.md — output formatting
 
 ## Workflow
 

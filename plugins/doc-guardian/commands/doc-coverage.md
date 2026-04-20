@@ -9,8 +9,8 @@ Analyze codebase to calculate documentation coverage metrics.
 
 ## Skills to Load
 
-- skills/coverage-calculation.md
-- skills/doc-patterns.md
+- skills/coverage-calculation/SKILL.md
+- skills/doc-patterns/SKILL.md
 
 ## Visual Output
 
@@ -23,7 +23,7 @@ Analyze codebase to calculate documentation coverage metrics.
 ## Process
 
 1. **Scan Source Files**
-   Execute `skills/coverage-calculation.md` - identify documentable items
+   Execute `skills/coverage-calculation/SKILL.md` - identify documentable items
 
 2. **Determine Documentation Status**
    Check each item has meaningful docstring/JSDoc
@@ -32,7 +32,7 @@ Analyze codebase to calculate documentation coverage metrics.
    Use formula from skill: `Coverage = (Documented / Total) * 100`
 
 4. **Output**
-   Use format from `skills/coverage-calculation.md`
+   Use format from `skills/coverage-calculation/SKILL.md`
 
 ## Options
 

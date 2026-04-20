@@ -2,7 +2,7 @@
 name: design pattern
 description: Design pattern enforcement — scan, lock, check, list, unlock
 skills:
-  - skills/pattern-enforcement.md
+  - skills/pattern-enforcement/SKILL.md
 ---
 
 # /design pattern

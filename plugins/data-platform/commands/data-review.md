@@ -140,8 +140,8 @@ Use `/data gate` when you want to automate.
 
 ## Skills Used
 
-- `skills/data-integrity-audit.md` - Audit rules and patterns
-- `skills/mcp-tools-reference.md` - MCP tool reference
+- `skills/data-integrity-audit/SKILL.md` - Audit rules and patterns
+- `skills/mcp-tools-reference/SKILL.md` - MCP tool reference
 
 ## Related Commands
 

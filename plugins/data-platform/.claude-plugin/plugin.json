@@ -1,6 +1,6 @@
 {
   "name": "data-platform",
-  "version": "9.1.2",
+  "version": "9.2.0",
   "description": "Data engineering tools with pandas, PostgreSQL/PostGIS, and dbt integration",
   "author": {
     "name": "Leo Miranda",

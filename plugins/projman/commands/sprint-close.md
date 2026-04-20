@@ -8,13 +8,13 @@ agent: orchestrator
 
 ## Skills Required
 
-- skills/mcp-tools-reference.md
-- skills/lessons-learned.md
-- skills/wiki-conventions.md
-- skills/rfc-workflow.md *(conditional — load only when sprint milestone metadata contains `**RFC:**` reference)*
-- skills/progress-tracking.md
-- skills/git-workflow.md
-- skills/sprint-lifecycle.md
+- skills/mcp-tools-reference/SKILL.md
+- skills/lessons-learned/SKILL.md
+- skills/wiki-conventions/SKILL.md
+- skills/rfc-workflow/SKILL.md *(conditional — load only when sprint milestone metadata contains `**RFC:**` reference)*
+- skills/progress-tracking/SKILL.md
+- skills/git-workflow/SKILL.md
+- skills/sprint-lifecycle/SKILL.md
 
 ## Purpose
 
@@ -28,7 +28,7 @@ Run `/sprint close` when sprint work is complete.
 
 Execute the sprint close workflow:
 
-0. **Check Lifecycle State** - Execute `skills/sprint-lifecycle.md` check protocol. Expect `Sprint/Reviewing`. Clear all Sprint/* labels (return to idle) at the END of close workflow, after all other steps. Warn if in wrong state (allow with `--force`).
+0. **Check Lifecycle State** - Execute `skills/sprint-lifecycle/SKILL.md` check protocol. Expect `Sprint/Reviewing`. Clear all Sprint/* labels (return to idle) at the END of close workflow, after all other steps. Warn if in wrong state (allow with `--force`).
 1. **Review Sprint Completion** - Verify issues closed or moved to backlog
 2. **Capture Lessons Learned** - Interview user about challenges and insights
 3. **Tag for Discoverability** - Apply technology, component, and pattern tags

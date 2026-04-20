@@ -7,9 +7,9 @@ description: Fetch and validate label taxonomy from Gitea, create missing requir
 
 ## Skills Required
 
-- skills/mcp-tools-reference.md
-- skills/repo-validation.md
-- skills/label-taxonomy/labels-reference.md
+- skills/mcp-tools-reference/SKILL.md
+- skills/repo-validation/SKILL.md
+- skills/label-taxonomy/SKILL.md
 
 ## Purpose
 

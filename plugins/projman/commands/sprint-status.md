@@ -8,13 +8,13 @@ description: Check current sprint progress, identify blockers, optionally genera
 ## Skills Required
 
 **Always loaded:**
-- skills/mcp-tools-reference.md
+- skills/mcp-tools-reference/SKILL.md
 
 **Conditional — only load if matching flag is present:**
-- skills/sprint-lifecycle.md — load if displaying lifecycle state (always, but this is small)
-- skills/dependency-management.md — load ONLY with `--diagram` flag
-- skills/token-budget-report.md — load ONLY with `--tokens` flag
-- skills/progress-tracking.md — load ONLY with `--diagram` flag
+- skills/sprint-lifecycle/SKILL.md — load if displaying lifecycle state (always, but this is small)
+- skills/dependency-management/SKILL.md — load ONLY with `--diagram` flag
+- skills/token-budget-report/SKILL.md — load ONLY with `--tokens` flag
+- skills/progress-tracking/SKILL.md — load ONLY with `--diagram` flag
 
 ## Purpose
 
@@ -41,13 +41,13 @@ That's it. No dependency analysis, no token estimation, no progress comment pars
 
 ### If --diagram flag, THEN ALSO:
 7. Fetch dependencies with `list_issue_dependencies`
-8. Load `skills/dependency-management.md`
-9. Load `skills/progress-tracking.md`
+8. Load `skills/dependency-management/SKILL.md`
+9. Load `skills/progress-tracking/SKILL.md`
 10. Generate Mermaid diagram
 
 ### If --tokens flag, THEN ALSO:
-11. Load `skills/token-budget-report.md`
-12. **Generate Token Budget Report** - Execute `skills/token-budget-report.md` estimation model
+11. Load `skills/token-budget-report/SKILL.md`
+12. **Generate Token Budget Report** - Execute `skills/token-budget-report/SKILL.md` estimation model
     - Phase: STATUS (read-only snapshot, not a workflow boundary)
     - List MCP servers from `.mcp.json` with static overhead estimates
     - Show current session cost estimate based on skills loaded so far

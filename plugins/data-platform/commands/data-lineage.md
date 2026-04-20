@@ -5,9 +5,9 @@ name: data lineage
 # /data lineage - Data Lineage Visualization
 
 ## Skills to Load
-- skills/lineage-analysis.md
-- skills/mcp-tools-reference.md
-- skills/visual-header.md
+- skills/lineage-analysis/SKILL.md
+- skills/mcp-tools-reference/SKILL.md
+- skills/visual-header/SKILL.md
 
 ## Visual Output
 
@@ -23,7 +23,7 @@ Display header: `DATA-PLATFORM - Lineage`
 
 1. **Get lineage data**: Use `dbt_lineage` for dbt models
 2. **Build lineage graph**: Identify upstream sources and downstream consumers
-3. **Visualize**: ASCII tree with depth levels (see `skills/lineage-analysis.md`)
+3. **Visualize**: ASCII tree with depth levels (see `skills/lineage-analysis/SKILL.md`)
 4. **Report**: Full dependency chain and refresh implications
 
 ## Examples

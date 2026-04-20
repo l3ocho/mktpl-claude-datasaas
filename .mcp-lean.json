@@ -1,8 +1,0 @@
-{
-  "mcpServers": {
-    "gitea": {
-      "command": "./mcp-servers/gitea/run.sh",
-      "args": []
-    }
-  }
-}

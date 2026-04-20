@@ -17,9 +17,9 @@ Run project-level retrospective, capture lessons learned, and archive project ar
 
 ## Skills Required
 
-- skills/project-charter.md — to update status
-- skills/wiki-conventions.md — page naming
-- skills/visual-output.md — output formatting
+- skills/project-charter/SKILL.md — to update status
+- skills/wiki-conventions/SKILL.md — page naming
+- skills/visual-output/SKILL.md — output formatting
 
 ## Workflow
 

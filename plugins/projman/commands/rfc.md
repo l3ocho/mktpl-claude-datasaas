@@ -8,9 +8,9 @@ agent: planner
 
 ## Skills Required
 
-- skills/mcp-tools-reference.md
-- skills/rfc-workflow.md
-- skills/rfc-templates.md
+- skills/mcp-tools-reference/SKILL.md
+- skills/rfc-workflow/SKILL.md
+- skills/rfc-templates/SKILL.md
 
 ## Purpose
 
@@ -58,7 +58,7 @@ Create a new RFC wiki page to track a feature idea through the review lifecycle.
 1. Check if conversation has clarified specification (from `/clarity clarify`)
 2. If no context: prompt for Summary, Motivation, and initial Design
 3. Call `allocate_rfc_number` MCP tool for next sequential number
-4. Create RFC page using template from `skills/rfc-templates.md`
+4. Create RFC page using template from `skills/rfc-templates/SKILL.md`
 5. Update RFC-Index wiki page (create if doesn't exist)
 6. Display RFC number, wiki link, and next steps
 

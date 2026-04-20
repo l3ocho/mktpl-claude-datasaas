@@ -9,7 +9,7 @@ Generate a changelog entry from conventional commits.
 
 ## Skills to Load
 
-- skills/changelog-format.md
+- skills/changelog-format/SKILL.md
 
 ## Visual Output
 
@@ -22,7 +22,7 @@ Generate a changelog entry from conventional commits.
 ## Process
 
 1. **Identify Commit Range**
-   Execute `skills/changelog-format.md` - detect range from tags
+   Execute `skills/changelog-format/SKILL.md` - detect range from tags
 
 2. **Parse Conventional Commits**
    Use pattern from skill: `<type>(<scope>): <description>`
@@ -36,7 +36,7 @@ Generate a changelog entry from conventional commits.
    - Link commit hashes if repo URL available
 
 5. **Output**
-   Use format from `skills/changelog-format.md`
+   Use format from `skills/changelog-format/SKILL.md`
 
 ## Options
 

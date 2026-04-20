@@ -5,9 +5,9 @@ name: data lineage-viz
 # /data lineage-viz - Mermaid Lineage Visualization
 
 ## Skills to Load
-- skills/lineage-analysis.md
-- skills/mcp-tools-reference.md
-- skills/visual-header.md
+- skills/lineage-analysis/SKILL.md
+- skills/mcp-tools-reference/SKILL.md
+- skills/visual-header/SKILL.md
 
 ## Visual Output
 
@@ -22,7 +22,7 @@ Display header: `DATA-PLATFORM - Lineage Visualization`
 ## Workflow
 
 1. **Get lineage data**: Use `dbt_lineage` to fetch model dependencies
-2. **Build Mermaid graph**: Apply node shapes from `skills/lineage-analysis.md`
+2. **Build Mermaid graph**: Apply node shapes from `skills/lineage-analysis/SKILL.md`
 3. **Output**: Render copy-paste ready Mermaid flowchart
 
 ## Options

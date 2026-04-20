@@ -28,7 +28,7 @@ Binary pass/fail validation for data integrity compliance. Used by projman orche
 ## What It Does
 
 1. **Activates** the `data-advisor` agent in gate mode
-2. **Loads** the `skills/data-integrity-audit.md` skill
+2. **Loads** the `skills/data-integrity-audit/SKILL.md` skill
 3. **Determines scope** from target path:
    - dbt project directory: full dbt validation (parse, compile, test, lineage)
    - Python files with database operations: schema validation

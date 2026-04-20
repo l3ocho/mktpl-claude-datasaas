@@ -8,8 +8,8 @@ agent: code-reviewer
 
 ## Skills Required
 
-- skills/review-checklist.md
-- skills/sprint-lifecycle.md
+- skills/review-checklist/SKILL.md
+- skills/sprint-lifecycle/SKILL.md
 
 ## Purpose
 
@@ -21,7 +21,7 @@ Run `/sprint review` before `/sprint close` to catch issues.
 
 ## Workflow
 
-0. **Check Lifecycle State** - Execute `skills/sprint-lifecycle.md` check protocol. Expect `Sprint/Executing`. Set `Sprint/Reviewing` after review begins. Warn if in wrong state (allow with `--force`).
+0. **Check Lifecycle State** - Execute `skills/sprint-lifecycle/SKILL.md` check protocol. Expect `Sprint/Executing`. Set `Sprint/Reviewing` after review begins. Warn if in wrong state (allow with `--force`).
 1. **Determine Scope** - Sprint files or recent commits (`git diff --name-only HEAD~5`)
 2. **Read Files** - Use Read tool for each file in scope
 3. **Scan for Patterns** - Check each category from review checklist
@@ -30,7 +30,7 @@ Run `/sprint review` before `/sprint close` to catch issues.
 
 ## Review Categories
 
-See `skills/review-checklist.md` for complete patterns:
+See `skills/review-checklist/SKILL.md` for complete patterns:
 - Debug artifacts (TODO, console.log, commented code)
 - Code quality (long functions, deep nesting, duplication)
 - Security (hardcoded secrets, SQL injection, disabled SSL)
@@ -45,7 +45,7 @@ See `skills/review-checklist.md` for complete patterns:
 
 ## Visual Output
 
-See `skills/visual-output.md`. This command invokes the **Code Reviewer** agent:
+See `skills/visual-output/SKILL.md`. This command invokes the **Code Reviewer** agent:
 - Phase Emoji: 🔍
 - Phase Name: REVIEW
 - Context: Sprint Name

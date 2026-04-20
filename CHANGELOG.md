@@ -6,6 +6,91 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+## [12.0.0] - 2026-04-20
+
+### Headline
+
+Native-overlap cleanup: 16 plugins removed because Claude Code now covers their use cases natively. 5 plugins remain. Top-level `CLAUDE.md` trimmed 570 → 100 lines. Projman skills converted to the real Claude Code `SKILL.md` format so they load lazily instead of eagerly. Projman agents rewritten to drop manual "Skill Loading Protocol" scaffolding.
+
+**Context expectation:** substantially fewer compressions per session. See `docs/MIGRATION-v12.md`.
+
+### BREAKING CHANGES
+
+#### 16 plugins removed
+
+| Removed | Replacement |
+|---|---|
+| `pr-review` | `/review` / `/ultrareview` (native) |
+| `code-sentinel` | `/security-review` (native) |
+| `clarity-assist` | Opus 4.7 clarifies natively |
+| `claude-config-maintainer` | `/init`, `/config`, native auto-memory |
+| `contract-validator` (+ MCP server) | `./scripts/validate-marketplace.sh` |
+| `project-hygiene` | Ask Claude directly |
+| `git-flow` | Plain git via Bash; hooks moved to new `git-guardrails` plugin |
+| `drawio-plugin` | Removed (no working backend) |
+| `data-seed` | Claude generates seed data from schemas |
+| `saas-api-platform` | Removed (prescriptive style guide) |
+| `saas-db-migrate` | Removed (prescriptive workflow notes) |
+| `saas-react-platform` | Removed (prescriptive style guide) |
+| `saas-test-pilot` | Removed (prescriptive testing manual) |
+| `ops-release-manager` | `./scripts/release.sh` |
+| `ops-deploy-pipeline` | Claude reads compose/Caddy/systemd directly |
+| `debug-mcp` | Read the MCP server's log |
+
+#### Single-profile marketplace
+
+`.claude-plugin/marketplace-lean.json`, `.claude-plugin/marketplace-full.json`, `.mcp-lean.json`, `.mcp-full.json`, and `scripts/claude-launch.sh` removed. One `marketplace.json`, one `.mcp.json`. Profile-based launching is no longer needed with 5 plugins.
+
+#### Projman skills relocated
+
+Each `plugins/projman/skills/<name>.md` is now `plugins/projman/skills/<name>/SKILL.md` (Claude Code's native SKILL convention). Same content, but Claude Code now lazy-loads each skill based on its YAML `description` instead of the agent eagerly pulling all skills into context. Agents updated to match. Same change applied to `doc-guardian`, `data-platform`, and `dmc-design` skills.
+
+#### Projman agents rewritten
+
+Manual "Skill Loading Protocol" / "Phase 1 skills / Phase 2 skills" sections removed from `planner`, `orchestrator`, `executor`, and `code-reviewer`. Safety-critical skills moved into each agent's frontmatter. Remaining skills auto-load via SKILL.md descriptions. Line counts dropped:
+
+| Agent | Before | After |
+|---|---|---|
+| planner | 99 | 48 |
+| orchestrator | 108 | 46 |
+| executor | 91 | 47 |
+| code-reviewer | 90 | 61 |
+| **Total** | **388** | **202** |
+
+### Added
+
+- `git-guardrails` plugin (v1.0.0) — carries the two surviving hook scripts from the retired `git-flow`: `branch-check.sh` and `commit-msg-check.sh`. Also allows `claude/*` branches to support Claude Code on the web.
+- `/projman setup migrate` sub-command — guided walkthrough of which old commands to stop reaching for.
+- `docs/MIGRATION-v12.md` — full migration guide with command-by-command mapping.
+
+### Changed
+
+- `CLAUDE.md` trimmed 570 → 100 lines — only load-bearing rules remain; reference content moved to `docs/`.
+- `scripts/install-skill-aliases.sh` now installs 9 aliases (`/doc`, `/sprint`, `/adr`, `/project`, `/labels`, `/rfc`, `/projman`, `/data`, `/design`) instead of 24.
+- `scripts/setup-venvs.sh` — `contract-validator` removed from `MCP_SERVERS`.
+- `scripts/setup.sh` — `contract-validator` no longer set up.
+- `scripts/validate-marketplace.sh` — `contract-validator` removed from the MCP server existence check.
+- `scripts/verify-hooks.sh` — rewritten for the new hook inventory (2 hooks in git-guardrails; nothing else allowed).
+- `scripts/generate-dmc-refs.py` — drops the `drawio-plugin/references/dmc/` txt output; only generates the `mcp-servers/dmc-design/registry/` JSON now.
+- All docs rewritten: `docs/ARCHITECTURE.md`, `docs/CANONICAL-PATHS.md`, `docs/COMMANDS-CHEATSHEET.md`, `docs/CONFIGURATION.md`, `docs/DEBUGGING-CHECKLIST.md`, `docs/UPDATING.md`, `README.md`.
+
+### Per-plugin version bumps
+
+| Plugin | Before | After |
+|---|---|---|
+| projman | 9.0.1 | 10.0.0 |
+| doc-guardian | 9.0.1 | 9.1.0 |
+| data-platform | 9.1.2 | 9.2.0 |
+| dmc-design | 2.0.0 | 2.1.0 |
+| git-guardrails | — | 1.0.0 (new) |
+| marketplace | 11.0.0 | 12.0.0 |
+
+### Removed (infrastructure)
+
+- `mcp-servers/contract-validator/` — its static validation is now pure CI via `scripts/validate-marketplace.sh`.
+- `scripts/claude-launch.sh` — profile-based launcher obsolete with a single marketplace.
+- `.mcp-lean.json`, `.mcp-full.json`, `.claude-plugin/marketplace-lean.json`, `.claude-plugin/marketplace-full.json`.
+
 ## [11.0.0] - 2026-04-19
 
 ### BREAKING CHANGES

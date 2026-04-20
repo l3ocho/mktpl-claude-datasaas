@@ -320,7 +320,7 @@ echo ""
 echo "=== Validating MCP Servers ==="
 
 # Check shared MCP servers exist
-for server in gitea data-platform dmc-design contract-validator; do
+for server in gitea data-platform dmc-design; do
     if [[ ! -d "$ROOT_DIR/mcp-servers/$server" ]]; then
         echo "ERROR: Shared $server MCP server not found at mcp-servers/$server/"
         exit 1

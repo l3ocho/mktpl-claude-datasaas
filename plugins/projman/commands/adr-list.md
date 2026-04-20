@@ -8,8 +8,8 @@ agent: planner
 
 ## Skills Required
 
-- skills/adr-conventions.md — ADR lifecycle states
-- skills/visual-output.md — output formatting
+- skills/adr-conventions/SKILL.md — ADR lifecycle states
+- skills/visual-output/SKILL.md — output formatting
 
 ## Workflow
 

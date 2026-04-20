@@ -12,27 +12,27 @@ Analyze an existing codebase or system description, create a project charter, an
 
 ## Skills Required
 
-- skills/source-analysis.md — analysis framework
-- skills/project-charter.md — charter template and naming
-- skills/epic-conventions.md — epic decomposition rules
-- skills/wiki-conventions.md — page naming and dependency headers
-- skills/visual-output.md — output formatting
+- skills/source-analysis/SKILL.md — analysis framework
+- skills/project-charter/SKILL.md — charter template and naming
+- skills/epic-conventions/SKILL.md — epic decomposition rules
+- skills/wiki-conventions/SKILL.md — page naming and dependency headers
+- skills/visual-output/SKILL.md — output formatting
 
 ## Workflow
 
 ### Step 1: Source Analysis
-If a source codebase path is provided, analyze it using `skills/source-analysis.md`:
+If a source codebase path is provided, analyze it using `skills/source-analysis/SKILL.md`:
 - Identify tech stack, architecture, features, data model, quality state
 - If no source provided (greenfield), skip to Step 2
 
 ### Step 2: Project Charter
-Create wiki page `Project: {Name}` following `skills/project-charter.md`:
+Create wiki page `Project: {Name}` following `skills/project-charter/SKILL.md`:
 - Set status to `Initiating`
 - Fill Vision, Scope (In/Out), Source Analysis Summary (if applicable)
 - Leave Architecture Decisions, Epic Decomposition, Roadmap as placeholders
 
 ### Step 3: Epic Decomposition
-Using analysis results, decompose project into epics per `skills/epic-conventions.md`:
+Using analysis results, decompose project into epics per `skills/epic-conventions/SKILL.md`:
 - Create `Epic/*` labels if they don't exist (check with `list_labels`)
 - Fill the Epic Decomposition table in the charter
 

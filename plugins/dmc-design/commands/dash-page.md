@@ -2,8 +2,8 @@
 name: dash page
 description: Create a new Dash page with standard structure
 skills:
-  - skills/layout-templates.md
-  - skills/responsive-design.md
+  - skills/layout-templates/SKILL.md
+  - skills/responsive-design/SKILL.md
 ---
 
 # /dash page
