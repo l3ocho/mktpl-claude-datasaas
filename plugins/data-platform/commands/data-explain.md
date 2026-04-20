@@ -5,10 +5,10 @@ name: data explain
 # /data explain - dbt Model Explanation
 
 ## Skills to Load
-- skills/dbt-workflow.md
-- skills/lineage-analysis.md
-- skills/mcp-tools-reference.md
-- skills/visual-header.md
+- skills/dbt-workflow/SKILL.md
+- skills/lineage-analysis/SKILL.md
+- skills/mcp-tools-reference/SKILL.md
+- skills/visual-header/SKILL.md
 
 ## Visual Output
 

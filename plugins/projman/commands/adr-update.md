@@ -8,8 +8,8 @@ agent: planner
 
 ## Skills Required
 
-- skills/adr-conventions.md — ADR template
-- skills/wiki-conventions.md — page naming
+- skills/adr-conventions/SKILL.md — ADR template
+- skills/wiki-conventions/SKILL.md — page naming
 
 ## Workflow
 

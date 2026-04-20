@@ -8,9 +8,9 @@ agent: planner
 
 ## Skills Required
 
-- skills/adr-conventions.md — ADR template and naming
-- skills/wiki-conventions.md — page naming and dependency headers
-- skills/visual-output.md — output formatting
+- skills/adr-conventions/SKILL.md — ADR template and naming
+- skills/wiki-conventions/SKILL.md — page naming and dependency headers
+- skills/visual-output/SKILL.md — output formatting
 
 ## Workflow
 
@@ -25,7 +25,7 @@ Ask user for:
 - Recommended option
 
 ### Step 3: Create Wiki Page
-Create `ADR-NNNN: {Title}` per `skills/adr-conventions.md` template.
+Create `ADR-NNNN: {Title}` per `skills/adr-conventions/SKILL.md` template.
 Set status to `Proposed`.
 
 ### Step 4: Update ADR Index

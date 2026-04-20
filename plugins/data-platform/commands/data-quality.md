@@ -5,9 +5,9 @@ name: data quality
 # /data quality - Data Quality Assessment
 
 ## Skills to Load
-- skills/data-profiling.md
-- skills/mcp-tools-reference.md
-- skills/visual-header.md
+- skills/data-profiling/SKILL.md
+- skills/mcp-tools-reference/SKILL.md
+- skills/visual-header/SKILL.md
 
 ## Visual Output
 
@@ -21,7 +21,7 @@ Display header: `DATA-PLATFORM - Data Quality`
 
 ## Workflow
 
-Execute `skills/data-profiling.md` quality assessment:
+Execute `skills/data-profiling/SKILL.md` quality assessment:
 
 1. **Get data reference**: Use `list_data` if none provided
 2. **Run quality checks**: Nulls, duplicates, types, outliers
@@ -43,7 +43,7 @@ Execute `skills/data-profiling.md` quality assessment:
 
 ## Quality Thresholds
 
-See `skills/data-profiling.md` for detailed thresholds and scoring.
+See `skills/data-profiling/SKILL.md` for detailed thresholds and scoring.
 
 ## Required MCP Tools
 

@@ -42,17 +42,17 @@ You are an autonomous data analyst. Your role goes beyond profiling — you expl
 ## Skills
 
 ### Always Load
-- skills/mcp-tools-reference.md
+- skills/mcp-tools-reference/SKILL.md
 
 ### Load for Exploratory Analysis
-- skills/data-exploration-workflow.md — five-phase analytical methodology
-- skills/notebook-authoring.md — Jupyter cell patterns
-- skills/analytical-chart-selection.md — Plotly graph_objects trace selection
-- skills/notebook-design-system.md — dark-theme Plotly design system for notebooks
-- skills/choropleth-map-patterns.md — tile-based choropleth patterns
+- skills/data-exploration-workflow/SKILL.md — five-phase analytical methodology
+- skills/notebook-authoring/SKILL.md — Jupyter cell patterns
+- skills/analytical-chart-selection/SKILL.md — Plotly graph_objects trace selection
+- skills/notebook-design-system/SKILL.md — dark-theme Plotly design system for notebooks
+- skills/choropleth-map-patterns/SKILL.md — tile-based choropleth patterns
 
 ### Load for Profiling Only
-- skills/data-profiling.md — quality scoring and threshold checks
+- skills/data-profiling/SKILL.md — quality scoring and threshold checks
 
 ## Available Tools
 

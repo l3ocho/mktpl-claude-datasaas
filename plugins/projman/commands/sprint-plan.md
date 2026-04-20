@@ -8,19 +8,19 @@ agent: planner
 
 ## Skills Required
 
-- skills/mcp-tools-reference.md (frontmatter — auto-injected)
-- skills/batch-execution.md (frontmatter — auto-injected)
-- skills/branch-security.md
-- skills/repo-validation.md
-- skills/input-detection.md
-- skills/lessons-learned.md
-- skills/wiki-conventions.md
-- skills/task-sizing.md
-- skills/issue-conventions.md
-- skills/sprint-approval.md
-- skills/planning-workflow.md
-- skills/label-taxonomy/labels-reference.md
-- skills/sprint-lifecycle.md
+- skills/mcp-tools-reference/SKILL.md (frontmatter — auto-injected)
+- skills/batch-execution/SKILL.md (frontmatter — auto-injected)
+- skills/branch-security/SKILL.md
+- skills/repo-validation/SKILL.md
+- skills/input-detection/SKILL.md
+- skills/lessons-learned/SKILL.md
+- skills/wiki-conventions/SKILL.md
+- skills/task-sizing/SKILL.md
+- skills/issue-conventions/SKILL.md
+- skills/sprint-approval/SKILL.md
+- skills/planning-workflow/SKILL.md
+- skills/label-taxonomy/SKILL.md
+- skills/sprint-lifecycle/SKILL.md
 
 ## Purpose
 
@@ -35,10 +35,10 @@ Provide sprint goals as natural language input, or prepare input via:
 
 ## Workflow
 
-Execute the planning workflow as defined in `skills/planning-workflow.md`.
+Execute the planning workflow as defined in `skills/planning-workflow/SKILL.md`.
 
 **Key steps:**
-0. **Check Lifecycle State** - Execute `skills/sprint-lifecycle.md` check protocol. Expect idle state. Set `Sprint/Planning` after planning completes. Warn and stop if sprint is in another active state (unless `--force`).
+0. **Check Lifecycle State** - Execute `skills/sprint-lifecycle/SKILL.md` check protocol. Expect idle state. Set `Sprint/Planning` after planning completes. Warn and stop if sprint is in another active state (unless `--force`).
 1. Run pre-planning validations (branch, repo org, labels)
 2. Detect input source (file, wiki, or conversation)
 3. Search relevant lessons learned

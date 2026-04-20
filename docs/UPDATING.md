@@ -1,221 +1,69 @@
-# Updating Leo Claude Marketplace
+# Updating the marketplace
 
-This guide covers how to update your local installation when new versions are released.
+How to update an installed marketplace when a new version ships.
 
----
-
-## ⚠️ CRITICAL: Run Setup in Installed Location
-
-When Claude Code installs a marketplace, it copies files to `~/.claude/plugins/marketplaces/` but **does NOT create Python virtual environments**. You must run setup manually after installation or update.
-
-**After installing or updating the marketplace:**
+## Normal update (minor / patch)
 
 ```bash
-cd ~/.claude/plugins/marketplaces/mktpl-claude-datasaas && ./scripts/setup.sh
-```
-
-This creates the required `.venv` directories for MCP servers. Without this step, **all MCP servers will fail to start**.
-
----
-
-## Quick Update (Source Repository)
-
-```bash
-# 1. Pull latest changes to source
-cd /path/to/mktpl-claude-datasaas
+cd ~/Projects/personal/mktpl-claude-datasaas   # or wherever you cloned it
 git pull origin main
 
-# 2. Run post-update script (updates source repo venvs)
-./scripts/post-update.sh
-
-# 3. CRITICAL: Run setup in installed marketplace location
-cd ~/.claude/plugins/marketplaces/mktpl-claude-datasaas && ./scripts/setup.sh
+./scripts/setup-venvs.sh --quick               # reuses cached venvs where requirements unchanged
+./scripts/post-update.sh                       # clears ~/.claude/plugins/cache/mktpl-claude-datasaas
 ```
 
-**Then restart your Claude Code session** to load any changes.
+Then **restart Claude Code**. MCP servers and plugin settings only reload at session start.
 
----
+## Major update
 
-## What the Post-Update Script Does
+For v11.x → v12.0.0 specifically, follow `docs/MIGRATION-v12.md` step-by-step — 16 plugins were removed and some workflow commands changed.
 
-1. **Updates Python dependencies** for all 4 MCP servers (gitea, data-platform, dmc-design, contract-validator)
-2. **Shows recent changelog entries** so you know what changed
-3. **Validates your configuration** is still compatible
+For other major versions, check the corresponding `docs/MIGRATION-vX.md` file.
 
----
-
-## After Updating: Re-run Setup if Needed
-
-### When to Re-run Setup
-
-You typically **don't need** to re-run setup after updates. However, re-run your plugin's setup command (e.g., `/projman setup`, `/pr setup`) if:
-
-- Changelog mentions **new required environment variables**
-- Changelog mentions **breaking changes** to configuration
-- MCP tools stop working after update
-
-### For Existing Projects
-
-If an update requires new project-level configuration:
-
-```
-/pr init
-```
-
-This will detect existing settings and only add what's missing.
-
----
-
-## Manual Steps After Update
-
-Some updates may require manual configuration changes:
-
-### New Environment Variables
-
-If the changelog mentions new environment variables:
-
-1. Check the variable name and purpose in the changelog
-2. Add it to the appropriate config file:
-   - System variables → `~/.config/claude/gitea.env`
-   - Project variables → `.env` in your project root
-
-### New MCP Server Features
-
-If a new MCP server tool is added:
-
-1. The post-update script handles dependency installation
-2. Check plugin documentation for usage
-3. New tools are available immediately after session restart
-
-### Breaking Changes
-
-Breaking changes will be clearly marked in CHANGELOG.md with migration instructions.
-
-### Setup Script and Configuration Workflow Changes
-
-When updating, review if changes affect the setup workflow:
-
-1. **Check for setup command changes:**
-   ```bash
-   git diff HEAD~1 plugins/*/commands/*-setup.md
-   git diff HEAD~1 plugins/*/commands/pr-init.md
-   git diff HEAD~1 plugins/*/commands/pr-sync.md
-   ```
-
-2. **Check for hook changes:**
-   ```bash
-   git diff HEAD~1 plugins/*/hooks/hooks.json
-   ```
-
-3. **Check for configuration structure changes:**
-   ```bash
-   git diff HEAD~1 docs/CONFIGURATION.md
-   ```
-
-**If setup commands changed:**
-- Review what's new (new validation steps, new prompts, etc.)
-- Consider re-running your plugin's setup command or `/pr init` to benefit from improvements
-- Existing configurations remain valid unless changelog notes breaking changes
-
-**If hooks changed:**
-- Restart your Claude Code session to load new hooks
-- New hooks (like SessionStart validation) activate automatically
-
-**If configuration structure changed:**
-- Check if new variables are required
-- Run `/pr sync` if repository detection logic improved
-
----
-
-## Troubleshooting Updates
-
-### Dependencies fail to install
+## Verify after update
 
 ```bash
-# Install missing dependencies (do NOT delete .venv)
-cd mcp-servers/gitea
-source .venv/bin/activate
-pip install -r requirements.txt
-deactivate
+./scripts/validate-marketplace.sh
+./scripts/verify-hooks.sh
 ```
 
-### Configuration no longer works
+Both should exit `0`. If either fails, the marketplace is in a broken state — report the output.
 
-1. Check CHANGELOG.md for breaking changes
-2. Run your plugin's setup command (e.g., `/projman setup`) to re-validate and fix configuration
-3. Compare your config files with documentation in `docs/CONFIGURATION.md`
+## Updating a consumer project
 
-### MCP server won't start after update
-
-**Most common cause:** Virtual environments don't exist in the installed marketplace.
+A consumer project has `~/.claude/plugins/` populated from the marketplace install. After updating the marketplace:
 
 ```bash
-# Fix: Run setup in installed location
-cd ~/.claude/plugins/marketplaces/mktpl-claude-datasaas && ./scripts/setup.sh
+# From inside the consumer project
+./scripts/post-update.sh   # if the consumer has the script symlinked; otherwise run it from the marketplace directory
 ```
 
-If that doesn't work:
+Consumer-project `.env` files are not touched. Your `GITEA_ORG`, `GITEA_REPO`, and `GIT_*` values survive.
 
-1. Check Python version: `python3 --version` (requires 3.10+)
-2. Verify venvs exist in INSTALLED location:
-   ```bash
-   for server in gitea data-platform dmc-design contract-validator; do
-     ls ~/.claude/plugins/marketplaces/mktpl-claude-datasaas/mcp-servers/$server/.venv && echo "$server: OK" || echo "$server: MISSING"
-   done
-   ```
-3. If missing, run setup.sh as shown above.
-4. Restart Claude Code session
-5. Check logs for specific errors
-
-### "X MCP servers failed" on startup
-
-This almost always means the venvs don't exist in the installed marketplace:
+## Rollback
 
 ```bash
-cd ~/.claude/plugins/marketplaces/mktpl-claude-datasaas && ./scripts/setup.sh
-```
-
-Then restart Claude Code.
-
-### New commands not available
-
-1. Restart your Claude Code session
-2. Verify the plugin is still installed
-3. Check if the command requires additional setup
-
----
-
-## Version Pinning
-
-To stay on a specific version:
-
-```bash
-# List available tags
-git tag
-
-# Checkout specific version
-git checkout v3.0.0
-
-# Run post-update
+cd ~/Projects/personal/mktpl-claude-datasaas
+git checkout v11.0.0                           # or the previous known-good tag
+./scripts/setup-venvs.sh                       # rebuild venvs for that version
 ./scripts/post-update.sh
 ```
 
----
+Restart Claude Code.
 
-## Checking Current Version
+## What gets cleared vs. preserved
 
-The version is displayed in the main README.md title and in `CHANGELOG.md`.
+| Location | On update | On rollback |
+|---|---|---|
+| `~/.claude/plugins/marketplaces/mktpl-claude-datasaas/` | Replaced | Replaced |
+| `~/.claude/plugins/cache/mktpl-claude-datasaas/` | Cleared | Cleared |
+| `~/.cache/claude-mcp-venvs/mktpl-claude-datasaas/` | Preserved (rebuilt incrementally) | Preserved |
+| `~/.config/claude/*.env` | Untouched | Untouched |
+| `<project>/.env` | Untouched | Untouched |
+| `<project>/.claude/settings.json` | Untouched | Untouched |
 
-```bash
-# Check version from changelog
-head -20 CHANGELOG.md
-```
+## Never
 
----
-
-## Getting Help
-
-- Check `docs/CONFIGURATION.md` for setup guide
-- Check `docs/COMMANDS-CHEATSHEET.md` for command reference
-- Review `CHANGELOG.md` for recent changes
-- Search existing issues in Gitea
+- Never edit `~/.claude/plugins/marketplaces/mktpl-claude-datasaas/` — your edits are wiped on next update.
+- Never force-push or rewrite history on the marketplace `main` branch — consumers will get broken pulls.
+- Never use `--no-verify` to bypass the git-guardrails hooks.

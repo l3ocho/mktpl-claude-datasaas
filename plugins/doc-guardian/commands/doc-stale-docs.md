@@ -9,8 +9,8 @@ Identify documentation files that may be outdated based on commit history.
 
 ## Skills to Load
 
-- skills/staleness-metrics.md
-- skills/drift-detection.md
+- skills/staleness-metrics/SKILL.md
+- skills/drift-detection/SKILL.md
 
 ## Visual Output
 
@@ -23,7 +23,7 @@ Identify documentation files that may be outdated based on commit history.
 ## Process
 
 1. **Map Documentation to Code**
-   Execute `skills/staleness-metrics.md` - build relationships
+   Execute `skills/staleness-metrics/SKILL.md` - build relationships
 
 2. **Analyze Commit History**
    For each doc file:
@@ -35,7 +35,7 @@ Identify documentation files that may be outdated based on commit history.
    Use levels from skill (Fresh/Aging/Stale/Critical)
 
 4. **Output**
-   Use format from `skills/staleness-metrics.md`
+   Use format from `skills/staleness-metrics/SKILL.md`
 
 ## Options
 

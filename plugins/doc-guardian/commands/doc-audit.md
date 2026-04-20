@@ -9,8 +9,8 @@ Perform a comprehensive documentation drift analysis.
 
 ## Skills to Load
 
-- skills/drift-detection.md
-- skills/doc-patterns.md
+- skills/drift-detection/SKILL.md
+- skills/doc-patterns/SKILL.md
 
 ## Visual Output
 
@@ -23,10 +23,10 @@ Perform a comprehensive documentation drift analysis.
 ## Process
 
 1. **Inventory Documentation Files**
-   Execute `skills/doc-patterns.md` - identify all doc files
+   Execute `skills/doc-patterns/SKILL.md` - identify all doc files
 
 2. **Cross-Reference Analysis**
-   Execute `skills/drift-detection.md` - verify all references
+   Execute `skills/drift-detection/SKILL.md` - verify all references
 
 3. **Completeness Check**
    - Public functions without docstrings
@@ -35,6 +35,6 @@ Perform a comprehensive documentation drift analysis.
    - CLI commands not in help text
 
 4. **Output**
-   Use format from `skills/drift-detection.md`
+   Use format from `skills/drift-detection/SKILL.md`
 
 5. **Do NOT make changes** - audit only, report findings

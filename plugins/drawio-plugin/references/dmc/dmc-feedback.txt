@@ -1,8 +1,0 @@
-# TODO: populate
-# This file must contain Leo's curated DMC reference documentation for feedback and overlay components.
-# Components covered: Alert, Modal, ModalHeader, ModalBody, ModalFooter, Drawer, DrawerHeader,
-# DrawerBody, DrawerFooter, Notification, NotificationProvider, LoadingOverlay, Skeleton,
-# Loader, Progress, RingProgress, Stepper, StepperStep
-#
-# Provide this file to populate: copy from your local DMC split files.
-# Do NOT generate DMC content from scratch — use Leo's curated files.

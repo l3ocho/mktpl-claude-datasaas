@@ -9,8 +9,8 @@ Apply all pending documentation updates detected by `/doc audit`.
 
 ## Skills to Load
 
-- skills/sync-workflow.md
-- skills/drift-detection.md
+- skills/sync-workflow/SKILL.md
+- skills/drift-detection/SKILL.md
 
 ## Visual Output
 
@@ -37,4 +37,4 @@ Apply all pending documentation updates detected by `/doc audit`.
    - Include summary in commit body
 
 4. **Output**
-   Use format from `skills/sync-workflow.md`
+   Use format from `skills/sync-workflow/SKILL.md`

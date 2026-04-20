@@ -5,9 +5,9 @@ name: data run
 # /data run - Execute dbt Models
 
 ## Skills to Load
-- skills/dbt-workflow.md
-- skills/mcp-tools-reference.md
-- skills/visual-header.md
+- skills/dbt-workflow/SKILL.md
+- skills/mcp-tools-reference/SKILL.md
+- skills/visual-header/SKILL.md
 
 ## Visual Output
 
@@ -21,7 +21,7 @@ Display header: `DATA-PLATFORM - dbt Run`
 
 ## Workflow
 
-Execute `skills/dbt-workflow.md` run workflow:
+Execute `skills/dbt-workflow/SKILL.md` run workflow:
 
 1. **Pre-validation** (MANDATORY): Run `dbt_parse` first
 2. **Execute models**: Use `dbt_run` with selection
@@ -29,7 +29,7 @@ Execute `skills/dbt-workflow.md` run workflow:
 
 ## Selection Syntax
 
-See `skills/dbt-workflow.md` for full selection patterns.
+See `skills/dbt-workflow/SKILL.md` for full selection patterns.
 
 ## Examples
 

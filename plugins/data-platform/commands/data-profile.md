@@ -5,9 +5,9 @@ name: data profile
 # /data profile - Data Profiling
 
 ## Skills to Load
-- skills/data-profiling.md
-- skills/mcp-tools-reference.md
-- skills/visual-header.md
+- skills/data-profiling/SKILL.md
+- skills/mcp-tools-reference/SKILL.md
+- skills/visual-header/SKILL.md
 
 ## Visual Output
 
@@ -21,7 +21,7 @@ Display header: `DATA-PLATFORM - Data Profile`
 
 ## Workflow
 
-Execute `skills/data-profiling.md` profiling workflow:
+Execute `skills/data-profiling/SKILL.md` profiling workflow:
 
 1. **Get data reference**: Use `list_data` if none provided
 2. **Generate profile**: Use `describe` for statistics

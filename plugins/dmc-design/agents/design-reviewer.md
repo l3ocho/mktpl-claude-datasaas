@@ -5,11 +5,11 @@ model: sonnet
 permissionMode: plan
 disallowedTools: Write, Edit, MultiEdit
 skills:
-  - skills/pattern-enforcement.md
-  - skills/color-scheme-validation.md
-  - skills/theming-system.md
-  - skills/dmc-components.md
-  - skills/accessibility-rules.md
+  - skills/pattern-enforcement/SKILL.md
+  - skills/color-scheme-validation/SKILL.md
+  - skills/theming-system/SKILL.md
+  - skills/dmc-components/SKILL.md
+  - skills/accessibility-rules/SKILL.md
 ---
 
 # Design Reviewer Agent

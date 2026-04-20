@@ -17,12 +17,12 @@ Take an approved project charter and create the planning artifacts: WBS, risk re
 
 ## Skills Required
 
-- skills/wbs.md — work breakdown structure
-- skills/risk-register.md — risk identification and scoring
-- skills/sprint-roadmap.md — sprint sequencing
-- skills/project-charter.md — to update charter status
-- skills/wiki-conventions.md — page naming and dependency headers
-- skills/visual-output.md — output formatting
+- skills/wbs/SKILL.md — work breakdown structure
+- skills/risk-register/SKILL.md — risk identification and scoring
+- skills/sprint-roadmap/SKILL.md — sprint sequencing
+- skills/project-charter/SKILL.md — to update charter status
+- skills/wiki-conventions/SKILL.md — page naming and dependency headers
+- skills/visual-output/SKILL.md — output formatting
 
 ## Workflow
 
@@ -30,13 +30,13 @@ Take an approved project charter and create the planning artifacts: WBS, risk re
 Read `Project: {Name}` wiki page. Verify epic decomposition is present.
 
 ### Step 2: Create WBS
-Create wiki page `WBS: {Name}` per `skills/wbs.md`.
+Create wiki page `WBS: {Name}` per `skills/wbs/SKILL.md`.
 
 ### Step 3: Create Risk Register
-Create wiki page `Risk-Register: {Name}` per `skills/risk-register.md`.
+Create wiki page `Risk-Register: {Name}` per `skills/risk-register/SKILL.md`.
 
 ### Step 4: Create Sprint Roadmap
-Create wiki page `Roadmap: {Name}` per `skills/sprint-roadmap.md`.
+Create wiki page `Roadmap: {Name}` per `skills/sprint-roadmap/SKILL.md`.
 
 ### Step 5: Update Charter
 Update `Project: {Name}` wiki page:

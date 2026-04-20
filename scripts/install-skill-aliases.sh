@@ -1,38 +1,29 @@
 #!/bin/bash
-# Install personal skill aliases for dispatch routing
-# Run this after installing the marketplace on a new machine
+# Install personal skill aliases so you can type /sprint instead of /projman:sprint etc.
+# Run after installing the marketplace. Safe to re-run.
 
 SKILLS_DIR="$HOME/.claude/skills"
 
 echo "Installing skill aliases to $SKILLS_DIR..."
 
-# Create skills directory if it doesn't exist
 mkdir -p "$SKILLS_DIR"
 
-# Create all skill aliases
-for skill in doc sprint pr sentinel cv data viz api db-migrate react test seed release deploy debug-mcp gitflow hygiene labels adr project projman claude-config clarity; do
-    case $skill in
-        doc) plugin="doc-guardian" ;;
-        sprint|adr|project|labels|projman) plugin="projman" ;;
-        pr) plugin="pr-review" ;;
-        sentinel) plugin="code-sentinel" ;;
-        cv) plugin="contract-validator" ;;
-        data) plugin="data-platform" ;;
-        viz|design) plugin="dmc-design" ;;
-        api) plugin="saas-api-platform" ;;
-        db-migrate) plugin="saas-db-migrate" ;;
-        react) plugin="saas-react-platform" ;;
-        test) plugin="saas-test-pilot" ;;
-        seed) plugin="data-seed" ;;
-        release) plugin="ops-release-manager" ;;
-        deploy) plugin="ops-deploy-pipeline" ;;
-        debug-mcp) plugin="debug-mcp" ;;
-        gitflow) plugin="git-flow" ;;
-        hygiene) plugin="project-hygiene" ;;
-        claude-config) plugin="claude-config-maintainer" ;;
-        clarity) plugin="clarity-assist" ;;
-    esac
+# Map short-name → plugin
+declare -A ALIASES=(
+    [doc]="doc-guardian"
+    [sprint]="projman"
+    [adr]="projman"
+    [project]="projman"
+    [labels]="projman"
+    [rfc]="projman"
+    [projman]="projman"
+    [data]="data-platform"
+    [design]="dmc-design"
+)
 
+count=0
+for skill in "${!ALIASES[@]}"; do
+    plugin="${ALIASES[$skill]}"
     mkdir -p "$SKILLS_DIR/$skill"
     cat > "$SKILLS_DIR/$skill/SKILL.md" <<EOF
 ---
@@ -43,9 +34,10 @@ description: Routes to $plugin plugin
 Invoke \`/$plugin:$skill \$ARGUMENTS\`
 EOF
     echo "  ✓ $skill → $plugin"
+    count=$((count + 1))
 done
 
 echo ""
-echo "✓ Installed 24 skill aliases"
+echo "✓ Installed $count skill aliases"
 echo ""
 echo "Restart Claude Code for changes to take effect."

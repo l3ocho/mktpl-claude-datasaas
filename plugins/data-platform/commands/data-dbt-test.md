@@ -5,9 +5,9 @@ name: data dbt-test
 # /data dbt-test - Run dbt Tests
 
 ## Skills to Load
-- skills/dbt-workflow.md
-- skills/mcp-tools-reference.md
-- skills/visual-header.md
+- skills/dbt-workflow/SKILL.md
+- skills/mcp-tools-reference/SKILL.md
+- skills/visual-header/SKILL.md
 
 ## Visual Output
 
@@ -21,7 +21,7 @@ Display header: `DATA-PLATFORM - dbt Tests`
 
 ## Workflow
 
-Execute `skills/dbt-workflow.md` test workflow:
+Execute `skills/dbt-workflow/SKILL.md` test workflow:
 
 1. **Pre-validation** (MANDATORY): Run `dbt_parse` first
 2. **Execute tests**: Use `dbt_test` with selection
