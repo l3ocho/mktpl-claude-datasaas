@@ -137,9 +137,7 @@ These plugins exist in source but are **NOT relevant** to this project's workflo
 | Plugin | Why Not Used |
 |--------|--------------|
 | **data-platform** | For data engineering projects (pandas, PostgreSQL, dbt) |
-| **dmc-design** | For dashboard projects (DMC/theming) |
-| **dash-scaffold** | For Dash layout scaffolding projects |
-| **plotly-charts** | For Plotly chart scaffolding projects |
+| **dmc-design** | For Dash/DMC/Plotly dashboard projects (components, themes, layouts, charts) |
 | **saas-api-platform** | For REST/GraphQL API projects (FastAPI, Express) |
 | **saas-db-migrate** | For database migration projects (Alembic, Prisma) |
 | **saas-react-platform** | For React frontend projects (Next.js, Vite) |
@@ -181,9 +179,7 @@ A plugin marketplace for Claude Code containing:
 | `code-sentinel` | Security scanning and code refactoring tools | 9.0.1 |
 | `claude-config-maintainer` | CLAUDE.md optimization and maintenance | 9.0.1 |
 | `data-platform` | pandas, PostgreSQL, and dbt integration for data engineering | 9.1.0 |
-| `dmc-design` | DMC validation, themes, CSS patterns, design contract, pattern enforcement | 1.0.0 |
-| `dash-scaffold` | Dash application scaffolding: layouts, pages, AppShell, responsive breakpoints | 1.0.0 |
-| `plotly-charts` | Plotly chart scaffolding for Dash applications, theme-aware via dmc-design | 1.0.0 |
+| `dmc-design` | Unified Dash + DMC + Plotly design system: components, themes, patterns, layouts, pages, charts | 2.0.0 |
 | `drawio-plugin` | Wireframe design tools — parse .drawio XML into DMC specs, generate wireframes | 1.3.0 |
 | `contract-validator` | Cross-plugin compatibility validation and agent verification | 9.0.1 |
 | `project-hygiene` | Manual project hygiene checks | 9.0.1 |
@@ -269,9 +265,7 @@ mktpl-claude-datasaas/
 │   ├── contract-validator/       # [core] Cross-plugin validation
 │   ├── project-hygiene/          # [core] Manual cleanup checks
 │   ├── data-platform/            # [data] Data engineering
-│   ├── dmc-design/               # [data] DMC design system
-│   ├── dash-scaffold/            # [data] Dash scaffolding
-│   ├── plotly-charts/            # [data] Plotly charts
+│   ├── dmc-design/               # [data] Unified Dash/DMC/Plotly design system
 │   ├── drawio-plugin/            # [data] Wireframe design tools
 │   ├── data-seed/                # [data] Test data generation (scaffold)
 │   ├── saas-api-platform/        # [saas] API scaffolding (scaffold)
@@ -351,7 +345,7 @@ Agents specify their configuration in frontmatter using Claude Code's supported 
 | data-platform | data-analysis | sonnet | plan | Write, Edit, MultiEdit | — |
 | data-platform | data-ingestion | haiku | acceptEdits | — | — |
 | dmc-design | design-reviewer | sonnet | plan | Write, Edit, MultiEdit | frontmatter (5) |
-| dash-scaffold | layout-builder | sonnet | default | — | — |
+| dmc-design | layout-builder | sonnet | default | — | — |
 | contract-validator | full-validation | sonnet | default | — | — |
 | contract-validator | agent-check | haiku | plan | Write, Edit, MultiEdit | — |
 | code-sentinel | refactor-advisor | sonnet | acceptEdits | — | — |
@@ -456,7 +450,7 @@ Stored in Gitea Wiki under `lessons-learned/sprints/`.
 | Domain | Plugins |
 |--------|---------|
 | `core` | projman, git-flow, pr-review, code-sentinel, doc-guardian, clarity-assist, contract-validator, claude-config-maintainer, project-hygiene |
-| `data` | data-platform, dmc-design, dash-scaffold, plotly-charts, drawio-plugin, data-seed |
+| `data` | data-platform, dmc-design, drawio-plugin, data-seed |
 | `saas` | saas-api-platform, saas-db-migrate, saas-react-platform, saas-test-pilot |
 | `ops` | ops-release-manager, ops-deploy-pipeline |
 | `debug` | debug-mcp |

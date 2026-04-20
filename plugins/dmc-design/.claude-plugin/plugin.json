@@ -1,5 +1,5 @@
 {
   "name": "dmc-design",
-  "version": "1.0.0",
-  "description": "Dash Mantine Components design system: validation, themes, CSS patterns, and user-declared pattern enforcement"
+  "version": "2.0.0",
+  "description": "Unified Dash + DMC + Plotly design system: component validation, themes, pattern enforcement, layout scaffolding, page/AppShell generation, responsive breakpoints, and chart scaffolding"
 }
