@@ -4,10 +4,6 @@
       "command": "./mcp-servers/gitea/run.sh",
       "args": []
     },
-    "netbox": {
-      "command": "./mcp-servers/netbox/run.sh",
-      "args": []
-    },
     "dmc-design": {
       "command": "./mcp-servers/dmc-design/run.sh",
       "args": []

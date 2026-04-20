@@ -45,7 +45,7 @@ fi
 declare -A PROFILES
 PROFILES[sprint]="projman git-flow pr-review code-sentinel doc-guardian clarity-assist"
 PROFILES[infra]="DEPRECATED"
-PROFILES[data]="data-platform dmc-design dash-scaffold plotly-charts data-seed"
+PROFILES[data]="data-platform dmc-design drawio-plugin data-seed"
 PROFILES[saas]="saas-api-platform saas-react-platform saas-db-migrate saas-test-pilot"
 PROFILES[ops]="ops-release-manager ops-deploy-pipeline"
 PROFILES[review]="pr-review code-sentinel"
