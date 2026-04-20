@@ -8,8 +8,8 @@
       "command": "./mcp-servers/netbox/run.sh",
       "args": []
     },
-    "viz-platform": {
-      "command": "./mcp-servers/viz-platform/run.sh",
+    "dmc-design": {
+      "command": "./mcp-servers/dmc-design/run.sh",
       "args": []
     },
     "data-platform": {
