@@ -5,8 +5,8 @@ name: data schema
 # /data schema - Schema Exploration
 
 ## Skills to Load
-- skills/mcp-tools-reference.md
-- skills/visual-header.md
+- skills/mcp-tools-reference/SKILL.md
+- skills/visual-header/SKILL.md
 
 ## Visual Output
 

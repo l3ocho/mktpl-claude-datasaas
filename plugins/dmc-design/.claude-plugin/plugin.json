@@ -1,5 +1,24 @@
 {
   "name": "dmc-design",
-  "version": "2.0.0",
-  "description": "Unified Dash + DMC + Plotly design system: component validation, themes, pattern enforcement, layout scaffolding, page/AppShell generation, responsive breakpoints, and chart scaffolding"
+  "version": "2.1.0",
+  "description": "Unified Dash + DMC + Plotly design system: component validation, themes, pattern enforcement, layout scaffolding, page/AppShell generation, responsive breakpoints, and chart scaffolding",
+  "author": {
+    "name": "Leo Miranda",
+    "email": "leobmiranda@gmail.com"
+  },
+  "homepage": "https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas/src/branch/main/plugins/dmc-design/README.md",
+  "repository": "https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas.git",
+  "license": "MIT",
+  "keywords": [
+    "dash",
+    "mantine",
+    "dmc",
+    "plotly",
+    "design-system",
+    "theming",
+    "accessibility"
+  ],
+  "commands": [
+    "./commands/"
+  ]
 }

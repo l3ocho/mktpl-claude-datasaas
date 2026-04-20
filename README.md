@@ -1,240 +1,89 @@
-# Claude Data & SaaS Marketplace — v11.0.0
+# mktpl-claude-datasaas — v12.0.0
 
-A plugin marketplace for Claude Code providing sprint management, code review, security scanning, infrastructure automation, and development workflow tools. 23 plugins across 5 domains, backed by 4 shared MCP servers.
+A focused Claude Code plugin marketplace: sprint management, documentation, data engineering, and a Dash + DMC design system.
 
-## Plugins
+**v12.0.0 is a major cleanup release.** 16 plugins were removed because Claude Code now covers their use cases natively (see [docs/MIGRATION-v12.md](docs/MIGRATION-v12.md)). What's left is what actually pulls its weight.
 
-### Core (9 plugins — v9.0.1)
+## The 5 plugins
 
-| Plugin | Description |
-|--------|-------------|
-| `projman` | Sprint planning and project management with Gitea integration |
-| `git-flow` | Git workflow automation with intelligent commit messages and branch management |
-| `pr-review` | Multi-agent pull request review with confidence scoring |
-| `code-sentinel` | Security scanning and code refactoring tools |
-| `doc-guardian` | Documentation drift detection and synchronization |
-| `clarity-assist` | Prompt optimization with ND-friendly accommodations |
-| `contract-validator` | Cross-plugin compatibility validation and agent verification |
-| `claude-config-maintainer` | CLAUDE.md and settings.local.json optimization |
-| `project-hygiene` | Manual project file cleanup checks |
+| Plugin | Purpose |
+|---|---|
+| [`projman`](plugins/projman) | Sprint planning, RFCs, ADRs, lessons learned — backed by a Gitea MCP server |
+| [`doc-guardian`](plugins/doc-guardian) | Documentation drift detection and sync |
+| [`git-guardrails`](plugins/git-guardrails) | Two `PreToolUse(Bash)` hooks — branch-name and commit-message validation |
+| [`data-platform`](plugins/data-platform) | Data engineering toolkit: pandas / PostgreSQL / dbt (MCP server) |
+| [`dmc-design`](plugins/dmc-design) | Dash Mantine Components design system with validation MCP |
 
-### Data (6 plugins)
-
-| Plugin | Version | Description |
-|--------|---------|-------------|
-| `data-platform` | 9.1.0 | pandas, PostgreSQL/PostGIS, and dbt integration |
-| `dmc-design` | 1.0.0 | Dash Mantine Components design system: validation, themes, CSS patterns, and user-declared pattern enforcement |
-| `dash-scaffold` | 1.0.0 | Dash application scaffolding: layouts, pages, AppShell, navbar, responsive breakpoints |
-| `plotly-charts` | 1.0.0 | Plotly chart scaffolding for Dash applications, theme-aware via dmc-design contract |
-| `drawio-plugin` | 1.3.0 | Wireframe design tools — parse .drawio XML into DMC specs, generate wireframes from descriptions |
-| `data-seed` | 0.1.0 — scaffold | Test data generation and database seeding |
-
-### Ops (2 plugins)
-
-| Plugin | Version | Description |
-|--------|---------|-------------|
-| `ops-release-manager` | 0.1.0 — scaffold | Release management with SemVer and changelog automation |
-| `ops-deploy-pipeline` | 0.1.0 — scaffold | Deployment pipeline for Docker Compose and systemd |
-
-### SaaS (4 plugins — v0.1.0 scaffolds)
-
-| Plugin | Description |
-|--------|-------------|
-| `saas-api-platform` | REST/GraphQL API scaffolding for FastAPI and Express |
-| `saas-db-migrate` | Database migration management for Alembic, Prisma, raw SQL |
-| `saas-react-platform` | React frontend toolkit for Next.js and Vite |
-| `saas-test-pilot` | Test automation for pytest, Jest, Vitest, Playwright |
-
-### Debug (1 plugin — v0.1.0 scaffold)
-
-| Plugin | Description |
-|--------|-------------|
-| `debug-mcp` | MCP server debugging, inspection, and development toolkit |
-
-## Quick Start
-
-### Launch with profiles
+## Quick start
 
 ```bash
-./scripts/claude-launch.sh [profile] [extra-args...]
+git clone <repo>
+cd mktpl-claude-datasaas
+./scripts/setup.sh                      # creates venvs, config templates, skill aliases
+# Edit ~/.config/claude/gitea.env with a real token
+./scripts/validate-marketplace.sh       # sanity check
+./scripts/verify-hooks.sh               # sanity check
+# Restart Claude Code
 ```
 
-| Profile | Plugins Loaded | Use Case |
-|---------|----------------|----------|
-| `sprint` | projman, git-flow, pr-review, code-sentinel, doc-guardian, clarity-assist | Default. Sprint planning and development |
-| `review` | pr-review, code-sentinel | Lightweight code review |
-| `data` | data-platform, dmc-design, dash-scaffold, plotly-charts | Data engineering and visualization |
-| `full` | All 23 plugins | When you need everything |
-
-```bash
-./scripts/claude-launch.sh                    # Default sprint profile
-./scripts/claude-launch.sh data --model opus  # Data profile with Opus
-./scripts/claude-launch.sh full               # Load all plugins
-```
-
-### Common commands
-
-```bash
-/sprint plan                  # Plan a sprint with architecture analysis
-/sprint start                 # Begin sprint execution
-/gitflow commit --push        # Commit with auto-generated message and push
-/pr review                    # Full multi-agent PR review
-/security-review              # Security audit (built-in)
-/doc audit                    # Check for documentation drift
-/cv status                    # Marketplace health check
-```
-
-## Repository Structure
+Then in any project that has `.env` with `GITEA_ORG` and `GITEA_REPO`, run:
 
 ```
-mktpl-claude-datasaas/
-├── .claude-plugin/                # Marketplace manifest
-│   ├── marketplace.json
-│   ├── marketplace-lean.json      # Lean profile (6 core plugins)
-│   └── marketplace-full.json      # Full profile (all plugins)
-├── mcp-servers/                   # Shared MCP servers
-│   ├── gitea/                     # Gitea (issues, PRs, wiki)
-│   ├── data-platform/             # pandas, PostgreSQL, dbt
-│   ├── dmc-design/                # DMC validation, themes, design contract
-│   └── contract-validator/        # Plugin compatibility validation
-├── plugins/                       # All plugins (23 total)
-│   ├── projman/                   # [core] Sprint management
-│   ├── git-flow/                  # [core] Git workflow automation
-│   ├── pr-review/                 # [core] PR review
-│   ├── clarity-assist/            # [core] Prompt optimization
-│   ├── doc-guardian/              # [core] Documentation drift detection
-│   ├── code-sentinel/             # [core] Security scanning
-│   ├── claude-config-maintainer/  # [core] CLAUDE.md optimization
-│   ├── contract-validator/        # [core] Cross-plugin validation
-│   ├── project-hygiene/           # [core] Manual cleanup checks
-│   ├── data-platform/             # [data] Data engineering
-│   ├── dmc-design/                # [data] DMC design system, pattern enforcement
-│   ├── dash-scaffold/             # [data] Dash layouts and scaffolding
-│   ├── plotly-charts/             # [data] Plotly chart scaffolding
-│   ├── drawio-plugin/             # [data] Wireframe design tools
-│   ├── data-seed/                 # [data] Test data generation (scaffold)
-│   ├── saas-api-platform/         # [saas] API scaffolding (scaffold)
-│   ├── saas-db-migrate/           # [saas] DB migrations (scaffold)
-│   ├── saas-react-platform/       # [saas] React toolkit (scaffold)
-│   ├── saas-test-pilot/           # [saas] Test automation (scaffold)
-│   ├── ops-release-manager/       # [ops] Release management (scaffold)
-│   ├── ops-deploy-pipeline/       # [ops] Deployment pipeline (scaffold)
-│   └── debug-mcp/                 # [debug] MCP debugging (scaffold)
-├── scripts/                       # Setup and maintenance
-│   ├── setup.sh                   # Initial setup (create venvs, config)
-│   ├── post-update.sh             # Post-update (clear cache, changelog)
-│   ├── setup-venvs.sh             # MCP server venv management (cache-based)
-│   ├── validate-marketplace.sh    # Marketplace compliance validation
-│   ├── verify-hooks.sh            # Hook inventory verification
-│   ├── release.sh                 # Release automation with version bumping
-│   ├── claude-launch.sh           # Profile-based launcher
-│   ├── install-plugin.sh          # Install plugin to consumer project
-│   ├── list-installed.sh          # Show installed plugins in a project
-│   └── uninstall-plugin.sh        # Remove plugin from consumer project
-├── docs/                          # Documentation
-│   ├── ARCHITECTURE.md            # System architecture & plugin reference
-│   ├── CANONICAL-PATHS.md         # Authoritative path reference
-│   ├── COMMANDS-CHEATSHEET.md     # All commands quick reference
-│   ├── CONFIGURATION.md           # Centralized setup guide
-│   ├── DEBUGGING-CHECKLIST.md     # Systematic troubleshooting guide
-│   ├── MIGRATION-v9.md            # v8.x to v9.0.0 migration guide
-│   └── UPDATING.md               # Update guide
-├── CLAUDE.md                      # Project instructions for Claude Code
-├── README.md
-├── CHANGELOG.md
-├── LICENSE
-└── .gitignore
+/sprint status
 ```
 
-## MCP Servers
+## Key commands
 
-All MCP servers are shared at repository root and configured in `.mcp.json`.
+| What you want to do | Command |
+|---|---|
+| Plan the next sprint | `/sprint plan` |
+| Start executing | `/sprint start` |
+| Check progress | `/sprint status` |
+| Review code before close | `/sprint review` |
+| Close the sprint | `/sprint close` |
+| New RFC | `/rfc create` |
+| New ADR | `/adr create` |
+| Audit docs | `/doc audit` |
+| Profile a dataset | `/data profile` |
+| Scaffold a DMC component | `/design component` |
 
-| Server | Used By | External System |
-|--------|---------|-----------------|
-| gitea | projman, pr-review | Gitea (issues, PRs, wiki, milestones) |
-| data-platform | data-platform | PostgreSQL, dbt |
-| dmc-design | dmc-design | DMC component registry, design contract |
-| contract-validator | contract-validator | Internal validation |
+Full list: [docs/COMMANDS-CHEATSHEET.md](docs/COMMANDS-CHEATSHEET.md).
 
-## Installation
+## Rely on Claude Code built-ins (don't reinvent)
 
-### Prerequisites
+| Task | Built-in |
+|---|---|
+| Project setup | `/init` |
+| Security audit | `/security-review` |
+| PR review | `/review` or `/ultrareview` |
+| Plan mode | `/plan <description>` or Shift+Tab to cycle |
+| Task tracking | `TodoWrite` (projman orchestrator uses it automatically) |
 
-- Claude Code installed
-- Python 3.10+
-- Access to target services (Gitea as needed)
-
-### Add marketplace to Claude Code
-
-```bash
-/plugin marketplace add https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas.git
-```
-
-Or add to `.claude/settings.json`:
-
-```json
-{
-  "extraKnownMarketplaces": {
-    "mktpl-claude-datasaas": {
-      "source": {
-        "source": "git",
-        "url": "https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas.git"
-      }
-    }
-  }
-}
-```
-
-### Setup MCP servers
-
-After installing, create Python venvs for MCP servers:
-
-```bash
-cd ~/.claude/plugins/marketplaces/mktpl-claude-datasaas && ./scripts/setup.sh
-```
-
-Then restart Claude Code and run the interactive setup:
+## Repo layout
 
 ```
-/projman setup
+plugins/        5 plugins (projman, doc-guardian, git-guardrails, data-platform, dmc-design)
+mcp-servers/    3 MCP servers (gitea, data-platform, dmc-design)
+docs/           Architecture, paths, commands, configuration, debugging, migration
+scripts/        Setup, validation, release automation
+.claude-plugin/ marketplace.json (single profile)
+.mcp.json       MCP server registration
 ```
 
-See [CONFIGURATION.md](./docs/CONFIGURATION.md) for manual setup and advanced options.
-
-### Install to consumer projects
-
-```bash
-./scripts/install-plugin.sh <plugin-name> /path/to/project
-./scripts/list-installed.sh /path/to/project
-./scripts/uninstall-plugin.sh <plugin-name> /path/to/project
-```
+Full detail: [docs/CANONICAL-PATHS.md](docs/CANONICAL-PATHS.md).
 
 ## Documentation
 
-| Document | Description |
-|----------|-------------|
-| [CLAUDE.md](./CLAUDE.md) | Project instructions for Claude Code |
-| [ARCHITECTURE.md](./docs/ARCHITECTURE.md) | System architecture and plugin reference |
-| [COMMANDS-CHEATSHEET.md](./docs/COMMANDS-CHEATSHEET.md) | All commands quick reference |
-| [CONFIGURATION.md](./docs/CONFIGURATION.md) | Centralized setup guide |
-| [DEBUGGING-CHECKLIST.md](./docs/DEBUGGING-CHECKLIST.md) | Systematic troubleshooting guide |
-| [UPDATING.md](./docs/UPDATING.md) | Update guide for the marketplace |
-| [MIGRATION-v9.md](./docs/MIGRATION-v9.md) | v8.x to v9.0.0 migration guide |
-| [CANONICAL-PATHS.md](./docs/CANONICAL-PATHS.md) | Authoritative path reference |
-| [CHANGELOG.md](./CHANGELOG.md) | Version history |
-
-## Validation
-
-```bash
-./scripts/validate-marketplace.sh    # Marketplace compliance (manifests, domains, paths)
-./scripts/verify-hooks.sh            # Hook inventory (3 PreToolUse across 2 plugins)
-```
+| Topic | Doc |
+|---|---|
+| Architecture & agent matrix | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) |
+| Paths & schemas | [docs/CANONICAL-PATHS.md](docs/CANONICAL-PATHS.md) |
+| All commands | [docs/COMMANDS-CHEATSHEET.md](docs/COMMANDS-CHEATSHEET.md) |
+| Configuration | [docs/CONFIGURATION.md](docs/CONFIGURATION.md) |
+| Debugging | [docs/DEBUGGING-CHECKLIST.md](docs/DEBUGGING-CHECKLIST.md) |
+| Updates | [docs/UPDATING.md](docs/UPDATING.md) |
+| v11 → v12 migration | [docs/MIGRATION-v12.md](docs/MIGRATION-v12.md) |
 
 ## License
 
-MIT License
-
-## Support
-
-- **Repository**: https://gitea.hotserv.cloud/personal-projects/mktpl-claude-datasaas.git
+MIT. See [LICENSE](LICENSE).

@@ -5,8 +5,8 @@ name: data setup
 # /data setup - Data Platform Setup Wizard
 
 ## Skills to Load
-- skills/setup-workflow.md
-- skills/visual-header.md
+- skills/setup-workflow/SKILL.md
+- skills/visual-header/SKILL.md
 
 ## Visual Output
 
@@ -20,7 +20,7 @@ Display header: `DATA-PLATFORM - Setup Wizard`
 
 ## Workflow
 
-Execute `skills/setup-workflow.md` phases in order:
+Execute `skills/setup-workflow/SKILL.md` phases in order:
 
 ### Phase 1: Environment Validation
 - Check Python 3.10+ installed

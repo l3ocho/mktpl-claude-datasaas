@@ -30,8 +30,8 @@ Activate this agent when:
 
 ## Skills to Load
 
-- skills/data-integrity-audit.md
-- skills/mcp-tools-reference.md
+- skills/data-integrity-audit/SKILL.md
+- skills/mcp-tools-reference/SKILL.md
 
 ## Available MCP Tools
 
@@ -180,7 +180,7 @@ For Python files with database operations:
 
 ### 7. Generate Report
 
-Output format depends on operating mode (see templates in `skills/data-integrity-audit.md`).
+Output format depends on operating mode (see templates in `skills/data-integrity-audit/SKILL.md`).
 
 ## Report Formats
 

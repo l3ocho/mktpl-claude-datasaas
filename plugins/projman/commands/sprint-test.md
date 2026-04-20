@@ -7,7 +7,7 @@ description: Run tests with coverage or generate tests for specified code
 
 ## Skills Required
 
-- skills/test-standards.md
+- skills/test-standards/SKILL.md
 
 ## Purpose
 
@@ -50,7 +50,7 @@ Run tests and verify coverage before sprint close.
 4. **Sprint File Analysis**
    Identify sprint files without tests.
 
-See `skills/test-standards.md` for framework detection and commands.
+See `skills/test-standards/SKILL.md` for framework detection and commands.
 
 ### DO NOT (Run Mode)
 
@@ -92,7 +92,7 @@ Generate comprehensive tests for specified code.
 4. **Output File**
    Create test file with proper structure and naming.
 
-See `skills/test-standards.md` for test patterns and structure.
+See `skills/test-standards/SKILL.md` for test patterns and structure.
 
 ### DO NOT (Generate Mode)
 

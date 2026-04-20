@@ -6,9 +6,9 @@ description: Interactive setup wizard for dmc-design plugin
 # /design setup
 
 ## Skills to Load
-- skills/mcp-tools-reference.md
-- skills/theming-system.md
-- skills/dmc-components.md
+- skills/mcp-tools-reference/SKILL.md
+- skills/theming-system/SKILL.md
+- skills/dmc-components/SKILL.md
 
 Sets up dmc-design with DMC validation, theming, and design contract.
 

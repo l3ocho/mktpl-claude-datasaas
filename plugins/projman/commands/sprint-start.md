@@ -8,16 +8,16 @@ agent: orchestrator
 
 ## Skills Required
 
-- skills/mcp-tools-reference.md (frontmatter — auto-injected)
-- skills/batch-execution.md (frontmatter — auto-injected)
-- skills/branch-security.md
-- skills/sprint-approval.md
-- skills/dependency-management.md
-- skills/lessons-learned.md
-- skills/git-workflow.md
-- skills/progress-tracking.md
-- skills/runaway-detection.md
-- skills/sprint-lifecycle.md
+- skills/mcp-tools-reference/SKILL.md (frontmatter — auto-injected)
+- skills/batch-execution/SKILL.md (frontmatter — auto-injected)
+- skills/branch-security/SKILL.md
+- skills/sprint-approval/SKILL.md
+- skills/dependency-management/SKILL.md
+- skills/lessons-learned/SKILL.md
+- skills/git-workflow/SKILL.md
+- skills/progress-tracking/SKILL.md
+- skills/runaway-detection/SKILL.md
+- skills/sprint-lifecycle/SKILL.md
 
 ## Purpose
 
@@ -34,7 +34,7 @@ Run `/sprint start` when ready to begin executing a planned sprint.
 
 Execute the sprint start workflow:
 
-1. **Verify Sprint Approval & Lifecycle State** (required) - Check milestone for approval record. STOP if missing unless `--force` flag provided. Also verify lifecycle state is `Sprint/Planning` per `skills/sprint-lifecycle.md`. Set `Sprint/Executing` after verification passes.
+1. **Verify Sprint Approval & Lifecycle State** (required) - Check milestone for approval record. STOP if missing unless `--force` flag provided. Also verify lifecycle state is `Sprint/Planning` per `skills/sprint-lifecycle/SKILL.md`. Set `Sprint/Executing` after verification passes.
 2. **Detect Checkpoints** - Check for resume points from interrupted sessions
 3. **Fetch Sprint Issues** - Get open issues from milestone
 4. **Analyze Dependencies** - Use `get_execution_order` for parallel batches

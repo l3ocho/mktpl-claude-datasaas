@@ -209,7 +209,7 @@ setup_skill_aliases() {
 setup_labels() {
     log_info "Checking label taxonomy..."
 
-    local labels_file="$REPO_ROOT/plugins/projman/skills/label-taxonomy/labels-reference.md"
+    local labels_file="$REPO_ROOT/plugins/projman/skills/label-taxonomy/SKILL.md"
 
     if [[ -f "$labels_file" ]]; then
         log_success "Label reference file exists"
@@ -272,7 +272,7 @@ print_report() {
 # --- Main ---
 main() {
     echo "=============================================="
-    echo "  Leo Claude Marketplace Setup (v5.7.1)"
+    echo "  Leo Claude Marketplace Setup (v12.0.0)"
     echo "=============================================="
     echo ""
 
@@ -280,7 +280,6 @@ main() {
     setup_shared_mcp "gitea"
     setup_shared_mcp "data-platform"
     setup_shared_mcp "dmc-design"
-    setup_shared_mcp "contract-validator"
 
     # Verify MCP configuration at root
     verify_mcp_config

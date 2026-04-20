@@ -1,321 +1,60 @@
-# Configuration Guide
+# Configuration guide — v12.0.0
 
-Centralized configuration documentation for all plugins and MCP servers in the Leo Claude Marketplace.
+Everything you need to configure to make the 5 plugins + 3 MCP servers work.
 
----
+## Two-layer config
 
-## Quick Start
+- **System-level** (`~/.config/claude/*.env`) — credentials, one per machine.
+- **Project-level** (`.env` at repo root + `.claude/settings.json`) — per-project overrides.
 
-**After installing the marketplace and plugins via Claude Code:**
+Projman reads both. Data-platform reads `postgres.env` optionally. Git-guardrails reads `git-flow.env` optionally.
 
-```
-/projman setup
-```
+## Required files
 
-The interactive wizard auto-detects what's needed and handles everything except manually adding your API tokens.
-
----
-
-## Setup Flow Diagram
-
-```
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                           FIRST TIME SETUP                                  │
-│                         (once per machine)                                  │
-└─────────────────────────────────────────────────────────────────────────────┘
-                                    │
-                                    ▼
-                             /projman setup --full
-                         (or /projman setup auto-detects)
-                                    │
-     ┌──────────────────────────────┼──────────────────────────────┐
-     ▼                              ▼                              ▼
-┌─────────────┐            ┌─────────────────┐            ┌─────────────────┐
-│  PHASE 1    │            │    PHASE 2      │            │    PHASE 3      │
-│  Automated  │───────────▶│    Automated    │───────────▶│   Interactive   │
-│             │            │                 │            │                 │
-│ • Check     │            │ • Find MCP path │            │ • Ask Gitea URL │
-│   Python    │            │ • Create venv   │            │ • Ask Org name  │
-│   version   │            │ • Install deps  │            │ • Create config │
-└─────────────┘            └─────────────────┘            └─────────────────┘
-                                                                   │
-                                                                   ▼
-                                                   ┌───────────────────────────┐
-                                                   │        PHASE 4            │
-                                                   │     USER ACTION           │
-                                                   │                           │
-                                                   │  Edit config file to add  │
-                                                   │  API token (for security) │
-                                                   │                           │
-                                                   │  nano ~/.config/claude/   │
-                                                   │       gitea.env           │
-                                                   └───────────────────────────┘
-                                                                   │
-                                                                   ▼
-     ┌──────────────────────────────┬──────────────────────────────┐
-     ▼                              ▼                              ▼
-┌─────────────┐            ┌─────────────────┐            ┌─────────────────┐
-│  PHASE 5    │            │    PHASE 6      │            │    PHASE 7      │
-│ Interactive │            │    Automated    │            │    Automated    │
-│             │            │                 │            │                 │
-│ • Confirm   │            │ • Create .env   │            │ • Test API      │
-│   repo name │            │ • Check         │            │ • Show summary  │
-│   from git  │            │   .gitignore    │            │ • Restart note  │
-└─────────────┘            └─────────────────┘            └─────────────────┘
-                                                                   │
-                                                                   ▼
-                                                   ┌───────────────────────────┐
-                                                   │      RESTART SESSION      │
-                                                   │                           │
-                                                   │  MCP tools available      │
-                                                   │  after restart            │
-                                                   └───────────────────────────┘
-
-
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                          NEW PROJECT SETUP                                  │
-│                        (once per project)                                   │
-└─────────────────────────────────────────────────────────────────────────────┘
-                                    │
-                    ┌───────────────┴───────────────┐
-                    ▼                               ▼
-            /projman setup --quick                  /projman setup
-             (explicit mode)               (auto-detects mode)
-                    │                               │
-                    │                    ┌──────────┴──────────┐
-                    │                    ▼                     ▼
-                    │              "Quick setup"         "Full setup"
-                    │               (skips to              (re-runs
-                    │              project config)          everything)
-                    │                    │                     │
-                    └────────────────────┴─────────────────────┘
-                                         │
-                                         ▼
-                              ┌─────────────────────┐
-                              │   PROJECT CONFIG    │
-                              │                     │
-                              │ • Detect repo from  │
-                              │   git remote        │
-                              │ • Confirm with user │
-                              │ • Create .env       │
-                              │ • Check .gitignore  │
-                              └─────────────────────┘
-                                         │
-                                         ▼
-                                      Done!
-```
-
----
-
-## What Runs Automatically vs User Interaction
-
-### `/projman setup --full` - Full Setup
-
-| Phase | Type | What Happens |
-|-------|------|--------------|
-| **1. Environment Check** | Automated | Verifies Python 3.10+ is installed |
-| **2. MCP Server Setup** | Automated | Finds plugin path, creates venv, installs dependencies |
-| **3. System Config Creation** | Interactive | Asks for Gitea URL and organization name |
-| **4. Token Entry** | **User Action** | User manually edits config file to add API token |
-| **5. Project Detection** | Interactive | Shows detected repo name, asks for confirmation |
-| **6. Project Config** | Automated | Creates `.env` file, checks `.gitignore` |
-| **7. Validation** | Automated | Tests API connectivity, shows summary |
-
-### `/projman setup --quick` - Quick Project Setup
-
-| Phase | Type | What Happens |
-|-------|------|--------------|
-| **1. Pre-flight Check** | Automated | Verifies system config exists |
-| **2. Project Detection** | Interactive | Shows detected repo name, asks for confirmation |
-| **3. Project Config** | Automated | Creates/updates `.env` file |
-| **4. Gitignore Check** | Interactive | Asks to add `.env` to `.gitignore` if missing |
-
----
-
-## One Command, Three Modes
-
-| Mode | When to Use | What It Does |
-|------|-------------|--------------|
-| `/projman setup` | Any time | Auto-detects: runs full, quick, or sync as needed |
-| `/projman setup --full` | First time on a machine | Full setup: MCP server + system config + project config |
-| `/projman setup --quick` | Starting a new project | Quick setup: project config only (assumes system is ready) |
-| `/projman setup --sync` | After repo move/rename | Updates .env to match current git remote |
-
-**Auto-detection logic:**
-1. No system config → **full** mode
-2. System config exists, no project config → **quick** mode
-3. Both exist, git remote differs → **sync** mode
-4. Both exist, match → already configured, offer to reconfigure
-
-**Typical workflow:**
-1. Install plugin → run `/projman setup` (auto-runs full mode)
-2. Start new project → run `/projman setup` (auto-runs quick mode)
-3. Repository moved? → run `/projman setup` (auto-runs sync mode)
-
----
-
-## Configuration Architecture
-
-This marketplace uses a **hybrid configuration** approach:
-
-```
-┌─────────────────────────────────────────────────────────────────┐
-│                    SYSTEM-LEVEL (once per machine)             │
-│                    ~/.config/claude/                            │
-├─────────────────────────────────────────────────────────────────┤
-│  gitea.env     │  GITEA_API_URL, GITEA_API_TOKEN                       │
-│  git-flow.env  │  GIT_WORKFLOW_STYLE, GIT_DEFAULT_BASE, etc.   │
-└─────────────────────────────────────────────────────────────────┘
-                              │
-                              │ Shared across all projects
-                              ▼
-┌─────────────────────────────────────────────────────────────────┐
-│                  PROJECT-LEVEL (once per project)              │
-│                  <project-root>/.env                            │
-├─────────────────────────────────────────────────────────────────┤
-│  GITEA_REPO              │  Repository as owner/repo format    │
-│  GIT_WORKFLOW_STYLE      │  (optional) Override system default │
-│  PR_REVIEW_*             │  (optional) PR review settings      │
-└─────────────────────────────────────────────────────────────────┘
-```
-
-**Benefits:**
-- Single token per service (update once, use everywhere)
-- Easy multi-project setup (just run `/projman setup` in each project)
-- Security (tokens never committed to git, never typed into AI chat)
-- Project isolation (each project can override defaults)
-
----
-
-## Prerequisites
-
-Before running `/projman setup`:
-
-1. **Python 3.10+** installed
-   ```bash
-   python3 --version  # Should be 3.10.0 or higher
-   ```
-
-2. **Git repository** initialized (for project setup)
-   ```bash
-   git status  # Should show initialized repository
-   ```
-
-3. **Claude Code** installed and working with the marketplace
-
----
-
-## Setup Methods
-
-### Method 1: Interactive Wizard (Recommended)
-
-Run the setup wizard in Claude Code:
-
-```
-/projman setup
-```
-
-The wizard will guide you through each step interactively and auto-detect the appropriate mode.
-
-**Note:** After first-time setup, you'll need to restart your Claude Code session for MCP tools to become available.
-
-### Method 2: Manual Setup
-
-If you prefer to set up manually or need to troubleshoot:
-
-#### Step 1: MCP Server Setup
+### `~/.config/claude/gitea.env`
 
 ```bash
-# Navigate to marketplace directory
-cd /path/to/mktpl-claude-datasaas
-
-# Set up Gitea MCP server
-cd mcp-servers/gitea
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-deactivate
-
-```
-
-#### Step 2: System Configuration
-
-```bash
-mkdir -p ~/.config/claude
-
-# Gitea configuration (credentials only)
-cat > ~/.config/claude/gitea.env << 'EOF'
-GITEA_API_URL=https://gitea.example.com
-GITEA_API_TOKEN=your_token_here
-EOF
-chmod 600 ~/.config/claude/gitea.env
-```
-
-#### Step 3: Project Configuration
-
-In each project root:
-
-```bash
-cat > .env << 'EOF'
-GITEA_REPO=your-organization/your-repo-name
-EOF
-```
-
-Add `.env` to `.gitignore` if not already there.
-
-### Method 3: Automation Script (CI/Scripting)
-
-For automated setups or CI environments:
-
-```bash
-cd /path/to/mktpl-claude-datasaas
-./scripts/setup.sh
-```
-
-This script is useful for CI/CD pipelines and bulk provisioning.
-
----
-
-## Configuration Reference
-
-### System-Level Files
-
-Located in `~/.config/claude/`:
-
-| File | Required By | Purpose |
-|------|-------------|---------|
-| `gitea.env` | projman, pr-review | Gitea API credentials |
-| `git-flow.env` | git-flow | Default git workflow settings |
-
-### Gitea Configuration
-
-```bash
-# ~/.config/claude/gitea.env
 GITEA_API_URL=https://gitea.example.com/api/v1
-GITEA_API_TOKEN=your_gitea_token_here
+GITEA_API_TOKEN=ghp_xxxxxxxxxxxxxxxx
 ```
 
-| Variable | Description | Example |
-|----------|-------------|---------|
-| `GITEA_API_URL` | Gitea API endpoint (with `/api/v1`) | `https://gitea.example.com/api/v1` |
-| `GITEA_API_TOKEN` | Personal access token | `abc123...` |
+Permissions: `chmod 600`. `./scripts/setup.sh` creates a template.
 
-**Note:** `GITEA_REPO` is configured at the project level in `owner/repo` format since different projects may belong to different organizations.
-
-**Generating a Gitea Token:**
-1. Log into Gitea → **User Icon** → **Settings**
-2. **Applications** tab → **Manage Access Tokens**
-3. **Generate New Token** with permissions:
-   - `repo` (all sub-permissions)
-   - `read:org`
-   - `read:user`
-   - `write:repo` (for wiki access)
-4. Copy token immediately (shown only once)
-
-### Git-Flow Configuration
+### `<project>/.env`
 
 ```bash
-# ~/.config/claude/git-flow.env
+GITEA_ORG=personal-projects
+GITEA_REPO=mktpl-claude-datasaas
+
+# Git-guardrails defaults (optional — see git-flow.env section below)
+GIT_WORKFLOW_STYLE=feature-branch
+GIT_DEFAULT_BASE=main
+GIT_AUTO_DELETE_MERGED=true
+GIT_AUTO_PUSH=true
+GIT_PROTECTED_BRANCHES=main
+```
+
+### `<project>/.claude/settings.json`
+
+```json
+{
+  "model": "opusplan"
+}
+```
+
+`opusplan` runs Opus in plan phase, Sonnet in execution. Recommended for projman workflows. You can override per-agent in agent frontmatter.
+
+## Optional files
+
+### `~/.config/claude/postgres.env` (for data-platform)
+
+```bash
+POSTGRES_URL=postgresql://user:password@localhost:5432/database
+```
+
+### `~/.config/claude/git-flow.env` (global git defaults)
+
+```bash
 GIT_WORKFLOW_STYLE=feature-branch
 GIT_DEFAULT_BASE=development
 GIT_AUTO_DELETE_MERGED=true
@@ -325,589 +64,63 @@ GIT_COMMIT_STYLE=conventional
 GIT_CO_AUTHOR=true
 ```
 
-| Variable | Default | Description |
-|----------|---------|-------------|
-| `GIT_WORKFLOW_STYLE` | `feature-branch` | Branching strategy |
-| `GIT_DEFAULT_BASE` | `development` | Default base branch |
-| `GIT_AUTO_DELETE_MERGED` | `true` | Delete merged branches |
-| `GIT_AUTO_PUSH` | `false` | Auto-push after commit |
-| `GIT_PROTECTED_BRANCHES` | `main,master,...` | Protected branches |
-| `GIT_COMMIT_STYLE` | `conventional` | Commit message style |
-| `GIT_CO_AUTHOR` | `true` | Include Claude co-author |
+Project-level `.env` values override these.
 
----
+### `<project>/.claude/dmc-components.json` (for dmc-design)
 
-## Project-Level Configuration
-
-Create `.env` in each project root:
-
-```bash
-# Required for projman, pr-review (use owner/repo format)
-GITEA_REPO=your-organization/your-repo-name
-
-# Optional: Override git-flow defaults
-GIT_WORKFLOW_STYLE=pr-required
-GIT_DEFAULT_BASE=main
-
-# Optional: PR review settings
-PR_REVIEW_CONFIDENCE_THRESHOLD=0.5
-PR_REVIEW_AUTO_SUBMIT=false
-```
-
-| Variable | Required | Description |
-|----------|----------|-------------|
-| `GITEA_REPO` | Yes | Repository in `owner/repo` format (e.g., `my-org/my-repo`) |
-| `GIT_WORKFLOW_STYLE` | No | Override system default |
-| `PR_REVIEW_*` | No | PR review settings |
-
----
-
-## Plugin Configuration Summary
-
-| Plugin | System Config | Project Config | Setup Command |
-|--------|---------------|----------------|---------------|
-| **projman** | gitea.env | .env (GITEA_REPO=owner/repo) | `/projman setup` |
-| **pr-review** | gitea.env | .env (GITEA_REPO=owner/repo) | `/pr setup` |
-| **git-flow** | git-flow.env (optional) | .env (optional) | None needed |
-| **clarity-assist** | None | None | None needed |
-| **data-platform** | postgres.env | .env (optional) | `/data setup` |
-| **dmc-design** | None | .env (DMC_LLMS_JSON_URL) | `/design setup` |
-| **drawio-plugin** | None | .env (DMC_LLMS_JSON_URL) + .claude/dmc-components.json | None needed |
-| **doc-guardian** | None | None | None needed |
-| **code-sentinel** | None | None | None needed |
-| **project-hygiene** | None | None | None needed |
-| **claude-config-maintainer** | None | None | None needed |
-| **contract-validator** | None | None | `/cv setup` |
-
----
-
-## Design Contract (dmc-design v1.0.0)
-
-The design contract is a per-consumer-project JSON file that defines the surface hierarchy and component lock rules enforced by the dmc-design resolver.
-
-### File Location
-
-```
-<consumer-project-root>/.claude/design-contract.json
-```
-
-Generated automatically during `/design setup` Phase 3. Edit directly or re-run setup to change.
-
-### Surface Hierarchy
-
-Four surface levels define where components are visually positioned:
-
-| Level | Components | Semantic meaning |
-|-------|-----------|-----------------|
-| `base` | AppShell, Container, Stack, Group | Page background |
-| `raised` | Card, Paper | Content elevated above base |
-| `overlay` | Modal, Drawer, Popover | Floating above page |
-| `nested_in_overlay` | Any component inside overlay | Nested inside Modal/Drawer |
-
-### Resolver Merge Rules
-
-Resolution priority (highest wins): `component_locks > surface tokens > requested_props`
-
-The resolver is called automatically by `validate_component` and all contract MCP tools.
-
-### Contract MCP Tools
-
-| Tool | Purpose |
-|------|---------|
-| `contract_load` | Load contract from consumer project |
-| `contract_validate` | Validate against JSON schema |
-| `contract_resolve_component` | Merge props with contract enforcement |
-| `contract_lock_component` | Freeze specific component props |
-| `contract_get_surface` | Get surface tokens for scheme+level |
-
-### Minimal Contract Example
+Filter which DMC components end up in the generated registry:
 
 ```json
 {
-  "schemes": {
-    "light": {
-      "surfaces": {
-        "base": { "bg": "white", "border": null, "variant": null },
-        "raised": { "bg": "white", "border": "gray.2", "variant": "outline" },
-        "overlay": { "bg": "gray.0", "border": null, "variant": null },
-        "nested_in_overlay": { "bg": "white", "border": null, "variant": null }
-      }
-    }
-  },
-  "component_locks": {},
-  "interaction": {
-    "hover_delta": -1,
-    "focus_ring": { "size": 2, "color_token": "primary.5" },
-    "disabled_opacity": 0.55,
-    "error_token": "red.6"
-  },
-  "density": "comfortable",
-  "meta": {
-    "version": "1.0.0",
-    "created_at": "2026-04-18T14:00:00Z",
-    "updated_at": "2026-04-18T14:00:00Z"
-  }
+  "components": ["Button", "TextInput", "Select"],
+  "categories": ["Layout", "Navigation"]
 }
 ```
 
----
+Empty = include everything.
 
-## DMC Reference Generation
-
-`drawio-plugin` and `dmc-design` both consume DMC reference artifacts generated from
-a `llms.json` file published by the Dash Mantine Components project.
-
-### Consumer Project Setup
-
-**Step 1 — Declare the DMC URL in `.env`:**
-
-```bash
-# <project-root>/.env
-DMC_LLMS_JSON_URL=https://www.dash-mantine-components.com/assets/llms.json
-```
-
-Point this URL at the `llms.json` matching the DMC version installed in the project's
-`.venv`. If you pin an older DMC version, use a versioned snapshot or local copy.
-
-`/design setup` will ask for this URL during onboarding and write it to `.env` automatically.
-
-**Step 2 — Declare component scope in `.claude/dmc-components.json`:**
-
-```json
-{
-  "components": ["AppShell", "Grid", "Button", "TextInput", "Select"],
-  "categories": ["layout", "inputs"]
-}
-```
-
-| Field | Type | Description |
-|---|---|---|
-| `components` | `list[str]` | Explicit component names to include |
-| `categories` | `list[str]` | Category names to include (all components in that category) |
-
-Both fields are optional and additive — the working set is the union of all matches.
-If both are absent or empty, all components are included (generates large files — use
-sparingly; always set at least one category filter).
-
-**Step 3 — Run the generator:**
-
-```bash
-python scripts/generate-dmc-refs.py --project /path/to/consumer-project
-
-# Preview without writing:
-python scripts/generate-dmc-refs.py --project /path/to/consumer-project --dry-run
-
-# Verbose output:
-python scripts/generate-dmc-refs.py --project /path/to/consumer-project --verbose
-```
-
-### Outputs
-
-| Artifact | Location | Consumed By |
-|---|---|---|
-| Domain txt files | `plugins/drawio-plugin/references/dmc/dmc-*.txt` | drawio-plugin (`/drawio parse`, `/drawio generate`) |
-| Component registry | `mcp-servers/dmc-design/registry/dmc_X_Y.json` | dmc-design MCP tools |
-
-Both outputs are auto-generated. Do not edit them manually.
-
-### When to Re-run
-
-- After upgrading DMC in the consumer project's `.venv`
-- After changing `.claude/dmc-components.json` to add/remove components
-- When the remote `llms.json` is updated for a new DMC patch release
-
-### Requirements
-
-The script requires `requests` and `python-dotenv`. Both are standard marketplace
-dependencies already present in the MCP server venvs.
-
----
-
-## Multi-Project Workflow
-
-Once system-level config is set up, adding new projects is simple:
-
-```
-cd ~/projects/new-project
-/projman setup
-```
-
-The command auto-detects that system config exists and runs quick project setup.
-
----
-
-## Installing Plugins to Consumer Projects
-
-The marketplace provides scripts to install plugins into consumer projects. This sets up the MCP server connections and adds CLAUDE.md integration snippets.
-
-### Install a Plugin
+## First-time setup flow
 
 ```bash
 cd /path/to/mktpl-claude-datasaas
-./scripts/install-plugin.sh <plugin-name> <target-project-path>
+./scripts/setup.sh
 ```
 
-**Examples:**
-```bash
-# Install data-platform to a portfolio project
-./scripts/install-plugin.sh data-platform ~/projects/personal-portfolio
+What it does:
 
-# Install multiple plugins
-./scripts/install-plugin.sh dmc-design ~/projects/personal-portfolio
-./scripts/install-plugin.sh projman ~/projects/personal-portfolio
-```
+1. Creates/activates venvs under `~/.cache/claude-mcp-venvs/mktpl-claude-datasaas/` for the 3 MCP servers.
+2. Writes `~/.config/claude/gitea.env`, `postgres.env`, `git-flow.env` if missing.
+3. Verifies `.mcp.json` exists at repo root.
+4. Installs personal skill aliases (`/sprint`, `/adr`, etc.) to `~/.claude/skills/`.
+5. Prints a `TODO` list for anything that still needs manual attention (e.g., "fill in `GITEA_API_TOKEN`").
 
-**What it does:**
-1. Validates the plugin exists in the marketplace
-2. Adds MCP server entry to target's `.mcp.json` (if plugin has MCP server)
-3. Appends integration snippet to target's `CLAUDE.md`
-4. Reports changes and lists available commands
+You still need to:
 
-**After installation:** Restart your Claude Code session for MCP tools to become available.
+- Edit `~/.config/claude/gitea.env` and fill in a real token.
+- In any consumer project, create `.env` with `GITEA_ORG` and `GITEA_REPO`.
+- Restart Claude Code so the new MCP servers load.
 
-### Uninstall a Plugin
+## After an update
 
 ```bash
-./scripts/uninstall-plugin.sh <plugin-name> <target-project-path>
+git pull
+./scripts/setup-venvs.sh --quick   # reuses unchanged venvs
+./scripts/post-update.sh           # clears plugin cache
 ```
 
-Removes the MCP server entry and CLAUDE.md integration section.
+Then restart Claude Code.
 
-### List Installed Plugins
+## Migrating from v11.x
 
-```bash
-./scripts/list-installed.sh <target-project-path>
-```
-
-Shows which marketplace plugins are installed, partially installed, or available.
-
-**Output example:**
-```
-✓ Fully Installed:
-  PLUGIN                   VERSION    PROFILE    DESCRIPTION
-  ------                   -------    -------    -----------
-  data-platform            1.3.0      readonly   pandas, PostgreSQL, and dbt integration...
-  dmc-design               1.0.0      default    DMC design system, validation, themes, CSS patterns...
-
-○ Available (not installed):
-  projman                  3.4.0      Sprint planning and project management...
-```
-
-### Profile-Based Installation
-
-Some plugins support multiple installation profiles for different deployment contexts. For example, `data-platform` has a `readonly` profile for projects that only consume data (no write access, no dbt).
-
-**Install with a profile:**
-```bash
-./scripts/install-plugin.sh data-platform ~/projects/webapp --profile readonly
-```
-
-**Check which profile is installed:**
-```bash
-./scripts/list-installed.sh ~/projects/webapp
-```
-
-**Switch profiles** (uninstall first, then reinstall with new profile):
-```bash
-./scripts/uninstall-plugin.sh data-platform ~/projects/webapp
-./scripts/install-plugin.sh data-platform ~/projects/webapp --profile readonly
-```
-
-**Plugins with profiles:**
-
-| Plugin | Profiles | Description |
-|--------|----------|-------------|
-| data-platform | `default`, `readonly` | `default`: full read/write + dbt. `readonly`: schema exploration + query only. |
-
-Plugins without profiles install the full integration snippet regardless.
-
-### Plugins with MCP Servers
-
-Not all plugins have MCP servers. The install script handles this automatically:
-
-| Plugin | Has MCP Server | Notes |
-|--------|---------------|-------|
-| data-platform | ✓ | pandas, PostgreSQL, dbt tools |
-| dmc-design | ✓ | DMC validation, design contract, theme tools |
-| contract-validator | ✓ | Plugin compatibility validation |
-| projman | ✓ (via gitea) | Issue, wiki, PR tools |
-| pr-review | ✓ (via gitea) | PR review tools |
-| git-flow | ✗ | Commands only |
-| doc-guardian | ✗ | Commands only |
-| code-sentinel | ✗ | Commands and hooks only |
-| clarity-assist | ✗ | Commands only |
-
-### Script Requirements
-
-- **jq** must be installed (`sudo apt install jq`)
-- Scripts are idempotent (safe to run multiple times)
-
----
-
-## Agent Frontmatter Configuration
-
-Agents specify their configuration in frontmatter using Claude Code's supported fields. Reference: https://code.claude.com/docs/en/sub-agents
-
-### Supported Frontmatter Fields
-
-| Field | Required | Default | Description |
-|-------|----------|---------|-------------|
-| `name` | Yes | — | Unique identifier, lowercase + hyphens |
-| `description` | Yes | — | When Claude should delegate to this subagent |
-| `model` | No | `inherit` | `sonnet`, `opus`, `haiku`, or `inherit` |
-| `permissionMode` | No | `default` | Controls permission prompts: `default`, `acceptEdits`, `dontAsk`, `bypassPermissions`, `plan` |
-| `disallowedTools` | No | none | Comma-separated tools to remove from agent's toolset |
-| `skills` | No | none | Comma-separated skills auto-injected into context at startup |
-| `hooks` | No | none | Lifecycle hooks scoped to this subagent |
-
-### Complete Agent Matrix
-
-| Plugin | Agent | `model` | `permissionMode` | `disallowedTools` | `skills` |
-|--------|-------|---------|-------------------|--------------------|----------|
-| projman | planner | opus | default | — | frontmatter (2) + body text (12) |
-| projman | orchestrator | sonnet | acceptEdits | — | frontmatter (2) + body text (10) |
-| projman | executor | sonnet | bypassPermissions | — | frontmatter (7) |
-| projman | code-reviewer | opus | default | Write, Edit, MultiEdit | frontmatter (4) |
-| pr-review | coordinator | sonnet | plan | Write, Edit, MultiEdit | — |
-| pr-review | security-reviewer | sonnet | plan | Write, Edit, MultiEdit | — |
-| pr-review | performance-analyst | sonnet | plan | Write, Edit, MultiEdit | — |
-| pr-review | maintainability-auditor | haiku | plan | Write, Edit, MultiEdit | — |
-| pr-review | test-validator | haiku | plan | Write, Edit, MultiEdit | — |
-| data-platform | data-advisor | sonnet | default | — | — |
-| data-platform | data-analysis | sonnet | plan | Write, Edit, MultiEdit | — |
-| data-platform | data-ingestion | haiku | acceptEdits | — | — |
-| dmc-design | design-reviewer | sonnet | plan | Write, Edit, MultiEdit | frontmatter (5) |
-| dash-scaffold | layout-builder | sonnet | default | — | — |
-| contract-validator | full-validation | sonnet | default | — | — |
-| contract-validator | agent-check | haiku | plan | Write, Edit, MultiEdit | — |
-| code-sentinel | refactor-advisor | sonnet | acceptEdits | — | — |
-| doc-guardian | doc-analyzer | sonnet | acceptEdits | — | — |
-| clarity-assist | clarity-coach | sonnet | default | Write, Edit, MultiEdit | — |
-| git-flow | git-assistant | haiku | acceptEdits | — | — |
-| claude-config-maintainer | maintainer | sonnet | acceptEdits | — | frontmatter (2) |
-
-### Agent Purpose Guide
-
-**Key Agents for Data Analysis (v9.1.0+):**
-
-| Agent | Purpose | When to Use | Example |
-|-------|---------|------------|---------|
-| **data-advisor** | Query optimization and performance suggestions | Before running expensive queries; optimization of existing SQL | "Why is this query slow? Suggest optimization." |
-| **data-analysis** | Autonomous hypothesis testing, statistical discovery, Jupyter generation | Open-ended exploration; finding non-obvious patterns; generating analytical narratives | "Explore this dataset for interesting patterns and generate a notebook" |
-| **data-ingestion** | Data loading and validation from external sources | ETL workflows; data quality checks on import | "Load this CSV and validate it against the schema" |
-
-**Capabilities by Agent:**
-
-- **data-advisor:** Query planning, execution plans, optimization hints
-- **data-analysis (Exploration Mode):** Schema discovery → profiling → hypothesis generation → statistical testing → narrative synthesis
-- **data-analysis (Profiling Mode):** Data quality scoring, null rates, outlier detection, basic statistics
-- **data-ingestion:** File format detection, type inference, validation rules, error handling
-
-### Design Principles
-
-- `bypassPermissions` is granted to exactly ONE agent (Executor) which has code-sentinel PreToolUse hook + Code Reviewer downstream as safety nets.
-- `plan` mode is assigned to all pure analysis agents (pr-review, read-only validators).
-- `disallowedTools: Write, Edit, MultiEdit` provides defense-in-depth on agents that should never write files.
-- `skills` frontmatter is used for agents with ≤7 skills where guaranteed loading is safety-critical. Agents with 8+ skills use body text `## Skills to Load` for selective loading.
-- `hooks` (agent-scoped) is reserved for future use (v6.0+).
-
-Override any field by editing the agent's `.md` file in `plugins/{plugin}/agents/`.
-
-### permissionMode Guide
-
-| Value | Prompts for file ops? | Prompts for Bash? | Prompts for MCP? | Use when |
-|-------|-----------------------|-------------------|-------------------|----------|
-| `default` | Yes | Yes | No (MCP bypasses permissions) | You want full visibility |
-| `acceptEdits` | No | Yes | No | Core job is file read/write, Bash visibility useful |
-| `dontAsk` | No | No (most) | No | Even Bash prompts are friction |
-| `bypassPermissions` | No | No | No | Agent has downstream safety layers |
-| `plan` | N/A (read-only) | N/A (read-only) | No | Pure analysis, no modifications |
-
-### disallowedTools Guide
-
-Use `disallowedTools` to remove specific tools from an agent's toolset. This is a blacklist — the agent inherits all tools from the main thread, then the listed tools are removed.
-
-Prefer `disallowedTools` over `tools` (whitelist) because:
-- New MCP servers are automatically available without updating every agent.
-- Less configuration to maintain.
-- Easier to audit — you only list what's blocked.
-
-Common patterns:
-- `disallowedTools: Write, Edit, MultiEdit` — read-only agent, cannot modify files.
-- `disallowedTools: Bash` — no shell access (rare, most agents need at least read-only Bash).
-
-### skills Frontmatter Guide
-
-The `skills` field auto-injects skill file contents into the agent's context window at startup. The agent does NOT need to read the files — they are already present.
-
-**When to use frontmatter `skills`:**
-- Agent has ≤7 skills.
-- Skills are safety-critical (e.g., `branch-security`, `runaway-detection`).
-- You need guaranteed loading — no risk of the agent skipping a skill.
-
-**When to keep body text `## Skills to Load`:**
-- Agent has 8+ skills (context window cost too high for full injection).
-- Skills are situational — not all needed for every invocation.
-- Agent benefits from selective loading based on the specific task.
-
-Skill names in frontmatter are resolved relative to the plugin's `skills/` directory. Use the filename without the `.md` extension.
-
-### Phase-Based Skill Loading (Body Text)
-
-For agents with 8+ skills, use **phase-based loading** in the agent body text. This structures skill reads into logical phases, with explicit instructions to read each skill exactly once.
-
-**Pattern:**
-
-```markdown
-## Skill Loading Protocol
-
-**Frontmatter skills (auto-injected, always available — DO NOT re-read these):**
-- `skill-a` — description
-- `skill-b` — description
-
-**Phase 1 skills — read ONCE at session start:**
-- skills/validation-skill.md
-- skills/safety-skill.md
-
-**Phase 2 skills — read ONCE when entering main work:**
-- skills/workflow-skill.md
-- skills/domain-skill.md
-
-**CRITICAL: Read each skill file exactly ONCE. Do NOT re-read skill files between MCP API calls.**
-```
-
-**Benefits:**
-- Frontmatter skills (always needed) are auto-injected — zero file read cost
-- Phase skills are read once at the appropriate time — not re-read per API call
-- `batch-execution` skill provides protocol for API-heavy phases
-- ~76-83% reduction in skill-related token consumption for typical sprints
-
-**Currently applied to:**
-- Planner agent: 2 frontmatter + 12 body text (3 phases)
-- Orchestrator agent: 2 frontmatter + 10 body text (2 phases)
-
----
-
-## Automatic Validation Features
-
-### API Validation
-
-When running `/projman setup`, the command:
-
-1. **Detects** organization and repository from git remote URL
-2. **Validates** via Gitea API: `GET /api/v1/repos/{org}/{repo}`
-3. **Auto-fills** if repository exists and is accessible (no confirmation needed)
-4. **Asks for confirmation** only if validation fails (404 or permission error)
-
-This catches typos and permission issues before saving configuration.
-
-### Mismatch Detection (SessionStart Hook)
-
-When you start a Claude Code session, a hook automatically:
-
-1. Reads `GITEA_REPO` (in `owner/repo` format) from `.env`
-2. Compares with current `git remote get-url origin`
-3. **Warns** if mismatch detected: "Repository location mismatch. Run `/projman setup --sync` to update."
-
-This helps when you:
-- Move a repository to a different organization
-- Rename a repository
-- Clone a repo but forget to update `.env`
-
----
-
-## Verification
-
-### Test Gitea Connection
-
-```bash
-source ~/.config/claude/gitea.env
-curl -H "Authorization: token $GITEA_API_TOKEN" "$GITEA_API_URL/user"
-```
-
-### Verify Project Setup
-
-In Claude Code, after restarting your session:
-```
-/labels sync
-```
-
-If this works, your setup is complete.
-
----
+See `docs/MIGRATION-v12.md` or run `/projman setup migrate` inside a Claude Code session.
 
 ## Troubleshooting
 
-### MCP tools not available
+See `docs/DEBUGGING-CHECKLIST.md`. The common symptoms:
 
-**Cause:** Session wasn't restarted after setup.
-**Solution:** Exit Claude Code and start a new session.
-
-### "Configuration not found" error
-
-```bash
-# Check system config exists
-ls -la ~/.config/claude/gitea.env
-
-# Check permissions (should be 600)
-stat ~/.config/claude/gitea.env
-```
-
-### Authentication failed
-
-```bash
-# Test token directly
-source ~/.config/claude/gitea.env
-curl -H "Authorization: token $GITEA_API_TOKEN" "$GITEA_API_URL/user"
-```
-
-If you get 401, regenerate your token in Gitea.
-
-### MCP server won't start
-
-```bash
-# Check venv exists
-ls /path/to/mcp-servers/gitea/.venv
-
-# If missing, create venv (do NOT delete existing venvs)
-cd /path/to/mcp-servers/gitea
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-deactivate
-```
-
-### Wrong repository
-
-```bash
-# Check project .env
-cat .env
-
-# Verify GITEA_REPO is in owner/repo format and matches Gitea exactly
-# Example: GITEA_REPO=my-org/my-repo
-```
-
----
-
-## Security Best Practices
-
-1. **Never commit tokens**
-   - Keep credentials in `~/.config/claude/` only
-   - Add `.env` to `.gitignore`
-
-2. **Secure configuration files**
-   ```bash
-   chmod 600 ~/.config/claude/*.env
-   ```
-
-3. **Never type tokens into AI chat**
-   - Always edit config files directly in your editor
-   - The `/projman setup` wizard respects this
-
-4. **Rotate tokens periodically**
-   - Every 6-12 months
-   - Immediately if compromised
-
-5. **Minimum permissions**
-   - Only grant required token permissions
-   - Use separate tokens for different environments
+| Symptom | Likely cause | Fix |
+|---|---|---|
+| "X MCP servers failed to start" | Venv missing | `./scripts/setup-venvs.sh` |
+| `/sprint` command not found | Skill aliases not installed, or session not restarted | `./scripts/install-skill-aliases.sh` then restart |
+| Edits didn't take effect | Editing source vs. installed path | Edit source, reinstall / `./scripts/post-update.sh`, restart |
+| Branch-check or commit-msg hook blocks | Branch name or commit message invalid | Fix the name/message — don't bypass |
