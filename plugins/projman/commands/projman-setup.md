@@ -1,6 +1,6 @@
 ---
 name: projman setup
-description: Configure projman - full setup, quick project init, sync, or migrate from v11
+description: [projman] Configure projman - full setup, quick project init, sync, or migrate from v11
 ---
 
 # Projman Setup

@@ -1,5 +1,6 @@
 ---
 name: data explain
+description: [data-platform] Explain SQL or pandas code
 ---
 
 # /data explain - dbt Model Explanation

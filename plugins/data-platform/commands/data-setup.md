@@ -1,5 +1,6 @@
 ---
 name: data setup
+description: [data-platform] Initialize data-platform project config
 ---
 
 # /data setup - Data Platform Setup Wizard

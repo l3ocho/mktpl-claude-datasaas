@@ -1,5 +1,6 @@
 ---
 name: data profile
+description: [data-platform] Profile a dataset (nulls, uniqueness, types)
 ---
 
 # /data profile - Data Profiling

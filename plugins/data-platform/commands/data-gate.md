@@ -1,6 +1,6 @@
 ---
 name: data gate
-description: Data integrity compliance gate (pass/fail) for sprint execution
+description: [data-platform] Data integrity compliance gate (pass/fail) for sprint execution
 gate_contract: v1
 arguments:
   - name: path

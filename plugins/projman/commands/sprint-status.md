@@ -1,6 +1,6 @@
 ---
 name: projman sprint status
-description: Check current sprint progress, identify blockers, optionally generate dependency diagram or token budget report
+description: [projman] Check current sprint progress, identify blockers, optionally generate dependency diagram or token budget report
 ---
 
 # Sprint Status

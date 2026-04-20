@@ -1,6 +1,6 @@
 ---
 name: projman rfc
-description: RFC lifecycle management - create, list, review, approve, reject
+description: [projman] RFC lifecycle management - create, list, review, approve, reject
 agent: planner
 ---
 

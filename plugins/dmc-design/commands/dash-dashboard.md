@@ -1,6 +1,6 @@
 ---
 name: dash dashboard
-description: Create a dashboard layout with the layout-builder agent
+description: [dmc-design] Create a dashboard layout with the layout-builder agent
 ---
 
 # /dash dashboard

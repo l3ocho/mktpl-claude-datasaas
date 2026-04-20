@@ -1,6 +1,6 @@
 ---
 name: projman project status
-description: Full project hierarchy status view (absorbs /proposal-status)
+description: [projman] Full project hierarchy status view (absorbs /proposal-status)
 agent: planner
 ---
 

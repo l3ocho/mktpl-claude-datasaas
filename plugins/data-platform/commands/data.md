@@ -1,6 +1,6 @@
 ---
 name: data
-description: Data engineering tools — type /data <action> for commands
+description: [data-platform] Data engineering tools — type /data <action> for commands
 ---
 
 # /data

@@ -1,6 +1,6 @@
 ---
 name: design component
-description: Validate DMC component usage against the design contract
+description: [dmc-design] Validate DMC component usage against the design contract
 skills:
   - skills/dmc-components/SKILL.md
   - skills/mcp-tools-reference/SKILL.md

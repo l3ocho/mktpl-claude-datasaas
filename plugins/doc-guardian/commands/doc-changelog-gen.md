@@ -1,6 +1,6 @@
 ---
 name: doc changelog-gen
-description: Generate changelog from conventional commits in Keep-a-Changelog format
+description: [doc-guardian] Generate changelog from conventional commits in Keep-a-Changelog format
 ---
 
 # /doc changelog-gen

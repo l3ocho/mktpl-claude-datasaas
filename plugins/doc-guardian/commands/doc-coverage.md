@@ -1,6 +1,6 @@
 ---
 name: doc coverage
-description: Calculate documentation coverage percentage for functions and classes
+description: [doc-guardian] Calculate documentation coverage percentage for functions and classes
 ---
 
 # /doc coverage

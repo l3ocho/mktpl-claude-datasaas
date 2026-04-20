@@ -1,6 +1,6 @@
 ---
 name: projman sprint close
-description: Complete sprint and capture lessons learned to Gitea Wiki
+description: [projman] Complete sprint and capture lessons learned to Gitea Wiki
 agent: orchestrator
 ---
 
