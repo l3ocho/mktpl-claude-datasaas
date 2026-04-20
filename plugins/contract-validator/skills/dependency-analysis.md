@@ -18,7 +18,7 @@ Check each plugin's `.mcp.json` for server definitions. Plugins with identical M
 **Common shared servers:**
 - `gitea` - Used by projman, pr-review
 - `data-platform` - Used by data-platform
-- `viz-platform` - Used by viz-platform
+- `dmc-design` - Used by dmc-design
 
 ## Data Flow Patterns
 
@@ -35,7 +35,7 @@ Check each plugin's `.mcp.json` for server definitions. Plugins with identical M
 ### Cross-Plugin Flows
 | Producer | Consumer | Data Type |
 |----------|----------|-----------|
-| data-platform | viz-platform | `data_ref` |
+| data-platform | dmc-design | `data_ref` |
 | projman | pr-review | issues/lessons |
 | gitea wiki | projman | lessons learned |
 

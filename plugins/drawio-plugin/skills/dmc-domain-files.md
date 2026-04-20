@@ -19,7 +19,7 @@ See `docs/CONFIGURATION.md` under "DMC Reference Generation" for the schema.
 Load this skill when:
 - Running `/drawio parse` — to determine which domain files to declare in `WIREFRAME.md`
 - Running `/drawio generate` — to understand which component categories exist
-- Answering questions about the DMC file loading strategy for viz-platform
+- Answering questions about the DMC file loading strategy for dmc-design
 
 ---
 
@@ -27,11 +27,11 @@ Load this skill when:
 
 Leo's DMC reference documentation has been split into domain-specific files.
 These files travel with `drawio-plugin` in `references/dmc/`.
-viz-platform loads only the files relevant to the current project — reducing context size.
+dmc-design loads only the files relevant to the current project — reducing context size.
 
 The `drawio parse` command detects which files are needed by scanning `component-class` attribute values.
 This is declared in `WIREFRAME.md` under `## DMC Domain Files Required`.
-viz-platform reads that declaration to know which files to load at session start.
+dmc-design reads that declaration to know which files to load at session start.
 
 ---
 
@@ -157,8 +157,8 @@ theme, createTheme, mantineTheme
 5. Always include `dmc-layout.txt` and `dmc-ui.txt` — never omit them
 6. Only declare files that actually exist in `references/dmc/`
 
-## How viz-platform Uses This
+## How dmc-design Uses This
 
-When viz-platform receives a `WIREFRAME.md`, it reads `## DMC Domain Files Required`
+When dmc-design receives a `WIREFRAME.md`, it reads `## DMC Domain Files Required`
 and uses the Skill tool (or direct Read) to load only the listed files from
 `plugins/drawio-plugin/references/dmc/` before scaffolding components.

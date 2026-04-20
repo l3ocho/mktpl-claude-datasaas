@@ -279,7 +279,7 @@ main() {
     # Shared MCP servers at repository root
     setup_shared_mcp "gitea"
     setup_shared_mcp "data-platform"
-    setup_shared_mcp "viz-platform"
+    setup_shared_mcp "dmc-design"
     setup_shared_mcp "contract-validator"
 
     # Verify MCP configuration at root

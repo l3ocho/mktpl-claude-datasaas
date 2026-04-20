@@ -4,12 +4,12 @@ Add this snippet to your project's CLAUDE.md to enable drawio-plugin capabilitie
 
 ## When to Use This Plugin
 
-Use `drawio-plugin` during the **design phase**, before running viz-platform scaffolding commands.
+Use `drawio-plugin` during the **design phase**, before running dmc-design scaffolding commands.
 
 Typical workflow:
 1. Create or receive a `.drawio` wireframe file
 2. Run `/drawio parse` → produces `WIREFRAME.md`
-3. Hand `WIREFRAME.md` to viz-platform → run `/viz component` or `/viz dashboard` to scaffold
+3. Hand `WIREFRAME.md` to dmc-design → run `/design component` or `/dash dashboard` to scaffold
 
 ## Integration Snippet
 
@@ -27,7 +27,7 @@ Spec:   docs/design/WIREFRAME.md
 - `/drawio generate "{description}"` — generate .drawio XML from UI description
 
 ### WIREFRAME.md Contract
-WIREFRAME.md is the upstream input for viz-platform DMC scaffolding.
+WIREFRAME.md is the upstream input for dmc-design DMC scaffolding.
 When scaffolding components, always read WIREFRAME.md first for:
 - Component hierarchy and parent chain
 - DMC domain files to load
@@ -50,14 +50,14 @@ When scaffolding components, always read WIREFRAME.md first for:
 
 ## WIREFRAME.md Contract
 
-`WIREFRAME.md` is produced by `/drawio parse` and consumed by `viz-platform`.
+`WIREFRAME.md` is produced by `/drawio parse` and consumed by `dmc-design`.
 
 By convention, app project wireframes are stored in `docs/design/{project-name}.drawio`
 and the generated `WIREFRAME.md` lands in the same directory (`docs/design/WIREFRAME.md`).
 This folder is synced via Nextcloud and shared across all development environments.
 
 The file contains:
-- **DMC domain files required** — which reference files viz-platform should load
+- **DMC domain files required** — which reference files dmc-design should load
 - **Shared layout** — AppShell, navbar component tree (written once, applies to all pages)
 - **Per-page content** — component hierarchy for each route, with `component-instructions`, callback wiring, and data bindings
 
@@ -65,5 +65,5 @@ The file contains:
 
 | Plugin | Relationship |
 |---|---|
-| `viz-platform` | Downstream consumer of WIREFRAME.md. Use viz-platform to scaffold DMC components after parsing. |
+| `dmc-design` | Downstream consumer of WIREFRAME.md. Use dmc-design to scaffold DMC components after parsing. |
 | `data-platform` | Unrelated — handles ETL and database operations, not UI design |
