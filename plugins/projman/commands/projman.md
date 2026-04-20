@@ -1,6 +1,6 @@
 ---
 name: projman
-description: projman plugin management — type /projman <action> for commands
+description: [projman] projman plugin management — type /projman <action> for commands
 ---
 
 # /projman

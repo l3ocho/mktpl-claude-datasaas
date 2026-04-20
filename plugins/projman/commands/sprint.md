@@ -1,6 +1,6 @@
 ---
 name: projman sprint
-description: Sprint lifecycle management — type /projman sprint <action> for commands
+description: [projman] Sprint lifecycle management — type /projman sprint <action> for commands
 ---
 
 # /sprint

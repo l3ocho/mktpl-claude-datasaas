@@ -1,6 +1,6 @@
 ---
 name: dash
-description: Dash application scaffolding — dashboard, page, breakpoints
+description: [dmc-design] Dash application scaffolding — dashboard, page, breakpoints
 ---
 
 # /dash

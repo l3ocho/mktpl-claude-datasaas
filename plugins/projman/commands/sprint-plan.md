@@ -1,6 +1,6 @@
 ---
 name: projman sprint plan
-description: Start sprint planning with AI-guided architecture analysis and issue creation
+description: [projman] Start sprint planning with AI-guided architecture analysis and issue creation
 agent: planner
 ---
 

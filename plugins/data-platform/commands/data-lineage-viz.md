@@ -1,5 +1,6 @@
 ---
 name: data lineage-viz
+description: [data-platform] Visualize dataset lineage as a graph
 ---
 
 # /data lineage-viz - Mermaid Lineage Visualization

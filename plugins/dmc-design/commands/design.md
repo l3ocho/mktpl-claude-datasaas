@@ -1,6 +1,6 @@
 ---
 name: design
-description: DMC Design System commands — setup, theme, pattern, component, accessibility
+description: [dmc-design] DMC Design System commands — setup, theme, pattern, component, accessibility
 ---
 
 # /design

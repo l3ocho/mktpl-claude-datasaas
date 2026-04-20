@@ -1,5 +1,6 @@
 ---
 name: data ingest
+description: [data-platform] Ingest CSV / Parquet into a pandas/PG target
 ---
 
 # /data ingest - Data Ingestion

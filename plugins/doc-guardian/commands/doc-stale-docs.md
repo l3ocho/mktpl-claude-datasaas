@@ -1,6 +1,6 @@
 ---
 name: doc stale-docs
-description: Detect documentation files that are stale relative to their associated code
+description: [doc-guardian] Detect documentation files that are stale relative to their associated code
 ---
 
 # /doc stale-docs

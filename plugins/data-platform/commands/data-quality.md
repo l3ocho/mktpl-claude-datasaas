@@ -1,5 +1,6 @@
 ---
 name: data quality
+description: [data-platform] Run data quality gates
 ---
 
 # /data quality - Data Quality Assessment

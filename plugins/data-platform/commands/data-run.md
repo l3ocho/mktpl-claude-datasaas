@@ -1,5 +1,6 @@
 ---
 name: data run
+description: [data-platform] Run a dbt / pandas / SQL job
 ---
 
 # /data run - Execute dbt Models

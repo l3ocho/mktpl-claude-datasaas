@@ -1,6 +1,6 @@
 ---
 name: chart
-description: Plotly chart scaffolding — create, export
+description: [dmc-design] Plotly chart scaffolding — create, export
 ---
 
 # /chart

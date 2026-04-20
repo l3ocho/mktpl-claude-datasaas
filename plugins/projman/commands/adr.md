@@ -1,6 +1,6 @@
 ---
 name: projman adr
-description: Architecture Decision Records management — type /projman adr <action> for commands
+description: [projman] Architecture Decision Records management — type /projman adr <action> for commands
 ---
 
 # /adr

@@ -1,6 +1,6 @@
 ---
 name: chart create
-description: Create a Plotly chart with theme integration
+description: [dmc-design] Create a Plotly chart with theme integration
 ---
 
 # /chart create

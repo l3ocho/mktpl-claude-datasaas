@@ -1,6 +1,6 @@
 ---
 name: doc
-description: Documentation management and drift detection — type /doc <action> for commands
+description: [doc-guardian] Documentation management and drift detection — type /doc <action> for commands
 ---
 
 # /doc

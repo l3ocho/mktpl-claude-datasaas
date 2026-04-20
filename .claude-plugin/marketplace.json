@@ -6,12 +6,12 @@
   },
   "metadata": {
     "description": "Sprint management, documentation, data engineering, and DMC design plugins for Claude Code",
-    "version": "12.0.0"
+    "version": "12.1.0"
   },
   "plugins": [
     {
       "name": "projman",
-      "version": "12.0.0",
+      "version": "12.1.0",
       "description": "Sprint planning, project/RFC/ADR workflow, and Gitea integration",
       "source": "./plugins/projman",
       "author": {
@@ -33,7 +33,7 @@
     },
     {
       "name": "doc-guardian",
-      "version": "12.0.0",
+      "version": "12.1.0",
       "description": "Documentation drift detection and synchronization",
       "source": "./plugins/doc-guardian",
       "author": {
@@ -52,7 +52,7 @@
     },
     {
       "name": "git-guardrails",
-      "version": "12.0.0",
+      "version": "12.1.0",
       "description": "Pre-commit branch-name and commit-message safety hooks",
       "source": "./plugins/git-guardrails",
       "author": {
@@ -75,7 +75,7 @@
     },
     {
       "name": "data-platform",
-      "version": "12.0.0",
+      "version": "12.1.0",
       "description": "Data engineering toolkit: pandas, PostgreSQL/PostGIS, dbt (via MCP server)",
       "source": "./plugins/data-platform",
       "author": {
@@ -97,7 +97,7 @@
     },
     {
       "name": "dmc-design",
-      "version": "12.0.0",
+      "version": "12.1.0",
       "description": "Unified Dash + DMC + Plotly design system with validation MCP server",
       "source": "./plugins/dmc-design",
       "author": {

@@ -1,6 +1,6 @@
 ---
 name: dash breakpoints
-description: Configure responsive breakpoints for dashboard layouts
+description: [dmc-design] Configure responsive breakpoints for dashboard layouts
 ---
 
 # /dash breakpoints

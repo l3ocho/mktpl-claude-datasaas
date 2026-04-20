@@ -1,6 +1,6 @@
 ---
 name: design theme
-description: Theme management — apply, create, or export CSS for a dmc-design theme
+description: [dmc-design] Theme management — apply, create, or export CSS for a dmc-design theme
 ---
 
 # /design theme

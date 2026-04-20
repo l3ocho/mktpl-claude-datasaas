@@ -1,6 +1,6 @@
 {
   "name": "git-guardrails",
-  "version": "1.0.0",
+  "version": "12.1.0",
   "description": "Pre-commit branch-name and commit-message safety hooks",
   "author": {
     "name": "Leo Miranda",
