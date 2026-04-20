@@ -1,5 +1,6 @@
 ---
 name: data lineage
+description: [data-platform] Show dataset lineage
 ---
 
 # /data lineage - Data Lineage Visualization

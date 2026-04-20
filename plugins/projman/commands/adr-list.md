@@ -1,6 +1,6 @@
 ---
 name: projman adr list
-description: List all ADRs grouped by status
+description: [projman] List all ADRs grouped by status
 agent: planner
 ---
 

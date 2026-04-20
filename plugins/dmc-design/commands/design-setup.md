@@ -1,6 +1,6 @@
 ---
 name: design setup
-description: Interactive setup wizard for dmc-design plugin
+description: [dmc-design] Interactive setup wizard for dmc-design plugin
 ---
 
 # /design setup

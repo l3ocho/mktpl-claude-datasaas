@@ -1,6 +1,6 @@
 ---
 name: chart export
-description: Export a Plotly chart to PNG, SVG, or PDF format
+description: [dmc-design] Export a Plotly chart to PNG, SVG, or PDF format
 ---
 
 # /chart export

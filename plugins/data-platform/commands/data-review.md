@@ -1,6 +1,6 @@
 ---
 name: data review
-description: Audit data integrity, schema validity, and dbt compliance
+description: [data-platform] Audit data integrity, schema validity, and dbt compliance
 arguments:
   - name: path
     description: File, directory, or dbt project to audit

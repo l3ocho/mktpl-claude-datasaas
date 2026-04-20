@@ -6,6 +6,27 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+## [12.1.0] - 2026-04-20
+
+### Headline
+
+Every plugin command's autocomplete entry now shows its plugin source. Typing `/` in Claude Code surfaces lines like `/sprint plan — [projman] Start sprint planning…` so you can tell plugin commands from Claude Code built-ins at a glance.
+
+### Added
+
+- `[plugin-name]` tag prefix on every command's `description:` frontmatter across `projman`, `doc-guardian`, `data-platform`, and `dmc-design`. 54 commands updated.
+- Explicit `description:` lines added to 10 `data-platform` commands that had only a `name:` field, so they now render properly in Claude Code autocomplete.
+
+### Changed
+
+- All plugin + marketplace versions unified at **12.1.0** (marketplace bundle version = individual plugin versions).
+
+### Notes
+
+No functional behavior changes — this is purely a UX / discoverability release. No migration steps required. Just `/reload-plugins` or restart Claude Code after pulling.
+
+If you still see commands like `/sprint` without any `[plugin]` tag in autocomplete, they're stale personal skill aliases from a previous install. Re-run `./scripts/install-skill-aliases.sh` from the marketplace source (or manually remove entries under `~/.claude/skills/` that correspond to commands you no longer use).
+
 ## [12.0.0] - 2026-04-20
 
 ### Headline

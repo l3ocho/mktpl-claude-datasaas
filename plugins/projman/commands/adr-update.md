@@ -1,6 +1,6 @@
 ---
 name: projman adr update
-description: Update an existing ADR's content or status
+description: [projman] Update an existing ADR's content or status
 agent: planner
 ---
 

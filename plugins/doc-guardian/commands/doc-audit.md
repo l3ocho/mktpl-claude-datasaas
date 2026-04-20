@@ -1,6 +1,6 @@
 ---
 name: doc audit
-description: Full documentation audit - scans entire project for doc drift without making changes
+description: [doc-guardian] Full documentation audit - scans entire project for doc drift without making changes
 ---
 
 # /doc audit

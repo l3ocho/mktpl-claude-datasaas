@@ -1,5 +1,6 @@
 ---
 name: data schema
+description: [data-platform] Extract schema from a dataset
 ---
 
 # /data schema - Schema Exploration

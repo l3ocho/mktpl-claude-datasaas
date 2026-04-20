@@ -1,5 +1,6 @@
 ---
 name: data dbt-test
+description: [data-platform] Run `dbt test` with grouped output
 ---
 
 # /data dbt-test - Run dbt Tests

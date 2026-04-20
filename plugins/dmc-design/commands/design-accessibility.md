@@ -1,6 +1,6 @@
 ---
 name: design accessibility
-description: Run WCAG accessibility validation on the current theme and color combinations
+description: [dmc-design] Run WCAG accessibility validation on the current theme and color combinations
 skills:
   - skills/accessibility-rules/SKILL.md
 ---

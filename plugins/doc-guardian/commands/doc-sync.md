@@ -1,6 +1,6 @@
 ---
 name: doc sync
-description: Synchronize all pending documentation updates in a single commit
+description: [doc-guardian] Synchronize all pending documentation updates in a single commit
 ---
 
 # /doc sync

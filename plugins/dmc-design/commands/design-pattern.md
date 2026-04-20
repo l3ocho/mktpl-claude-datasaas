@@ -1,6 +1,6 @@
 ---
 name: design pattern
-description: Design pattern enforcement — scan, lock, check, list, unlock
+description: [dmc-design] Design pattern enforcement — scan, lock, check, list, unlock
 skills:
   - skills/pattern-enforcement/SKILL.md
 ---
