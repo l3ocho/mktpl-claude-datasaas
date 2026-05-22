@@ -1,4 +1,4 @@
-# Commands cheatsheet — v12.0.0
+# Commands cheatsheet — v12.2.0
 
 Quick reference for every command across the 5 plugins. Use the fully-qualified `/projman:sprint` form, or install the short aliases via `./scripts/install-skill-aliases.sh` so `/sprint` works directly.
 
@@ -53,10 +53,11 @@ Quick reference for every command across the 5 plugins. Use the fully-qualified 
 |---|---|
 | `/labels sync` | Fetch Gitea labels, create missing required labels |
 
-## doc-guardian (6 commands)
+## doc-guardian (7 commands)
 
 | Command | Purpose |
 |---|---|
+| `/doc init` | Bootstrap documentation for a new or undocumented project |
 | `/doc audit` | Scan for drift between docs and code |
 | `/doc sync` | Propose or apply drift fixes |
 | `/doc changelog-gen` | Generate CHANGELOG entry from recent commits |
