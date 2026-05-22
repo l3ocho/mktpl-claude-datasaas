@@ -13,6 +13,7 @@ When invoked without a sub-command or with `$ARGUMENTS`, handle as follows:
 
 | Action | Command to Invoke | Description |
 |--------|-------------------|-------------|
+| `init` | `/doc-guardian:doc-init` | Bootstrap documentation for a new or undocumented project |
 | `audit` | `/doc-guardian:doc-audit` | Full documentation audit - scans for doc drift |
 | `sync` | `/doc-guardian:doc-sync` | Synchronize pending documentation updates |
 | `changelog-gen` | `/doc-guardian:doc-changelog-gen` | Generate changelog from conventional commits |
