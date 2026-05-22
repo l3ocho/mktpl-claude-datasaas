@@ -7,6 +7,32 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 ---
 
+## [12.2.0] - 2026-05-22
+
+### Headline
+
+`doc-guardian` evolves from drift-detection tool into a full documentation lifecycle tool. A new `doc-standards` skill defines the canonical documentation structure and rules for monolithic projects. A new `/doc init` command bootstraps standard-compliant documentation from scratch. `/doc audit` and `/doc sync` now load `doc-standards` as their policy layer, making audits stricter and sync fixes structure-aware.
+
+### Added
+
+- **`plugins/doc-guardian/skills/doc-standards/SKILL.md`** — canonical documentation standard for monolithic projects. Defines: document categories, folder structure, file naming, section hierarchies (full docs vs. directory READMEs), CLAUDE.md required structure, linking rules, source-of-truth enforcement, acronyms policy, diagrams policy, forbidden patterns, status indicators, and behavioral rules for consuming commands.
+- **`plugins/doc-guardian/commands/doc-init.md`** — new `/doc init` command. Bootstraps a standard-compliant doc set for new or undocumented projects. Features: project introspection (language, framework, source root, DB/deployment detection), pre-flight check with `--force` guard, interactive doc set selection, user prompts for non-derivable content, deterministic content generation from manifests, skeleton generation per `doc-standards`, cross-linking pass (Documentation Index, Contents tables, bidirectional Related links), and a verification handoff to `/doc audit`.
+
+### Changed
+
+- **`plugins/doc-guardian/commands/doc-audit.md`** — loads `doc-standards` skill; adds 12 new audit checks: standard compliance, filename convention, forbidden patterns, required default docs, orphan custom docs, directory READMEs, Contents table accuracy, Documentation Index accuracy, citation coverage, acronyms defined, status indicators, bidirectional links. Failures block (exit 1) — no softening to warnings. Suggests `/doc init` when required default docs are missing.
+- **`plugins/doc-guardian/commands/doc-sync.md`** — loads `doc-standards` skill; sync fixes now respect standard hierarchy, link format, and structure; orphan custom docs prompt the user rather than auto-deleting.
+- **`plugins/doc-guardian/commands/doc.md`** — router table updated to include `init` action.
+- **`plugins/doc-guardian/README.md`** — rewritten to reflect full lifecycle scope; Skills table added documenting all 4 skills.
+- **`plugins/doc-guardian/.claude-plugin/plugin.json`** — version `12.1.0` → `12.2.0`.
+- **`docs/COMMANDS-CHEATSHEET.md`** — doc-guardian section updated to 7 commands; `/doc init` added.
+
+### Notes
+
+Fully backward compatible. Existing commands continue to work on projects not using the standard. `/doc audit` will surface more findings on legacy projects — this is expected. Migration path: run `/doc init` to baseline, then `/doc audit` reports only true drift.
+
+---
+
 ## [12.1.0] - 2026-04-20
 
 ## [12.1.0] - 2026-04-20
