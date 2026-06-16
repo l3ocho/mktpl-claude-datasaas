@@ -10,6 +10,7 @@ skills:
   - skills/theming-system/SKILL.md
   - skills/dmc-components/SKILL.md
   - skills/accessibility-rules/SKILL.md
+  - skills/browser-feedback/SKILL.md
 ---
 
 # Design Reviewer Agent
@@ -34,6 +35,14 @@ files for design consistency issues.
    - Apply Rules 1–5 to all CSS files
    - Detect missing dark/light mode overrides
 
+4. **Live Render Verification** (only when Chrome DevTools MCP tools are available AND a Dash
+   app is running)
+   - Load `browser-feedback`
+   - Navigate to the route(s) under review; pull console errors and failed network requests
+   - Verify rendered surfaces and locked patterns against the live DOM — catches runtime
+     overrides that static analysis misses
+   - If the tools are unavailable or nothing is serving, skip silently and audit statically
+
 ## Report Format
 
 ```
@@ -52,6 +61,10 @@ files for design consistency issues.
 ### Color Scheme Integrity
 [violations or "✓ Clean" or "Single-mode project — skipped"]
 
+### Live Render Findings
+[console errors, failed callbacks, rendered-vs-contract drift, or "✓ Clean" or "No running
+app — static audit only"]
+
 ### Summary
 [N violations, M warnings]
 ```
@@ -63,3 +76,5 @@ files for design consistency issues.
 3. List Python files and CSS files in the project
 4. Audit each file against contract and patterns
 5. Do not suggest changes unless explicitly asked — audit only
+6. If Chrome DevTools MCP tools are available and a Dash app is running, perform Live Render
+   Verification via `browser-feedback`; otherwise note "static audit only"

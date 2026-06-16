@@ -1,6 +1,6 @@
 {
   "name": "dmc-design",
-  "version": "12.1.0",
+  "version": "12.2.0",
   "description": "Unified Dash + DMC + Plotly design system: component validation, themes, pattern enforcement, layout scaffolding, page/AppShell generation, responsive breakpoints, and chart scaffolding",
   "author": {
     "name": "Leo Miranda",
