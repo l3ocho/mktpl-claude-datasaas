@@ -66,6 +66,22 @@ GIT_CO_AUTHOR=true
 
 Project-level `.env` values override these.
 
+### Chrome DevTools MCP (optional, external)
+
+A third-party Node tool (`npx -y chrome-devtools-mcp@latest`) used by `dmc-design`'s
+`browser-feedback` skill to inspect a running Dash app. It is deliberately NOT one of the
+three bundled MCP servers and is NOT placed in `mcp-servers/`, because `install-plugin.sh`
+requires a `mcp-servers/<name>/run.sh` for every bundled server and `validate-marketplace.sh`
+hardcodes the three-server list — an npx tool fits neither.
+
+Register it at user scope (available in every consumer project; no per-repo `.mcp.json`
+churn):
+
+    claude mcp add chrome-devtools --scope user -- npx -y chrome-devtools-mcp@latest
+
+The `mcp__*` blanket allow in `.claude/settings.json` already covers `mcp__chrome-devtools__*`;
+no permission change is needed. Prerequisites: Node.js LTS, Chrome stable.
+
 ### `<project>/.claude/dmc-components.json` (for dmc-design)
 
 Filter which DMC components end up in the generated registry:

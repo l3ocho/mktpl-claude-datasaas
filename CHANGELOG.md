@@ -7,6 +7,19 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 ---
 
+## [dmc-design 12.2.0] — 2026-06-16
+
+### Added
+- `browser-feedback` skill — live verification of a running Dash app via the Chrome DevTools
+  MCP server (external, optional). Reads console/network/DOM and cross-references rendered
+  output against `.claude/design-patterns.json` and `.claude/design-contract.json`.
+- `design-reviewer` agent gains an optional Live Render Verification step, gated on Chrome
+  DevTools MCP availability and a running app; falls back to static audit otherwise.
+
+### Notes
+- Chrome DevTools MCP is NOT bundled in `mcp-servers/`. Register at user scope:
+  `claude mcp add chrome-devtools --scope user -- npx -y chrome-devtools-mcp@latest`.
+
 ## [12.2.0] - 2026-05-22
 
 ### Headline

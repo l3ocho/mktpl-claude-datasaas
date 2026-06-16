@@ -1,4 +1,4 @@
-# dmc-design v1.0.0
+# dmc-design v12.2.0
 
 Dash Mantine Components (DMC) design system plugin for Claude Code.
 
@@ -33,12 +33,26 @@ user-declared pattern persistence.
 ## Skills
 
 `theming-system.md`, `dmc-components.md`, `accessibility-rules.md`,
-`color-scheme-validation.md`, `mcp-tools-reference.md`, `pattern-enforcement.md`
+`color-scheme-validation.md`, `mcp-tools-reference.md`, `pattern-enforcement.md`,
+`browser-feedback.md`
 
 ## Design Patterns File
 
 `.claude/design-patterns.json` — persists user-declared design rules across sessions.
 Schema: `mcp-servers/dmc-design/schemas/design-patterns.schema.json`.
+
+## Browser Feedback Loop (optional)
+
+`design-reviewer` and `/design` commands can verify a *running* Dash app via the external
+Chrome DevTools MCP server — reading console/network/DOM and checking the live render against
+`.claude/design-patterns.json` and `.claude/design-contract.json`. See `skills/browser-feedback/`.
+
+This server is NOT bundled with the marketplace. Register it once at user scope:
+
+    claude mcp add chrome-devtools --scope user -- npx -y chrome-devtools-mcp@latest
+
+Requires Node.js LTS and Chrome stable. If it is not registered or no app is running, the
+plugin falls back to static validation.
 
 ## Migration from viz-platform
 
