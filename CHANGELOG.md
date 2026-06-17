@@ -7,6 +7,13 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 ---
 
+## [dmc-design 12.2.1] — 2026-06-16
+
+### Fixed
+- `browser-feedback` skill now derives the dev-server URL from the codebase (host/port from
+  the `app.run` / `app.run_server` call, env-var/config indirection resolved, `url_base_pathname`
+  honored, `0.0.0.0` normalized to `127.0.0.1`) instead of defaulting to `127.0.0.1:8050`.
+
 ## [dmc-design 12.2.0] — 2026-06-16
 
 ### Added

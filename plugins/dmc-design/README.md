@@ -1,4 +1,4 @@
-# dmc-design v12.2.0
+# dmc-design v12.2.1
 
 Dash Mantine Components (DMC) design system plugin for Claude Code.
 

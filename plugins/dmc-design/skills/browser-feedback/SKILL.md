@@ -44,11 +44,33 @@ providing these capabilities:
 - Screenshot — capture rendered output for visual checks
 - Script evaluation — read computed styles / element state in page context
 
+## Resolving the Dev Server URL
+
+Never assume the port. Derive the URL from the project's own code before navigating:
+
+1. Find the app entry point. Locate the file that instantiates Dash and starts the server —
+   commonly `app.py`, but also `index.py`, `main.py`, `server.py`, `wsgi.py`, or a `src/`
+   variant. Grep the codebase for `.run(` and `.run_server(` (the Dash server start) and for
+   the `Dash(` constructor.
+2. Read host and port from that start call. Extract the `host` and `port` arguments. If either
+   is indirected — `os.environ.get("PORT", 8051)`, `os.getenv("HOST")`, a settings constant,
+   a config object — resolve it against `.env`, the referenced settings/config module, and the
+   live environment. Use the resolved running value, not the fallback literal baked into the
+   code.
+3. Account for a path prefix. Check the `Dash(...)` constructor for `url_base_pathname`,
+   `routes_pathname_prefix`, or `requests_pathname_prefix`. If set, the app is served under
+   that path — include it in the URL.
+4. Normalize the host for browsing. `0.0.0.0` (and `::`) means "all interfaces" and is not
+   browsable — connect via `127.0.0.1`. Leave an explicit `localhost` / `127.0.0.1` as-is.
+5. Construct the URL: `http://<host>:<port><path-prefix or "/">`.
+6. Fallback only as a last resort. If nothing is discoverable, try `http://127.0.0.1:8050`
+   (Dash's default) and state that you are guessing.
+
 ## The Loop
 
-1. Confirm the app is running. Determine the dev server URL — read the project's run command
-   / `.env` for a port; default Dash is `http://127.0.0.1:8050`. Do not start the server
-   yourself unless the task explicitly asks; report and stop if nothing is serving.
+1. Confirm the app is running at the URL resolved per "Resolving the Dev Server URL" above. Do
+   not start the server yourself unless the task explicitly asks; if nothing is serving at that
+   URL, report and stop.
 2. Navigate to the target page (or each route under review).
 3. Pull console messages — surface errors and warnings. Dash callback exceptions and React
    prop warnings appear here.

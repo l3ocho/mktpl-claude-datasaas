@@ -97,7 +97,7 @@
     },
     {
       "name": "dmc-design",
-      "version": "12.2.0",
+      "version": "12.2.1",
       "description": "Unified Dash + DMC + Plotly design system with validation MCP server",
       "source": "./plugins/dmc-design",
       "author": {
